@@ -1,0 +1,56 @@
+# Node.js
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Output directories
+dist/
+build/
+out/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Optional npm cache directory
+.npm/
+
+# Testing and Coverage
+coverage/
+*.test.ts
+*.spec.ts
+
+# Debug files
+*.log
+*.gz
+*.tgz
+*.zip
+
+# Miscellaneous
+.temp/
+.cache/

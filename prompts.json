@@ -1,0 +1,19 @@
+{
+    "targeted_questions": {
+        "TID": [
+        "What type was the radiation source",
+        "What was the total dose",
+        "Were there any failures, if so, when?"
+        ],
+        "SEE": [
+        "What type was the radiation source",
+        "What the energy of the source",
+        "Were there any failures, if so, when?"
+        ],
+        "default": [
+        "What type was the radiation source",
+        "Were there any failures, if so, when?"
+        ]
+    }
+
+}
