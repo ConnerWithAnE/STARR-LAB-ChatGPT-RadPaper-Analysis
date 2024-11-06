@@ -1,6 +1,9 @@
 import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
 import { DataTable } from "./interfaces/database_interface";
+import { resolve } from "path";
+import { rejects } from "assert";
+import { getQuery, RadData } from "./types";
 
 
 class DatabaseController {
@@ -136,6 +139,58 @@ class DatabaseController {
             )
             throw err;
         }
+    }
+
+
+    async getData(
+        queryData: getQuery
+    ): Promise<RadData[]> {
+        if (!this.db) {
+            throw new Error(`Database not initialized`);
+        }
+
+        let query = `SELECT * FROM RadiationData WHERE `;
+        const conditions: string[] = [];
+
+        // Build WHERE conditions
+        for (const [key, value] of Object.entries(queryData)) {
+            if (Array.isArray(value)) {
+                // Multiple values should be combined with OR and LIKE
+                const formattedArray = value.map(val => `'%${val}%'`).join(', ');
+                conditions.push(`${key} LIKE ANY (array[${formattedArray}])`);
+            } else {
+                // Single value with LIKE
+                conditions.push(`${key} LIKE '%${value}%'`);
+            }
+        }
+
+        // Join conditions with AND
+        query += conditions.join(' AND ');
+
+        try {
+            return new Promise<any>((resolve, reject) => {
+                this.db.all(query, (err: Error | null, rows: any[]) => {
+                    if (err) {
+                        reject('Could not complete query')
+                    } else {
+                        console.log(rows);
+                        const radData: RadData[] = rows.map((row) => ({
+                            paper_name: row.paper_name,
+                            author: row.author,
+                            part_no: row.part_no,
+                            type: row.type,
+                            manufacturer: row.manufacturer,
+                            testing_type: row.testing_type
+                        }))
+                        resolve(radData);
+                    }
+                })
+            })
+        } catch (err) {
+            console.error(`Unable to get data from db.\nError: ${err}`)
+            throw err;
+        }
+
     }
 
 }
