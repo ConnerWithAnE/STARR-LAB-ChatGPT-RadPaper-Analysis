@@ -154,13 +154,15 @@ class DatabaseController {
 
         // Build WHERE conditions
         for (const [key, value] of Object.entries(queryData)) {
-            if (Array.isArray(value)) {
-                // Multiple values should be combined with OR and LIKE
-                const formattedArray = value.map(val => `'%${val}%'`).join(', ');
-                conditions.push(`${key} LIKE ANY (array[${formattedArray}])`);
-            } else {
-                // Single value with LIKE
-                conditions.push(`${key} LIKE '%${value}%'`);
+            if (value != undefined) {
+                if (Array.isArray(value)) {
+                    // Multiple values should be combined with OR and LIKE
+                    const formattedArray = value.map(val => `'%${val}%'`).join(', ');
+                    conditions.push(`${key} LIKE ANY (array[${formattedArray}])`);
+                } else {
+                    // Single value with LIKE
+                    conditions.push(`${key} LIKE '%${value}%'`);
+                }
             }
         }
 
