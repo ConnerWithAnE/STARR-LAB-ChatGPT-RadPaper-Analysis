@@ -11,7 +11,7 @@ import exampleRouter from './routes/example_router';
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
 
-app.use("/example/exampleRouter", exampleRouter);
+app.use("/", exampleRouter);
 
 
 
