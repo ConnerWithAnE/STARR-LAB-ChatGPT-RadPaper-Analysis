@@ -1,5 +1,17 @@
 <!DOCTYPE html>
-<head>this is a test title</head>
+<html>
+<head>
+    <title>This is a test title</title>
+    <script>
+        // Function to change the button text when clicked
+        function changeButtonText() {
+            document.getElementById("b1").textContent = "PRESSED";
+        }
+    </script>
+</head>
 <body>
+    <h1 style="color: #3498db;">This text is a shade of blue (#3498db).</h1>
+    <button id="b1" onclick="changeButtonText()">Press Me</button>
     <p>test text on the page yippeee</p>
 </body>
+</html>
