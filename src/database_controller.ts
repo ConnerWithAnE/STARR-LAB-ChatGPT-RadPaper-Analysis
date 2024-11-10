@@ -3,7 +3,7 @@ import { open, Database } from "sqlite";
 import { DataTable } from "./interfaces/database_interface";
 import { resolve } from "path";
 import { rejects } from "assert";
-import { getQuery, RadData } from "./types";
+import { getQuery, insertData, RadData } from "./types";
 
 
 class DatabaseController {
@@ -21,15 +21,16 @@ class DatabaseController {
             this.db = await open({
             filename: './database.db',
             driver: sqlite3.Database
-        });
-        this.initializeTables();
-    })();
+            });
+            this.initializeTables();
+        })();
     }
-
 
     /*
      * Parameters: None
      * Function: Creates the table if it does not exist
+     *      ROWID: This is an auto added param
+     *             unique and auto incremented.
      * Returns: 
      *   - Promise (void): a void promise, allows for .then()
      * 
@@ -37,18 +38,33 @@ class DatabaseController {
      */
     private async initializeTables(): Promise<void> {
         await this.db.exec(`
-            CREATE TABLE IF NOT EXISTS RadiationData (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            paper_name TEXT NOT NULL,
-            author TEXT,
-            part_no TEXT,
-            type TEXT,
-            manufacturer TEXT,
-            testing_type TEXT
+            CREATE TABLE IF NOT EXISTS paper (
+                ROWID INTEGER PRIMARY KEY AUTOINCREMENT
+                year INTEGER,
+                paper_name TEXT NOT NULL,
+                part_no TEXT,
+                type TEXT,
+                manufacturer TEXT,
+                data_type INTEGER,
+
+                testing_type TEXT
             )
         `);
-    }
 
+        await this.db.exec(`
+            CREATE TABLE IF NOT EXISTS author (
+                ROWID INTEGER PRIMARY KEY AUTOINCREMENT
+                name TEXT NOT NULL UNIQUE,
+            )
+        `)
+
+        await this.db.exec(`
+            CREATE TABLE IF NOT EXISTS paper_author_join (
+                paper_id INTEGER NOT NULL,
+                author_id INTEGER NOT NULL
+            )     
+        `)
+    }
 
     /*
      * Parameters:
@@ -72,72 +88,110 @@ class DatabaseController {
             })
         })
     }
-   
-    
+       
+
     /*
      * Parameters:
-     *  - tableName (string): the name of the new table to create
-     *  - query (string): the query to run on the database
-     * Function: Creates a new table within the database
+     *  - paperData: An insertData instance
+     * Function: Creates an entry for the given paper in the 'paper' table and
+     *           entries in the 'author' table for each author. An entry is then
+     *           created in the 'author_paper_join' table for each author.
      * Returns: None
-     * 
-     * !!Potentially Uneeded Function!!
-     * 
      */
-    async createTable(
-        tableName: string,
-        query: string
-    ) {
-        if (!this.db) {
-            throw new Error(`Database not initialized`)
+    async insertPaper(
+        paperData: insertData
+    ): Promise<void> {
+        if(!this.db) {
+            throw new Error(`Database not initialized`);
         }
         try {
-            const exists = await this.tableExists(tableName);
-            if (!exists) {
-                return new Promise<void>((resolve, reject) => {
-                    this.db.run(query, (err: any) => {
-                        if (err) {
-                            reject(`Could not create table: ${err}`)
-                        } else {
-                            resolve();
-                        }
-                    })
-                })
+            const paperId = await this.createPaper(paperData)
 
+            for (const author in paperData.author) {
+                const authorRowId = await this.getOrCreateAuthor(author);
+                await this.linkPaperToAuthor(authorRowId, paperId);
             }
-        } catch (err) {
-            console.error(
-                `Cannot verify if ${tableName} exists or problem creating table.\nError: ${err}`
-            )
-            throw err;
+        } catch(error) {
+            console.error(`Issue inserting paper: ${paperData.paper_name}\nError: ${error}`)
+            throw error;
         }
     }
 
-    async runQuery(
-        tableName: string,
-        query: string) {
-        if (!this.db) {
+    /*
+     * Parameters:
+     *  - paperData: An insertData instance
+     * Function: Uses the given data to create an entry in the table cotaining the papers
+     * Returns:
+     *  - number: The ROWID of the paper.
+     */
+    async createPaper(
+        paperData: insertData
+    ): Promise<number> {
+        if(!this.db) {
             throw new Error(`Database not initialized`)
         }
         try {
-            const exists = await this.tableExists(tableName);
-            if (exists) {
-                return new Promise<void>((resolve, reject) => {
-                    this.db.run(query, (err: any) => {
-                        if (err) {
-                            reject(`Could not complete query: ${err}`)
-                        } else {
-                            resolve();
-                        }
-                    })
-                })
+            // TODO: finish adding all values for paper creation
+            await this.db.run(`
+                INSERT INTO paper (
+                year
+                paper_name) VALUES (?, ?)
+            `, [paperData.year, paperData.paper_name])
+            const row = await this.db.get(`SELECT last_insert_rowid() as ROWID`);
+            return row.ROWID;
+        } catch(error) {
+            console.error(error);
+            throw error;
+        }
+    }
 
+    /*
+     * Parameters:
+     *  - author: the name of the author to be added/retrieved
+     * Function: Checks if an author exists in the table, if it does return the ROWID.
+     *           If not create a new entry and return the ROWID. 
+     * Returns:
+     *  - number: The ROWID of the author.
+     */
+    async getOrCreateAuthor(
+        author: string,
+    ): Promise<number> {
+        if(!this.db) {
+            throw new Error(`Database not initialized`)
+        }
+        try {
+            const row = await this.db.get('SELECT ROWID FROM author WHERE name = ?', [author]);
+            if (row) {
+                return row.ROWID;
+            } else {
+                await this.db.run('INSERT INTO author (name) VALUES (?)', [author]);
+                const result = await this.db.get('SELECT last_insert_rowid() as ROWID');
+                return result.ROWID;
             }
-        } catch (err) {
-            console.error(
-                `Cannot verify if ${tableName} exists or problem with query.\nError: ${err}`
-            )
-            throw err;
+        } catch(error) {
+            console.error(`Problem creating or getting author: ${author}\nError: ${error}`)
+            throw error;
+        }
+    }
+
+    /*
+     * Parameters:
+     *  - authorId: The ROWID of the author to link
+     *  - paperId: The ROWID of the paper to link
+     * Function: Creates an entry in the author_paper_join table.
+     *           This links the paper and author together, allowing for
+     *           easy query of authors of specific papers
+     * Returns: None
+     */
+    async linkPaperToAuthor(
+        authorId: number,
+        paperId: number
+    ): Promise<void> {
+        try {
+            await this.db.run('INSERT INTO author_paper_join (paper_id, author_id) VALUES (?, ?)', [paperId, authorId])
+        } catch (error) {
+            console.error(`Problem creating paper-author link for authorID: ${authorId}, paperID: ${paperId}\nError: ${error}`)
+            throw error;
         }
     }
 
@@ -158,10 +212,10 @@ class DatabaseController {
                 if (Array.isArray(value)) {
                     // Multiple values should be combined with OR and LIKE
                     const formattedArray = value.map(val => `'%${val}%'`).join(', ');
-                    conditions.push(`${key} LIKE ANY (array[${formattedArray}])`);
+                    conditions.push(`${key} LIKE ANY (array[%${formattedArray}])`);
                 } else {
                     // Single value with LIKE
-                    conditions.push(`${key} LIKE '%${value}%'`);
+                    conditions.push(`${key} LIKE '%${value}'`);
                 }
             }
         }
@@ -188,11 +242,80 @@ class DatabaseController {
                     }
                 })
             })
-        } catch (err) {
-            console.error(`Unable to get data from db.\nError: ${err}`)
-            throw err;
+        } catch (error) {
+            console.error(`Unable to get data from db.\nError: ${error}`)
+            throw error;
         }
+    }
 
+     /*
+     * Parameters:
+     *  - tableName (string): the name of the new table to create
+     *  - query (string): the query to run on the database
+     * Function: Creates a new table within the database
+     * Returns: None
+     * 
+     * !!Potentially Uneeded Function!!
+     * 
+     */
+     async createTable(
+        tableName: string,
+        query: string
+    ) {
+        if (!this.db) {
+            throw new Error(`Database not initialized`)
+        }
+        try {
+            const exists = await this.tableExists(tableName);
+            if (!exists) {
+                return new Promise<void>((resolve, reject) => {
+                    this.db.run(query, (err: any) => {
+                        if (err) {
+                            reject(`Could not create table: ${err}`)
+                        } else {
+                            resolve();
+                        }
+                    })
+                })
+
+            }
+        } catch (error) {
+            console.error(
+                `Cannot verify if ${tableName} exists or problem creating table.\nError: ${error}`
+            )
+            throw error;
+        }
+    }
+
+    /*
+     * !!Uneeded function, to be removed!!
+     */
+    async runQuery(
+        tableName: string,
+        query: string) {
+        if (!this.db) {
+            throw new Error(`Database not initialized`)
+        }
+        try {
+            const exists = await this.tableExists(tableName);
+            if (exists) {
+                return new Promise<void>((resolve, reject) => {
+                    this.db.run(query, (err: any) => {
+                        if (err) {
+                            reject(`Could not complete query: ${err}`)
+                        } else {
+                            resolve();
+                        }
+                    })
+                })
+
+            }
+        } catch (error) {
+            console.error(
+                `Cannot verify if ${tableName} exists or problem with query.\nError: ${error}`
+            )
+            throw error;
+        }
     }
 
 }

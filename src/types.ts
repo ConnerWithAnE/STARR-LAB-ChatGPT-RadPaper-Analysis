@@ -1,3 +1,5 @@
+// TODO: Add proper values to data types
+
 export type getQuery = {
     tableName: TableNames,
     id?: number,
@@ -9,6 +11,17 @@ export type getQuery = {
     testing_type?: Testing[] | Testing,
 }
 
+export type insertData = {
+    paper_name: string,
+    year: number,
+    author: string[],
+    part_no: string,
+    type: string,
+    manufacturer: string,
+    testing_location: TestLocation,
+
+}
+
 export type RadData = {
     paper_name: string,
     author: string,
@@ -18,8 +31,11 @@ export type RadData = {
     testing_type: string
 }
 
+// Type of testing done
+export type TestLocation = "Terrestrial" | "Flight";
+
 // Type to ensure testing types are consistent
-export type Testing = "SEE" | "TID" | "OTHER";
+export type Testing = "SEE" | "TID" | "DD" | "OTHER";
 
 // Type to ensure table names are consistent;
 export type TableNames = "RadiationData";
