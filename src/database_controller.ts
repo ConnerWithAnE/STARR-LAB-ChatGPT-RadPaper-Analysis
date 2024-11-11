@@ -6,7 +6,7 @@ import { rejects } from "assert";
 import { getQuery, insertData, RadData } from "./types";
 
 
-class DatabaseController {
+export class DatabaseController {
 
     // Options:
     // '!' after this db to tell typescript to assume it is always defined
@@ -14,16 +14,15 @@ class DatabaseController {
     // '?' after each this.db which says "hey this might be undefined" upon each run
 
     // the '!' after db tells typescript to assume it is defined. Checks are performed furhter down
-    private db!: Database<sqlite3.Database, sqlite3.Statement>;// | undefined;
+    private db: Database<sqlite3.Database, sqlite3.Statement>;// | undefined;
 
-    constructor() {
-        (async () => {
-            this.db = await open({
-            filename: './database.db',
-            driver: sqlite3.Database
-            });
-            this.initializeTables();
-        })();
+    constructor(db: Database<sqlite3.Database, sqlite3.Statement>) {
+        this.db = db;
+    }
+
+    async closeDB(): Promise<void> {
+        this.db.close();
+        console.log(`DB Successfully Closed`);
     }
 
     /*
@@ -124,7 +123,7 @@ class DatabaseController {
      * Returns:
      *  - number: The ROWID of the paper.
      */
-    async createPaper(
+    private async createPaper(
         paperData: insertData
     ): Promise<number> {
         if(!this.db) {
@@ -153,7 +152,7 @@ class DatabaseController {
      * Returns:
      *  - number: The ROWID of the author.
      */
-    async getOrCreateAuthor(
+    private async getOrCreateAuthor(
         author: string,
     ): Promise<number> {
         if(!this.db) {
@@ -183,7 +182,7 @@ class DatabaseController {
      *           easy query of authors of specific papers
      * Returns: None
      */
-    async linkPaperToAuthor(
+    private async linkPaperToAuthor(
         authorId: number,
         paperId: number
     ): Promise<void> {
@@ -191,6 +190,38 @@ class DatabaseController {
             await this.db.run('INSERT INTO author_paper_join (paper_id, author_id) VALUES (?, ?)', [paperId, authorId])
         } catch (error) {
             console.error(`Problem creating paper-author link for authorID: ${authorId}, paperID: ${paperId}\nError: ${error}`)
+            throw error;
+        }
+    }
+
+    /*
+     * Parameters: None
+     * Function: Gets the total number of papers in the table 'paper'
+     * Returns:
+     *  - number: Total number of papers
+     */
+    async getNumberOfPapers(): Promise<number> {
+        try {
+            const numPapers = await this.db.get("SELECT COUNT(*) FROM paper");
+            return numPapers;
+        } catch (error) {
+            console.error(`Problem getting the number of papers`);
+            throw error;
+        }
+    }
+
+    /*
+     * Parameters: None
+     * Function: Gets the total number of authors in the table 'author'
+     * Returns:
+     *  - number: Total number of authors
+     */
+    async getNumberOfAuthors(): Promise<number> {
+        try {
+            const numAuthors = await this.db.get("SELECT COUNT(*) FROM author");
+            return numAuthors;
+        } catch (error) {
+            console.error(`Problem getting the number of authors`);
             throw error;
         }
     }
