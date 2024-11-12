@@ -230,23 +230,51 @@ export class DatabaseController {
     async getData(
         queryData: GetQuery
     ): Promise<RadData[]> {
+        let query: string;
         if (!this.db) {
             throw new Error(`Database not initialized`);
         }
 
-        let query = `SELECT * FROM RadiationData WHERE `;
+        //WHERE a.name ${queryData.author.length > 1 ? queryData.author.map(author => `'${author}'`).join(", ") :  }`;
+        // Need to decide if we want to search by multiple authors or only one at a time.
+        if (queryData.author != undefined) {
+            query = `SELECT 
+                            p.*, GROUP_CONCAT(a.name) AS author
+                         FROM 
+                            paper p
+                         JOIN 
+                            author_paper_join apj ON p.ROWID = apj.paper_id
+                         JOIN 
+                            author a ON apj.author_id = a.ROWID 
+                         WHERE a.name = ${queryData.author} 
+                         AND`;
+        } else {
+            query = `SELECT 
+                            p.*, GROUP_CONCAT(a.name) AS author
+                         FROM 
+                            paper p
+                         JOIN 
+                            author_paper_join apj ON p.ROWID = apj.paper_id
+                         JOIN 
+                            author a ON apj.author_id = a.ROWID 
+                         WHERE `;
+        }
+
         const conditions: string[] = [];
 
         // Build WHERE conditions
         for (const [key, value] of Object.entries(queryData)) {
+            if (key == "author") {
+                continue;
+            }
             if (value != undefined) {
                 if (Array.isArray(value)) {
                     // Multiple values should be combined with OR and LIKE
                     const formattedArray = value.map(val => `'%${val}%'`).join(', ');
-                    conditions.push(`${key} LIKE ANY (array[%${formattedArray}])`);
+                    conditions.push(`p.${key} LIKE ANY (array[%${formattedArray}])`);
                 } else {
                     // Single value with LIKE
-                    conditions.push(`${key} LIKE '%${value}'`);
+                    conditions.push(`p.${key} LIKE '%${value}'`);
                 }
             }
         }
@@ -261,13 +289,19 @@ export class DatabaseController {
                         reject('Could not complete query')
                     } else {
                         console.log(rows);
+                            // Maps each row directly to RadData objects.
+                            // Table must return values with the same naming scheme
                         const radData: RadData[] = rows.map((row) => ({
+                            ...row
+
+                            /*
                             paper_name: row.paper_name,
                             author: row.author,
                             part_no: row.part_no,
                             type: row.type,
                             manufacturer: row.manufacturer,
                             testing_type: row.testing_type
+                            */
                         }))
                         resolve(radData);
                     }

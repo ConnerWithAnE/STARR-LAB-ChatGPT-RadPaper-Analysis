@@ -1,7 +1,6 @@
 // TODO: Add proper values to data types
 
 export type GetQuery = {
-    tableName: TableNames,
     id?: number,
     paper_name?: string,
     author?: string[] | string,
@@ -19,6 +18,7 @@ export type InsertData = {
     type: string,
     manufacturer: string,
     testing_location: TestLocation,
+    testing_type: Testing,
 
 }
 
