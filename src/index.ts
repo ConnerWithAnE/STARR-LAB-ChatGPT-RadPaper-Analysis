@@ -1,13 +1,14 @@
 import express from "express";
 import sqlite3 from "sqlite3";
 import cors from "cors";
+import bodyParser from "body-parser";
 import { open, Database } from "sqlite";
 
 // Import routers
 
-import exampleRouter from "./routes/example_router";
-import postRouter from "./routes/post_router";
-import { DatabaseController } from "./database_controller";
+import exampleRouter from "./routes/example-router";
+import postRouter from "./routes/post-router";
+import { DatabaseController } from "./database-controller";
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
@@ -25,35 +26,32 @@ const corsOptions = {
 */
 
 const corsOptions = {
-  origin: '*',  // Allow all origins
+  origin: "*", // Allow all origins
 };
 
-app.use(cors(corsOptions))
+app.use(cors(corsOptions));
+app.use(bodyParser.json());
 
 async function initializeSystem(): Promise<DatabaseController> {
-    const db = await open({
-        filename: './database.db',
-        driver: sqlite3.Database
-    });
-    return new DatabaseController(db);
+  const db = await open({
+    filename: "./database.db",
+    driver: sqlite3.Database,
+  });
+  return new DatabaseController(db);
 }
 
 initializeSystem().then((dbController: DatabaseController) => {
-        
-        app.use("/", exampleRouter);
-        //app.use("/getTable", tableRouter)
-        app.use("/post", postRouter(dbController));
+  app.use("/", exampleRouter);
+  //app.use("/getTable", tableRouter)
+  app.use("/post", postRouter(dbController));
 
-        app.listen(PORT, () => {
-        console.log(`Server is running on ${PORT}`);
+  app.listen(PORT, () => {
+    console.log(`Server is running on ${PORT}`);
 
-        // Close the database when the app is shutting down
-        process.on("exit", () => {
-            dbController.closeDB();
-            console.log("Database connection closed.");
-        });
+    // Close the database when the app is shutting down
+    process.on("exit", () => {
+      dbController.closeDB();
+      console.log("Database connection closed.");
     });
+  });
 });
-
-
-

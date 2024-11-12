@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 import { open, Database } from "sqlite";
-import { DataTable } from "./interfaces/database_interface";
+import { DataTable } from "./interfaces/database-interface";
 import { resolve } from "path";
 import { rejects } from "assert";
 import { getQuery, insertData, RadData } from "./types";
