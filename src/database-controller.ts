@@ -3,7 +3,7 @@ import { open, Database } from "sqlite";
 import { DataTable } from "./interfaces/database-interface";
 import { resolve } from "path";
 import { rejects } from "assert";
-import { getQuery, insertData, RadData } from "./types";
+import { GetQuery, InsertData, RadData } from "./types";
 
 
 export class DatabaseController {
@@ -98,7 +98,7 @@ export class DatabaseController {
      * Returns: None
      */
     async insertPaper(
-        paperData: insertData
+        paperData: InsertData
     ): Promise<void> {
         if(!this.db) {
             throw new Error(`Database not initialized`);
@@ -124,7 +124,7 @@ export class DatabaseController {
      *  - number: The ROWID of the paper.
      */
     private async createPaper(
-        paperData: insertData
+        paperData: InsertData
     ): Promise<number> {
         if(!this.db) {
             throw new Error(`Database not initialized`)
@@ -228,7 +228,7 @@ export class DatabaseController {
 
 
     async getData(
-        queryData: getQuery
+        queryData: GetQuery
     ): Promise<RadData[]> {
         if (!this.db) {
             throw new Error(`Database not initialized`);
