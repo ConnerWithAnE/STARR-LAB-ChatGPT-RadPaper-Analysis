@@ -18,6 +18,7 @@ export class DatabaseController {
 
     constructor(db: Database<sqlite3.Database, sqlite3.Statement>) {
         this.db = db;
+        this.initializeTables();
     }
 
     async closeDB(): Promise<void> {
@@ -38,7 +39,7 @@ export class DatabaseController {
     private async initializeTables(): Promise<void> {
         await this.db.exec(`
             CREATE TABLE IF NOT EXISTS paper (
-                ROWID INTEGER PRIMARY KEY AUTOINCREMENT
+                ROWID INTEGER PRIMARY KEY AUTOINCREMENT,
                 year INTEGER,
                 paper_name TEXT NOT NULL,
                 part_no TEXT,
@@ -52,8 +53,8 @@ export class DatabaseController {
 
         await this.db.exec(`
             CREATE TABLE IF NOT EXISTS author (
-                ROWID INTEGER PRIMARY KEY AUTOINCREMENT
-                name TEXT NOT NULL UNIQUE,
+                ROWID INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE
             )
         `)
 
@@ -237,6 +238,8 @@ export class DatabaseController {
 
         //WHERE a.name ${queryData.author.length > 1 ? queryData.author.map(author => `'${author}'`).join(", ") :  }`;
         // Need to decide if we want to search by multiple authors or only one at a time.
+
+        // Check if the author filter is used and adjuect query accordingly
         if (queryData.author != undefined) {
             query = `SELECT 
                             p.*, GROUP_CONCAT(a.name) AS author

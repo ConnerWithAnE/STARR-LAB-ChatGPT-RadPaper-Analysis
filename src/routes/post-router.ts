@@ -10,7 +10,6 @@ export default function postRouter(dbController: DatabaseController): Router {
 
   router.post("/tableRequest", (req: Request, res: Response) => {
     try {
-      req.body;
       handleRequestBody(req.body);
     } catch (error) {
       console.error(``);
@@ -21,3 +20,11 @@ export default function postRouter(dbController: DatabaseController): Router {
 }
 
 function handleRequestBody(body: any) {}
+
+function requestFromJSON(body: any) {
+  return body as GetQuery;
+}
+
+function responseToJSON(body: any) {
+  
+}
