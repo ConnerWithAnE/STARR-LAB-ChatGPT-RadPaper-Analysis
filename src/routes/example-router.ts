@@ -5,7 +5,7 @@ const path = require('path');
 
 router.get("/", (req, res) => {
     try {
-        res.sendFile(path.join(__dirname,'./example_router.html'))
+        res.sendFile(path.join(__dirname,'./example-router.html'))
     } catch (error) {
         console.error(`Error Gettin Example ${error}`)
     }
