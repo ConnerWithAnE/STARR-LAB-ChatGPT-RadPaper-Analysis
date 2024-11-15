@@ -31,14 +31,18 @@
       const files = document.querySelector('input[type="file"]').files;
 
       for (const file of files) {
+        console.log(file);
         formData.append('pdfs', file);
       }
+
+      console.log(formData)
 
       try {
         const response = await fetch('/upload', {
           method: 'POST',
           body: formData
         });
+        console.log(response);
 
         const result = await response.json();
         const resultDiv = document.getElementById('result');

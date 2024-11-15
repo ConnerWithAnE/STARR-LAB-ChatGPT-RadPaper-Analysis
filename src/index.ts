@@ -3,6 +3,7 @@ import sqlite3 from "sqlite3";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { open, Database } from "sqlite";
+import fs from 'fs'
 
 
 // Import routers
@@ -10,9 +11,16 @@ import { open, Database } from "sqlite";
 import exampleRouter from "./routes/example-router";
 import postRouter from "./routes/post-router";
 import { DatabaseController } from "./database-controller";
+import path from "path";
+// import pdfUploader from "./routes/pdf-uploader/pdf-uploader";
+const pdfUploader = require("./routes/pdf-uploader/pdf-uploader");
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
+const uploadDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+}
 
 /*
 const corsOptions = {
@@ -45,7 +53,8 @@ initializeSystem().then((dbController: DatabaseController) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
   app.use("/post", postRouter(dbController));
-  app.use("/upload", )
+
+  app.use("/upload", pdfUploader)
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
