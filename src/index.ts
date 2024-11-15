@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { open, Database } from "sqlite";
 
+
 // Import routers
 
 import exampleRouter from "./routes/example-router";
@@ -44,6 +45,7 @@ initializeSystem().then((dbController: DatabaseController) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
   app.use("/post", postRouter(dbController));
+  app.use("/upload", )
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);

@@ -13,5 +13,46 @@
     <h1 style="color: #3498db;">This text is a shade of blue (#3498db).</h1>
     <button id="b1" onclick="changeButtonText()">Press Me</button>
     <p>test text on the page yippeee</p>
+
+    <h1>Upload PDFs to Convert to Text</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="pdfs" multiple accept="application/pdf">
+    <button type="submit">Upload PDFs</button>
+  </form>
+
+  <h2>Converted Text:</h2>
+  <div id="result"></div>
+
+  <script>
+    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      const files = document.querySelector('input[type="file"]').files;
+
+      for (const file of files) {
+        formData.append('pdfs', file);
+      }
+
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = '';
+
+        result.forEach(fileResult => {
+          const fileText = document.createElement('div');
+          fileText.innerHTML = `<h3>${fileResult.filename}</h3><pre>${fileResult.text || fileResult.error}</pre>`;
+          resultDiv.appendChild(fileText);
+        });
+      } catch (error) {
+        console.error('Error uploading files:', error);
+      }
+    });
+  </script>
 </body>
 </html>
