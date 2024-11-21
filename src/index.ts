@@ -7,7 +7,7 @@ import { open, Database } from "sqlite";
 // Import routers
 
 import exampleRouter from "./routes/example-router";
-import postRouter from "./routes/post-router";
+import cascadeRouter from "./routes/cascade-router";
 import { DatabaseController } from "./database-controller";
 
 const app = express();
@@ -43,7 +43,7 @@ async function initializeSystem(): Promise<DatabaseController> {
 initializeSystem().then((dbController: DatabaseController) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
-  app.use("/post", postRouter(dbController));
+  app.use("/dataRequest", cascadeRouter(dbController));
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);

@@ -5,7 +5,7 @@ import { GetQuery } from "../types";
 const router = express.Router();
 const path = require("path");
 
-export default function postRouter(dbController: DatabaseController): Router {
+export default function cascadeRouter(dbController: DatabaseController): Router {
   const router = Router();
 
   router.post("/tableRequest", (req: Request, res: Response) => {

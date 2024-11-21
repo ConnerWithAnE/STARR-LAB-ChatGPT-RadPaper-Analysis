@@ -19,7 +19,7 @@ export type InsertData = {
     manufacturer: string,
     testing_location: TestLocation,
     testing_type: Testing,
-
+    data_type: number
 }
 
 export type RadData = {
@@ -28,7 +28,8 @@ export type RadData = {
     part_no: string,
     type: string,
     manufacturer: string,
-    testing_type: string
+    testing_type: string,
+    data_type: number
 }
 
 // Type of testing done
@@ -37,5 +38,3 @@ export type TestLocation = "Terrestrial" | "Flight";
 // Type to ensure testing types are consistent
 export type Testing = "SEE" | "TID" | "DD" | "OTHER";
 
-// Type to ensure table names are consistent;
-export type TableNames = "RadiationData";
