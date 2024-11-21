@@ -54,3 +54,6 @@ coverage/
 # Miscellaneous
 .temp/
 .cache/
+
+# Database Files
+database.db

@@ -46,7 +46,7 @@ export class DatabaseController {
                 type TEXT,
                 manufacturer TEXT,
                 data_type INTEGER,
-
+                testing_location TEXT,
                 testing_type TEXT
             )
         `);
@@ -134,9 +134,16 @@ export class DatabaseController {
             // TODO: finish adding all values for paper creation
             await this.db.run(`
                 INSERT INTO paper (
-                year
-                paper_name) VALUES (?, ?)
-            `, [paperData.year, paperData.paper_name])
+                year,
+                paper_name,
+                part_no,
+                type,
+                manufacturer,
+                data_type,
+                testing_location,
+                testing_type
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            `, [paperData.year, paperData.paper_name, paperData.part_no, paperData.type, paperData.manufacturer, paperData.data_type, paperData.testing_location, paperData.testing_type])
             const row = await this.db.get(`SELECT last_insert_rowid() as ROWID`);
             return row.ROWID;
         } catch(error) {
@@ -188,7 +195,7 @@ export class DatabaseController {
         paperId: number
     ): Promise<void> {
         try {
-            await this.db.run('INSERT INTO author_paper_join (paper_id, author_id) VALUES (?, ?)', [paperId, authorId])
+            await this.db.run('INSERT INTO paper_author_join (paper_id, author_id) VALUES (?, ?)', [paperId, authorId])
         } catch (error) {
             console.error(`Problem creating paper-author link for authorID: ${authorId}, paperID: ${paperId}\nError: ${error}`)
             throw error;
@@ -246,18 +253,18 @@ export class DatabaseController {
                          FROM 
                             paper p
                          JOIN 
-                            author_paper_join apj ON p.ROWID = apj.paper_id
+                            paper_author_join apj ON p.ROWID = apj.paper_id
                          JOIN 
                             author a ON apj.author_id = a.ROWID 
-                         WHERE a.name = ${queryData.author} 
-                         AND`;
+                         WHERE a.name = '${queryData.author}' 
+                         AND `;
         } else {
             query = `SELECT 
                             p.*, GROUP_CONCAT(a.name) AS author
                          FROM 
                             paper p
                          JOIN 
-                            author_paper_join apj ON p.ROWID = apj.paper_id
+                            paper_author_join apj ON p.ROWID = apj.paper_id
                          JOIN 
                             author a ON apj.author_id = a.ROWID 
                          WHERE `;
@@ -271,19 +278,22 @@ export class DatabaseController {
                 continue;
             }
             if (value != undefined) {
+                /* TO BE REMOVED - No longer need support for multiple filters in one category
                 if (Array.isArray(value)) {
                     // Multiple values should be combined with OR and LIKE
                     const formattedArray = value.map(val => `'%${val}%'`).join(', ');
                     conditions.push(`p.${key} LIKE ANY (array[%${formattedArray}])`);
                 } else {
+                 */
                     // Single value with LIKE
-                    conditions.push(`p.${key} LIKE '%${value}'`);
-                }
+                conditions.push(`p.${key} LIKE '${value}%'`);
             }
         }
 
         // Join conditions with AND
         query += conditions.join(' AND ');
+    
+        console.log(query);
 
         try {
             return new Promise<any>((resolve, reject) => {

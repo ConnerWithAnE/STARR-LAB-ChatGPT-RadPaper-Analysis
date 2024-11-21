@@ -44,7 +44,7 @@ initializeSystem().then((dbController: DatabaseController) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
   app.use("/dataRequest", cascadeRouter(dbController));
-
+  
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
 

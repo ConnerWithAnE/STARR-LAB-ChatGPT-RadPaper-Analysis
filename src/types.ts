@@ -1,13 +1,12 @@
 // TODO: Add proper values to data types
 
 export type GetQuery = {
-    id?: number,
     paper_name?: string,
-    author?: string[] | string,
-    part_no?: string[] | string,
+    author?: string,
+    part_no?: string,
     type?: string,
-    manufacturer?: string[] | string,
-    testing_type?: Testing[] | Testing,
+    manufacturer?: string,
+    testing_type?: Testing,
 }
 
 export type InsertData = {
@@ -24,7 +23,7 @@ export type InsertData = {
 
 export type RadData = {
     paper_name: string,
-    author: string,
+    author: string[],
     part_no: string,
     type: string,
     manufacturer: string,
