@@ -4,6 +4,7 @@ import { DataTable } from "./interfaces/database-interface";
 import { resolve } from "path";
 import { rejects } from "assert";
 import { GetQuery, InsertData, RadData } from "./types";
+import { error } from "console";
 
 export class DatabaseController {
   // Options:
@@ -16,7 +17,10 @@ export class DatabaseController {
 
   constructor(db: Database<sqlite3.Database, sqlite3.Statement>) {
     this.db = db;
-    this.initializeTables();
+    // Initialize tables and handle errors
+    this.initializeTables()
+      .then(() => console.log("Tables initialized successfully"))
+      .catch((err) => console.error("Failed to initialize tables", err));
   }
 
   async closeDB(): Promise<void> {
@@ -101,9 +105,11 @@ export class DatabaseController {
     }
     try {
       const paperId = await this.createPaper(paperData);
-
+      console.log(paperData.author);
       for (const author in paperData.author) {
-        const authorRowId = await this.getOrCreateAuthor(author);
+        const authorRowId = await this.getOrCreateAuthor(
+          paperData.author[author],
+        );
         await this.linkPaperToAuthor(authorRowId, paperId);
       }
     } catch (error) {
@@ -178,6 +184,7 @@ export class DatabaseController {
       if (row) {
         return row.ROWID;
       } else {
+        console.log(author);
         await this.db.run("INSERT INTO author (name) VALUES (?)", [author]);
         const result = await this.db.get("SELECT last_insert_rowid() as ROWID");
         return result.ROWID;
@@ -249,92 +256,77 @@ export class DatabaseController {
   }
 
   async getData(queryData: GetQuery): Promise<RadData[]> {
-    let query: string;
     if (!this.db) {
-      throw new Error(`Database not initialized`);
+      throw new Error("Database not initialized");
     }
 
-    //WHERE a.name ${queryData.author.length > 1 ? queryData.author.map(author => `'${author}'`).join(", ") :  }`;
-    // Need to decide if we want to search by multiple authors or only one at a time.
-
-    // Check if the author filter is used and adjuect query accordingly
-    if (queryData.author != undefined) {
-      query = `SELECT 
-                            p.*, GROUP_CONCAT(a.name) AS author
-                         FROM 
-                            paper p
-                         JOIN 
-                            paper_author_join apj ON p.ROWID = apj.paper_id
-                         JOIN 
-                            author a ON apj.author_id = a.ROWID 
-                         WHERE a.name = '${queryData.author}' 
-                         AND `;
-    } else {
-      query = `SELECT 
-                            p.*, GROUP_CONCAT(a.name) AS author
-                         FROM 
-                            paper p
-                         JOIN 
-                            paper_author_join apj ON p.ROWID = apj.paper_id
-                         JOIN 
-                            author a ON apj.author_id = a.ROWID 
-                         WHERE `;
-    }
+    // Base SELECT query
+    let query = `
+      SELECT 
+        p.year, 
+        p.paper_name, 
+        p.part_no, 
+        p.type, 
+        p.manufacturer, 
+        p.data_type, 
+        p.testing_location, 
+        p.testing_type,  
+        GROUP_CONCAT(a.name, ', ') AS author
+      FROM 
+        paper p
+      LEFT JOIN 
+        paper_author_join apj ON p.ROWID = apj.paper_id
+      LEFT JOIN 
+        author a ON apj.author_id = a.ROWID
+    `;
 
     const conditions: string[] = [];
 
-    // Build WHERE conditions
+    // Build WHERE conditions based on queryData
     for (const [key, value] of Object.entries(queryData)) {
-      if (key == "author") {
-        continue;
-      }
-      if (value != undefined) {
-        /* TO BE REMOVED - No longer need support for multiple filters in one category
-                if (Array.isArray(value)) {
-                    // Multiple values should be combined with OR and LIKE
-                    const formattedArray = value.map(val => `'%${val}%'`).join(', ');
-                    conditions.push(`p.${key} LIKE ANY (array[%${formattedArray}])`);
-                } else {
-                 */
-        // Single value with LIKE
-        conditions.push(`p.${key} LIKE '${value}%'`);
+      if (value !== undefined && value !== null) {
+        if (key === "author") {
+          // Ensure author filters don't exclude other authors in the GROUP_CONCAT
+          conditions.push(`EXISTS (
+            SELECT 1 
+            FROM paper_author_join apj2 
+            JOIN author a2 ON apj2.author_id = a2.ROWID 
+            WHERE apj2.paper_id = p.ROWID 
+            AND a2.name LIKE '${value}%'
+          )`);
+        } else {
+          conditions.push(`p.${key} LIKE '${value}%'`);
+        }
       }
     }
 
-    // Join conditions with AND
-    query += conditions.join(" AND ");
+    // Add WHERE clause if there are conditions
+    if (conditions.length > 0) {
+      query += ` WHERE ${conditions.join(" AND ")}`;
+    }
+
+    // Add GROUP BY for GROUP_CONCAT
+    query += ` GROUP BY p.ROWID`;
 
     console.log(query);
 
-    try {
-      return new Promise<any>((resolve, reject) => {
-        this.db.all(query, (err: Error | null, rows: any[]) => {
-          if (err) {
-            reject("Could not complete query");
-          } else {
-            console.log(rows);
-            // Maps each row directly to RadData objects.
-            // Table must return values with the same naming scheme
-            const radData: RadData[] = rows.map((row) => ({
-              ...row,
+    return new Promise<RadData[]>(async (resolve, reject) => {
+      try {
+        const result = await this.db.all(query);
+        console.log("Query executed successfully:");
 
-              /*
-                            paper_name: row.paper_name,
-                            author: row.author,
-                            part_no: row.part_no,
-                            type: row.type,
-                            manufacturer: row.manufacturer,
-                            testing_type: row.testing_type
-                            */
-            }));
-            resolve(radData);
-          }
-        });
-      });
-    } catch (error) {
-      console.error(`Unable to get data from db.\nError: ${error}`);
-      throw error;
-    }
+        // Map rows to RadData format
+        const radData: RadData[] = result.map((row) => ({
+          ...row,
+          author: row.author ? row.author.split(", ") : [],
+        }));
+
+        resolve(radData);
+      } catch (error) {
+        console.error("Error getting data", error);
+        throw error;
+      }
+    });
   }
 
   /*

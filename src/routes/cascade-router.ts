@@ -9,6 +9,22 @@ export default function cascadeRouter(
 ): Router {
   const router = Router();
 
+  // Test!!! TO BE REMOVED THIS SHOULD NOT BE HERE
+  router.get("/", (req: Request, res: Response) => {
+    dbController.insertPaper({
+      paper_name: "Radiation Test Effects On Tested Radiation",
+      year: 2023,
+      author: ["John Jacob", "Lin Lee", "Dr. Joan Gooding"],
+      part_no: "LT3094EMSE#PBF",
+      type: "Low Dropout Voltage Regulator",
+      manufacturer: "Analog Devices",
+      testing_location: "Terrestrial",
+      testing_type: "SEE",
+      data_type: 0,
+    });
+    console.log("Sucess");
+  });
+
   router.post("/tableRequest", (req: Request, res: Response) => {
     try {
       getFilteredRows(requestFromJSON(req.body), dbController).then(

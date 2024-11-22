@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start-dev": "npx nodemon",
     "start": "npm run build && node build/index.js",
     "build": "./build && tsc"
@@ -33,5 +33,9 @@
     "openai": "^4.67.3",
     "sqlite": "^5.1.1",
     "sqlite3": "^5.1.7"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   }
 }
