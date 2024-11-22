@@ -1,37 +1,33 @@
 import express, { Request, Response, Router } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, RadData, Testing } from "../types";
+import { GetQuery, InsertData, RadData, Testing } from "../types";
 
 const router = express.Router();
 
-export default function adminRouter(
-  dbController: DatabaseController,
-): Router {
+export default function adminRouter(dbController: DatabaseController): Router {
   const router = Router();
 
-  // Test!!! TO BE REMOVED THIS SHOULD NOT BE HERE
-  router.get("/", (req: Request, res: Response) => {
-    dbController.insertPaper({
-      paper_name: "Radiation Test Effects On Tested Radiation",
-      year: 2023,
-      author: ["John Jacob", "Lin Lee", "Dr. Joan Gooding"],
-      part_no: "LT3094EMSE#PBF",
-      type: "Low Dropout Voltage Regulator",
-      manufacturer: "Analog Devices",
-      testing_location: "Terrestrial",
-      testing_type: "SEE",
-      data_type: 0,
-    });
-    console.log("Sucess");
+  // This takes a data response from the GUI after fixes have been made.
+  // The data is in the correct format and ready to be input.
+
+  // THIS WILL NOT WORK WITH RAW PAPERS, Data MUST be in InsertData format
+  router.post("/insertPapers", (req: Request, res: Response) => {
+    try {
+      insertRows(requestFromJSON(req.body), dbController).then(() => {
+        // 201: The request was successful, and a new resource was created
+        res.send(201);
+      });
+    } catch (error) {
+      console.error(`${error}`);
+    }
   });
 
-  router.post("/tableRequest", (req: Request, res: Response) => {
+  router.post("/parseRequest", (req: Request, res: Response) => {
     try {
-      getFilteredRows(requestFromJSON(req.body), dbController).then(
-        (result: RadData[]) => {
-          res.send(responseToJSON(result));
-        },
-      );
+      // TODO
+      parsePapers().then((result: InsertData[]) => {
+        res.send(responseToJSON(result));
+      });
     } catch (error) {
       console.error(``);
     }
@@ -40,15 +36,31 @@ export default function adminRouter(
   return router;
 }
 
-function getFilteredRows(
-  getData: GetQuery,
+async function insertRows(
+  insertData: InsertData[],
   dbcontroller: DatabaseController,
-): Promise<RadData[]> {
-  return dbcontroller.getData(getData);
+): Promise<void> {
+  for (const paper in insertData) {
+    await dbcontroller.insertPaper(insertData[paper]);
+  }
 }
 
-function requestFromJSON(body: any) {
-  return body as GetQuery;
+async function parsePapers() {
+  const temp: InsertData[] = [];
+  return temp;
+}
+
+function requestFromJSON(body: any): InsertData[] {
+  // Ensure body is an array of objects matching the InsertData structure
+  if (!Array.isArray(body)) {
+    throw new Error("Invalid body format: expected an array.");
+  }
+
+  // Return a list of rows to insert
+  return body.map((entry) => {
+    // Return the validated entry as InsertData
+    return { ...entry } as InsertData;
+  });
 }
 
 function responseToJSON(radDataArray: RadData[]): string {
