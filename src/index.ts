@@ -9,6 +9,7 @@ import { open, Database } from "sqlite";
 import exampleRouter from "./routes/example-router";
 import cascadeRouter from "./routes/cascade-router";
 import { DatabaseController } from "./database-controller";
+import adminRouter from "./routes/admin-router";
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
@@ -44,6 +45,7 @@ initializeSystem().then((dbController: DatabaseController) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
   app.use("/dataRequest", cascadeRouter(dbController));
+  app.use("/adminRequest", adminRouter(dbController));;
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
