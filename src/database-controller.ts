@@ -281,6 +281,7 @@ export class DatabaseController {
     `;
 
     const conditions: string[] = [];
+    const params: any[] = [];
 
     // Build WHERE conditions based on queryData
     for (const [key, value] of Object.entries(queryData)) {
@@ -292,10 +293,12 @@ export class DatabaseController {
             FROM paper_author_join apj2 
             JOIN author a2 ON apj2.author_id = a2.ROWID 
             WHERE apj2.paper_id = p.ROWID 
-            AND a2.name LIKE '${value}%'
+            AND a2.name LIKE ? 
           )`);
+          params.push(`${value}%`);
         } else {
-          conditions.push(`p.${key} LIKE '${value}%'`);
+          conditions.push(`p.${key} LIKE ?`);
+          params.push(`${value}%`);
         }
       }
     }
@@ -312,7 +315,7 @@ export class DatabaseController {
 
     return new Promise<RadData[]>(async (resolve, reject) => {
       try {
-        const result = await this.db.all(query);
+        const result = await this.db.all(query, params);
         console.log("Query executed successfully:");
 
         // Map rows to RadData format
@@ -328,5 +331,4 @@ export class DatabaseController {
       }
     });
   }
-
 }

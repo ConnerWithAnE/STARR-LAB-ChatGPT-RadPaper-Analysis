@@ -25,7 +25,7 @@ export default function adminRouter(dbController: DatabaseController): Router {
   router.post("/parseRequest", (req: Request, res: Response) => {
     try {
       // TODO
-      parsePapers().then((result: InsertData[]) => {
+      parsePapers(req.body).then((result: InsertData[]) => {
         res.send(responseToJSON(result));
       });
     } catch (error) {
@@ -45,7 +45,7 @@ async function insertRows(
   }
 }
 
-async function parsePapers() {
+async function parsePapers(body: any) {
   const temp: InsertData[] = [];
   return temp;
 }
