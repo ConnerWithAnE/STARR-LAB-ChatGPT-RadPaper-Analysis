@@ -26,7 +26,7 @@ export default function adminRouter(dbController: DatabaseController, gptControl
   router.post("/parseRequest", (req: Request, res: Response) => {
     try {
       // TODO
-      parsePapers(req.body).then((result: InsertData[]) => {
+      parsePapers(req.body, gptController).then((result: InsertData[]) => {
         res.send(responseToJSON(result));
       });
     } catch (error) {
@@ -46,7 +46,7 @@ async function insertRows(
   }
 }
 
-async function parsePapers(body: any) {
+async function parsePapers(body: any, gptController: GPTController) {
   const temp: InsertData[] = [];
   return temp;
 }
