@@ -4,13 +4,12 @@ import { FileObject } from "openai/resources";
 import path, { resolve } from "path";
 import fs from "fs";
 import { AssistantBody, ThreadMessage } from "./types";
+import { prompt, questions } from "./prompts.data";
+import { threadId } from "worker_threads";
 
 export class GPTController {
   private static client: OpenAI;
   private model: GPTModel;
-
-  // TEMP here until full function written
-  private assistantP: AssistantBody;
 
   constructor(model: GPTModel) {
     if (!GPTController.client) {
@@ -19,16 +18,6 @@ export class GPTController {
       });
     }
     this.model = model;
-
-    // TEMP here until full function written
-    this.assistantP = {
-      name: "Radiation Effects Researcher",
-      instructions:
-        "You are a radiation effects reasearcher. Use your knowledge to give very concise and numerical answers to the questions. Please do not give citations.",
-      model: this.model,
-      tools: [{ type: "file_search" }],
-      temperature: 0.1,
-    };
   }
 
   async StreamReq() {
@@ -40,6 +29,55 @@ export class GPTController {
     for await (const chunk of stream) {
       process.stdout.write(chunk.choices[0]?.delta?.content || "");
     }
+  }
+
+  async runGPTAnalysis(filePaths: string[]) {
+    const assistantParams: AssistantBody = {
+      name: "Radiation Effects Researcher",
+      instructions:
+        "You are a radiation effects reasearcher. Use your knowledge to give very concise and numerical answers to the questions. Please do not give citations.",
+      model: this.model,
+      tools: [{ type: "file_search" }],
+      temperature: 0.1,
+    };
+
+    const results: string[] = [];
+
+    // Upload files and create threads concurrently
+    const fileThreads = filePaths.map(async (filePath) => {
+
+      // Pretty sure we need an assistant for each thread to keep it separated.
+      const assistant = await this.createAssistant(assistantParams)
+      const fileID = await this.uploadFile(filePath);
+      const threadMessage: ThreadMessage = {
+        role: "assistant",
+        content: prompt + questions,
+        attachments: [
+          {file_id: fileID, tools: [{type: "file_search"}]}
+        ]
+      }
+      const thread = await this.createThread(threadMessage);
+
+      // TODO: Need to add the stream and and return it, not working yet.
+      // Will be uncommented to implement
+
+      /*
+      const stream = await GPTController.client.beta.threads.runs.create(
+        thread.id, 
+        {assistant_id: assistant.id, stream: true}
+
+      )
+
+      let response = '';
+      for await (const chunk of stream) {
+        response += chunk.choices[0]?.delta?.content || "";
+      }
+      */
+    })
+
+    await Promise.all(fileThreads);
+    return results;
+
   }
 
   /*
