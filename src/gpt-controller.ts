@@ -3,10 +3,14 @@ import { GPTModel } from "./enums";
 import { FileObject } from "openai/resources";
 import path, { resolve } from "path";
 import fs from "fs";
+import { AssistantBody, ThreadMessage } from "./types";
 
 class GPTController {
   private static client: OpenAI;
   private model: GPTModel;
+
+  // TEMP here until full function written
+  private assistantP: AssistantBody;
 
   constructor(model: GPTModel) {
     if (!GPTController.client) {
@@ -15,6 +19,16 @@ class GPTController {
       });
     }
     this.model = model;
+
+    // TEMP here until full function written
+    this.assistantP = {
+      name: "Radiation Effects Researcher",
+      instructions:
+        "You are a radiation effects reasearcher. Use your knowledge to give very concise and numerical answers to the questions. Please do not give citations.",
+      model: this.model,
+      tools: [{ type: "file_search" }],
+      temperature: 0.1,
+    };
   }
 
   async StreamReq() {
@@ -45,5 +59,37 @@ class GPTController {
     });
 
     return response.id; // Return the uploaded file ID
+  }
+
+  /*
+   * Parameters:
+   *  - assistantDetails: an instance of AssistantBody containing the required info to create an assistant
+   * Function: Creates a new assistant
+   * Returns:
+   *  - OpenAI.Beta.Assistants.Assistant: The new assistant instance
+   */
+  private async createAssistant(
+    assistantDetails: AssistantBody,
+  ): Promise<OpenAI.Beta.Assistants.Assistant> {
+    const assistant = await GPTController.client.beta.assistants.create(
+      assistantDetails,
+    );
+    return assistant;
+  }
+
+  /*
+   * Parameters:
+   *  - threadMessage: an instance of ThreadMessage containing the required info to create a new message
+   * Function: Creates a new thread with an accompanied message
+   * Returns:
+   *  - OpenAI.Beta.Thread: The new thread
+   */
+  private async createThread(
+    threadMessage: ThreadMessage,
+  ): Promise<OpenAI.Beta.Thread> {
+    const thread = await GPTController.client.beta.threads.create({
+      messages: [threadMessage],
+    });
+    return thread;
   }
 }
