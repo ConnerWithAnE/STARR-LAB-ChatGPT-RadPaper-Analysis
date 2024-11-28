@@ -1,10 +1,11 @@
 import express, { Request, Response, Router } from "express";
 import { DatabaseController } from "../database-controller";
 import { GetQuery, InsertData, RadData, Testing } from "../types";
+import { GPTController } from "../gpt-controller";
 
 const router = express.Router();
 
-export default function adminRouter(dbController: DatabaseController): Router {
+export default function adminRouter(dbController: DatabaseController, gptController: GPTController): Router {
   const router = Router();
 
   // This takes a data response from the GUI after fixes have been made.

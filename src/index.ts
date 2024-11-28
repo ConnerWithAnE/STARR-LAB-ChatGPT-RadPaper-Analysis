@@ -9,7 +9,10 @@ import { open, Database } from "sqlite";
 import exampleRouter from "./routes/example-router";
 import cascadeRouter from "./routes/cascade-router";
 import { DatabaseController } from "./database-controller";
+
 import adminRouter from "./routes/admin-router";
+import { GPTController } from "./gpt-controller";
+import { GPTModel } from "./enums";
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
@@ -33,19 +36,19 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-async function initializeSystem(): Promise<DatabaseController> {
+async function initializeSystem(): Promise<{dbController: DatabaseController, gptController: GPTController}> {
   const db = await open({
     filename: "./database.db",
     driver: sqlite3.Database,
   });
-  return new DatabaseController(db);
+  return {dbController: new DatabaseController(db), gptController: new GPTController(GPTModel.GPT4)};
 }
 
-initializeSystem().then((dbController: DatabaseController) => {
+initializeSystem().then(({dbController, gptController}) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
   app.use("/dataRequest", cascadeRouter(dbController));
-  app.use("/adminRequest", adminRouter(dbController));
+  app.use("/adminRequest", adminRouter(dbController, gptController));
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);

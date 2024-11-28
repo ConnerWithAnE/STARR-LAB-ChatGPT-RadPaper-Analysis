@@ -5,7 +5,7 @@ import path, { resolve } from "path";
 import fs from "fs";
 import { AssistantBody, ThreadMessage } from "./types";
 
-class GPTController {
+export class GPTController {
   private static client: OpenAI;
   private model: GPTModel;
 
