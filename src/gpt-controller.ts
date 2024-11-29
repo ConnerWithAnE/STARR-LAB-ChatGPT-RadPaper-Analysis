@@ -56,7 +56,29 @@ export class GPTController {
           {file_id: fileID, tools: [{type: "file_search"}]}
         ]
       }
-      const thread = await this.createThread(threadMessage);
+      const thread = await this.createThread(threadMessage);;
+
+      // Run the assistant on the thread and get the prompt results. Think non-stream results are better?
+      let run = await GPTController.client.beta.threads.runs.createAndPoll(
+        thread.id,
+        {
+          assistant_id: assistant.id,
+        }
+      );
+      var result = ""
+      if(run.status == 'completed') {
+        const messages = await GPTController.client.beta.threads.messages.list(run.thread_id);
+        for (const message of messages.data.reverse()) {
+          // Need to check if the message content is text before parsing it
+          if(message.content[0].type == 'text') {
+            result = message.content[0].text.value;   // TODO: parse this result, then verify with user or add to database
+            console.log(`${message.role} > ${result}`);
+            console.log();
+          }
+        }
+      } else {
+        console.log(run.status);
+      }
 
       // TODO: Need to add the stream and and return it, not working yet.
       // Will be uncommented to implement
@@ -95,7 +117,7 @@ export class GPTController {
       file: fileStream,
       purpose: "assistants",
     });
-
+    console.log("uploadFile: ", response)
     return response.id; // Return the uploaded file ID
   }
 

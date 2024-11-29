@@ -1,5 +1,5 @@
 export const questions = [
-  "What is the first authors name, in the format (J. Doe)",
+  "What is the first author's name, in the format (J. Doe)",
   "What is the Part No. or name if that is not available",
   'What is the type of part (eg, switching regulator), if there are multiple part numbers listed, list them all and seperate them with a "¶"',
   "Who is the manufacturer",
