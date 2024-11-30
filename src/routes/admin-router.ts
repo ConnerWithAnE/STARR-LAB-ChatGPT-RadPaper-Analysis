@@ -1,9 +1,11 @@
 import express, { Request, Response, Router } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, InsertData, RadData, Testing } from "../types";
+import { GetQuery, GPTResponse, InsertData, RadData, Testing } from "../types";
 import { GPTController } from "../gpt-controller";
+import multer from "multer";
 
 const router = express.Router();
+const upload = multer({ dest: '../../pdfData/papers' });
 
 export default function adminRouter(dbController: DatabaseController, gptController: GPTController): Router {
   const router = Router();
@@ -23,10 +25,11 @@ export default function adminRouter(dbController: DatabaseController, gptControl
     }
   });
 
-  router.post("/parseRequest", (req: Request, res: Response) => {
+  router.post("/parseRequest", upload.array('pdfs'), (req: Request, res: Response) => {
+    
     try {
       // TODO
-      parsePapers(req.body, gptController).then((result: InsertData[]) => {
+      parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
         res.send(responseToJSON(result));
       });
     } catch (error) {
@@ -46,8 +49,9 @@ async function insertRows(
   }
 }
 
-async function parsePapers(body: any, gptController: GPTController) {
-  const temp: InsertData[] = [];
+async function parsePapers(files: any, gptController: GPTController): Promise<GPTResponse[]> {
+  gptController.runGPTAnalysis(files)
+  const temp: GPTResponse[] = [];
   return temp;
 }
 
@@ -64,6 +68,6 @@ function requestFromJSON(body: any): InsertData[] {
   });
 }
 
-function responseToJSON(radDataArray: RadData[]): string {
+function responseToJSON(radDataArray: GPTResponse[]): string {
   return JSON.stringify(radDataArray, null, 2); // null and 2 prettify the JSON
 }

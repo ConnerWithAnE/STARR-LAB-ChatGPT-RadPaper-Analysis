@@ -3,7 +3,7 @@ import { GPTModel } from "./enums";
 import { FileObject } from "openai/resources";
 import path, { resolve } from "path";
 import fs from "fs";
-import { AssistantBody, ThreadMessage } from "./types";
+import { AssistantBody, GPTResponse, ThreadMessage } from "./types";
 import { prompt, questions } from "./prompts.data";
 import { threadId } from "worker_threads";
 
@@ -31,7 +31,7 @@ export class GPTController {
     }
   }
 
-  async runGPTAnalysis(filePaths: string[]) {
+  async runGPTAnalysis(files: Express.Multer.File[]): Promise<GPTResponse[]> {
     const assistantParams: AssistantBody = {
       name: "Radiation Effects Researcher",
       instructions:
@@ -41,14 +41,15 @@ export class GPTController {
       temperature: 0.1,
     };
 
-    const results: string[] = [];
+    // Perhaps this should be pulled out to another function
+    const results: GPTResponse[] = [];
 
     // Upload files and create threads concurrently
-    const fileThreads = filePaths.map(async (filePath) => {
+    const fileThreads = files.map(async (file: Express.Multer.File) => {
 
       // Pretty sure we need an assistant for each thread to keep it separated.
       const assistant = await this.createAssistant(assistantParams)
-      const fileID = await this.uploadFile(filePath);
+      const fileID = await this.uploadFile(file.path);
       const threadMessage: ThreadMessage = {
         role: "assistant",
         content: prompt + questions,
