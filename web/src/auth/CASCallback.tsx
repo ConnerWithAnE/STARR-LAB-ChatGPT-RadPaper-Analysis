@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const BACKEND_URL = 'https://localhost:3000'; // Replace with your backend URL
+const BACKEND_URL = 'https://starr-lab-server.usask.ca/api'; // Replace with your backend URL
 
 const CASCallback: React.FC = () => {
     useEffect(() => {
