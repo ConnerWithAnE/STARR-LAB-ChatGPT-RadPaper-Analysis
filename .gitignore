@@ -42,6 +42,7 @@ Thumbs.db
 
 # Testing and Coverage
 coverage/
+test/
 *.spec.ts
 
 # Debug files
