@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./App.css";
+import CASCallback from "./auth/CASCallback";
+import ProtectedRoute from "./auth/ProtectedRoute";
+import UploadPage from "./pages/UploadPage";
+import ModifyPage from "./pages/ModifyPage";
 
 function App() {
     //const [count, setCount] = useState(0);
@@ -9,13 +13,25 @@ function App() {
     
     <BrowserRouter>
       <Routes>
+        {/* Unprotected routes */}
+        <Route path="/cas-callback" element={<CASCallback />} />
+        
+        {/* Protected Routes */}
         <Route 
           path="/upload"
-          //element={}
+          element={
+            <ProtectedRoute>
+                <UploadPage />
+            </ProtectedRoute>
+          }
         ></Route>
         <Route
           path="/modify"
-          //element={}
+          element={
+            <ProtectedRoute>
+                <ModifyPage />
+            </ProtectedRoute>
+          }
         ></Route>   
       </Routes>
     
