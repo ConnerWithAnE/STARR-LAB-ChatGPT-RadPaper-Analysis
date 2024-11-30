@@ -28,24 +28,41 @@ If you do not want to use NVM the NodeJS package manager can be found [here](htt
 
 #### Node Packages
 
-Next all of the required packages must be installed.
+Next all of the required packages must be installed. The `web` and `server` directories have different required packages.
 
-Navigate to the project directory and run
+Navigate to the `web` and `server` directories separately and run
 ```sh
 npm install
 ```
+each time.
 
-## Running the Server
+## Running the Project
 
 ### Development
 
-Simply run the command
+#### Server (Back End)
+
+Simply run the below command in the `server` directory
 
 ```sh
 npm run start:dev
 ```
 
 This will start a development server with the `ts-node` and `nodemon` packages. This allows for easy development via cold-reloading. `ts-node` allows for running the typescript code without the need for compliation while `nodemon` monitors for changes to any `.ts` or `.js` files.
+
+#### React (Front End)
+
+Simply run the below command in the `web` directory
+
+```sh
+npm run dev
+```
+
+To start the frontend in production run 
+
+```sh
+npx vite
+```
 
 ### Production
 
