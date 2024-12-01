@@ -15,7 +15,15 @@ function App() {
       <Routes>
         {/* Unprotected routes */}
         <Route path="/cas-callback" element={<CASCallback />} />
-        
+	        
+        <Route 
+          path="/"
+          element={
+            <ProtectedRoute>
+                <div>Hello</div>
+            </ProtectedRoute>
+          }
+        ></Route>
         {/* Protected Routes */}
         <Route 
           path="/upload"

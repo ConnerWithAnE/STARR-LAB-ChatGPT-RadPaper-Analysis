@@ -55,6 +55,9 @@ export default function adminRouter(dbController: DatabaseController): Router {
   router.get("/auth/cas-validate", async (req: Request, res: Response) => {
     const { ticket, service } = req.query;
 
+	console.log("hit");
+	console.log(ticket);
+	console.log(service);
     if (!ticket || !service) {
       res.status(400).json({ error: "Missing ticket or service" });
     }
@@ -62,15 +65,19 @@ export default function adminRouter(dbController: DatabaseController): Router {
     try {
       // Validate CAS ticket
       const casResponse = await axios.get(
-        `https://cas.usask.ca/serviceValidate`,
+        `https://cas.usask.ca/cas/serviceValidate`,
         {
           params: { ticket, service },
         },
       );
 
+
+
       const casData = casResponse.data; // assumed user CAS info, need to test to see
       const nsid = casData.user; // Potentally the nsid of the user. Again need to test
 
+	console.log(casData);
+	console.log(nsid);
       if (!nsid) {
         res.status(401).json({ error: "Invalid CAS Ticket" });
       }

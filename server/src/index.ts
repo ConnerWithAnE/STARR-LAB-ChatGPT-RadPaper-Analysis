@@ -44,8 +44,8 @@ async function initializeSystem(): Promise<DatabaseController> {
 initializeSystem().then((dbController: DatabaseController) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
-  app.use("/dataRequest", cascadeRouter(dbController));
-  app.use("/adminRequest", adminRouter(dbController));
+  app.use("/api/dataRequest", cascadeRouter(dbController));
+  app.use("/api/adminRequest", adminRouter(dbController));
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);

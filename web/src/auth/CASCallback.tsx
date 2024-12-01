@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-const BACKEND_URL = 'https://starr-lab-server.usask.ca/api'; // Replace with your backend URL
+const BACKEND_URL = 'https://starr-lab-server.usask.ca'; // Replace with your backend URL
 
 const CASCallback: React.FC = () => {
     useEffect(() => {
@@ -8,9 +8,11 @@ const CASCallback: React.FC = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const ticket = urlParams.get('ticket');
 
+	console.log(ticket);
+
         if (ticket) {
             // Call backend to validate ticket
-            fetch(`${BACKEND_URL}/admin-router/auth/cas-validate?ticket=${ticket}&service=${encodeURIComponent(window.location.origin + '/cas-callback')}`)
+            fetch(`${BACKEND_URL}/api/adminRequest/auth/cas-validate?ticket=${ticket}&service=${encodeURIComponent(window.location.origin + '/cas-callback')}`)
                 .then((response) => response.json())
                 .then((data) => {
                     if (data.token) {

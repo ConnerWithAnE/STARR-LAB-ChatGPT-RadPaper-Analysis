@@ -1,6 +1,6 @@
 function redirectToCAS() {
     const CAS_SERVER = "https://cas.usask.ca/cas";
-    const FRONTEND_URL = "https://starr-lab-server.usask.ca:5173/";
+    const FRONTEND_URL = "https://starr-lab-server.usask.ca";
     const serviceURL = `${FRONTEND_URL}/cas-callback`;
 
     window.location.href = `${CAS_SERVER}/login?service=${encodeURIComponent(
