@@ -55,9 +55,6 @@ export default function adminRouter(dbController: DatabaseController): Router {
   router.get("/auth/cas-validate", async (req: Request, res: Response) => {
     const { ticket, service } = req.query;
 
-	console.log("hit");
-	console.log(ticket);
-	console.log(service);
     if (!ticket || !service) {
       res.status(400).json({ error: "Missing ticket or service" });
     }
@@ -74,25 +71,27 @@ export default function adminRouter(dbController: DatabaseController): Router {
 
 
       const casData = casResponse.data; // assumed user CAS info, need to test to see
-      const nsid = casData.user; // Potentally the nsid of the user. Again need to test
+      if (casData.includes('<cas:authenticationSuccess>')) {
+	      const nsid = casData.match(/<cas:user>(.*?)<\/cas:user>/)[1];
+      	      console.log(`User logged in with nsid: ${nsid}`);
+	      if (!nsid) {
+              res.status(401).json({ error: "Invalid CAS Ticket" });
+      	      }
 
-	console.log(casData);
-	console.log(nsid);
-      if (!nsid) {
-        res.status(401).json({ error: "Invalid CAS Ticket" });
-      }
+             if (!allowedNSIDs.includes(nsid)) {
+		     console.log(`User attempted to login with nsid: ${nsid}`);
+                  res.status(403).json({ error: "Access denied" });
+             }
+      	     const token = jwt.sign(
+        	{ username: casData.user, roles: casData.roles },
+        	process.env.JWT_SECRET!,
+        	{ expiresIn: "3h" },
+      	     );
+	     res.json({token});
+      }	else {
+	res.status(401).json({ error: 'CAS authentication failed' });      
 
-      if (!allowedNSIDs.includes(nsid)) {
-        res.status(403).json({ error: "Access denied" });
-      }
-
-      const token = jwt.sign(
-        { username: casData.user, roles: casData.roles },
-        process.env.JWT_SECRET!,
-        { expiresIn: "3h" },
-      );
-
-      res.json({ token });
+	}
     } catch (error) {
       res.status(500).json({ error: "CAS validation failed" });
     }

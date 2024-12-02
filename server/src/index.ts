@@ -2,6 +2,7 @@ import express from "express";
 import sqlite3 from "sqlite3";
 import cors from "cors";
 import bodyParser from "body-parser";
+import dotenv from "dotenv";
 import { open, Database } from "sqlite";
 
 // Import routers
@@ -13,7 +14,7 @@ import adminRouter from "./routes/admin-router";
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
-
+dotenv.config();
 /* In the future this will be used to ensure that only requests from certain domains are accepted
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allowed: boolean) => void) => {

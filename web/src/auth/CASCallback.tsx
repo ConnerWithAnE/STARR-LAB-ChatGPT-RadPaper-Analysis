@@ -8,8 +8,6 @@ const CASCallback: React.FC = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const ticket = urlParams.get('ticket');
 
-	console.log(ticket);
-
         if (ticket) {
             // Call backend to validate ticket
             fetch(`${BACKEND_URL}/api/adminRequest/auth/cas-validate?ticket=${ticket}&service=${encodeURIComponent(window.location.origin + '/cas-callback')}`)
