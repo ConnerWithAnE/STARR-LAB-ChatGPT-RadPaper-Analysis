@@ -1,6 +1,8 @@
 import express, { Request, Response, Router } from "express";
 import { DatabaseController } from "../database-controller";
 import { GetQuery, RadData, Testing } from "../types";
+import authenticateJWT from "../auth/jwt-auth";
+
 
 const router = express.Router();
 

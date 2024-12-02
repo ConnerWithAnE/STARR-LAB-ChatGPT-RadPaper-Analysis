@@ -11,7 +11,9 @@ const CASCallback: React.FC = () => {
         if (ticket) {
             // Call backend to validate ticket
             fetch(`${BACKEND_URL}/api/adminRequest/auth/cas-validate?ticket=${ticket}&service=${encodeURIComponent(window.location.origin + '/cas-callback')}`)
-                .then((response) => response.json())
+                .then((response) => {
+		console.log(response);
+		return response.json()})
                 .then((data) => {
                     if (data.token) {
                         // Store JWT in localStorage or cookies
