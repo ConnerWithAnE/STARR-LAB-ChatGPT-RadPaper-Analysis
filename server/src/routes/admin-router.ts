@@ -83,11 +83,11 @@ export default function adminRouter(dbController: DatabaseController): Router {
                   res.status(403).json({ error: "Access denied" });
              }
       	     const token = jwt.sign(
-        	{ username: casData.user, roles: casData.roles },
+        	{ username: nsid},
         	process.env.JWT_SECRET!,
         	{ expiresIn: "3h" },
       	     );
-	     res.json({token});
+	     res.json({token: token, nsid: nsid});
       }	else {
 	res.status(401).json({ error: 'CAS authentication failed' });      
 

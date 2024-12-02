@@ -16,8 +16,10 @@ const CASCallback: React.FC = () => {
 		return response.json()})
                 .then((data) => {
                     if (data.token) {
-                        // Store JWT in localStorage or cookies
+                        // Store JWT in localStorage
                         localStorage.setItem('jwt', data.token);
+			// Store nsid in localStorage
+			localStorage.setItem('nsid', data.nsid);
                         // Redirect to a protected page or home
                         window.location.href = '/';
                     } else {
