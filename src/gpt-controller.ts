@@ -3,7 +3,7 @@ import { GPTModel } from "./enums";
 import { FileObject } from "openai/resources";
 import path, { resolve } from "path";
 import fs from "fs";
-import { AssistantBody, GPTResponse, ThreadMessage } from "./types";
+import { AssistantBody, GPTResponse, ThreadMessage, GPTData } from "./types";
 import { prompt, questions } from "./prompts.data";
 import { threadId } from "worker_threads";
 
@@ -18,17 +18,6 @@ export class GPTController {
       });
     }
     this.model = model;
-  }
-
-  async StreamReq() {
-    const stream = await GPTController.client.chat.completions.create({
-      model: this.model,
-      messages: [{ role: "user", content: "Say this is a test" }],
-      stream: true,
-    });
-    for await (const chunk of stream) {
-      process.stdout.write(chunk.choices[0]?.delta?.content || "");
-    }
   }
 
   async runGPTAnalysis(files: Express.Multer.File[]): Promise<GPTResponse[]> {
@@ -46,40 +35,51 @@ export class GPTController {
 
     // Upload files and create threads concurrently
     const fileThreads = files.map(async (file: Express.Multer.File) => {
-
       // Pretty sure we need an assistant for each thread to keep it separated.
-      const assistant = await this.createAssistant(assistantParams)
       const fileID = await this.uploadFile(file.path);
       const threadMessage: ThreadMessage = {
         role: "assistant",
         content: prompt + questions,
-        attachments: [
-          {file_id: fileID, tools: [{type: "file_search"}]}
-        ]
-      }
-      const thread = await this.createThread(threadMessage);;
-
-      // Run the assistant on the thread and get the prompt results. Think non-stream results are better?
-      let run = await GPTController.client.beta.threads.runs.createAndPoll(
-        thread.id,
-        {
-          assistant_id: assistant.id,
-        }
-      );
-      var result = ""
-      if(run.status == 'completed') {
-        const messages = await GPTController.client.beta.threads.messages.list(run.thread_id);
-        for (const message of messages.data.reverse()) {
-          // Need to check if the message content is text before parsing it
-          if(message.content[0].type == 'text') {
-            result = message.content[0].text.value;   // TODO: parse this result, then verify with user or add to database
-            console.log(`${message.role} > ${result}`);
-            console.log();
+        attachments: [{ file_id: fileID, tools: [{ type: "file_search" }] }],
+      };
+      // Create the three threads for each paper
+      let threadResults: GPTData[] = []
+      for (let i = 0; i < 3; i++) {
+        const assistant = await this.createAssistant(assistantParams);
+        const thread = await this.createThread(threadMessage);
+        // Run the assistant on the thread and get the prompt results. Think non-stream results are better?
+        let run = await GPTController.client.beta.threads.runs.createAndPoll(
+          thread.id,
+          {
+            assistant_id: assistant.id,
+          },
+        );
+        var result = "";
+        if (run.status == "completed") {
+          const messages =
+            await GPTController.client.beta.threads.messages.list(
+              run.thread_id,
+            );
+          for (const message of messages.data.reverse()) {
+            // Need to check if the message content is text before parsing it
+            if (message.content[0].type == "text") {
+              result = message.content[0].text.value; // TODO: parse this result, then verify with user or add to database
+              console.log(`${message.role} > ${result}`);
+              console.log();
+              // TODO: push the parsed results to the threadResults as a GPTData object
+              threadResults.push()
+            }
           }
+        } else {
+          console.log(run.status);
         }
-      } else {
-        console.log(run.status);
+      } 
+      const threadFinal: GPTResponse = {
+        pass_1: threadResults[0],
+        pass_2: threadResults[1],
+        pass_3: threadResults[2]
       }
+      results.push(threadFinal);
 
       // TODO: Need to add the stream and and return it, not working yet.
       // Will be uncommented to implement
@@ -96,11 +96,10 @@ export class GPTController {
         response += chunk.choices[0]?.delta?.content || "";
       }
       */
-    })
+    });
 
     await Promise.all(fileThreads);
     return results;
-
   }
 
   /*
@@ -118,7 +117,7 @@ export class GPTController {
       file: fileStream,
       purpose: "assistants",
     });
-    console.log("uploadFile: ", response)
+    console.log("uploadFile: ", response);
     return response.id; // Return the uploaded file ID
   }
 
