@@ -42,7 +42,7 @@ export class GPTController {
         content: prompt + questions,
         attachments: [{ file_id: fileID, tools: [{ type: "file_search" }] }],
       };
-      console.log(`Thread Message: ${threadMessage}`)
+      //console.log(`Thread Message: ${threadMessage}`)
       // Create the three threads for each paper
       let threadResults: GPTData[] = []
       for (let i = 0; i < 3; i++) {
@@ -66,7 +66,7 @@ export class GPTController {
             if (message.content[0].type == "text") {
               result = message.content[0].text.value; // TODO: parse this result, then verify with user or add to database
               console.log(`${message.role} > ${result}`);
-              console.log();
+              //console.log();
               // TODO: push the parsed results to the threadResults as a GPTData object
               threadResults.push()
             }
