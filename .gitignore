@@ -42,7 +42,7 @@ Thumbs.db
 
 # Testing and Coverage
 coverage/
-test/
+
 *.spec.ts
 
 # Debug files
@@ -54,6 +54,8 @@ test/
 # Miscellaneous
 .temp/
 .cache/
+
+# Ignore test files
 *.pdf
 
 # Database Files

@@ -1,11 +1,19 @@
 import express, { Request, Response, Router, NextFunction } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, InsertData, RadData, Testing } from "../types";
+import { GetQuery, GPTResponse, InsertData, RadData, Testing } from "../types";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import authenticateJWT from "../auth/jwt-auth";
+import { GPTController } from "../gpt-controller";
+import multer from "multer";
 
-export default function adminRouter(dbController: DatabaseController): Router {
+const router = express.Router();
+const upload = multer({ dest: "../../pdfData/papers" });
+
+export default function adminRouter(
+  dbController: DatabaseController,
+  gptController: GPTController,
+): Router {
   const router = Router();
 
   // This takes a data response from the GUI after fixes have been made.
@@ -30,10 +38,11 @@ export default function adminRouter(dbController: DatabaseController): Router {
   router.post(
     "/parseRequest",
     authenticateJWT,
+    upload.array("pdfs"),
     (req: Request, res: Response) => {
       try {
         // TODO
-        parsePapers(req.body).then((result: InsertData[]) => {
+        parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
           res.send(responseToJSON(result));
         });
       } catch (error) {
@@ -68,30 +77,25 @@ export default function adminRouter(dbController: DatabaseController): Router {
         },
       );
 
-
-
       const casData = casResponse.data; // assumed user CAS info, need to test to see
-      if (casData.includes('<cas:authenticationSuccess>')) {
-	      const nsid = casData.match(/<cas:user>(.*?)<\/cas:user>/)[1];
-      	      console.log(`User logged in with nsid: ${nsid}`);
-	      if (!nsid) {
-              res.status(401).json({ error: "Invalid CAS Ticket" });
-      	      }
+      if (casData.includes("<cas:authenticationSuccess>")) {
+        const nsid = casData.match(/<cas:user>(.*?)<\/cas:user>/)[1];
+        console.log(`User logged in with nsid: ${nsid}`);
+        if (!nsid) {
+          res.status(401).json({ error: "Invalid CAS Ticket" });
+        }
 
-             if (!allowedNSIDs.includes(nsid)) {
-		     console.log(`User attempted to login with nsid: ${nsid}`);
-                  res.status(403).json({ error: "Access denied" });
-             }
-      	     const token = jwt.sign(
-        	{ username: nsid},
-        	process.env.JWT_SECRET!,
-        	{ expiresIn: "3h" },
-      	     );
-	     res.json({token: token, nsid: nsid});
-      }	else {
-	res.status(401).json({ error: 'CAS authentication failed' });      
-
-	}
+        if (!allowedNSIDs.includes(nsid)) {
+          console.log(`User attempted to login with nsid: ${nsid}`);
+          res.status(403).json({ error: "Access denied" });
+        }
+        const token = jwt.sign({ username: nsid }, process.env.JWT_SECRET!, {
+          expiresIn: "3h",
+        });
+        res.json({ token: token, nsid: nsid });
+      } else {
+        res.status(401).json({ error: "CAS authentication failed" });
+      }
     } catch (error) {
       res.status(500).json({ error: "CAS validation failed" });
     }
@@ -109,8 +113,13 @@ async function insertRows(
   }
 }
 
-async function parsePapers(body: any) {
-  const temp: InsertData[] = [];
+async function parsePapers(
+  files: any,
+  gptController: GPTController,
+): Promise<GPTResponse[]> {
+  const fileList: string[] = files.forEach((file: any) => file.path);
+  gptController.runGPTAnalysis(fileList);
+  const temp: GPTResponse[] = [];
   return temp;
 }
 
@@ -127,6 +136,6 @@ function requestFromJSON(body: any): InsertData[] {
   });
 }
 
-function responseToJSON(radDataArray: RadData[]): string {
+function responseToJSON(radDataArray: GPTResponse[]): string {
   return JSON.stringify(radDataArray, null, 2); // null and 2 prettify the JSON
 }
