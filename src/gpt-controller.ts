@@ -44,8 +44,8 @@ export class GPTController {
       };
       //console.log(`Thread Message: ${threadMessage}`)
       // Create the three threads for each paper
-      let threadResults: GPTData[] = []
-      for (let i = 0; i < 3; i++) {
+      let threadResults: GPTData[] = [];
+      const loopPromises = Array.from({ length: 3 }, async (_) => {
         const assistant = await this.createAssistant(assistantParams);
         const thread = await this.createThread(threadMessage);
         // Run the assistant on the thread and get the prompt results. Think non-stream results are better?
@@ -68,21 +68,26 @@ export class GPTController {
               console.log(`${message.role} > ${result}`);
               //console.log();
               // TODO: push the parsed results to the threadResults as a GPTData object
-              threadResults.push()
+              threadResults.push();
             }
           }
         } else {
           console.log(run.status);
         }
-      } 
-      /*
+      });
+
+      // Wait for all loop iterations to finish
+      await Promise.all(loopPromises);
+
       const threadFinal: GPTResponse = {
         pass_1: threadResults[0],
         pass_2: threadResults[1],
-        pass_3: threadResults[2]
-      }
+        pass_3: threadResults[2],
+      };
+
+      //console.log(threadFinal)
       results.push(threadFinal);
-      
+
       // TODO: Need to add the stream and and return it, not working yet.
       // Will be uncommented to implement
 
