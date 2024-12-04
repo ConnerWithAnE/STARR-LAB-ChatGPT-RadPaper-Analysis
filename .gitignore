@@ -53,6 +53,7 @@ coverage/
 # Miscellaneous
 .temp/
 .cache/
+*.pdf
 
 # Database Files
 database.db
