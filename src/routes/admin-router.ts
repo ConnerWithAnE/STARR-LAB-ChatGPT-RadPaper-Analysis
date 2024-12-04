@@ -50,7 +50,8 @@ async function insertRows(
 }
 
 async function parsePapers(files: any, gptController: GPTController): Promise<GPTResponse[]> {
-  gptController.runGPTAnalysis(files)
+  const fileList: string[] = files.forEach((file: any) => file.path)
+  gptController.runGPTAnalysis(fileList)
   const temp: GPTResponse[] = [];
   return temp;
 }

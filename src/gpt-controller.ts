@@ -20,7 +20,7 @@ export class GPTController {
     this.model = model;
   }
 
-  async runGPTAnalysis(files: Express.Multer.File[]): Promise<GPTResponse[]> {
+  async runGPTAnalysis(filePaths: string[]): Promise<GPTResponse[]> {
     const assistantParams: AssistantBody = {
       name: "Radiation Effects Researcher",
       instructions:
@@ -34,14 +34,15 @@ export class GPTController {
     const results: GPTResponse[] = [];
 
     // Upload files and create threads concurrently
-    const fileThreads = files.map(async (file: Express.Multer.File) => {
+    const fileThreads = filePaths.map(async (filePath: string) => {
       // Pretty sure we need an assistant for each thread to keep it separated.
-      const fileID = await this.uploadFile(file.path);
+      const fileID = await this.uploadFile(filePath);
       const threadMessage: ThreadMessage = {
         role: "assistant",
         content: prompt + questions,
         attachments: [{ file_id: fileID, tools: [{ type: "file_search" }] }],
       };
+      console.log(`Thread Message: ${threadMessage}`)
       // Create the three threads for each paper
       let threadResults: GPTData[] = []
       for (let i = 0; i < 3; i++) {
@@ -74,13 +75,14 @@ export class GPTController {
           console.log(run.status);
         }
       } 
+      /*
       const threadFinal: GPTResponse = {
         pass_1: threadResults[0],
         pass_2: threadResults[1],
         pass_3: threadResults[2]
       }
       results.push(threadFinal);
-
+      
       // TODO: Need to add the stream and and return it, not working yet.
       // Will be uncommented to implement
 
