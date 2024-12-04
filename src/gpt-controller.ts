@@ -3,7 +3,7 @@ import { GPTModel } from "./enums";
 import { FileObject } from "openai/resources";
 import path, { resolve } from "path";
 import fs from "fs";
-import { AssistantBody, GPTResponse, ThreadMessage, GPTData } from "./types";
+import { AssistantBody, GPTResponse, ThreadMessage, GPTData, Testing, TestLocation } from "./types";
 import { prompt, questions } from "./prompts.data";
 import { threadId } from "worker_threads";
 
@@ -61,14 +61,42 @@ export class GPTController {
             await GPTController.client.beta.threads.messages.list(
               run.thread_id,
             );
+          var n = 1;
           for (const message of messages.data.reverse()) {
             // Need to check if the message content is text before parsing it
             if (message.content[0].type == "text") {
-              result = message.content[0].text.value; // TODO: parse this result, then verify with user or add to database
-              console.log(`${message.role} > ${result}`);
-              //console.log();
-              // TODO: push the parsed results to the threadResults as a GPTData object
-              threadResults.push();
+              result = message.content[0].text.value;
+              var resvalues: GPTData = {    // Initialize GPT data object
+                paper_name: "",
+                year: 0,
+                author: [],
+                part_no: "",
+                type: [],
+                manufacturer: "",
+                testing_location: "Terrestrial",
+                testing_type: "TID",
+                data_type: 0
+              }
+              // Every second message has the data values
+              if(n % 2 == 0) {
+                // console.log(`${message.role} > ${result}`);
+                let preres = result.split("ø").map((s) => s.replace("\n", ""));
+                // console.log(preres)
+                resvalues = {
+                  paper_name: preres[0],
+                  year: parseInt(preres[1]),
+                  author: preres[2].split(","),
+                  part_no: preres[3],
+                  type: preres[4].split("¶"),
+                  manufacturer: preres[5],
+                  testing_location: <TestLocation>preres[6],
+                  testing_type: <Testing>preres[7],     // TODO: this gives a list ("TID, TID, DD") sometimes so the cast may fail
+                  data_type: 0    // TODO: add a prompt to get data_type
+                };
+                console.log(resvalues)
+                threadResults.push(resvalues);
+              }
+              n++;
             }
           }
         } else {
