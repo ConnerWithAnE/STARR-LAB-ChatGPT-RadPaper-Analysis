@@ -50,6 +50,19 @@ npm run start:dev
 
 This will start a development server with the `ts-node` and `nodemon` packages. This allows for easy development via cold-reloading. `ts-node` allows for running the typescript code without the need for compliation while `nodemon` monitors for changes to any `.ts` or `.js` files.
 
+## Testing
+
+Tests are stored in the `test/` directory and end with `*.test.ts`. Testing is done using jest.js and is setup with npm.
+
+To run the current tests run this command from the main top of the project directory
+```sh
+npm test
+```
+or
+```sh
+npm run test
+```
+
 #### React (Front End)
 
 Simply run the below command in the `web` directory

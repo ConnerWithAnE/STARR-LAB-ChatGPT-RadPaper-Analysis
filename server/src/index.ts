@@ -4,17 +4,21 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import { open, Database } from "sqlite";
+import dotenv from "dotenv"
 
 // Import routers
 
 import exampleRouter from "./routes/example-router";
 import cascadeRouter from "./routes/cascade-router";
 import { DatabaseController } from "./database-controller";
+
 import adminRouter from "./routes/admin-router";
+import { GPTController } from "./gpt-controller";
+import { GPTModel } from "./enums";
 
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
-dotenv.config();
+dotenv.config();dotenv.config();
 /* In the future this will be used to ensure that only requests from certain domains are accepted
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allowed: boolean) => void) => {
@@ -34,19 +38,19 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-async function initializeSystem(): Promise<DatabaseController> {
+async function initializeSystem(): Promise<{dbController: DatabaseController, gptController: GPTController}> {
   const db = await open({
     filename: "./database.db",
     driver: sqlite3.Database,
   });
-  return new DatabaseController(db);
+  return {dbController: new DatabaseController(db), gptController: new GPTController(GPTModel.GPT3_5Turbo)};
 }
 
-initializeSystem().then((dbController: DatabaseController) => {
+initializeSystem().then(({dbController, gptController}) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
   app.use("/api/dataRequest", cascadeRouter(dbController));
-  app.use("/api/adminRequest", adminRouter(dbController));
+  app.use("/api/adminRequest", adminRouter(dbController, gptController));
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
