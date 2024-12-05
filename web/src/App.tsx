@@ -5,13 +5,14 @@ import CASCallback from "./auth/CASCallback";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import UploadPage from "./pages/UploadPage";
 import ModifyPage from "./pages/ModifyPage";
+import Nav from "./components/nav-bar/nav-bar";
+import { Card } from "@nextui-org/react";
 
 function App() {
     //const [count, setCount] = useState(0);
 
     return (
-    
-    <BrowserRouter>
+<BrowserRouter>
       <Routes>
         {/* Unprotected routes */}
         <Route path="/cas-callback" element={<CASCallback />} />
@@ -19,9 +20,10 @@ function App() {
         <Route 
           path="/"
           element={
-            <ProtectedRoute>
-                <div>Hello</div>
-            </ProtectedRoute>
+            // <ProtectedRoute>
+            //     <ModifyPage />
+            // </ProtectedRoute>
+            <ModifyPage />
           }
         ></Route>
         {/* Protected Routes */}
@@ -44,6 +46,9 @@ function App() {
       </Routes>
     
     </BrowserRouter>
+        
+    
+    
     )
 }
 
