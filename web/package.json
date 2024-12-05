@@ -15,10 +15,12 @@
     "@nextui-org/react": "^2.4.8",
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
+    "@types/react-icons": "^3.0.0",
     "framer-motion": "^11.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.0.1"
+    "react-router-dom": "^7.0.1",
+    "reacticons": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",

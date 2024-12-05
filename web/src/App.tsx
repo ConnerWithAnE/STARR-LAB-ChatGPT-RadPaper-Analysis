@@ -12,44 +12,41 @@ function App() {
     //const [count, setCount] = useState(0);
 
     return (
-<BrowserRouter>
-      <Routes>
-        {/* Unprotected routes */}
-        <Route path="/cas-callback" element={<CASCallback />} />
-	        
-        <Route 
-          path="/"
-          element={
-            // <ProtectedRoute>
-            //     <ModifyPage />
-            // </ProtectedRoute>
-            <ModifyPage />
-          }
-        ></Route>
-        {/* Protected Routes */}
-        <Route 
-          path="/upload"
-          element={
-            <ProtectedRoute>
-                <UploadPage />
-            </ProtectedRoute>
-          }
-        ></Route>
-        <Route
-          path="/modify"
-          element={
-            <ProtectedRoute>
-                <ModifyPage />
-            </ProtectedRoute>
-          }
-        ></Route>   
-      </Routes>
-    
-    </BrowserRouter>
-        
-    
-    
-    )
+        <BrowserRouter>
+            <Nav />
+            <Routes>
+                {/* Unprotected routes */}
+                <Route path="/cas-callback" element={<CASCallback />} />
+
+                <Route
+                    path="/"
+                    element={
+                        // <ProtectedRoute>
+                        //     <ModifyPage />
+                        // </ProtectedRoute>
+                        <ModifyPage />
+                    }
+                ></Route>
+                {/* Protected Routes */}
+                <Route
+                    path="/upload"
+                    element={
+                        <ProtectedRoute>
+                            <UploadPage />
+                        </ProtectedRoute>
+                    }
+                ></Route>
+                <Route
+                    path="/modify"
+                    element={
+                        <ProtectedRoute>
+                            <ModifyPage />
+                        </ProtectedRoute>
+                    }
+                ></Route>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
