@@ -71,7 +71,7 @@ export class GPTController {
                 year: 0,
                 author: [],
                 part_no: "",
-                type: [],
+                type: "",
                 manufacturer: "",
                 testing_location: "Terrestrial",
                 testing_type: "TID",
@@ -87,7 +87,7 @@ export class GPTController {
                   year: parseInt(preres[1]),
                   author: preres[2].split(","),
                   part_no: preres[3],
-                  type: preres[4].split("¶"),
+                  type: preres[4],
                   manufacturer: preres[5],
                   testing_location: <TestLocation>preres[6],
                   testing_type: <Testing>preres[7],     // TODO: this gives a list ("TID, TID, DD") sometimes so the cast may fail
