@@ -2,20 +2,21 @@ import { ChangeEvent, useState } from "react";
 import { HiSearch } from "react-icons/hi";
 import "../../App.css";
 
-type SearchBarProps = {
+interface SearchBarProps {
+    onSearch: (value: string) => void // Callback to send out search value
     className?: string;
 };
 
-export default function SearchBar({ className }: SearchBarProps) {
+export default function SearchBar({ className, onSearch }: SearchBarProps) {
     const [query, setQuery] = useState<string>("");
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         setQuery(e.target.value);
+        console.log(query)
     };
 
     const handleSearch = () => {
-        console.log(`Searching for: ${query}`);
-        // Need to implement search function
+        onSearch(query);
     };
 
     const handleKeyPress = (e: any) => {
@@ -34,13 +35,13 @@ export default function SearchBar({ className }: SearchBarProps) {
                 value={query}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyPress}
-                className="py-1 rounded-lg bg-[#D9D9D9] placeholder-[#909090] h-8 pl-3 w-full"
+                className="py-1 rounded-lg bg-[#D9D9D9] focus:outline-none placeholder-[#909090] h-8 pl-3 w-full"
             />
             <button
                 onClick={handleSearch}
                 className="bg-usask-green rounded-lg h-8 p-1"
             >
-                <HiSearch size={24} color="#CDCDCD" />
+                <HiSearch size={24} className="text-[#CDCDCD]" />
             </button>
         </div>
     );
