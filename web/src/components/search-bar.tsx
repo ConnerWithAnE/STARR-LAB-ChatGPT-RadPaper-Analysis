@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import { HiSearch } from "react-icons/hi";
-import "../../App.css";
+import "../App.css";
 
 interface SearchBarProps {
     onSearch: (value: string) => void // Callback to send out search value

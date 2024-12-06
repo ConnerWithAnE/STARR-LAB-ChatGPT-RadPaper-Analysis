@@ -1,10 +1,9 @@
 import "../App.css";
-import { TempPaperData } from "../pages/ModifyPage";
 import { PaperData } from "../types/types";
 
 // TempPaperData is for testing only
 type PaperSliverProp = {
-    paper: TempPaperData;
+    paper: PaperData;
     index: number;
 };
 

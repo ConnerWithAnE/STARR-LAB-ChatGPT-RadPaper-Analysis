@@ -1,19 +1,15 @@
 import "../App.css";
 import { Card } from "@nextui-org/react";
-import SearchBar from "../components/nav-bar/search-bar";
+import SearchBar from "../components/search-bar";
 import { useEffect, useState } from "react";
 import { PaperData } from "../types/types";
 import PaperSliver from "../components/paper-sliver";
+import PaperGallery from "../components/paper-gallery";
 
-// For testing only. All instances of 'TempPaperData' will be replaced with 'PaperData'
-export type TempPaperData = {
-    id: number;
-    paper_name: string;
-    author: string[];
-};
+
 
 export default function ModifyPage() {
-    const [papers, setPapers] = useState<TempPaperData[]>([
+    const [papers, setPapers] = useState<PaperData[]>([
         {
             id: 1,
             paper_name:
@@ -26,7 +22,10 @@ export default function ModifyPage() {
                 "R. Ecoffet",
             ],
         },
+        
     ]);
+
+    const [paperAreaHeight, setPaperAreaHeight] = useState<number>();
 
     const fetchPapers = async (search: string) => {
         const token = localStorage.getItem("jwtToken");
@@ -67,18 +66,20 @@ export default function ModifyPage() {
         fetchPapers(value);
     };
 
+    
+
     return (
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center h-full">
             <div className="bg-[#F4F4F4] w-[70%]">
                 <div>
                     <div className="py-[4%] text-4xl">Modify Paper Data</div>
                     <SearchBar className="pb-4" onSearch={handleSearch} />
                     <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
                 </div>
-                <div>
-                    {papers.map((paper: TempPaperData, index: number) => (
-                        <PaperSliver paper={paper} index={index} />
-                    ))}
+                <div className="">
+                    <div className="overflow-y-scroll max-h-screen">
+                        <PaperGallery papers={papers}/>
+                    </div>
                 </div>
             </div>
         </div>
