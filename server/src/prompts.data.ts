@@ -1,12 +1,12 @@
 export const questions = [
   "What is the title of the paper",
   "Which year was the paper published",
-  "What are all of the author's names, in the format (J. Doe) in a list like this ['J. Doe', 'R. Austin']",
-  "What is the Part No. or name if that is not available",
-  'What is the type of part (eg, switching regulator), if there are multiple part numbers listed, list them all and seperate them with a "¶"',
+  "What are all of the author's names, in the format (J. Doe) in a comma separated list",
+  "What is the part number (or name if that is not available) of the part or parts studied by the paper",
+  "What is the type of part or parts (eg, switching regulator) mentioned in the paper",
   "Who is the manufacturer",
-  'What is the type of testing location: Respond to this question with "Terrestrial" for a terrestial testing location, or "Flight" for a flight testing location',
-  'What type of testing was done: Respond to this question with "TID" for Total Ionizing Dose testing, "SEE" for heavy ion, proton, laser, or neutron testing, or "OTHER" if you are not completely 100% sure',
+  "What is the type of testing location: Respond to this question with \"Terrestrial\" for a terrestial testing location, or \"Flight\" for a flight testing location",
+  "What type of testing was done: Respond to this question with \"TID\" for Total Ionizing Dose testing, \"SEE\" for heavy ion, proton, laser, or neutron testing, or \"OTHER\" if you are not completely 100% sure"
 ];
 
 export const prompt = `Please answer the following questions, as concisely as possible, and with a heavy emphasis on numbers instead of words.\n

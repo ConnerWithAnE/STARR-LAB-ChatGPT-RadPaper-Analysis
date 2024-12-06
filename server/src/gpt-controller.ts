@@ -45,6 +45,7 @@ export class GPTController {
       //console.log(`Thread Message: ${threadMessage}`)
       // Create the three threads for each paper
       let threadResults: GPTData[] = [];
+      //const loopPromises = Array.from({ length: 1 }, async (_) => {   // FOR TESTING
       const loopPromises = Array.from({ length: 3 }, async (_) => {
         const assistant = await this.createAssistant(assistantParams);
         const thread = await this.createThread(threadMessage);
@@ -55,7 +56,6 @@ export class GPTController {
             assistant_id: assistant.id,
           },
         );
-        var result = "";
         if (run.status == "completed") {
           const messages =
             await GPTController.client.beta.threads.messages.list(
@@ -63,35 +63,23 @@ export class GPTController {
             );
           var n = 1;
           for (const message of messages.data.reverse()) {
-            // Need to check if the message content is text before parsing it
-            if (message.content[0].type == "text") {
-              result = message.content[0].text.value;
-              var resvalues: GPTData = {    // Initialize GPT data object
-                paper_name: "",
-                year: 0,
-                author: [],
-                part_no: "",
-                type: "",
-                manufacturer: "",
-                testing_location: "Terrestrial",
-                testing_type: "TID",
-                data_type: 0
-              }
-              // Every second message has the data values
-              if(n % 2 == 0) {
-                // console.log(`${message.role} > ${result}`);
+            if (message.content[0].type == "text") {          // Need to check if the message content is text before parsing it
+              var result = message.content[0].text.value;
+              if(n % 2 == 0) {                                // Every second message has the data values
+                // console.log(`${message.role} > ${result}`); // FOR TESTING
                 let preres = result.split("ø").map((s) => s.replace("\n", ""));
-                // console.log(preres)
-                resvalues = {
+                console.log(preres)
+                var resvalues: GPTData =  {
                   paper_name: preres[0],
                   year: parseInt(preres[1]),
-                  author: preres[2].split(","),
+                  author: preres[2].split(",").map((s) => s.replace(/^\s+/g, "")),
                   part_no: preres[3],
                   type: preres[4],
                   manufacturer: preres[5],
                   testing_location: <TestLocation>preres[6],
-                  testing_type: <Testing>preres[7],     // TODO: this gives a list ("TID, TID, DD") sometimes so the cast may fail
-                  data_type: 0    // TODO: add a prompt to get data_type
+                  testing_type: <Testing>preres[7],     // TODO: preres[7] is a list ("TID, TID, DD") sometimes so the cast may fail
+                                                        // Produces weird output: "SEE【4:0†source】"
+                  data_type: 0                          // TODO: add a prompt to get data_type
                 };
                 console.log(resvalues)
                 threadResults.push(resvalues);
@@ -112,25 +100,8 @@ export class GPTController {
         pass_2: threadResults[1],
         pass_3: threadResults[2],
       };
-
       //console.log(threadFinal)
       results.push(threadFinal);
-
-      // TODO: Need to add the stream and and return it, not working yet.
-      // Will be uncommented to implement
-
-      /*
-      const stream = await GPTController.client.beta.threads.runs.create(
-        thread.id, 
-        {assistant_id: assistant.id, stream: true}
-
-      )
-
-      let response = '';
-      for await (const chunk of stream) {
-        response += chunk.choices[0]?.delta?.content || "";
-      }
-      */
     });
 
     await Promise.all(fileThreads);
