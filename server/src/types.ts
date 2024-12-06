@@ -54,7 +54,7 @@ export type GPTData = {
   year: number;
   author: string[];
   part_no: string;
-  type: string[];
+  type: string;
   manufacturer: string;
   testing_location: TestLocation;
   testing_type: Testing;
