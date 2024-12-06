@@ -6,24 +6,8 @@ import { PaperData } from "../types/types";
 import PaperSliver from "../components/paper-sliver";
 import PaperGallery from "../components/paper-gallery";
 
-
-
 export default function ModifyPage() {
-    const [papers, setPapers] = useState<PaperData[]>([
-        {
-            id: 1,
-            paper_name:
-                "SEE In-Flight Data for two Static 32KB Memories on High Earth Orbit",
-            author: [
-                "S. Duzellier",
-                "S. Bourdarie",
-                "R. Velazco",
-                "B. Nicolescu",
-                "R. Ecoffet",
-            ],
-        },
-        
-    ]);
+    const [papers, setPapers] = useState<PaperData[]>([]);
 
     const [paperAreaHeight, setPaperAreaHeight] = useState<number>();
 
@@ -32,7 +16,7 @@ export default function ModifyPage() {
 
         try {
             const response = await fetch(
-                "https://starr-lab-server.usask.ca/api/adminRequest/getFullPapers",
+                "http://localhost:3000/api/adminRequest/getFullPapers",
                 {
                     method: "POST",
                     headers: {
@@ -66,8 +50,6 @@ export default function ModifyPage() {
         fetchPapers(value);
     };
 
-    
-
     return (
         <div className="flex flex-col items-center h-full">
             <div className="bg-[#F4F4F4] w-[70%]">
@@ -78,7 +60,7 @@ export default function ModifyPage() {
                 </div>
                 <div className="">
                     <div className="overflow-y-scroll max-h-screen">
-                        <PaperGallery papers={papers}/>
+                        <PaperGallery papers={papers} />
                     </div>
                 </div>
             </div>
