@@ -1,8 +1,8 @@
 export const questions = [
   "What is the title of the paper",
   "Which year was the paper published",
-  "What are all of the author's names, in the format (J. Doe) in a comma separated list",
-  "What is the part number (or name if that is not available) of the part or parts studied by the paper",
+  "What are all of the author's names, in the format (J. Doe) in a \"¶\" separated list",
+  "What is the part no. of the part studied by the paper",        // Returns same thing as part type if part name is mentioned
   "What is the type of part or parts (eg, switching regulator) mentioned in the paper",
   "Who is the manufacturer",
   "What is the type of testing location: Respond to this question with \"Terrestrial\" for a terrestial testing location, or \"Flight\" for a flight testing location",
@@ -11,8 +11,8 @@ export const questions = [
 
 export const prompt = `Please answer the following questions, as concisely as possible, and with a heavy emphasis on numbers instead of words.\n
     Use standard text and do not provide citations for each of your answers. 
-    Answer each question, and separate the answers with a "ø" character as a delimiter.
-    If you are unable to answer the question accurately, provide the answer N/A.\n`;
+    If you are unable to answer the question accurately, provide the answer N/A.
+    Answer each question, and separate the answers with a "ø" character as a delimiter.\n`;
 
 export const Other_targeted_questions = [
   "What type was the radiation source",

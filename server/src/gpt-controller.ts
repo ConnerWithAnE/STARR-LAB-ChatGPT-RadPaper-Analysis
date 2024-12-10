@@ -49,7 +49,8 @@ export class GPTController {
       const loopPromises = Array.from({ length: 3 }, async (_) => {
         const assistant = await this.createAssistant(assistantParams);
         const thread = await this.createThread(threadMessage);
-        // Run the assistant on the thread and get the prompt results. Think non-stream results are better?
+        
+        // Run the assistant on the thread and get the prompt results
         let run = await GPTController.client.beta.threads.runs.createAndPoll(
           thread.id,
           {
@@ -67,19 +68,20 @@ export class GPTController {
               var result = message.content[0].text.value;
               if(n % 2 == 0) {                                // Every second message has the data values
                 // console.log(`${message.role} > ${result}`); // FOR TESTING
-                let preres = result.split("ø").map((s) => s.replace("\n", ""));
+                let preres = result.split("ø").map((s) => s.replace("\n", "") && s.replace(/^\s+/g, ""));   // Trimming each string
                 console.log(preres)
                 var resvalues: GPTData =  {
                   paper_name: preres[0],
                   year: parseInt(preres[1]),
-                  author: preres[2].split(",").map((s) => s.replace(/^\s+/g, "")),
+                  author: preres[2].split("¶").map((s) => s.replace(/^\s+/g, "")),
                   part_no: preres[3],
                   type: preres[4],
                   manufacturer: preres[5],
                   testing_location: <TestLocation>preres[6],
-                  testing_type: <Testing>preres[7],     // TODO: preres[7] is a list ("TID, TID, DD") sometimes so the cast may fail
-                                                        // Produces weird output: "SEE【4:0†source】"
-                  data_type: 0                          // TODO: add a prompt to get data_type
+                  testing_type: <Testing>preres[7],
+                  // TODO: preres[7] is a list ("TID, TID, DD") if the paper has more than one testing type, so the cast may fail
+                          // Produces weird output: "SEE【4:0†source】"
+                  data_type: 0                          // TODO: add a prompt to get number data_type. What is it?
                 };
                 console.log(resvalues)
                 threadResults.push(resvalues);

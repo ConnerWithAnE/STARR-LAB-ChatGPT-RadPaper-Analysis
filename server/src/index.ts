@@ -42,7 +42,7 @@ async function initializeSystem(): Promise<{dbController: DatabaseController, gp
     filename: "./database.db",
     driver: sqlite3.Database,
   });
-  return {dbController: new DatabaseController(db), gptController: new GPTController(GPTModel.GPT3_5Turbo)};
+  return {dbController: new DatabaseController(db), gptController: new GPTController(GPTModel.GPT4Turbo)};
 }
 
 initializeSystem().then(({dbController, gptController}) => {
