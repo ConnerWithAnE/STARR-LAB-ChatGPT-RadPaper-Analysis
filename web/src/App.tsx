@@ -7,6 +7,7 @@ import UploadPage from "./pages/UploadPage";
 import ModifyPage from "./pages/ModifyPage";
 import Nav from "./components/nav-bar/nav-bar";
 import { Card } from "@nextui-org/react";
+import EditEntry from "./pages/edit-entry";
 
 function App() {
     //const [count, setCount] = useState(0);
