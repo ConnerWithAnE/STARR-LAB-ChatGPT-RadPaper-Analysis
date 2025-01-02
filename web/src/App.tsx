@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import CASCallback from "./auth/CASCallback";
@@ -6,7 +5,6 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import UploadPage from "./pages/UploadPage";
 import ModifyPage from "./pages/ModifyPage";
 import Nav from "./components/nav-bar/nav-bar";
-import { Card } from "@nextui-org/react";
 import EditEntry from "./pages/edit-entry";
 
 function App() {
@@ -27,7 +25,9 @@ function App() {
                         // </ProtectedRoute>
                         <ModifyPage />
                     }
-                ></Route>
+                >
+                    <Route path="edit-entry" element={<EditEntry paperData={[]} />} />
+                </Route>
                 {/* Protected Routes */}
                 <Route
                     path="/upload"
@@ -40,11 +40,13 @@ function App() {
                 <Route
                     path="/modify"
                     element={
-                        <ProtectedRoute>
+                        // <ProtectedRoute>
                             <ModifyPage />
-                        </ProtectedRoute>
+                        // </ProtectedRoute>
                     }
-                ></Route>
+                >
+                    <Route path="edit-entry" element={<EditEntry paperData={[]}/>} />
+                </Route>
             </Routes>
         </BrowserRouter>
     );

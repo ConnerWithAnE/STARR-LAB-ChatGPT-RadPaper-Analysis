@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "../App.css";
 import { PaperData } from "../types/types";
 
@@ -22,9 +23,12 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
                 <div className="text-xs text-left">{paper.author}</div>
             </div>
             <div className="col-span-2 flex items-center justify-center">
-                <button className="bg-usask-green text-[#DADADA]">
-                    Modify Entry
-                </button>
+                <Link to="/edit-entry" state={{paperData: paper}}>
+                    <button className="bg-usask-green text-[#DADADA]">
+                        Modify Entry
+                    </button>
+                </Link>
+                
             </div>
         </div>
     );
