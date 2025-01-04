@@ -1,10 +1,10 @@
-import { GetQuery, InsertData, RadData } from '../src/types';
+import { GetQuery, InsertData, RadData } from "../src/types";
 
-import { GPTController } from '../src/gpt-controller';
-import { GPTModel } from '../src/enums';
-import fs from 'fs';
-import dotenv from 'dotenv';
-import path, { resolve } from 'path';
+import { GPTController } from "../src/gpt-controller";
+import { GPTModel } from "../src/enums";
+import fs from "fs";
+import dotenv from "dotenv";
+import path, { resolve } from "path";
 
 async function initializeGPT(): Promise<GPTController> {
   return new GPTController(GPTModel.GPT3_5Turbo);
@@ -23,9 +23,11 @@ beforeAll(async () => {
  * Finish unit testing (using jest)
  ***********/
 
-test('Insertion of a paper with one author', async () => {
-  const paper: string = path.resolve(__dirname, 
-    './testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf');
+test("Insertion of a paper with one author", async () => {
+  const paper: string = path.resolve(
+    __dirname,
+    "./testfiles/Radiation_Test_Dummy_File.pdf"
+  );
   fs.readFileSync(paper);
 
   await expect(testGPT.runGPTAnalysis([paper])).resolves.not.toThrow();
