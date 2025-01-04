@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState as _useState } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import CASCallback from "./auth/CASCallback";
@@ -7,29 +7,28 @@ import UploadPage from "./pages/UploadPage";
 import ModifyPage from "./pages/ModifyPage";
 
 function App() {
-    //const [count, setCount] = useState(0);
+  //const [count, setCount] = useState(0);
 
-    return (
-    
+  return (
     <BrowserRouter>
       <Routes>
         {/* Unprotected routes */}
         <Route path="/cas-callback" element={<CASCallback />} />
-	        
-        <Route 
+
+        <Route
           path="/"
           element={
             <ProtectedRoute>
-                <div>Hello</div>
+              <div>Hello</div>
             </ProtectedRoute>
           }
         ></Route>
         {/* Protected Routes */}
-        <Route 
+        <Route
           path="/upload"
           element={
             <ProtectedRoute>
-                <UploadPage />
+              <UploadPage />
             </ProtectedRoute>
           }
         ></Route>
@@ -37,14 +36,13 @@ function App() {
           path="/modify"
           element={
             <ProtectedRoute>
-                <ModifyPage />
+              <ModifyPage />
             </ProtectedRoute>
           }
-        ></Route>   
+        ></Route>
       </Routes>
-    
     </BrowserRouter>
-    )
+  );
 }
 
 export default App;
