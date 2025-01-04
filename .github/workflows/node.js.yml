@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies for server
         run: |
           cd server
-          npm ci
+          npm install
       - name: Run server tests
         env:
           OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
@@ -39,7 +39,7 @@ jobs:
       - name: Install dependencies for web
         run: |
           cd web
-          npm ci
+          npm install
       - name: Build web app
         run: |
           cd web
