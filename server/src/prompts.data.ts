@@ -8,9 +8,9 @@ export const questions = [
   "What is the type of testing location: Respond to this question with \"Terrestrial\" for a terrestial testing location, or \"Flight\" for a flight testing location",
   "What type of testing was done: Respond to this question with \"TID\" for Total Ionizing Dose testing, \"SEE\" for heavy ion, proton, laser, or neutron testing, \"DD\" for displacement damage testing, or \"OTHER\" if you are not completely 100% sure",
   // In-progress prompts, bad results
-  // "If Total Ionizing Dose testing was performed, then list which of the following tests were done in a \"¶\" separated list: Co60, ELDRS, Protons, Electrons. Otherwise, reply N/A",
-  // "If single event effects testing using heavy ion, proton, laser, or neutron was done, then list which of the following tests were done in a \"¶\" separated list: Reply SEU for single event upset, SET for single event transient, SEFI for single event functional interrupt, SEL for single event latchup, SEB for single event burnout, SEGR for gate rupture, Dose rate for dose rate. Otherwise, reply N/A",
-  // "If displacement damage testing was performed, then list which of the following tests were conducted in a \"¶\" separated list: Reply \"Protons\" for proton damage, \"Neutrons\" for neutron damage. Otherwise, reply N/A",
+  // "If Total Ionizing Dose testing was performed, then list which of the following tests were done: Co60, ELDRS, Protons, Electrons. Otherwise, reply N/A",
+  // "If single event effects testing using heavy ion, proton, laser, or neutron was done, then list which of the following tests were done: Reply SEU for single event upset, SET for single event transient, SEFI for single event functional interrupt, SEL for single event latchup, SEB for single event burnout, SEGR for gate rupture, Dose rate for dose rate. Otherwise, reply N/A",
+  // "If displacement damage testing was performed, then list which of the following tests were conducted: Reply \"Protons\" for proton damage, \"Neutrons\" for neutron damage. Otherwise, reply N/A",
   
   "Summarize the paper's test results in 3 lines",
   // "Reference the page number for each answer for the above questions in a \"¶\" separated list. If you are unable to give a page number or the answer is N/A, provide the answer N/A"
@@ -21,6 +21,7 @@ export const prompt = `Please answer the following questions, as concisely as po
     If you are unable to answer the question accurately, provide the answer N/A.
     Answer each question, and separate the answers with a "ø" character as a delimiter.\n`;
 
+// TODO: Need to incorporate the 3 sets of questions below, into prompts
 export const Other_targeted_questions = [
   "What type was the radiation source",
   "Were there any failures, if so, when?",

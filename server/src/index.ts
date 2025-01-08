@@ -50,6 +50,14 @@ initializeSystem().then(({dbController, gptController}) => {
   //app.use("/getTable", tableRouter)
   app.use("/api/dataRequest", cascadeRouter(dbController));
   app.use("/api/adminRequest", adminRouter(dbController, gptController));
+    //FOR QUICKLY TESTING A PAPER: Uncomment paper to test it. Run "localhost:3000/parse" in a browser to parse the paper and see results in console
+    // app.use("/parse", () => {        
+    //     gptController.runGPTAnalysis(["./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"]);
+    //     // gptController.runGPTAnalysis(["./test/testfiles/A_radiation_tolerant_video_camera_for_high_total_dose_environments.pdf"]);
+    //     // gptController.runGPTAnalysis(["./test/testfiles/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf"]);
+    //     // gptController.runGPTAnalysis(["./test/testfiles/Solar_flare_proton_environment_for_estimating_downtime_of_spacecraft_CCDs.pdf"]);
+    //     // gptController.runGPTAnalysis(["./test/testfiles/slvk121.pdf"]);
+    // });
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);

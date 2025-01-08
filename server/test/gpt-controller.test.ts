@@ -40,6 +40,7 @@ test("Insertion of a paper with one author", async () => {
 
 //   await expect(testGPT.runGPTAnalysis([paper])).resolves.not.toThrow();
 // }, 60000);
+// }, 90000);    // More prompts = more time. Still not enough time... TODO: fix the test
 
 // Below gpt tests commented out to reduce token usage during testing
 

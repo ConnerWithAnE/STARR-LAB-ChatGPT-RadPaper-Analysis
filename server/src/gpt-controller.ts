@@ -67,10 +67,11 @@ export class GPTController {
           for (const message of messages.data.reverse()) {
             if (message.content[0].type == "text") {          // Need to check if the message content is text before parsing it
               var result = message.content[0].text.value;
+              //console.log("Result: ", result)                                 // FOR DEBUGGING
               if(n % 2 == 0) {                                // Every second message has the data values
-                // console.log(`${message.role} > ${result}`); // FOR TESTING
+                // console.log(`${message.role} > ${result}`);                  // FOR DEBUGGING
                 let preres = result.split("ø").map((s) => s.replace("\n", "") && s.replace(/^\s+/g, ""));   // Trimming each string
-                console.log(preres)
+                console.log("After split: ", preres)
                 var resvalues: GPTData =  {
                   paper_name: preres[0],
                   year: parseInt(preres[1]),
@@ -81,8 +82,8 @@ export class GPTController {
                   testing_location: <TestLocation>preres[6],
                   testing_type: <Testing>preres[7],
                   // TODO: preres[7] is a list ("TID, TID, DD") if the paper has more than one testing type, so the cast may fail
-                          // Produces weird output: "SEE【4:0†source】"
-                  data_type: 0                          // TODO: add a prompt to get number data_type. What is it?
+                  //       Produces weird output: "SEE【4:0†source】"
+                  data_type: 0                          // TODO: Need to be removed hear, from the defined data types and in db controller
                 };
                 console.log(resvalues)
                 threadResults.push(resvalues);
@@ -108,6 +109,7 @@ export class GPTController {
     });
 
     await Promise.all(fileThreads);
+    console.log("All threads completed!");
     return results;
   }
 
