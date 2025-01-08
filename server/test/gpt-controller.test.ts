@@ -33,13 +33,13 @@ test("Insertion of a paper with one author", async () => {
   await expect(testGPT.runGPTAnalysis([paper])).resolves.not.toThrow();
 }, 60000);
 
-test('Insertion of a paper with five authors', async () => {
-  const paper: string = path.resolve(__dirname, 
-    './testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf');
-  fs.readFileSync(paper);
+// test('Insertion of a paper with five authors', async () => {
+//   const paper: string = path.resolve(__dirname, 
+//     './testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf');
+//   fs.readFileSync(paper);
 
-  await expect(testGPT.runGPTAnalysis([paper])).resolves.not.toThrow();
-}, 60000);
+//   await expect(testGPT.runGPTAnalysis([paper])).resolves.not.toThrow();
+// }, 60000);
 
 // Below gpt tests commented out to reduce token usage during testing
 

@@ -1,23 +1,23 @@
 export const questions = [
   "What is the title of the paper",
   "Which year was the paper published",
-  "What are all of the author's names, in the format (J. Doe) in a \"¶\" separated list. Reply N/A if authors are not found",
-  "What is the part no. of the part studied by the paper. If there is more than one, list in a \";\" separated list",     // There can be more than one part no. in a paper
-  "What is the type of part or parts (eg. switching regulator) mentioned in the paper. If there is more than one, list in a \";\" separated list",
-  "Who is the manufacturer. If there is more than one, list in a \";\" separated list",         // There can be more than one manufacturer in a paper if multiple parts are mentioned
+  "What are all of the author's names, in the format (J. Doe) in a \"¶\" separated list",
+  "What is the part no. of the part studied by the paper. If there is more than one, list them",     // There can be more than one part no. in a paper
+  "What is the type of part or parts (eg. switching regulator) mentioned in the paper. If there is more than one, list them",
+  "Who is the manufacturer. If there is more than one, list them",         // There can be more than one manufacturer in a paper if multiple parts are mentioned
   "What is the type of testing location: Respond to this question with \"Terrestrial\" for a terrestial testing location, or \"Flight\" for a flight testing location",
   "What type of testing was done: Respond to this question with \"TID\" for Total Ionizing Dose testing, \"SEE\" for heavy ion, proton, laser, or neutron testing, \"DD\" for displacement damage testing, or \"OTHER\" if you are not completely 100% sure",
   // In-progress prompts, bad results
-  "If Total Ionizing Dose testing was performed, then list which of the following tests were done in a \"¶\" separated list: Co60, ELDRS, Protons, Electrons. Otherwise, reply N/A",
-  "If single event effects testing using heavy ion, proton, laser, or neutron was done, then list which of the following tests were done in a \"¶\" separated list: Reply SEU for single event upset, SET for single event transient, SEFI for single event functional interrupt, SEL for single event latchup, SEB for single event burnout, SEGR for gate rupture, Dose rate for dose rate. Otherwise, reply N/A",
-  "If displacement damage testing was performed, then list which of the following tests were conducted in a \"¶\" separated list: Reply \"Protons\" for proton damage, \"Neutrons\" for neutron damage. Otherwise, reply N/A",
+  // "If Total Ionizing Dose testing was performed, then list which of the following tests were done in a \"¶\" separated list: Co60, ELDRS, Protons, Electrons. Otherwise, reply N/A",
+  // "If single event effects testing using heavy ion, proton, laser, or neutron was done, then list which of the following tests were done in a \"¶\" separated list: Reply SEU for single event upset, SET for single event transient, SEFI for single event functional interrupt, SEL for single event latchup, SEB for single event burnout, SEGR for gate rupture, Dose rate for dose rate. Otherwise, reply N/A",
+  // "If displacement damage testing was performed, then list which of the following tests were conducted in a \"¶\" separated list: Reply \"Protons\" for proton damage, \"Neutrons\" for neutron damage. Otherwise, reply N/A",
   
-  "Summarize the paper's test results with a strong emphasis on the data collected from the tests",
-  "Reference the page number for each answer for the above questions in a \"¶\" separated list. If you are unable to give a page number or the answer is N/A, provide the answer N/A"
+  "Summarize the paper's test results in 3 lines",
+  // "Reference the page number for each answer for the above questions in a \"¶\" separated list. If you are unable to give a page number or the answer is N/A, provide the answer N/A"
 ];
 
 export const prompt = `Please answer the following questions, as concisely as possible, and with a heavy emphasis on numbers instead of words.\n
-    Use standard text.
+    Use standard text and do not provide citations for any answer.
     If you are unable to answer the question accurately, provide the answer N/A.
     Answer each question, and separate the answers with a "ø" character as a delimiter.\n`;
 

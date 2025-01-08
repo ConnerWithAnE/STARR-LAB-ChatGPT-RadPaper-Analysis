@@ -45,8 +45,8 @@ export class GPTController {
       //console.log(`Thread Message: ${threadMessage}`)
       // Create the three threads for each paper
       let threadResults: GPTData[] = [];
-      const loopPromises = Array.from({ length: 1 }, async (_) => {   // FOR TESTING
-      //const loopPromises = Array.from({ length: 3 }, async (_) => {
+      //const loopPromises = Array.from({ length: 1 }, async (_) => {   // FOR TESTING
+      const loopPromises = Array.from({ length: 3 }, async (_) => {
         const assistant = await this.createAssistant(assistantParams);
         const thread = await this.createThread(threadMessage);
         
@@ -58,11 +58,11 @@ export class GPTController {
           },
         );
         if (run.status == "completed") {
-          console.log("Tokens used: ", run.usage)
           const messages =
             await GPTController.client.beta.threads.messages.list(
               run.thread_id,
             );
+          // console.log("Tokens used: ", run.usage)
           var n = 1;
           for (const message of messages.data.reverse()) {
             if (message.content[0].type == "text") {          // Need to check if the message content is text before parsing it
