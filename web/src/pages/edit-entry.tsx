@@ -2,6 +2,7 @@ import { HiArrowLeft } from "react-icons/hi";
 import {Accordion, AccordionItem, Button} from "@nextui-org/react";
 import { useState } from "react";
 import { PaperData } from "../types/types";
+import { GPTResponse } from "../types/types";
 
 type PaperProps = {
  paperData: PaperData[];
@@ -14,15 +15,15 @@ export default function EditEntry({ paperData }: PaperProps ) {
     const [papers] = useState<PaperData[]>(paperData ?? []);
     const unresolvedConflicts: string[] = [];
 
-    if (papers.length > 1) {
-        // if all 3 outputs are the same, add nothing to the unresolved conflicts
-        // if any of 3 outputs are not the same, go through each property 
-        if (JSON.stringify(papers[0]) === JSON.stringify(papers[1]) &&
-            JSON.stringify(papers[0]) === JSON.stringify(papers[2]) && 
-            JSON.stringify(papers[1]) === JSON.stringify(papers[2])) {
-                console.log('hello')
-            }
-    }
+    // if (papers.length > 1) {
+    //     // if all 3 outputs are the same, add nothing to the unresolved conflicts
+    //     // if any of 3 outputs are not the same, go through each property 
+    //     if (JSON.stringify(papers[0]) === JSON.stringify(papers[1]) &&
+    //         JSON.stringify(papers[0]) === JSON.stringify(papers[2]) && 
+    //         JSON.stringify(papers[1]) === JSON.stringify(papers[2])) {
+    //             console.log('hello')
+    //         }
+    // }
 
     return (
         <div className="flex flex-col gap-2 p-4">
