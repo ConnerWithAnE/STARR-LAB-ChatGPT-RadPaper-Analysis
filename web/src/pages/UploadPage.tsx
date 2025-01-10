@@ -1,8 +1,29 @@
+import { ChangeEvent, useState } from "react";
 import "../App.css";
+import { Button, Input } from "@nextui-org/react";
 
 export default function UploadPage() {
+  const [files, setFiles] = useState<File[]>([]);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFiles = Array.from(event.target.files ?? []); // Convert FileList to an array
+    const validFiles = selectedFiles.filter(
+      (file) => file?.type === "application/pdf"
+    );
+
+    if (validFiles.length === 0) {
+      console.log("not valid files");
+      return;
+    } else {
+      setFiles((prevFiles) => [...prevFiles, ...validFiles]);
+    }
+  };
+
   async function submitPapers() {
     const token = localStorage.getItem("jwtToken");
+
+    const formData = new FormData();
+    formData.append("files", files);
 
     try {
       const response = await fetch(
@@ -13,15 +34,15 @@ export default function UploadPage() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: "hello",
+          body: formData,
         }
       );
-      // if (response.ok) {
-      //   const result = await response.json();
-      //   setPapers(result as PaperData[]);
-      // } else {
-      //   console.error(`Failed to fetch papers: ${response.status}`);
-      // }
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+      } else {
+        console.error(`Failed to fetch papers: ${response.status}`);
+      }
     } catch (error) {
       console.error(`Error fetching papers: ${error}`);
       throw error;
@@ -31,9 +52,19 @@ export default function UploadPage() {
   return (
     <div>
       <div>Upload Page</div>
-      <button className="bg-usask-green text-[#DADADA]" onClick={submitPapers}>
+      <Input
+        type="file"
+        accept="application/pdf"
+        multiple
+        onChange={handleFileChange}
+      />
+      <Button
+        className="bg-usask-green text-[#DADADA]"
+        type="submit"
+        onClick={submitPapers}
+      >
         Upload
-      </button>
+      </Button>
     </div>
   );
 }
