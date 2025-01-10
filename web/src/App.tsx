@@ -1,3 +1,4 @@
+import { useState as _useState } from "react";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 import "./App.css";
 import CASCallback from "./auth/CASCallback";
@@ -8,8 +9,7 @@ import Nav from "./components/nav-bar/nav-bar";
 import EditEntry from "./pages/edit-entry";
 
 function App() {
-    //const [count, setCount] = useState(0);
-
+  //const [count, setCount] = useState(0);
     return (
         <BrowserRouter>
             <Nav />
@@ -50,6 +50,7 @@ function App() {
             </Routes>
         </BrowserRouter>
     );
+
 }
 
 export default App;
