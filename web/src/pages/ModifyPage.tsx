@@ -1,15 +1,15 @@
 import "../App.css";
-import { Card } from "@nextui-org/react";
+//import { Card } from "@nextui-org/react";
 import SearchBar from "../components/search-bar";
 import { useEffect, useState } from "react";
 import { PaperData } from "../types/types";
-import PaperSliver from "../components/paper-sliver";
+//import PaperSliver from "../components/paper-sliver";
 import PaperGallery from "../components/paper-gallery";
 
 export default function ModifyPage() {
     const [papers, setPapers] = useState<PaperData[]>([]);
 
-    const [paperAreaHeight, setPaperAreaHeight] = useState<number>();
+    //const [paperAreaHeight, setPaperAreaHeight] = useState<number>();
 
     const fetchPapers = async (search: string) => {
         const token = localStorage.getItem("jwtToken");

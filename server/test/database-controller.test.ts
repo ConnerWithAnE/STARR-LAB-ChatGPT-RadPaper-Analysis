@@ -103,7 +103,7 @@ test('Data request with empty filter', async () => {
     },
   ];
 
-  const data = await testDB.getData(testGetQuery); // Assuming getData is also async
+  const data = await testDB.getFilteredData(testGetQuery); // Assuming getData is also async
   expect(data).toEqual(expectedData); // Replace with appropriate expectation for your use case
 });
 
@@ -134,6 +134,6 @@ test('Data request with full filter', async () => {
     },
   ];
 
-  const data = await testDB.getData(testGetQuery); // Assuming getData is also async
+  const data = await testDB.getFilteredData(testGetQuery); // Assuming getData is also async
   expect(data).toEqual(expectedData); // Replace with appropriate expectation for your use case
 });

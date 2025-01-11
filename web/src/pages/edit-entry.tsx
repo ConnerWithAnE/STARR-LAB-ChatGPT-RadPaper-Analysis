@@ -2,7 +2,7 @@ import { HiArrowLeft } from "react-icons/hi";
 import {Accordion, AccordionItem, Button} from "@nextui-org/react";
 import { useState } from "react";
 import { PaperData } from "../types/types";
-import { GPTResponse } from "../types/types";
+//import { GPTResponse } from "../types/types";
 
 type PaperProps = {
  paperData: PaperData[];
