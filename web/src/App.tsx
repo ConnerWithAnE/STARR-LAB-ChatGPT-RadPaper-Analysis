@@ -9,45 +9,55 @@ import Nav from "./components/nav-bar/nav-bar";
 import EditEntry from "./pages/edit-entry";
 
 function App() {
-  //const [count, setCount] = useState(0);
+    //const [count, setCount] = useState(0);
     return (
         <BrowserRouter>
-            <Nav />
-            <Routes>
-                {/* Unprotected routes */}
-                <Route path="/cas-callback" element={<CASCallback />} />
+            <div className="flex flex-col h-screen">
+                <Nav />
+                <div className="flex-grow overflow-auto">
+                    <Routes>
+                        {/* Unprotected routes */}
+                        <Route path="/cas-callback" element={<CASCallback />} />
 
-                <Route
-                    path="/"
-                    element={
-                        // <ProtectedRoute>
-                        //     <ModifyPage />
-                        // </ProtectedRoute>
-                        <ModifyPage />
-                    }
-                >
-                    <Route path="edit-entry" element={<EditEntry paperData={[]} />} />
-                </Route>
-                {/* Protected Routes */}
-                <Route
-                    path="/upload"
-                    element={
-                        <ProtectedRoute>
-                            <UploadPage />
-                        </ProtectedRoute>
-                    }
-                ></Route>
-                <Route
-                    path="/modify"
-                    element={
-                        // <ProtectedRoute>
-                            <ModifyPage />
-                        // </ProtectedRoute>
-                    }
-                >
-                    <Route path="edit-entry" element={<EditEntry paperData={[]}/>} />
-                </Route>
-            </Routes>
+                        <Route
+                            path="/"
+                            element={
+                                // <ProtectedRoute>
+                                //     <ModifyPage />
+                                // </ProtectedRoute>
+                                <ModifyPage />
+                            }
+                        >
+                            <Route
+                                path="edit-entry"
+                                element={<EditEntry paperData={[]} />}
+                            />
+                        </Route>
+                        {/* Protected Routes */}
+                        <Route
+                            path="/upload"
+                            element={
+                                //<ProtectedRoute>
+                                <UploadPage />
+                                //</ProtectedRoute>
+                            }
+                        ></Route>
+                        <Route
+                            path="/modify"
+                            element={
+                                // <ProtectedRoute>
+                                <ModifyPage />
+                                // </ProtectedRoute>
+                            }
+                        >
+                            <Route
+                                path="edit-entry"
+                                element={<EditEntry paperData={[]} />}
+                            />
+                        </Route>
+                    </Routes>
+                </div>
+            </div>
         </BrowserRouter>
     );
 }

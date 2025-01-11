@@ -7,8 +7,23 @@ import authenticateJWT from "../auth/jwt-auth";
 import { GPTController } from "../gpt-controller";
 import multer from "multer";
 
+// Set up custom storage for multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    // Specify the folder where the files will be stored
+    cb(null, "pdfData/papers");
+  },
+  filename: (req, file, cb) => {
+    // Set the file name to the original name
+    cb(null, file.originalname); // This ensures the file is saved with the original name
+  },
+});
+
 const router = express.Router();
-const upload = multer({ dest: "../../pdfData/papers" });
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 10 * 1024 * 1024 },
+}); // 10mb limit
 
 export default function adminRouter(
   dbController: DatabaseController,
@@ -40,16 +55,14 @@ export default function adminRouter(
 
   router.post(
     "/parseRequest",
-    authenticateJWT,
+    //authenticateJWT,
     upload.array("pdfs"),
     (req: Request, res: Response) => {
-      
       try {
-        console.log(req.files);
-       // TODO
-       // parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
-        //  res.send(responseToJSON(result));
-        //});
+        // TODO
+        parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
+          res.send(responseToJSON(result));
+        });
       } catch (error) {
         console.error(`${error}`);
       }
@@ -138,8 +151,9 @@ async function parsePapers(
   files: any,
   gptController: GPTController,
 ): Promise<GPTResponse[]> {
-  const fileList: string[] = files.forEach((file: any) => file.path);
-  gptController.runGPTAnalysis(fileList);
+  const fileList: string[] = files.map((file: Express.Multer.File) => file.path);
+  console.log(fileList);
+  //gptController.runGPTAnalysis(fileList);
   const temp: GPTResponse[] = [];
   return temp;
 }
