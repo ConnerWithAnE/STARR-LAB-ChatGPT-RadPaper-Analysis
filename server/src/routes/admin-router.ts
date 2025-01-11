@@ -43,11 +43,13 @@ export default function adminRouter(
     authenticateJWT,
     upload.array("pdfs"),
     (req: Request, res: Response) => {
+      
       try {
-        // TODO
-        parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
-          res.send(responseToJSON(result));
-        });
+        console.log(req.files);
+       // TODO
+       // parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
+        //  res.send(responseToJSON(result));
+        //});
       } catch (error) {
         console.error(`${error}`);
       }
