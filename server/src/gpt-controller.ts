@@ -80,6 +80,7 @@ export class GPTController {
                   type: preres[4],
                   manufacturer: preres[5],
                   testing_location: <TestLocation>preres[6],
+
                   testing_type: <Testing>preres[7],
                   // TODO: preres[7] is a list ("TID, TID, DD") if the paper has more than one testing type, so the cast may fail
                   //       Produces weird output: "SEE【4:0†source】"

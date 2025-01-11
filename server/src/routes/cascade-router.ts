@@ -46,7 +46,7 @@ function getFilteredRows(
   getData: GetQuery,
   dbcontroller: DatabaseController,
 ): Promise<RadData[]> {
-  return dbcontroller.getData(getData);
+  return dbcontroller.getFilteredData(getData);
 }
 
 function requestFromJSON(body: any) {

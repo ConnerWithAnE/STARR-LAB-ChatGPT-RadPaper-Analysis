@@ -14,7 +14,8 @@ export type GetQuery = {
   data_type?: number;
 };
 
-export type InsertData = {
+export type TableData = {
+  id?: number;
   paper_name: string;
   year: number;
   author: string[];

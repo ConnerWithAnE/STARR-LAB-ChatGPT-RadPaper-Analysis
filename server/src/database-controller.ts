@@ -3,7 +3,7 @@ import { open, Database } from "sqlite";
 import { DataTable } from "./interfaces/database-interface";
 import { resolve } from "path";
 import { rejects } from "assert";
-import { GetQuery, InsertData, RadData } from "./types";
+import { GetQuery, TableData, RadData } from "./types";
 import { error } from "console";
 
 export class DatabaseController {
@@ -99,7 +99,7 @@ export class DatabaseController {
    *           created in the 'author_paper_join' table for each author.
    * Returns: None
    */
-  async insertPaper(paperData: InsertData): Promise<void> {
+  async insertPaper(paperData: TableData): Promise<void> {
     if (!this.db) {
       throw new Error(`Database not initialized`);
     }
@@ -127,7 +127,7 @@ export class DatabaseController {
    * Returns:
    *  - number: The ROWID of the paper.
    */
-  private async createPaper(paperData: InsertData): Promise<number> {
+  private async createPaper(paperData: TableData): Promise<number> {
     if (!this.db) {
       throw new Error(`Database not initialized`);
     }
@@ -255,7 +255,48 @@ export class DatabaseController {
     }
   }
 
-  async getData(queryData: GetQuery): Promise<RadData[]> {
+  async getFullData(search: string): Promise<TableData[]> {
+    if (!this.db) {
+      throw new Error("Database not initialized");
+    }
+    let query = `
+      SELECT 
+        p.*,
+        p.ROWID AS id, 
+        GROUP_CONCAT(a.name, ', ') AS author
+      FROM 
+        paper p
+      LEFT JOIN 
+        paper_author_join apj ON p.ROWID = apj.paper_id
+      LEFT JOIN 
+        author a ON apj.author_id = a.ROWID
+      WHERE 
+        p.paper_name LIKE ?
+      GROUP BY
+        p.ROWID
+    `;
+
+    return new Promise<TableData[]>(async (resolve, reject) => {
+      try {
+       
+        const result = await this.db.all(query, `${search}%`);
+        console.log("Query executed successfully:");
+
+        // Map rows to RadData format
+        const radData: TableData[] = result.map((row) => ({
+          ...row,
+          author: row.author ? row.author.split(", ") : [],
+        }));
+
+        resolve(radData);
+      } catch (error) {
+        console.error("Error getting data", error);
+        throw error;
+      }
+    });
+  }
+
+  async getFilteredData(queryData: GetQuery): Promise<RadData[]> {
     if (!this.db) {
       throw new Error("Database not initialized");
     }

@@ -1,6 +1,6 @@
 import express, { Request, Response, Router, NextFunction } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, GPTResponse, InsertData, RadData, Testing } from "../types";
+import { GetQuery, GPTResponse, TableData, RadData, Testing } from "../types";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import authenticateJWT from "../auth/jwt-auth";
@@ -25,7 +25,10 @@ export default function adminRouter(
     authenticateJWT,
     async (req: Request, res: Response) => {
       try {
-        await insertRows(requestFromJSON(req.body), dbController).then(() => {
+        await insertRows(
+          insertDataRequestFromJSON(req.body),
+          dbController,
+        ).then(() => {
           // 201: The request was successful, and a new resource was created
           res.send(201);
         });
@@ -46,7 +49,23 @@ export default function adminRouter(
           res.send(responseToJSON(result));
         });
       } catch (error) {
-        console.error(``);
+        console.error(`${error}`);
+      }
+    },
+  );
+
+  router.post(
+    "/getFullPapers",
+    /*authenticateJWT,*/ (req: Request, res: Response) => {
+      try {
+        // More intricate searches can be employed later similar to the table filter
+        getFullPaperRows(req.body.search, dbController).then(
+          (result: TableData[]) => {
+            res.send(JSON.stringify(result, null, 2));
+          },
+        );
+      } catch (error) {
+        console.error(`${error}`);
       }
     },
   );
@@ -105,7 +124,7 @@ export default function adminRouter(
 }
 
 async function insertRows(
-  insertData: InsertData[],
+  insertData: TableData[],
   dbcontroller: DatabaseController,
 ): Promise<void> {
   for (const paper in insertData) {
@@ -123,7 +142,14 @@ async function parsePapers(
   return temp;
 }
 
-function requestFromJSON(body: any): InsertData[] {
+async function getFullPaperRows(
+  search: string,
+  dbController: DatabaseController,
+): Promise<TableData[]> {
+  return await dbController.getFullData(search);
+}
+
+function insertDataRequestFromJSON(body: any): TableData[] {
   // Ensure body is an array of objects matching the InsertData structure
   if (!Array.isArray(body)) {
     throw new Error("Invalid body format: expected an array.");
@@ -132,7 +158,7 @@ function requestFromJSON(body: any): InsertData[] {
   // Return a list of rows to insert
   return body.map((entry) => {
     // Return the validated entry as InsertData
-    return { ...entry } as InsertData;
+    return { ...entry } as TableData;
   });
 }
 
