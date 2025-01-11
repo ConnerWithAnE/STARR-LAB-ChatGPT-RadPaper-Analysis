@@ -23,8 +23,10 @@ export default function UploadPage() {
     const token = localStorage.getItem("jwtToken");
 
     const formData = new FormData();
-    formData.append("files", files);
-
+    for (let i = 0; i < files.length; i++) {
+      formData.append(files[i].name, files[i]);
+    }
+  
     try {
       const response = await fetch(
         "http://localhost:3000/api/adminRequest/parseRequest",
