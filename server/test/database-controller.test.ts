@@ -1,7 +1,7 @@
 import { DatabaseController } from '../src/database-controller';
 import sqlite3 from 'sqlite3';
 
-import { GetQuery, InsertData, RadData } from '../src/types';
+import { GetQuery, TableData, RadData } from '../src/types';
 import Response from 'express';
 import { open } from 'sqlite';
 
@@ -37,7 +37,7 @@ beforeAll(async () => {
  ***********/
 
 test('Insertion of a paper with one author', async () => {
-  const testPaperData: InsertData = {
+  const testPaperData: TableData = {
     paper_name: 'Tested Radiation Effects',
     year: 2024,
     author: ['S. Davis'],
@@ -53,7 +53,7 @@ test('Insertion of a paper with one author', async () => {
 });
 
 test('Insertion of a paper with multiple authors', async () => {
-  const testPaperData: InsertData = {
+  const testPaperData: TableData = {
     paper_name: 'Radiation Test Effects On Tested Radiation',
     year: 2023,
     author: ['John Jacob', 'Lin Lee', 'Dr. Joan Gooding'],
@@ -103,7 +103,7 @@ test('Data request with empty filter', async () => {
     },
   ];
 
-  const data = await testDB.getData(testGetQuery); // Assuming getData is also async
+  const data = await testDB.getFilteredData(testGetQuery); // Assuming getData is also async
   expect(data).toEqual(expectedData); // Replace with appropriate expectation for your use case
 });
 
@@ -134,6 +134,6 @@ test('Data request with full filter', async () => {
     },
   ];
 
-  const data = await testDB.getData(testGetQuery); // Assuming getData is also async
+  const data = await testDB.getFilteredData(testGetQuery); // Assuming getData is also async
   expect(data).toEqual(expectedData); // Replace with appropriate expectation for your use case
 });

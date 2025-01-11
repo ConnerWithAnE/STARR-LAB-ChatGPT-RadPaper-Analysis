@@ -34,7 +34,7 @@ const corsOptions = {
   origin: "*", // Allow all origins
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 
 async function initializeSystem(): Promise<{dbController: DatabaseController, gptController: GPTController}> {
