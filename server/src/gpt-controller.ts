@@ -21,7 +21,7 @@ export class GPTController {
   constructor(model: GPTModel) {
     if (!GPTController.client) {
       GPTController.client = new OpenAI({
-        apiKey: "process.env.OPEN_API_KEY", // This is the default and can be omitted
+        apiKey: process.env.OPEN_API_KEY, // This is the default and can be omitted
       });
     }
     this.model = model;
