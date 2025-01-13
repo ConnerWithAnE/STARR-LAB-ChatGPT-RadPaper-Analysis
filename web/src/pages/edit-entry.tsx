@@ -56,7 +56,7 @@ export default function EditEntry({ paperData, entryData }: PaperProps) {
         <div className="border-solid border-2 border-slate-900 rounded grow">
           <p>Unresolved Conflicts</p>
 
-          {papers.length > 1 ? (
+          {entries.length > 1 ? (
             <span>{unresolvedConflicts.map((conflict) => conflict)}</span>
           ) : (
             <span></span>

@@ -7,7 +7,7 @@ type DatabaseEntries = {
 };
 
 export default function DatabaseEntryPreviewPage({ resp }: DatabaseEntries) {
-  const [databaseEntries] = useState<GPTResponse[]>(resp);
+  const [databaseEntries] = useState<GPTResponse[]>(resp ?? []);
 
   return (
     <div className="flex flex-col items-center h-full">
@@ -22,6 +22,8 @@ export default function DatabaseEntryPreviewPage({ resp }: DatabaseEntries) {
           </div>
         </div>
       </div>
+      {/* footer */}
+      <div className=""></div>
     </div>
   );
 }
