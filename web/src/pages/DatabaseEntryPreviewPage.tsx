@@ -1,9 +1,8 @@
-import { use } from "framer-motion/client";
-import PaperGallery from "../components/paper-gallery";
 import { GPTResponse } from "../types/types";
 import { useState } from "react";
+import EntryGallery from "../components/database-entries/entry-gallery";
 
-export type DatabaseEntries = {
+type DatabaseEntries = {
   resp: GPTResponse[];
 };
 
@@ -19,7 +18,7 @@ export default function DatabaseEntryPreviewPage({ resp }: DatabaseEntries) {
         </div>
         <div className="">
           <div className="overflow-y-scroll max-h-screen">
-            <PaperGallery papers={papers} />
+            <EntryGallery entries={databaseEntries} />
           </div>
         </div>
       </div>
