@@ -7,6 +7,7 @@ import UploadPage from "./pages/UploadPage";
 import ModifyPage from "./pages/ModifyPage";
 import Nav from "./components/nav-bar/nav-bar";
 import EditEntry from "./pages/edit-entry";
+import UploadDemoDisplay from "./pages/UploadDemoDisplay";
 
 function App() {
     //const [count, setCount] = useState(0);
@@ -41,6 +42,10 @@ function App() {
                                 <UploadPage />
                                 //</ProtectedRoute>
                             }
+                        ></Route>
+                        <Route
+                            path="/upload-demo"
+                            element={<UploadDemoDisplay />}
                         ></Route>
                         <Route
                             path="/modify"

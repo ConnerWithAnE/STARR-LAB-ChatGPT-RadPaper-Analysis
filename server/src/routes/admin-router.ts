@@ -153,9 +153,8 @@ async function parsePapers(
 ): Promise<GPTResponse[]> {
   const fileList: string[] = files.map((file: Express.Multer.File) => file.path);
   console.log(fileList);
-  //gptController.runGPTAnalysis(fileList);
-  const temp: GPTResponse[] = [];
-  return temp;
+  const gptResults = await gptController.runGPTAnalysis(fileList);
+  return gptResults;
 }
 
 async function getFullPaperRows(
