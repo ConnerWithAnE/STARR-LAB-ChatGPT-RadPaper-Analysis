@@ -38,10 +38,6 @@ export default function UploadDemoDisplay() {
                         {element.pass_1.year}
                       </p>
                       <p className="flex">
-                        <span className="font-bold">Manufacturer:</span>{' '}
-                        {element.pass_1.manufacturer}
-                      </p>
-                      <p className="flex">
                         <span className="font-bold">Device Type:</span>{' '}
                         {element.pass_1.type}
                       </p>
@@ -77,10 +73,6 @@ export default function UploadDemoDisplay() {
                         {element.pass_2.year}
                       </p>
                       <p className="flex">
-                        <span className="font-bold">Manufacturer:</span>{' '}
-                        {element.pass_2.manufacturer}
-                      </p>
-                      <p className="flex">
                         <span className="font-bold">Device Type:</span>{' '}
                         {element.pass_2.type}
                       </p>
@@ -114,10 +106,6 @@ export default function UploadDemoDisplay() {
                       <p className="flex">
                         <span className="font-bold">Year:</span>{' '}
                         {element.pass_3.year}
-                      </p>
-                      <p className="flex">
-                        <span className="font-bold">Manufacturer:</span>{' '}
-                        {element.pass_3.manufacturer}
                       </p>
                       <p className="flex">
                         <span className="font-bold">Device Type:</span>{' '}
