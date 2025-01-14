@@ -1,6 +1,7 @@
 import { GPTResponse } from "../types/types";
 import { useState } from "react";
 import EntryGallery from "../components/database-entries/entry-gallery";
+import { Button } from "@nextui-org/react";
 
 type DatabaseEntries = {
   resp: GPTResponse[];
@@ -23,7 +24,10 @@ export default function DatabaseEntryPreviewPage({ resp }: DatabaseEntries) {
         </div>
       </div>
       {/* footer */}
-      <div className=""></div>
+      <div className="sticky end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
+        <Button>Submit</Button>
+        <Button>Cancel</Button>
+      </div>
     </div>
   );
 }
