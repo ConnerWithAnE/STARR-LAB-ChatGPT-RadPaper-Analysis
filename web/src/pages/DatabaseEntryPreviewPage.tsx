@@ -2,19 +2,21 @@ import { GPTResponse } from "../types/types";
 import { useState } from "react";
 import EntryGallery from "../components/database-entries/entry-gallery";
 import { Button } from "@nextui-org/react";
+import { useLocation } from "react-router-dom";
 
-type DatabaseEntries = {
-  resp: GPTResponse[];
-};
-
-export default function DatabaseEntryPreviewPage({ resp }: DatabaseEntries) {
-  const [databaseEntries] = useState<GPTResponse[]>(resp ?? []);
+export default function DatabaseEntryPreviewPage() {
+  // console.log(resp);
+  const location = useLocation();
+  console.log(location.state.resp);
+  const [databaseEntries] = useState<GPTResponse[]>(location.state.resp ?? []);
 
   return (
     <div className="flex flex-col items-center h-full">
       <div className="bg-[#F4F4F4] w-[70%]">
         <div>
-          <div className="py-[4%] text-4xl">Modify Paper Data</div>
+          <div className="py-[4%] text-4xl text-slate-900">
+            Modify Paper Data
+          </div>
           <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
         </div>
         <div className="">

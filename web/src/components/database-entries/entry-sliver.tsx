@@ -16,11 +16,15 @@ export default function EntrySliver({ entry, index }: EntrySliverProp) {
       } grid grid-cols-6 justify-between p-[3%]`}
     >
       <div className="col-span-1">
-        <div className="text-md">{index}.</div>
+        <div className="text-md text-slate-900">{index}.</div>
       </div>
       <div className="col-span-3">
-        <div className="text-left text-lg">{entry.pass_1.paper_name}</div>
-        <div className="text-xs text-left">{entry.pass_1.author}</div>
+        <div className="text-left text-lg text-slate-900">
+          {entry.pass_1.paper_name}
+        </div>
+        <div className="text-xs text-left text-slate-900">
+          {entry.pass_1.author}
+        </div>
       </div>
       <div className="col-span-2 flex items-center justify-center">
         <Link to="/edit-entry" state={{ entryData: entry }}>
