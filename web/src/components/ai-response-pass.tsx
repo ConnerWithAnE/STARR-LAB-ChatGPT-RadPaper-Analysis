@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Textarea } from "@nextui-org/react";
+import { validationFunc } from "../types/types";
 
 type DataPoints = {
-  pass_1: any;
-  pass_2: any;
-  pass_3: any;
+  pass_1: unknown;
+  pass_2: unknown;
+  pass_3: unknown;
 };
 
 export default function AIResponsePass({ pass_1, pass_2, pass_3 }: DataPoints) {
@@ -13,31 +14,31 @@ export default function AIResponsePass({ pass_1, pass_2, pass_3 }: DataPoints) {
   useEffect(() => {
     // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
     if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
-      setSubmission(pass_1);
+      setSubmission(validationFunc(pass_1));
     }
     // if only 2 out of 3 entries are equal
     else if (pass_1 === pass_2 || pass_1 === pass_3) {
-      setSubmission(pass_1);
+      setSubmission(validationFunc(pass_1));
     } else if (pass_2 === pass_3) {
-      setSubmission(pass_2);
+      setSubmission(validationFunc(pass_2));
     }
   }, [pass_1, pass_2, pass_3]);
 
   return (
-    <span className="flex-row">
-      <div className="flex-col">
+    <div className="flex flex-row">
+      <div className="flex flex-col">
         <span>First Pass</span>
-        {pass_1}
+        {validationFunc(pass_1)}
       </div>
-      <div className="flex-col">
+      <div className="flex flex-col">
         <span>Second Pass</span>
-        {pass_2}
+        {validationFunc(pass_2)}
       </div>
-      <div className="flex-col">
+      <div className="flex flex-col">
         <span>Third Pass</span>
-        {pass_3}
+        {validationFunc(pass_3)}
       </div>
-      <div className="flex-col">
+      <div className="flex flex-col">
         <span>Final Result</span>
         <Textarea
           className="max-w-xs"
@@ -45,6 +46,6 @@ export default function AIResponsePass({ pass_1, pass_2, pass_3 }: DataPoints) {
           value={submission}
         />
       </div>
-    </span>
+    </div>
   );
 }
