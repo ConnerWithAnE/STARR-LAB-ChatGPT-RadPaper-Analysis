@@ -25,9 +25,9 @@ function Main() {
   const showNav = location.pathname !== '/';
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-white">
       {showNav && <Nav />}
-      <div className="flex-grow overflow-auto">
+      <div className="flex-grow overflow-auto bg-white">
         <Routes>
           {/* Unprotected routes */}
           <Route path="/" element={<FrontPage />} />

@@ -104,7 +104,7 @@ export default function UploadPage() {
             <div className="flex flex-col items-center h-full bg-gray-50">
                 <div className="w-[70%]">
                     <div className="bg-[#F4F4F4]">
-                        <div className="py-[6%] text-4xl">
+                        <div className="py-[6%] text-[#343434] text-4xl">
                             Upload New Papers
                         </div>
 
