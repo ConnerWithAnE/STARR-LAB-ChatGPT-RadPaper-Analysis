@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import { Button } from '@nextui-org/react';
+import { useEffect } from 'react';
 
 function redirectToCAS() {
   const CAS_SERVER = 'https://cas.usask.ca/cas';
@@ -16,16 +17,19 @@ export default function FrontPage() {
   const navigate = useNavigate();
   const token = localStorage.getItem('jwt');
 
-  if (token) {
-    navigate('/modify');
-    return null; // Optional: Display a loading spinner while redirecting
-  }
+  useEffect(() => {
+    if (token) {
+      navigate('/modify');
+    }
+  }, [token, navigate]);
 
   const loginClicked = () => {
     redirectToCAS();
   };
 
-  return (
+  return token ? (
+    <div className="text-2xl p-[30%]">Redirecting</div>
+  ) : (
     <div className="flex items-center justify-center p-[10%]">
       <div className="p-8 border border-gray-300 rounded-lg shadow-lg text-center">
         <h1 className="text-2xl font-semibold mb-4 text-wrap">
