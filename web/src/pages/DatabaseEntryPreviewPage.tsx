@@ -2,13 +2,18 @@ import { GPTResponse } from "../types/types";
 import { useState } from "react";
 import EntryGallery from "../components/database-entries/entry-gallery";
 import { Button } from "@nextui-org/react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function DatabaseEntryPreviewPage() {
   // console.log(resp);
+  const navigate = useNavigate();
   const location = useLocation();
   console.log(location.state.resp);
   const [databaseEntries] = useState<GPTResponse[]>(location.state.resp ?? []);
+
+  const navigateToUpload = () => {
+    navigate("/upload");
+  };
 
   return (
     <div className="flex flex-col items-center h-full">
@@ -28,7 +33,7 @@ export default function DatabaseEntryPreviewPage() {
       {/* footer */}
       <div className="sticky end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
         <Button>Submit</Button>
-        <Button>Cancel</Button>
+        <Button onClick={navigateToUpload}>Cancel</Button>
       </div>
     </div>
   );

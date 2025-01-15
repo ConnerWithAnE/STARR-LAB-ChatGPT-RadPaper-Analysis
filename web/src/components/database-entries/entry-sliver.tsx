@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../App.css";
 import { GPTResponse } from "../../types/types";
 
@@ -9,6 +9,16 @@ type EntrySliverProp = {
 };
 
 export default function EntrySliver({ entry, index }: EntrySliverProp) {
+  const navigate = useNavigate();
+
+  const navigateToEditEntry = () => {
+    navigate("/upload/edit-entry", {
+      state: {
+        entryData: entry,
+      },
+    });
+  };
+
   return (
     <div
       className={`${
@@ -27,11 +37,12 @@ export default function EntrySliver({ entry, index }: EntrySliverProp) {
         </div>
       </div>
       <div className="col-span-2 flex items-center justify-center">
-        <Link to="/edit-entry" state={{ entryData: entry }}>
-          <button className="bg-usask-green text-[#DADADA]">
-            Modify Entry
-          </button>
-        </Link>
+        <button
+          className="bg-usask-green text-[#DADADA]"
+          onClick={navigateToEditEntry}
+        >
+          Modify Entry
+        </button>
       </div>
     </div>
   );

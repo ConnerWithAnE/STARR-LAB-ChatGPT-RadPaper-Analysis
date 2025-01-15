@@ -42,8 +42,12 @@ function App() {
             ></Route>
             <Route
               path="/upload/edit"
-              element={<DatabaseEntryPreviewPage resp={[]} />}
+              element={<DatabaseEntryPreviewPage />}
             ></Route>
+            <Route
+              path="/upload/edit-entry"
+              element={<EditEntry paperData={[]} />}
+            />
             <Route
               path="/modify"
               element={
