@@ -89,7 +89,7 @@ export default function UploadPage() {
                 result = result.map((entry: any) => {
                     return { ...entry } as GPTResponse
                 })
-                navigate("/upload-demo", { state: result});
+                navigate("/upload-selection", { state: result});
             } else {
                 console.error(`Failed to fetch papers: ${response.status}`);
             }

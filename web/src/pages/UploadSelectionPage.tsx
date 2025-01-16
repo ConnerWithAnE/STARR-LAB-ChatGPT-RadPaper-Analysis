@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 import { GPTResponse } from '../types/types';
 
-export default function UploadDemoDisplay() {
+export default function UploadSelectionPage() {
   const location = useLocation();
   const responseData = location.state;
 

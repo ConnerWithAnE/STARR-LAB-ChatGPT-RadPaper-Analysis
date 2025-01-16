@@ -7,8 +7,9 @@ import UploadPage from './pages/UploadPage';
 import ModifyPage from './pages/ModifyPage';
 import Nav from './components/nav-bar/nav-bar';
 import EditEntry from './pages/edit-entry';
-import UploadDemoDisplay from './pages/UploadDemoDisplay';
+import UploadDemoDisplay from './pages/UploadSelectionPage';
 import FrontPage from './pages/FrontPage';
+import UploadSelectionPage from './pages/UploadSelectionPage';
 
 function App() {
   return (
@@ -43,7 +44,7 @@ function Main() {
               // </ProtectedRoute>
             }
           />
-          <Route path="/upload-demo" element={<UploadDemoDisplay />} />
+          <Route path="/upload-selection" element={<UploadSelectionPage />} />
           <Route
             path="/modify"
             element={
