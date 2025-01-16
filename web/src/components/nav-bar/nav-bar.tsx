@@ -20,7 +20,7 @@ import { useEffect, useState } from "react";
         <NavbarBrand>
           <p className="font-bold text-inherit text-slate-900">STARR Lab Rad-Effects Database</p>
         </NavbarBrand>
-        <NavbarContent justify="end">
+        <NavbarContent justify="end" className="text-[#343434]">
           { nsid ? (<span>Logged in as: { nsid }</span>) : (<span>Currently not logged in</span>)}
           <NavbarItem>
             <Button className="bg-usask-green" variant="flat">

@@ -2,9 +2,12 @@ import { ChangeEvent, useState } from "react";
 import "../App.css";
 import { Button, Input } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
+import { useNavigate } from "react-router-dom";
+import { GPTResponse } from "../types/types";
 
 export default function UploadPage() {
     const [files, setFiles] = useState<File[]>([]);
+    const navigate = useNavigate();
 
     const handleFileChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -80,9 +83,13 @@ export default function UploadPage() {
                 }
             );
             if (response.ok) {
-                const result = await response.json();
+                let result = await response.json();
                 console.log(result);
                 setFiles([]);
+                result = result.map((entry: any) => {
+                    return { ...entry } as GPTResponse
+                })
+                navigate("/upload-selection", { state: result});
             } else {
                 console.error(`Failed to fetch papers: ${response.status}`);
             }
@@ -97,7 +104,7 @@ export default function UploadPage() {
             <div className="flex flex-col items-center h-full bg-gray-50">
                 <div className="w-[70%]">
                     <div className="bg-[#F4F4F4]">
-                        <div className="py-[6%] text-4xl">
+                        <div className="py-[6%] text-[#343434] text-4xl">
                             Upload New Papers
                         </div>
 
