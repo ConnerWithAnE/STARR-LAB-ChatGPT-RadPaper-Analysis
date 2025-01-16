@@ -12,9 +12,6 @@ type PaperProps = {
 };
 
 export default function EditEntry() {
-  const defaultContent =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-
   const location = useLocation();
 
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
@@ -23,6 +20,7 @@ export default function EditEntry() {
 
   console.log("passes", passes);
   console.log("passes keys", Object.keys(passes.pass_1));
+  console.log("what", passes);
 
   // if (papers.length > 1) {
   //     // if all 3 outputs are the same, add nothing to the unresolved conflicts
@@ -45,15 +43,20 @@ export default function EditEntry() {
       <div className="flex flex-row justify-between gap-3">
         <div className="grow basis-1/3">
           <Accordion variant="light" isCompact selectionMode="multiple">
-            {Object.keys(passes.pass_1).map((key, i) => (
-              <AccordionItem key={i} title={key}>
-                <AIResponsePass
-                  pass_1={passes.pass_1[i]}
-                  pass_2={passes.pass_2[i]}
-                  pass_3={passes.pass_3[i]}
-                ></AIResponsePass>
-              </AccordionItem>
-            ))}
+            {Object.entries(passes.pass_1).map(([key, value]) => {
+              console.log("what", passes.pass_1[key]);
+              console.log("what", passes.pass_2[key]);
+              console.log("what", passes.pass_3[key]);
+              return (
+                <AccordionItem title={key}>
+                  <AIResponsePass
+                    pass_1={passes.pass_1}
+                    pass_2={passes.pass_2}
+                    pass_3={passes.pass_3}
+                  ></AIResponsePass>
+                </AccordionItem>
+              );
+            })}
           </Accordion>
         </div>
         {/* <div className="border-solid border-2 border-slate-900 rounded grow">
@@ -65,6 +68,13 @@ export default function EditEntry() {
             <span></span>
           )}
         </div> */}
+        {/* <AccordionItem key={i} title={key}>
+              <AIResponsePass
+                pass_1={passes.pass_1}
+                pass_2={passes.pass_2}
+                pass_3={passes.pass_3}
+              ></AIResponsePass>
+            </AccordionItem> */}
       </div>
     </div>
   );
