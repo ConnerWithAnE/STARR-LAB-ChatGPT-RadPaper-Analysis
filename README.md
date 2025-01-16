@@ -50,7 +50,7 @@ npm run dev
 
 This will start a development server with the `ts-node` and `nodemon` packages. This allows for easy development via cold-reloading. `ts-node` allows for running the typescript code without the need for compliation while `nodemon` monitors for changes to any `.ts` or `.js` files.
 
-_Flags_
+**Flags**
 
 
 | Flag | Descriptions |
