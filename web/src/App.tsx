@@ -2,7 +2,7 @@ import { useState as _useState } from 'react';
 import { Route, Routes, BrowserRouter, useLocation } from 'react-router-dom';
 import './App.css';
 import CASCallback from './auth/CASCallback';
-import ProtectedRoute from './auth/ProtectedRoute';
+import _ProtectedRoute from './auth/ProtectedRoute';
 import UploadPage from './pages/UploadPage';
 import ModifyPage from './pages/ModifyPage';
 import Nav from './components/nav-bar/nav-bar';
