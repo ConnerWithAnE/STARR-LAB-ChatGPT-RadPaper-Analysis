@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import authenticateJWT from "../auth/jwt-auth";
 import { GPTController } from "../gpt-controller";
 import multer from "multer";
+import config from "../config";
 
 // Set up custom storage for multer
 const storage = multer.diskStorage({
@@ -25,6 +26,13 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 }); // 10mb limit
 
+function getAuthMiddleware() {
+  if (config.AuthEnable) {
+    return authenticateJWT;
+  }
+  return (req: Request, res: Response, next: Function) => next();
+}
+
 export default function adminRouter(
   dbController: DatabaseController,
   gptController: GPTController,
@@ -37,7 +45,7 @@ export default function adminRouter(
   // THIS WILL NOT WORK WITH RAW PAPERS, Data MUST be in InsertData format
   router.post(
     "/insertPapers",
-    authenticateJWT,
+    getAuthMiddleware(),
     async (req: Request, res: Response) => {
       try {
         await insertRows(
@@ -55,14 +63,24 @@ export default function adminRouter(
 
   router.post(
     "/parseRequest",
-    //authenticateJWT,
+    getAuthMiddleware(),
     upload.array("pdfs"),
     (req: Request, res: Response) => {
       try {
         // TODO
-        parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
-          res.send(responseToJSON(result));
-        });
+
+        if (config.MockData) {
+          import("../../test/testfiles/parse_response.json").then((module) => {
+            res.send(module.default);
+          });
+        } else {
+          parsePapers(req.files, gptController).then(
+            (result: GPTResponse[]) => {
+              console.log(responseToJSON(result));
+              res.send(responseToJSON(result));
+            },
+          );
+        }
       } catch (error) {
         console.error(`${error}`);
       }
@@ -71,7 +89,8 @@ export default function adminRouter(
 
   router.post(
     "/getFullPapers",
-    /*authenticateJWT,*/ (req: Request, res: Response) => {
+    getAuthMiddleware(),
+    (req: Request, res: Response) => {
       try {
         // More intricate searches can be employed later similar to the table filter
         getFullPaperRows(req.body.search, dbController).then(
@@ -154,10 +173,10 @@ async function parsePapers(
   const fileList: string[] = files.map(
     (file: Express.Multer.File) => file.path,
   );
-  // console.log(fileList);
-  return gptController.runGPTAnalysis(fileList);
-  // const temp: GPTResponse[] = [];
-  // return temp;
+  console.log(fileList);
+  //gptController.runGPTAnalysis(fileList);
+  const temp: GPTResponse[] = [];
+  return temp;
 }
 
 async function getFullPaperRows(

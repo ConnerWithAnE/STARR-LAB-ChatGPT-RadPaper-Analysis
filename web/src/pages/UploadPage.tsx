@@ -3,10 +3,10 @@ import "../App.css";
 import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
+import { GPTResponse } from "../types/types";
 
 export default function UploadPage() {
   const [files, setFiles] = useState<File[]>([]);
-  const navigate = useNavigate();
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -83,13 +83,6 @@ export default function UploadPage() {
       if (response.ok) {
         const result = await response.json();
         console.log(result);
-        console.log("should navigate");
-        navigate("/upload/edit", {
-          state: {
-            resp: result,
-          },
-        });
-
         setFiles([]);
       } else {
         console.error(`Failed to fetch papers: ${response.status}`);

@@ -21,7 +21,7 @@ export default function UploadPageSliver({
         >
             {/* File name*/}
             <div className="col-span-5 flex items-center">
-                <div className="text-md">{file.name}</div>
+                <div className="text-md text-[#343434]">{file.name}</div>
             </div>
 
             {/* X to remove file alongside hover tooltip */}
@@ -30,7 +30,7 @@ export default function UploadPageSliver({
                     onClick={cancel}
                     className="bg-transparent p-0 border-none flex items-center justify-center group"
                 >
-                    <HiOutlineX className="text-black" size={30} />
+                    <HiOutlineX className="text-[#343434]" size={30} />
 
                     
                     <span className="absolute left-0 -translate-x-50 bg-[#444444] text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
