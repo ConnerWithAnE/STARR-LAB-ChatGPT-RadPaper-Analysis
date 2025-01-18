@@ -1,4 +1,4 @@
-import { GetQuery, TableData, RadData } from "../src/types";
+import { GetQuery, InsertData, TableData } from "../src/types";
 
 import { GPTController } from "../src/gpt-controller";
 import { GPTModel } from "../src/enums";
