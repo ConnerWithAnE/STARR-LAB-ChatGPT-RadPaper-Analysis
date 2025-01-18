@@ -13,6 +13,19 @@ export type PaperData = {
   */
 };
 
+export type UpdateData = {
+  ROWID: number;
+  paper_name?: string;
+  year?: number;
+  author?: string[];
+  part_no?: string;
+  type?: string;
+  manufacturer?: string;
+  testing_location?: TestLocation;
+  testing_type?: string;
+  data_type?: number;
+}
+
 export type GPTData = {
   paper_name: string;
   year: number;
