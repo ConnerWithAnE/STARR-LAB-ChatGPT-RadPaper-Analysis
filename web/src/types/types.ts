@@ -1,5 +1,5 @@
 export type PaperData = {
-    id: number;
+    ROWID: number;
     paper_name: string;
     author: string[];
     /*
