@@ -14,8 +14,7 @@ export type GetQuery = {
   data_type?: number;
 };
 
-export type TableData = {
-  id?: number;
+export type InsertData = {
   paper_name: string;
   year: number;
   author: string[];
@@ -27,7 +26,8 @@ export type TableData = {
   data_type: number;
 };
 
-export type RadData = {
+export type TableData = {
+  ROWID: number;
   paper_name: string;
   year: number;
   author: string[];
@@ -38,6 +38,19 @@ export type RadData = {
   testing_type: string;
   data_type: number;
 };
+
+export type UpdateData = {
+  ROWID: number;
+  paper_name?: string;
+  year?: number;
+  author?: string[];
+  part_no?: string;
+  type?: string;
+  manufacturer?: string;
+  testing_location?: TestLocation;
+  testing_type?: string;
+  data_type?: number;
+}
 
 export type AssistantBody = {
   name: string;

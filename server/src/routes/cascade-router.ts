@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, RadData, Testing } from "../types";
+import { GetQuery, TableData, Testing } from "../types";
 import authenticateJWT from "../auth/jwt-auth";
 
 
@@ -30,7 +30,7 @@ export default function cascadeRouter(
   router.post("/tableRequest", (req: Request, res: Response) => {
     try {
       getFilteredRows(requestFromJSON(req.body), dbController).then(
-        (result: RadData[]) => {
+        (result: TableData[]) => {
           res.send(responseToJSON(result));
         },
       );
@@ -45,7 +45,7 @@ export default function cascadeRouter(
 function getFilteredRows(
   getData: GetQuery,
   dbcontroller: DatabaseController,
-): Promise<RadData[]> {
+): Promise<TableData[]> {
   return dbcontroller.getFilteredData(getData);
 }
 
@@ -53,6 +53,6 @@ function requestFromJSON(body: any) {
   return body as GetQuery;
 }
 
-function responseToJSON(radDataArray: RadData[]): string {
+function responseToJSON(radDataArray: TableData[]): string {
   return JSON.stringify(radDataArray, null, 2); // null and 2 prettify the JSON
 }
