@@ -32,7 +32,7 @@ function Main() {
         <Routes>
           {/* Unprotected routes */}
           <Route path="/" element={<FrontPage />} />
-          <Route path="/cas-callback" element={<CASCallback />} />
+          {/* <Route path="/cas-callback" element={<CASCallback />} /> */}
           <Route path="edit-entry" element={<EditEntry paperData={[]} />} />
 
           {/* Protected Routes */}

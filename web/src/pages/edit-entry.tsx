@@ -18,20 +18,6 @@ export default function EditEntry() {
   const [passes] = useState<GPTResponse>(location.state.entryData ?? []);
   const unresolvedConflicts: string[] = [];
 
-  console.log("passes", passes);
-  console.log("passes keys", Object.keys(passes.pass_1));
-  console.log("what", passes);
-
-  // if (papers.length > 1) {
-  //     // if all 3 outputs are the same, add nothing to the unresolved conflicts
-  //     // if any of 3 outputs are not the same, go through each property
-  //     if (JSON.stringify(papers[0]) === JSON.stringify(papers[1]) &&
-  //         JSON.stringify(papers[0]) === JSON.stringify(papers[2]) &&
-  //         JSON.stringify(papers[1]) === JSON.stringify(papers[2])) {
-  //             console.log('hello')
-  //         }
-  // }
-
   return (
     <div className="flex flex-col gap-2 p-4">
       <div className="flex flex-row gap-4">
@@ -43,38 +29,30 @@ export default function EditEntry() {
       <div className="flex flex-row justify-between gap-3">
         <div className="grow basis-1/3">
           <Accordion variant="light" isCompact selectionMode="multiple">
-            {Object.entries(passes.pass_1).map(([key, value]) => {
-              console.log("what", passes.pass_1[key]);
-              console.log("what", passes.pass_2[key]);
-              console.log("what", passes.pass_3[key]);
+            {Object.entries(passes.pass_1).map(([key, _]) => {
+              type GPTDataKey = keyof typeof passes.pass_1;
+              const typesafeKey = key as GPTDataKey;
               return (
                 <AccordionItem title={key}>
                   <AIResponsePass
-                    pass_1={passes.pass_1}
-                    pass_2={passes.pass_2}
-                    pass_3={passes.pass_3}
+                    pass_1={passes.pass_1[typesafeKey]}
+                    pass_2={passes.pass_2[typesafeKey]}
+                    pass_3={passes.pass_3[typesafeKey]}
                   ></AIResponsePass>
                 </AccordionItem>
               );
             })}
           </Accordion>
         </div>
-        {/* <div className="border-solid border-2 border-slate-900 rounded grow">
+        <div className="border-solid border-2 border-slate-900 rounded grow">
           <p>Unresolved Conflicts</p>
 
-          {entries.length > 1 ? (
+          {/* {entries.length > 1 ? (
             <span>{unresolvedConflicts.map((conflict) => conflict)}</span>
           ) : (
             <span></span>
-          )}
-        </div> */}
-        {/* <AccordionItem key={i} title={key}>
-              <AIResponsePass
-                pass_1={passes.pass_1}
-                pass_2={passes.pass_2}
-                pass_3={passes.pass_3}
-              ></AIResponsePass>
-            </AccordionItem> */}
+          )} */}
+        </div>
       </div>
     </div>
   );

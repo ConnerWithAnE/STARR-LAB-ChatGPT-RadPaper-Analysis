@@ -7,6 +7,7 @@ import { GPTResponse } from "../types/types";
 
 export default function UploadPage() {
   const [files, setFiles] = useState<File[]>([]);
+  const navigate = useNavigate();
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -83,6 +84,11 @@ export default function UploadPage() {
       if (response.ok) {
         const result = await response.json();
         console.log(result);
+        navigate("/upload/edit", {
+          state: {
+            resp: result,
+          },
+        });
         setFiles([]);
       } else {
         console.error(`Failed to fetch papers: ${response.status}`);

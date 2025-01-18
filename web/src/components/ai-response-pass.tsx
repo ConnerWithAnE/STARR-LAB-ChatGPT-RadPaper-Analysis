@@ -10,9 +10,6 @@ type DataPoints = {
 
 export default function AIResponsePass({ pass_1, pass_2, pass_3 }: DataPoints) {
   const [submission, setSubmission] = useState<string>("");
-  console.log(pass_1);
-  console.log(pass_2);
-  console.log(pass_3);
 
   useEffect(() => {
     // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
@@ -28,21 +25,21 @@ export default function AIResponsePass({ pass_1, pass_2, pass_3 }: DataPoints) {
   }, [pass_1, pass_2, pass_3]);
 
   return (
-    <div className="flex flex-row">
-      <div className="flex flex-col">
-        <span>First Pass</span>
-        <span className="text-slate-50">{validationFunc(pass_1)}</span>
+    <div className="flex flex-row justify-evenly">
+      <div className="flex flex-col items-center basis-1/4 p-1">
+        <span className="text-slate-800">First Pass</span>
+        <span className="text-slate-800">{validationFunc(pass_1)}</span>
       </div>
-      <div className="flex flex-col">
-        <span>Second Pass</span>
-        <span className="text-slate-50">{validationFunc(pass_2)}</span>
+      <div className="flex flex-col items-center basis-1/4 p-1">
+        <span className="text-slate-800">Second Pass</span>
+        <span className="text-slate-800">{validationFunc(pass_2)}</span>
       </div>
-      <div className="flex flex-col">
-        <span>Third Pass</span>
-        {validationFunc(pass_3)}
+      <div className="flex flex-col items-center basis-1/4 p-1">
+        <span className="text-slate-800">Third Pass</span>
+        <span className="text-slate-800">{validationFunc(pass_3)}</span>
       </div>
-      <div className="flex flex-col">
-        <span>Final Result</span>
+      <div className="flex flex-col grow basis-1/3 items-center bg-gray-400 p-1">
+        <span className="text-slate-800">Final Result</span>
         <Textarea
           className="max-w-xs"
           placeholder="Enter your description"
