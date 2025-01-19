@@ -6,7 +6,7 @@
     "test": "jest",
     "dev": "cross-env MOCK_DATA=${MOCK_DATA:-false} AUTH_OFF=${AUTH_OFF:-false} npx nodemon",
     "start": "npm run build && node build/index.js",
-    "build": "./build && tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
