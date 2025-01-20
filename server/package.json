@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dev": "cross-env MOCK_DATA=${MOCK_DATA:-false} AUTH_OFF=${AUTH_OFF:-false} npx nodemon",
+    "dev": "cross-env MOCK_DATA=${MOCK_DATA:-true} AUTH_OFF=${AUTH_OFF:-false} npx nodemon",
     "start": "npm run build && node build/index.js",
     "build": "tsc"
   },
@@ -32,6 +32,7 @@
     "axios": "^1.7.8",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
