@@ -1,5 +1,5 @@
 export type PaperData = {
-  id: number;
+  ROWID: number;
   paper_name: string;
   author: string[];
   /*
@@ -11,6 +11,19 @@ export type PaperData = {
   testing_type: Testing;
   data_type: number;
   */
+};
+
+export type UpdateData = {
+  ROWID: number;
+  paper_name?: string;
+  year?: number;
+  author?: string[];
+  part_no?: string;
+  type?: string;
+  manufacturer?: string;
+  testing_location?: TestLocation;
+  testing_type?: string;
+  data_type?: number;
 };
 
 export type GPTData = {

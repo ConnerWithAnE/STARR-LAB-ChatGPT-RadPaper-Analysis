@@ -1,6 +1,6 @@
 import express, { Request, Response, Router, NextFunction } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, GPTResponse, TableData, RadData, Testing } from "../types";
+import { GetQuery, GPTResponse, TableData, Testing, UpdateData, InsertData } from "../types";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import authenticateJWT from "../auth/jwt-auth";
@@ -59,6 +59,18 @@ export default function adminRouter(
         console.error(`${error}`);
       }
     },
+  );
+
+  router.post(
+    "/updatePaper",
+    getAuthMiddleware(),
+    async (req: Request, res: Response) => {
+      try {
+        await dbController.updatePaper(req.body as UpdateData)
+      } catch (error) {
+        console.error(`${error}`);
+      }
+    }
   );
 
   router.post(
@@ -158,7 +170,7 @@ export default function adminRouter(
 }
 
 async function insertRows(
-  insertData: TableData[],
+  insertData: InsertData[],
   dbcontroller: DatabaseController,
 ): Promise<void> {
   for (const paper in insertData) {
@@ -186,7 +198,7 @@ async function getFullPaperRows(
   return await dbController.getFullData(search);
 }
 
-function insertDataRequestFromJSON(body: any): TableData[] {
+function insertDataRequestFromJSON(body: any): InsertData[] {
   // Ensure body is an array of objects matching the InsertData structure
   if (!Array.isArray(body)) {
     throw new Error("Invalid body format: expected an array.");
@@ -195,7 +207,7 @@ function insertDataRequestFromJSON(body: any): TableData[] {
   // Return a list of rows to insert
   return body.map((entry) => {
     // Return the validated entry as InsertData
-    return { ...entry } as TableData;
+    return { ...entry } as InsertData;
   });
 }
 
