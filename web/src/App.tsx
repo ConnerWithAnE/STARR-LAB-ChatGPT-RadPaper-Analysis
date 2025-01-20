@@ -10,6 +10,7 @@ import EditEntry from "./pages/edit-entry";
 import FrontPage from "./pages/FrontPage";
 import UploadSelectionPage from "./pages/UploadSelectionPage";
 import DatabaseEntryPreviewPage from "./pages/DatabaseEntryPreviewPage";
+import { DataProvider } from "./DataContext";
 
 function App() {
   return (
@@ -29,39 +30,41 @@ function Main() {
     <div className="flex flex-col h-screen bg-white">
       {showNav && <Nav />}
       <div className="flex-grow overflow-auto bg-white">
-        <Routes>
-          {/* Unprotected routes */}
-          <Route path="/" element={<FrontPage />} />
-          {/* <Route path="/cas-callback" element={<CASCallback />} /> */}
-          <Route path="edit-entry" element={<EditEntry paperData={[]} />} />
+        <DataProvider>
+          <Routes>
+            {/* Unprotected routes */}
+            <Route path="/" element={<FrontPage />} />
+            {/* <Route path="/cas-callback" element={<CASCallback />} /> */}
+            <Route path="edit-entry" element={<EditEntry paperData={[]} />} />
 
-          {/* Protected Routes */}
-          <Route
-            path="/upload"
-            element={
-              // <ProtectedRoute>
-              <UploadPage />
-              // </ProtectedRoute>
-            }
-          />
-          <Route path="/upload-selection" element={<UploadSelectionPage />} />
-          <Route
-            path="/upload/edit"
-            element={<DatabaseEntryPreviewPage />}
-          ></Route>
-          <Route
-            path="/upload/edit-entry"
-            element={<EditEntry paperData={[]} />}
-          />
-          <Route
-            path="/modify"
-            element={
-              // <ProtectedRoute>
-              <ModifyPage />
-              // </ProtectedRoute>
-            }
-          />
-        </Routes>
+            {/* Protected Routes */}
+            <Route
+              path="/upload"
+              element={
+                // <ProtectedRoute>
+                <UploadPage />
+                // </ProtectedRoute>
+              }
+            />
+            <Route path="/upload-selection" element={<UploadSelectionPage />} />
+            <Route
+              path="/upload/edit"
+              element={<DatabaseEntryPreviewPage />}
+            ></Route>
+            <Route
+              path="/upload/edit-entry"
+              element={<EditEntry paperData={[]} />}
+            />
+            <Route
+              path="/modify"
+              element={
+                // <ProtectedRoute>
+                <ModifyPage />
+                // </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </DataProvider>
       </div>
     </div>
   );

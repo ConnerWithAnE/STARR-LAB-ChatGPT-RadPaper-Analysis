@@ -31,6 +31,19 @@ export type GPTResponse = {
   pass_3: GPTData;
 };
 
+export type TableData = {
+  id?: number;
+  paper_name: string;
+  year: number;
+  author: string[];
+  part_no: string;
+  type: string;
+  manufacturer: string;
+  testing_location: TestLocation;
+  testing_type: Testing;
+  data_type: number;
+};
+
 export type TestLocation = "Terrestrial" | "Flight";
 
 // Type to ensure testing types are consistent
@@ -43,6 +56,8 @@ export function validationFunc(data: unknown): string {
     return data.toString();
   } else if (isTestLocation(data) || isTesting(data)) {
     return data as string;
+  } else if (Array.isArray(data)) {
+    return data.join();
   }
   return "";
 }

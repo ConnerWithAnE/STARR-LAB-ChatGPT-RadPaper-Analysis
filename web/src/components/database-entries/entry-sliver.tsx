@@ -6,15 +6,21 @@ import { GPTResponse } from "../../types/types";
 type EntrySliverProp = {
   entry: GPTResponse;
   index: number;
+  onHandleDeleteChange: (entry: GPTResponse) => void;
 };
 
-export default function EntrySliver({ entry, index }: EntrySliverProp) {
+export default function EntrySliver({
+  entry,
+  index,
+  onHandleDeleteChange,
+}: EntrySliverProp) {
   const navigate = useNavigate();
 
   const navigateToEditEntry = () => {
     navigate("/upload/edit-entry", {
       state: {
         entryData: entry,
+        index: index,
       },
     });
   };
@@ -37,6 +43,12 @@ export default function EntrySliver({ entry, index }: EntrySliverProp) {
         </div>
       </div>
       <div className="col-span-2 flex items-center justify-center">
+        <button
+          className="bg-usask-green text-[#DADADA]"
+          onClick={() => onHandleDeleteChange(entry)}
+        >
+          Delete Entry
+        </button>
         <button
           className="bg-usask-green text-[#DADADA]"
           onClick={navigateToEditEntry}
