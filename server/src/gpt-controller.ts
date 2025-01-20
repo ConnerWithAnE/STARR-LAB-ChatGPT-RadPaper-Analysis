@@ -31,7 +31,7 @@ export class GPTController {
     const assistantParams: AssistantBody = {
       name: "Radiation Effects Researcher",
       instructions:
-        "You are a radiation effects reasearcher. Use your knowledge to give very concise and numerical answers to the questions. Please do not give citations.",
+        "You are a radiation effects researcher. Use your knowledge to give very concise and numerical answers to the questions. Please do not give citations.",
       model: this.model,
       tools: [{ type: "file_search" }],
       temperature: 0.1,
@@ -49,14 +49,16 @@ export class GPTController {
         content: prompt + questions,
         attachments: [{ file_id: fileID, tools: [{ type: "file_search" }] }],
       };
-      //console.log(`Thread Message: ${threadMessage}`)
+      // console.log(`Thread Message: ${threadMessage}`)
       // Create the three threads for each paper
       let threadResults: GPTData[] = [];
       //const loopPromises = Array.from({ length: 1 }, async (_) => {   // FOR TESTING
       const loopPromises = Array.from({ length: 3 }, async (_) => {
+       
         const assistant = await this.createAssistant(assistantParams);
         const thread = await this.createThread(threadMessage);
-
+        //Each thread runs this code
+        
         // Run the assistant on the thread and get the prompt results
         let run = await GPTController.client.beta.threads.runs.createAndPoll(
           thread.id,
@@ -78,7 +80,7 @@ export class GPTController {
               //console.log("Result: ", result)                                 // FOR DEBUGGING
               if (n % 2 == 0) {
                 // Every second message has the data values
-                // console.log(`${message.role} > ${result}`);                  // FOR DEBUGGING
+                console.log(`${message.role} > ${result}`);                  // FOR DEBUGGING
                 let preres = result
                   .split("ø")
                   .map((s) => s.replace("\n", "") && s.replace(/^\s+/g, "")); // Trimming each string

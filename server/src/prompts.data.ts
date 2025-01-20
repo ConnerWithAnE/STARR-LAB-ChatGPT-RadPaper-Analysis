@@ -1,3 +1,21 @@
+
+export const TID_targeted_questions = [
+  "What type was the radiation source?",
+  "What was the total dose?",
+  "Were there any failures, if so, when?",
+];
+
+export const SEE_targeted_questions = [
+  "What type was the radiation source?",
+  "What was the energy of the source?",
+  "Were there any failures, if so, when?",
+];
+
+export const Other_targeted_questions = [
+  "What type was the radiation source",
+  "Were there any failures, if so, when?",
+];
+
 export const questions = [
   "What is the title of the paper",
   "Which year was the paper published",
@@ -12,6 +30,16 @@ export const questions = [
   // "If single event effects testing using heavy ion, proton, laser, or neutron was done, then list which of the following tests were done: Reply SEU for single event upset, SET for single event transient, SEFI for single event functional interrupt, SEL for single event latchup, SEB for single event burnout, SEGR for gate rupture, Dose rate for dose rate. Otherwise, reply N/A",
   // "If displacement damage testing was performed, then list which of the following tests were conducted: Reply \"Protons\" for proton damage, \"Neutrons\" for neutron damage. Otherwise, reply N/A",
   
+  //Targeted questions according to type of testing
+  "If your answer for the previous question was \"TID\" Total Ionizing Dose testing \
+  answer the following questions, otherwise respond \"NO TID\": " + TID_targeted_questions ,
+
+  "If your answer for the previous question was \"SEE\" Heavy ion, proton, laser, or neutron testing \
+  answer the following questions, otherwise respond \"NO SEE\": " + SEE_targeted_questions ,
+
+  "If your answer for the previous question was \"OTHER\" \
+  answer the following questions, otherwise respond \"NO OTHER\": " + Other_targeted_questions ,
+
   "Summarize the paper's test results in 3 lines",
   // "Reference the page number for each answer for the above questions in a \"¶\" separated list. If you are unable to give a page number or the answer is N/A, provide the answer N/A"
 ];
@@ -19,25 +47,10 @@ export const questions = [
 export const prompt = `Please answer the following questions, as concisely as possible, and with a heavy emphasis on numbers instead of words.\n
     Use standard text and do not provide citations for any answer.
     If you are unable to answer the question accurately, provide the answer N/A.
-    Answer each question, and separate the answers with a "ø" character as a delimiter.\n`;
+    Answer each question, and separate the answers with a "ø" character as a delimiter between them.\n`;
 
 // TODO: Need to incorporate the 3 sets of questions below, into prompts
-export const Other_targeted_questions = [
-  "What type was the radiation source",
-  "Were there any failures, if so, when?",
-];
 
-export const TID_targeted_questions = [
-  "What type was the radiation source",
-  "What was the total dose",
-  "Were there any failures, if so, when?",
-];
-
-export const SEE_targeted_questions = [
-  "What type was the radiation source",
-  "What the energy of the source",
-  "Were there any failures, if so, when?",
-];
 
 export const targeted_prompt = `Please answer the following questions, as concisely as possible, and with a heavy emphasis on numbers instead of words.
     Use standard text and do not provide citations for each of your answers. 
