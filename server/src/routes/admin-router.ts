@@ -77,7 +77,7 @@ export default function adminRouter(
     "/parseRequest",
     getAuthMiddleware(),
     upload.array("pdfs"),
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       try {
         // TODO
 
@@ -86,7 +86,7 @@ export default function adminRouter(
             res.send(module.default);
           });
         } else {
-          parsePapers(req.files, gptController).then(
+          await parsePapers(req.files, gptController).then(
             (result: GPTResponse[]) => {
               console.log(responseToJSON(result));
               res.send(responseToJSON(result));
@@ -186,9 +186,8 @@ async function parsePapers(
     (file: Express.Multer.File) => file.path,
   );
   console.log(fileList);
-  //gptController.runGPTAnalysis(fileList);
-  const temp: GPTResponse[] = [];
-  return temp;
+  const gptResults = await gptController.runGPTAnalysis(fileList);
+  return gptResults;
 }
 
 async function getFullPaperRows(

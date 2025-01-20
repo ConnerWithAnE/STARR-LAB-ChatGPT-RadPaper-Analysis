@@ -10,7 +10,7 @@ import {
 } from "../types/types";
 import { GPTResponse } from "../types/types";
 import { useLocation, useNavigate } from "react-router-dom";
-import _AIResponsePass from "../components/ai-response-pass";
+//import AIResponsePass from "../components/ai-response-pass";
 import { useRef } from "react";
 import { useData } from "../DataContext";
 
@@ -51,7 +51,7 @@ export default function EditEntry() {
     data_type: 0,
   });
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const { name, value } = event.target;
     let newValue = value;
     if (name === "year" || name === "data_type") {
@@ -207,7 +207,7 @@ export default function EditEntry() {
                           placeholder="Enter your description"
                           value={tempTableData[
                             typesafeUpdateKey ?? "author"
-                          ].toString()}
+                          ]?.toString()}
                           onChange={handleChange}
                           description="Please enter each author's name separated by quotes."
                         />
@@ -216,7 +216,7 @@ export default function EditEntry() {
                           name={key}
                           className="max-w-xs"
                           placeholder="Enter your description"
-                          value={tempTableData[typesafeUpdateKey].toString()}
+                          value={tempTableData[typesafeUpdateKey]?.toString()}
                           onChange={handleChange}
                         />
                       )}
