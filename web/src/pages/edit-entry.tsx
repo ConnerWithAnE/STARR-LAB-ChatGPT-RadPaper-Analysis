@@ -10,7 +10,7 @@ import {
 } from "../types/types";
 import { GPTResponse } from "../types/types";
 import { useLocation, useNavigate } from "react-router-dom";
-import AIResponsePass from "../components/ai-response-pass";
+import _AIResponsePass from "../components/ai-response-pass";
 import { useRef } from "react";
 import { useData } from "../DataContext";
 

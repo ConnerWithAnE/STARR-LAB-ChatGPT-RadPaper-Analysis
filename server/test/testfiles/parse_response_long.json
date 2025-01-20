@@ -1,0 +1,510 @@
+[
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "Solar Flare Proton Environment for Estimating Downtime of Spacecraft CCDs",
+            "year": 2002,
+            "author": ["E. Mikkelson ", "W. Baba"],
+            "part_no": "N/A",
+            "type": "charge-coupled device",
+            "manufacturer": "Boeing Satellite Systems ¶ TRW, Inc.",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "Solar Flare Proton Environment for Estimating Downtime of Spacecraft CCDs",
+            "year": 2000,
+            "author": ["E. Mikkelson ", "W. Baba"],
+            "part_no": "N/A",
+            "type": "charge-coupled device",
+            "manufacturer": "Boeing Satellite Systems ¶ TRW, Inc.",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "Solar Flare Proton Environment for Estimating Downtime of Spacecraft CCDs",
+            "year": 2002,
+            "author": ["E. Mikkelson ", "W. Baba"],
+            "part_no": "N/A",
+            "type": "charge-coupled device",
+            "manufacturer": "Boeing Satellite Systems ¶ TRW, Inc.",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "SEE In-Flight Data for two Static 32KB Memories on High Earth Orbit",
+            "year": 2002,
+            "author": [
+                "S. Duzellier ",
+                "S. Bourdarie ",
+                "R. Velazco ",
+                "B. Nicolescu ",
+                "R. Ecoffet"
+            ],
+            "part_no": "HM62256 ¶ HM65756",
+            "type": "32KB SRAM",
+            "manufacturer": "Hitachi ¶ Matra-MHS",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "SEE In-Flight Data for two Static 32KB Memories on High Earth Orbit",
+            "year": 2002,
+            "author": [
+                "S. Duzellier ",
+                "S. Bourdarie ",
+                "R. Velazco ",
+                "B. Nicolescu ",
+                "R. Ecoffet"
+            ],
+            "part_no": "HM62256 ¶ HM65756",
+            "type": "SRAM",
+            "manufacturer": "Hitachi ¶ Matra-MHS",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "SEE In-Flight Data for two Static 32KB Memories on High Earth Orbit",
+            "year": 2002,
+            "author": [
+                "S. Duzellier ",
+                "S. Bourdarie ",
+                "R. Velazco ",
+                "B. Nicolescu ",
+                "R. Ecoffet"
+            ],
+            "part_no": "HM62256 ¶ HM65756",
+            "type": "32KB SRAM",
+            "manufacturer": "Hitachi ¶ Matra-MHS",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "Radiation Effects Predicted, Observed, and Compared for Spacecraft Systems",
+            "year": 2002,
+            "author": ["B. E. Pritchard ", "G. M. Swift ", "A. H. Johnston"],
+            "part_no": "N/A",
+            "type": "N/A",
+            "manufacturer": "Jet Propulsion Laboratory",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "Radiation Effects Predicted, Observed, and Compared for Spacecraft Systems",
+            "year": 2024,
+            "author": ["B. E. Pritchard", "G. M. Swift", "A. H. Johnston"],
+            "part_no": "N/A",
+            "type": "N/A",
+            "manufacturer": "Jet Propulsion Laboratory",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "Radiation Effects Predicted, Observed, and Compared for Spacecraft Systems",
+            "year": 2002,
+            "author": ["B. E. Pritchard", "G. M. Swift", "A. H. Johnston"],
+            "part_no": "N/A",
+            "type": "N/A",
+            "manufacturer": "Jet Propulsion Laboratory",
+            "testing_location": "Flight",
+            "testing_type": "SEE",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2000,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_2": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        },
+        "pass_3": {
+            "paper_name": "A Radiation Tolerant Video Camera for High Total Dose Environments",
+            "year": 2002,
+            "author": ["G. R. Hopkinson", "M. D. Skipper", "B. Taylor"],
+            "part_no": "Star-250",
+            "type": "CMOS active pixel sensor",
+            "manufacturer": "FillFactory NV, Belgium",
+            "testing_location": "Terrestrial",
+            "testing_type": "TID",
+            "data_type": 0
+        }
+    }
+]

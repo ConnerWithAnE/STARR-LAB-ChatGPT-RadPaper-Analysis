@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
     }, [])
 
     return (
-      <Navbar position="static" isBordered className="bg-[#D4D4D4]">
+      <Navbar position="static" isBordered className="bg-[#D4D4D4] fixed">
         <NavbarBrand>
           <p className="font-bold text-inherit text-slate-900">STARR Lab Rad-Effects Database</p>
         </NavbarBrand>

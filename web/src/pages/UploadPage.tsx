@@ -99,16 +99,16 @@ export default function UploadPage() {
   }
 
   return (
-    <div>
+    <div className="h-screen pt-[65px]">
       <div className="flex flex-col items-center h-full bg-gray-50">
-        <div className="w-[70%]">
+        <div className="w-[70%] h-full flex flex-col">
           <div className="bg-[#F4F4F4]">
             <div className="py-[6%] text-4xl">Upload New Papers</div>
 
             <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
           </div>
-          <div className="bg-white flex-grow flex justify-between items-start pt-4 h-screen overflow-hidden">
-            <div className="bg-[#F4F4F4] border border-gray-300 rounded-md flex-grow mx-4 h-[60%] max-h-[80%] overflow-y-scroll">
+          <div className="bg-white flex-grow flex justify-between items-start py-4 pb-10 overflow-hidden">
+            <div className="bg-[#F4F4F4] border border-gray-300 rounded-md flex-grow mx-4 h-full overflow-y-scroll">
               {files.map((file: File, index: number) => (
                 <UploadPageSliver
                   file={file}
@@ -123,7 +123,7 @@ export default function UploadPage() {
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
                 onClick={handleDivClick}
-                className="flex flex-col items-center justify-center w-full h-[54%] border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                className="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <div className="bg-usask-green text-lg text-gray-100 p-2 rounded-lg">
