@@ -1,7 +1,13 @@
 import { HiArrowLeft } from "react-icons/hi";
 import { Accordion, AccordionItem, Button, Textarea } from "@nextui-org/react";
 import { ChangeEvent, useEffect, useState } from "react";
-import { GPTData, PaperData, TableData, validationFunc } from "../types/types";
+import {
+  GPTData,
+  PaperData,
+  TableData,
+  UpdateData,
+  validationFunc,
+} from "../types/types";
 import { GPTResponse } from "../types/types";
 import { useLocation, useNavigate } from "react-router-dom";
 import AIResponsePass from "../components/ai-response-pass";
@@ -32,8 +38,8 @@ export default function EditEntry() {
   const { setData } = useData();
   const { tableData, setTableData } = useData();
 
-  const [tempTableData, setTempTableData] = useState<TableData>({
-    id: location.state.index,
+  const [tempTableData, setTempTableData] = useState<UpdateData>({
+    ROWID: location.state.index,
     paper_name: "",
     year: 0,
     author: [],
@@ -61,8 +67,10 @@ export default function EditEntry() {
 
   const handleSave = () => {
     console.log(tempTableData);
-    const temp = tempTableData as TableData;
-    const index = tableData.findIndex((obj) => obj.id === location.state.index);
+    const temp = tempTableData as UpdateData;
+    const index = tableData.findIndex(
+      (obj) => obj.ROWID === location.state.index
+    );
     const dataToSubmit = [...tableData];
     if (index !== -1) {
       dataToSubmit[index] = { ...temp };

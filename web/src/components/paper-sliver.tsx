@@ -16,7 +16,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
       } grid grid-cols-6 justify-between p-[3%]`}
     >
       <div className="col-span-1">
-        <div className="text-md">{paper.id}.</div>
+        <div className="text-md">{paper.ROWID}.</div>
       </div>
       <div className="col-span-3">
         <div className="text-left text-lg">{paper.paper_name}</div>
