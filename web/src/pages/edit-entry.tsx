@@ -99,9 +99,21 @@ export default function EditEntry() {
     Object.entries(passes.pass_1).map(([key, _]) => {
       type GPTDataKey = keyof typeof passes.pass_1;
       const typesafeKey = key as GPTDataKey;
-      const pass_1 = passes.pass_1[typesafeKey];
-      const pass_2 = passes.pass_2[typesafeKey];
-      const pass_3 = passes.pass_3[typesafeKey];
+      let pass_1 = passes.pass_1[typesafeKey];
+      let pass_2 = passes.pass_2[typesafeKey];
+      let pass_3 = passes.pass_3[typesafeKey];
+
+      // join strings together in case of comparing authors
+      if (
+        Array.isArray(pass_1) &&
+        Array.isArray(pass_2) &&
+        Array.isArray(pass_3)
+      ) {
+        pass_1 = pass_1.join();
+        pass_2 = pass_2.join();
+        pass_3 = pass_3.join();
+      }
+
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
       if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
         setTempTableData((prevState) => ({
@@ -158,8 +170,13 @@ export default function EditEntry() {
         <div className="grow basis-1/3">
           <Accordion variant="light" isCompact selectionMode="multiple">
             {Object.entries(passes.pass_1).map(([key, index]) => {
+              if (key === "id") {
+                return <span></span>;
+              }
               type GPTDataKey = keyof typeof passes.pass_1;
+              type updateDataKey = keyof typeof tempTableData;
               const typesafeKey = key as GPTDataKey;
+              const typesafeUpdateKey = key as updateDataKey;
               return (
                 <AccordionItem title={key}>
                   <div className="flex flex-row justify-evenly">
@@ -188,7 +205,9 @@ export default function EditEntry() {
                           name={key}
                           className="max-w-xs"
                           placeholder="Enter your description"
-                          value={tempTableData[typesafeKey].toString()}
+                          value={tempTableData[
+                            typesafeUpdateKey ?? "author"
+                          ].toString()}
                           onChange={handleChange}
                           description="Please enter each author's name separated by quotes."
                         />
@@ -197,7 +216,7 @@ export default function EditEntry() {
                           name={key}
                           className="max-w-xs"
                           placeholder="Enter your description"
-                          value={tempTableData[typesafeKey].toString()}
+                          value={tempTableData[typesafeUpdateKey].toString()}
                           onChange={handleChange}
                         />
                       )}
