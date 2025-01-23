@@ -1,7 +1,7 @@
 
 export const TID_targeted_questions = [
-  "What type was the radiation source?",
-  "What was the total dose?",
+  "What type was the radiation source(Co60, Protons, Electrons)?",
+  "What was the total dose to which the part was exposed?",
   "Were there any failures, if so, when?",
 ];
 
@@ -10,6 +10,12 @@ export const SEE_targeted_questions = [
   "What was the energy of the source?",
   "Were there any failures, if so, when?",
 ];
+
+export const SDD_targeted_questions = [
+  "What type was the radiation source?",
+  "What was the total dose?",
+  "Were there any failures, if so, when?",
+]
 
 export const Other_targeted_questions = [
   "What type was the radiation source",
