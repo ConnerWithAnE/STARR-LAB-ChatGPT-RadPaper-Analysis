@@ -35,8 +35,19 @@ export default function DatabaseEntryPreviewPage() {
       </div>
       {/* footer */}
       <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
-        <Button onClick={checkEntries}>Submit</Button>
-        <Button onClick={navigateToUpload}>Cancel</Button>
+        <Button
+          className="bg-usask-green text-white rounded-md"
+          onClick={checkEntries}
+        >
+          Submit
+        </Button>
+        <Button
+          className="bg-[#ff5353] text-white rounded-md"
+          type="submit"
+          onClick={navigateToUpload}
+        >
+          Cancel
+        </Button>
       </div>
     </div>
   );

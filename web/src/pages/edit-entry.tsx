@@ -51,6 +51,8 @@ export default function EditEntry() {
     data_type: 0,
   });
 
+  console.log(tempTableData);
+
   const handleChange = (event: any) => {
     const { name, value } = event.target;
     let newValue = value;
@@ -164,7 +166,7 @@ export default function EditEntry() {
         >
           <HiArrowLeft color="white" />
         </Button>
-        <span> {tempTableData.paper_name} </span>
+        <span> {tempTableData.paper_name ?? ""} </span>
       </div>
       <div className="flex flex-row justify-between gap-3">
         <div className="grow basis-1/3">
@@ -178,7 +180,7 @@ export default function EditEntry() {
               const typesafeKey = key as GPTDataKey;
               const typesafeUpdateKey = key as updateDataKey;
               return (
-                <AccordionItem title={key}>
+                <AccordionItem title={key} key={index}>
                   <div className="flex flex-row justify-evenly">
                     <div className="flex flex-col items-center basis-1/4 p-1">
                       <span className="text-slate-800">First Pass</span>
@@ -205,9 +207,7 @@ export default function EditEntry() {
                           name={key}
                           className="max-w-xs"
                           placeholder="Enter your description"
-                          value={tempTableData[
-                            typesafeUpdateKey ?? "author"
-                          ]?.toString()}
+                          value={tempTableData[typesafeUpdateKey]?.toString()}
                           onChange={handleChange}
                           description="Please enter each author's name separated by quotes."
                         />
@@ -242,9 +242,19 @@ export default function EditEntry() {
         </div>
       </div>
       {/* footer */}
-      <div className="sticky end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
-        <Button onClick={handleSave}>Save</Button>
-        <Button onClick={navigateToDatabasePreview}>Cancel</Button>
+      <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
+        <Button
+          className="bg-usask-green text-white rounded-md"
+          onClick={handleSave}
+        >
+          Save
+        </Button>
+        <Button
+          className="bg-[#ff5353] text-white rounded-md"
+          onClick={navigateToDatabasePreview}
+        >
+          Cancel
+        </Button>
       </div>
     </div>
   );
