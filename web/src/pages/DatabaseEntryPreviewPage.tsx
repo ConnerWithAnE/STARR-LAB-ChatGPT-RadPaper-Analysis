@@ -2,20 +2,23 @@ import { GPTResponse } from "../types/types";
 import { useState } from "react";
 import EntryGallery from "../components/database-entries/entry-gallery";
 import { Button } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useData } from "../DataContext";
 
 export default function DatabaseEntryPreviewPage() {
-  const { data, tableData } = useData();
-  console.log(data);
+  // const { data, tableData } = useData();
+  // console.log(data);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const data = location.state.resp;
 
   const navigateToUpload = () => {
     navigate("/upload");
   };
 
   const checkEntries = () => {
-    console.log("entries", tableData);
+    console.log("entries", data);
   };
 
   return (

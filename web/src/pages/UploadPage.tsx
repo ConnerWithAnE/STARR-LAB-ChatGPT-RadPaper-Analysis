@@ -87,7 +87,9 @@ export default function UploadPage() {
         const result = await response.json();
         console.log(result);
         setData(result);
-        navigate("/upload/edit");
+        navigate("/upload/edit", {
+          state: { resp: result },
+        });
         setFiles([]);
       } else {
         console.error(`Failed to fetch papers: ${response.status}`);

@@ -57,6 +57,8 @@ export type TableData = {
   data_type: number;
 };
 
+export type Severity = 1 | 2;
+
 export type TestLocation = "Terrestrial" | "Flight";
 
 // Type to ensure testing types are consistent

@@ -1,6 +1,15 @@
-import { useNavigate } from "react-router-dom";
-import "../../App.css";
-import { GPTResponse } from "../../types/types";
+import { GPTResponse, UpdateData } from "../../types/types";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Button,
+} from "@nextui-org/react";
+import EditEntry from "../../pages/edit-entry";
+import { useState } from "react";
 
 // TempPaperData is for testing only
 type EntrySliverProp = {
@@ -14,16 +23,10 @@ export default function EntrySliver({
   index,
   onHandleDeleteChange,
 }: EntrySliverProp) {
-  const navigate = useNavigate();
-
-  const navigateToEditEntry = () => {
-    navigate("/upload/edit-entry", {
-      state: {
-        entryData: entry,
-        index: index,
-      },
-    });
-  };
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [editedEntry, setEditedEntry] = useState<UpdateData>({
+    paper_name: entry.pass_1.paper_name,
+  } as UpdateData);
 
   return (
     <div
@@ -49,13 +52,49 @@ export default function EntrySliver({
         >
           Delete Entry
         </button>
-        <button
-          className="bg-usask-green text-[#DADADA]"
-          onClick={navigateToEditEntry}
-        >
+        <button className="bg-usask-green text-[#DADADA]" onClick={onOpen}>
           Modify Entry
         </button>
       </div>
+
+      <Modal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        size="full"
+        scrollBehavior="inside"
+      >
+        <ModalContent>
+          {(onClose) => {
+            console.log("edited entry", editedEntry);
+
+            return (
+              <>
+                <ModalHeader className="flex flex-col gap-1">
+                  {editedEntry.paper_name}
+                </ModalHeader>
+                <ModalBody>
+                  <EditEntry
+                    entryData={entry}
+                    editedEntry={editedEntry}
+                    setEditedEntry={setEditedEntry}
+                  ></EditEntry>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Cancel
+                  </Button>
+                  <Button
+                    className="bg-usask-green text-[#DADADA]"
+                    onPress={onClose}
+                  >
+                    Save
+                  </Button>
+                </ModalFooter>
+              </>
+            );
+          }}
+        </ModalContent>
+      </Modal>
     </div>
   );
 }

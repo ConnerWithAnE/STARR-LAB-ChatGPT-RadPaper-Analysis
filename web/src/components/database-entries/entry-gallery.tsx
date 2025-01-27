@@ -25,14 +25,6 @@ export default function EntryGallery({ entries }: EntryGalleryProps) {
     setData(newData);
   };
 
-  const onHandleSubmitEntry = (index: number, entry: GPTResponse) => {
-    setDatabaseEntries((prevItems) => {
-      const newEntries = [...prevItems];
-      newEntries[index] = entry;
-      return newEntries;
-    });
-  };
-
   useEffect(() => {
     // Set initial height and listen for resize events
     updateDimensions();
