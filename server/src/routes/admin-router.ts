@@ -80,9 +80,9 @@ export default function adminRouter(
     async (req: Request, res: Response) => {
       try {
         // TODO
-
         if (config.MockData) {
           import("../../test/testfiles/parse_response.json").then((module) => {
+            console.log("Sending mock data...")
             res.send(module.default);
           });
         } else {
