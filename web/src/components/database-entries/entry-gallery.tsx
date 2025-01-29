@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { GPTResponse } from "../../types/types";
 import EntrySliver from "./entry-sliver";
-import { useData } from "../../DataContext";
 
 type EntryGalleryProps = {
   entries: GPTResponse[];
+  setTableEntries: React.Dispatch<React.SetStateAction<GPTResponse[]>>;
 };
 
 export default function EntryGallery({ entries }: EntryGalleryProps) {
@@ -14,15 +14,13 @@ export default function EntryGallery({ entries }: EntryGalleryProps) {
   const [databaseEntries, setDatabaseEntries] = useState<GPTResponse[]>(
     entries ?? []
   );
-  const { data, setData } = useData();
-
   const updateDimensions = () => {
     setPaperAreaHeight(window.innerHeight - 200 - 65); // 200 for header, 65 for navbar
   };
 
   const onHandleDeleteEntry = (entry: GPTResponse) => {
-    const newData = data.filter((item) => item !== entry);
-    setData(newData);
+    const newData = databaseEntries.filter((item) => item !== entry);
+    setDatabaseEntries(newData);
   };
 
   useEffect(() => {

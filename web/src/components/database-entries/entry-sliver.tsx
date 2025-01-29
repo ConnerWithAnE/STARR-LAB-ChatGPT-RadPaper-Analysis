@@ -23,10 +23,26 @@ export default function EntrySliver({
   index,
   onHandleDeleteChange,
 }: EntrySliverProp) {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const { onOpenChange } = useDisclosure();
+  const [open, setOpen] = useState(false);
   const [editedEntry, setEditedEntry] = useState<UpdateData>({
     paper_name: entry.pass_1.paper_name,
   } as UpdateData);
+
+  const handleCancel = () => {
+    setEditedEntry({
+      paper_name: entry.pass_1.paper_name,
+    } as UpdateData);
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleSave = () => {
+    setOpen(false);
+  };
 
   return (
     <div
@@ -52,21 +68,19 @@ export default function EntrySliver({
         >
           Delete Entry
         </button>
-        <button className="bg-usask-green text-[#DADADA]" onClick={onOpen}>
+        <button className="bg-usask-green text-[#DADADA]" onClick={handleOpen}>
           Modify Entry
         </button>
       </div>
 
       <Modal
-        isOpen={isOpen}
+        isOpen={open}
         onOpenChange={onOpenChange}
         size="full"
         scrollBehavior="inside"
       >
         <ModalContent>
-          {(onClose) => {
-            console.log("edited entry", editedEntry);
-
+          {() => {
             return (
               <>
                 <ModalHeader className="flex flex-col gap-1">
@@ -80,12 +94,12 @@ export default function EntrySliver({
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
+                  <Button color="danger" variant="light" onPress={handleCancel}>
                     Cancel
                   </Button>
                   <Button
                     className="bg-usask-green text-[#DADADA]"
-                    onPress={onClose}
+                    onPress={handleSave}
                   >
                     Save
                   </Button>
