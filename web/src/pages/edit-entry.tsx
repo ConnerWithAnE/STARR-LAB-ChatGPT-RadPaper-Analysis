@@ -63,6 +63,10 @@ export default function EditEntry({
       let pass_2 = passes.pass_2[typesafeKey];
       let pass_3 = passes.pass_3[typesafeKey];
 
+      if (editedEntry[typesafeKey] !== undefined) {
+        return;
+      }
+
       // join strings together in case of comparing authors
       if (
         Array.isArray(pass_1) &&
@@ -127,7 +131,7 @@ export default function EditEntry({
               const typesafeKey = key as GPTDataKey;
               const typesafeUpdateKey = key as updateDataKey;
               return (
-                <AccordionItem title={key}>
+                <AccordionItem title={key} key={key}>
                   <div className="flex flex-row justify-evenly">
                     <div className="flex flex-col items-center basis-1/4 p-1">
                       <span className="text-slate-800">First Pass</span>

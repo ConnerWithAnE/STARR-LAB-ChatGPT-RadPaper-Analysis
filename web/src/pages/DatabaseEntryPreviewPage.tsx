@@ -1,23 +1,56 @@
-import EntryGallery from "../components/database-entries/entry-gallery";
 import { Button } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { UpdateData } from "../types/types";
-import { useState } from "react";
+import { GPTResponse, UpdateData } from "../types/types";
+import { useEffect, useState } from "react";
+import EntrySliver from "../components/database-entries/entry-sliver";
 
 export default function DatabaseEntryPreviewPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const data = location.state.resp;
 
-  const [tableEntries, setTableEntries] = useState<UpdateData[]>([]);
+  const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
+  const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
+
+  const handleSave = (index: number, tableData: UpdateData) => {
+    setEditedEntries((prevData) => {
+      const updatedData = [...prevData];
+      updatedData[index] = tableData;
+      return updatedData;
+    });
+  };
 
   const navigateToUpload = () => {
     navigate("/upload");
   };
 
   const checkEntries = () => {
-    console.log("entries", data);
+    console.log("entries", editedEntries);
   };
+
+  const [paperAreaHeight, setPaperAreaHeight] = useState<number>(
+    window.innerHeight - 200 - 65
+  ); //Default? random number choice
+
+  const updateDimensions = () => {
+    setPaperAreaHeight(window.innerHeight - 200 - 65); // 200 for header, 65 for navbar
+  };
+
+  const onHandleDeleteEntry = (entry: GPTResponse) => {
+    const newData = gptPasses.filter((item) => item !== entry);
+    setGPTPasses(newData);
+  };
+
+  useEffect(() => {
+    // Set initial height and listen for resize events
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+
+    return () => {
+      // Cleanup event listener on unmount
+      window.removeEventListener("resize", updateDimensions);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col items-center h-screen pt-[65px]">
@@ -30,7 +63,23 @@ export default function DatabaseEntryPreviewPage() {
         </div>
         <div className="">
           <div className="overflow-y-scroll max-h-full">
-            <EntryGallery entries={data} />
+            <div
+              className="overflow-y-scroll"
+              style={{
+                height: paperAreaHeight - 30,
+              }}
+            >
+              {gptPasses.map((entry: GPTResponse, index: number) => (
+                <EntrySliver
+                  gptPass={entry}
+                  index={index}
+                  key={index}
+                  savedEntry={editedEntries[index]}
+                  onHandleDeleteChange={onHandleDeleteEntry}
+                  onHandleSaveEntry={handleSave}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

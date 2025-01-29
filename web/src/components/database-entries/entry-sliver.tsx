@@ -13,25 +13,36 @@ import { useState } from "react";
 
 // TempPaperData is for testing only
 type EntrySliverProp = {
-  entry: GPTResponse;
+  gptPass: GPTResponse;
   index: number;
+  savedEntry: UpdateData;
   onHandleDeleteChange: (entry: GPTResponse) => void;
+  onHandleSaveEntry: (index: number, tableData: UpdateData) => void;
 };
 
 export default function EntrySliver({
-  entry,
+  gptPass,
   index,
+  savedEntry,
   onHandleDeleteChange,
+  onHandleSaveEntry,
 }: EntrySliverProp) {
   const { onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
-  const [editedEntry, setEditedEntry] = useState<UpdateData>({
-    paper_name: entry.pass_1.paper_name,
-  } as UpdateData);
+  const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
+    if (savedEntry) {
+      return savedEntry;
+    } else {
+      return {
+        paper_name: gptPass.pass_1.paper_name,
+        author: gptPass.pass_1.author,
+      } as UpdateData;
+    }
+  });
 
   const handleCancel = () => {
     setEditedEntry({
-      paper_name: entry.pass_1.paper_name,
+      paper_name: editedEntry.paper_name,
     } as UpdateData);
     setOpen(false);
   };
@@ -42,6 +53,7 @@ export default function EntrySliver({
 
   const handleSave = () => {
     setOpen(false);
+    onHandleSaveEntry(index, editedEntry);
   };
 
   return (
@@ -55,16 +67,16 @@ export default function EntrySliver({
       </div>
       <div className="col-span-3">
         <div className="text-left text-lg text-slate-900">
-          {entry.pass_1.paper_name}
+          {editedEntry.paper_name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {entry.pass_1.author}
+          {editedEntry.author}
         </div>
       </div>
       <div className="col-span-2 flex items-center justify-center">
         <button
           className="bg-usask-green text-[#DADADA]"
-          onClick={() => onHandleDeleteChange(entry)}
+          onClick={() => onHandleDeleteChange(gptPass)}
         >
           Delete Entry
         </button>
@@ -88,7 +100,7 @@ export default function EntrySliver({
                 </ModalHeader>
                 <ModalBody>
                   <EditEntry
-                    entryData={entry}
+                    entryData={gptPass}
                     editedEntry={editedEntry}
                     setEditedEntry={setEditedEntry}
                   ></EditEntry>
