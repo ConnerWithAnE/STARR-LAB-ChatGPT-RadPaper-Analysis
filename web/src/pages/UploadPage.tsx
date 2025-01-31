@@ -4,12 +4,10 @@ import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
 import { GPTResponse } from "../types/types";
-import { useData } from "../DataContext";
 
 export default function UploadPage() {
   const [files, setFiles] = useState<File[]>([]);
   const navigate = useNavigate();
-  const { data, setData } = useData();
 
   const handleFileChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -86,7 +84,6 @@ export default function UploadPage() {
       if (response.ok) {
         const result = await response.json();
         console.log(result);
-        setData(result);
         navigate("/upload/edit", {
           state: { resp: result },
         });

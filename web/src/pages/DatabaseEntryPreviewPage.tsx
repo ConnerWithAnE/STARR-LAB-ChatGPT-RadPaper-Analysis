@@ -10,7 +10,7 @@ export default function DatabaseEntryPreviewPage() {
   const location = useLocation();
   const data = location.state.resp;
 
-  const { initialGPTPasses, setInitialGPTPasses } = useForm();
+  const { initialGPTPasses, setInitialGPTPasses, tableEntries } = useForm();
   setInitialGPTPasses(data);
 
   //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
@@ -29,7 +29,7 @@ export default function DatabaseEntryPreviewPage() {
   };
 
   const checkEntries = () => {
-    console.log("entries", editedEntries);
+    console.log("entries", tableEntries);
   };
 
   const [paperAreaHeight, setPaperAreaHeight] = useState<number>(

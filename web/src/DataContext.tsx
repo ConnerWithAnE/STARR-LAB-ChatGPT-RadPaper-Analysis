@@ -1,4 +1,10 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { GPTResponse } from "./types/types";
 import { UpdateData } from "./types/types";
 
@@ -14,6 +20,7 @@ interface TableDataContextType {
     key: string,
     value: UpdateData[K]
   ) => void;
+  updateEntry2: (id: number, value: UpdateData) => void;
   addEntry: (entry: UpdateData) => void;
   removeEntry: (id: number) => void;
   retrieveEntry: (id: number) => UpdateData | undefined;
@@ -24,6 +31,7 @@ const defaultValue: TableDataContextType = {
   initialGPTPasses: [],
   setInitialGPTPasses: () => {},
   updateEntry: () => {},
+  updateEntry2: () => {},
   addEntry: () => {},
   removeEntry: () => {},
   tableEntries: [],
@@ -42,19 +50,30 @@ export const TableDataFormProvider = ({
   const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse[]>([]);
   const [tableEntries, setTableEntries] = useState<UpdateData[]>([]);
 
+  useEffect(() => {
+    console.log("Updated contacts:", tableEntries);
+  }, [tableEntries]);
+
   function updateEntry<K extends keyof UpdateData>(
     id: number,
     key: string,
     value: UpdateData[K]
   ) {
     setTableEntries((prev) =>
-      prev.map((contact) =>
-        contact.ROWID === id ? { ...contact, [key]: value } : contact
+      prev.map((entry) =>
+        entry.ROWID === id ? { ...entry, [key]: value } : entry
       )
     );
   }
 
+  function updateEntry2(id: number, value: UpdateData) {
+    setTableEntries((prev) =>
+      prev.map((entry) => (entry.ROWID === id ? { ...value } : entry))
+    );
+  }
+
   function addEntry(entry: UpdateData) {
+    console.log("entry", entry);
     setTableEntries((prev) => {
       const newEntry: UpdateData = {
         ...entry,
@@ -62,6 +81,7 @@ export const TableDataFormProvider = ({
 
       return [...prev, newEntry];
     });
+    console.log("tableEntries", tableEntries);
   }
 
   function removeEntry(id: number) {
@@ -82,6 +102,7 @@ export const TableDataFormProvider = ({
         addEntry,
         removeEntry,
         retrieveEntry,
+        updateEntry2,
       }}
     >
       {children}

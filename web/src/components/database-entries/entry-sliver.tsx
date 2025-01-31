@@ -30,14 +30,14 @@ export default function EntrySliver({
   const [open, setOpen] = useState(false);
 
   // for modifying entries
-  const { addEntry, tableEntries } = useForm();
+  const { addEntry, updateEntry2, tableEntries } = useForm();
   // this state prop is to handle modifying the individual entry before updating the overall form
   const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
     const savedEntry = tableEntries[index];
     if (savedEntry) {
       return savedEntry;
     } else {
-      return {} as UpdateData;
+      return { ROWID: index } as UpdateData;
     }
   });
   // React's strict mode makes every callback run twice. This is to prevent that
@@ -52,6 +52,7 @@ export default function EntrySliver({
   useEffect(() => {
     if (hasRun.current) return; // Prevent duplicate execution
     hasRun.current = true;
+    let updatedEntry = { ...editedEntry };
 
     const handleConflictAnalysis = (conflict: Conflict) => {
       setUnresolvedConflicts((prevUnresolvedConflicts) => {
@@ -59,7 +60,9 @@ export default function EntrySliver({
       });
     };
 
-    Object.entries(passes.pass_1).map(([key, _]) => {
+    console.log("passes", passes);
+
+    Object.entries(passes.pass_1).map(([key]) => {
       type GPTDataKey = keyof typeof passes.pass_1;
       const typesafeKey = key as GPTDataKey;
       let pass_1 = passes.pass_1[typesafeKey];
@@ -84,11 +87,11 @@ export default function EntrySliver({
 
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
       if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
-        setEditedEntry((prevState) => ({
-          ...prevState,
+        console.log("pass_1", pass_1);
+        updatedEntry = {
+          ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
-        }));
-        return;
+        };
       }
       // if only 2 out of 3 entries are equal
       else if (pass_1 === pass_2 || pass_1 === pass_3) {
@@ -96,20 +99,20 @@ export default function EntrySliver({
           severity: 1,
           dataType: key,
         };
-        setEditedEntry((prevState) => ({
-          ...prevState,
+        updatedEntry = {
+          ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
-        }));
+        };
         handleConflictAnalysis(conflict);
       } else if (pass_2 === pass_3) {
         const conflict: Conflict = {
           severity: 1,
           dataType: key,
         };
-        setEditedEntry((prevState) => ({
-          ...prevState,
+        updatedEntry = {
+          ...updatedEntry,
           [typesafeKey]: passes.pass_2[typesafeKey],
-        }));
+        };
         handleConflictAnalysis(conflict);
       } else {
         const conflict: Conflict = {
@@ -119,10 +122,13 @@ export default function EntrySliver({
         handleConflictAnalysis(conflict);
       }
     });
+    console.log("entry at end of useEffect", editedEntry);
+
+    setEditedEntry(updatedEntry);
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
     if (!hasEmptyProperty(editedEntry)) {
-      addEntry(editedEntry);
+      addEntry(updatedEntry);
     }
   }, [passes]);
 
@@ -139,6 +145,7 @@ export default function EntrySliver({
   };
 
   const handleSave = () => {
+    updateEntry2(index, editedEntry);
     setOpen(false);
   };
 
