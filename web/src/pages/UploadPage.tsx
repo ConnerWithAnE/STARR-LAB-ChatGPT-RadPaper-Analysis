@@ -3,7 +3,7 @@ import "../App.css";
 import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
-import { GPTResponse } from "../types/types";
+//import { GPTResponse } from "../types/types";
 
 export default function UploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -55,7 +55,8 @@ export default function UploadPage() {
   };
 
   // Handle the click to trigger file input
-  const handleDivClick = (event: React.MouseEvent<HTMLDivElement>): void => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleDivClick = (_event: React.MouseEvent<HTMLDivElement>): void => {
     const fileInput = document.getElementById(
       "dropzone-file"
     ) as HTMLInputElement;
