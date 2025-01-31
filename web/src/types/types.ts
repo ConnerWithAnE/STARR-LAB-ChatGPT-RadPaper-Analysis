@@ -84,3 +84,16 @@ function isTestLocation(data: unknown): data is TestLocation {
 function isTesting(data: unknown): data is Testing {
   return data === "SEE" || data === "TID" || data === "DD" || data === "OTHER";
 }
+
+export function hasEmptyProperty(obj: UpdateData): boolean {
+  return Object.values(obj).some(
+    (value) =>
+      value === null ||
+      value === undefined ||
+      (typeof value === "string" && value.trim() === "") ||
+      (Array.isArray(value) && value.length === 0) ||
+      (typeof value === "object" &&
+        !Array.isArray(value) &&
+        Object.keys(value).length === 0)
+  );
+}

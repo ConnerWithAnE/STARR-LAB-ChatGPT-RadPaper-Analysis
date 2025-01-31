@@ -1,37 +1,93 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import { GPTResponse } from "./types/types";
 import { UpdateData } from "./types/types";
 
 // Define the shape of the data
-interface DataContextType {
-  data: GPTResponse[]; // Adjust the type of `data` based on your use case
-  setData: (data: GPTResponse[]) => void; // Function to update the data
-  tableData: UpdateData[];
-  setTableData: (data: UpdateData[]) => void;
+
+//updateContact<K extends keyof Contact>(id: number, field: K, value: Contact[K])
+interface TableDataContextType {
+  initialGPTPasses: GPTResponse[]; // Adjust the type of `data` based on your use case
+  setInitialGPTPasses: (data: GPTResponse[]) => void; // Function to update the data
+  tableEntries: UpdateData[]; // Adjust the type of `data` based on your use case
+  updateEntry: <K extends keyof UpdateData>(
+    id: number,
+    key: string,
+    value: UpdateData[K]
+  ) => void;
+  addEntry: (entry: UpdateData) => void;
+  removeEntry: (id: number) => void;
+  retrieveEntry: (id: number) => UpdateData | undefined;
 }
 
 // Define the default value of the context
-const defaultValue: DataContextType = {
-  data: [],
-  setData: () => {},
-  tableData: [],
-  setTableData: () => {},
+const defaultValue: TableDataContextType = {
+  initialGPTPasses: [],
+  setInitialGPTPasses: () => {},
+  updateEntry: () => {},
+  addEntry: () => {},
+  removeEntry: () => {},
+  tableEntries: [],
+  retrieveEntry: () => undefined,
 };
 
 // Create the context
-const DataContext = createContext<DataContextType>(defaultValue);
+const TableDataContext = createContext<TableDataContextType>(defaultValue);
 
 // Create the provider component
-export const DataProvider = ({ children }: { children: ReactNode }) => {
-  const [data, setData] = useState<GPTResponse[]>([]); // State to hold the shared data
-  const [tableData, setTableData] = useState<UpdateData[]>([]);
+export const TableDataFormProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse[]>([]);
+  const [tableEntries, setTableEntries] = useState<UpdateData[]>([]);
+
+  function updateEntry<K extends keyof UpdateData>(
+    id: number,
+    key: string,
+    value: UpdateData[K]
+  ) {
+    setTableEntries((prev) =>
+      prev.map((contact) =>
+        contact.ROWID === id ? { ...contact, [key]: value } : contact
+      )
+    );
+  }
+
+  function addEntry(entry: UpdateData) {
+    setTableEntries((prev) => {
+      const newEntry: UpdateData = {
+        ...entry,
+      };
+
+      return [...prev, newEntry];
+    });
+  }
+
+  function removeEntry(id: number) {
+    setTableEntries((prev) => prev.filter((entry) => entry.ROWID !== id));
+  }
+
+  function retrieveEntry(id: number) {
+    return tableEntries.find((entry) => entry.ROWID === id);
+  }
 
   return (
-    <DataContext.Provider value={{ data, setData, tableData, setTableData }}>
+    <TableDataContext.Provider
+      value={{
+        initialGPTPasses,
+        setInitialGPTPasses,
+        tableEntries,
+        updateEntry,
+        addEntry,
+        removeEntry,
+        retrieveEntry,
+      }}
+    >
       {children}
-    </DataContext.Provider>
+    </TableDataContext.Provider>
   );
 };
 
 // Custom hook to use the context
-export const useData = () => useContext(DataContext);
+export const useForm = () => useContext(TableDataContext);

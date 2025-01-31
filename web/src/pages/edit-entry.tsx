@@ -1,8 +1,7 @@
 import { Accordion, AccordionItem, Input, Textarea } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PaperData, UpdateData, validationFunc } from "../types/types";
 import { GPTResponse } from "../types/types";
-import { useRef } from "react";
 import { MdWarningAmber } from "react-icons/md";
 import { Severity } from "../types/types";
 
@@ -11,6 +10,7 @@ type PaperProps = {
   entryData?: GPTResponse;
   editedEntry: UpdateData;
   setEditedEntry: React.Dispatch<React.SetStateAction<UpdateData>>;
+  unresolvedConflicts: Conflict[];
 };
 
 export type Conflict = {
@@ -22,15 +22,10 @@ export default function EditEntry({
   entryData,
   editedEntry,
   setEditedEntry,
+  unresolvedConflicts,
 }: PaperProps) {
-  // React's strict mode makes every callback run twice. This is to prevent that
-  const hasRun = useRef(false);
-
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse>(entryData ?? ({} as GPTResponse));
-  const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict[]>(
-    []
-  );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -46,76 +41,76 @@ export default function EditEntry({
     console.log("handlechange", editedEntry);
   };
 
-  useEffect(() => {
-    if (hasRun.current) return; // Prevent duplicate execution
-    hasRun.current = true;
+  // useEffect(() => {
+  //   if (hasRun.current) return; // Prevent duplicate execution
+  //   hasRun.current = true;
 
-    const handleConflictAnalysis = (conflict: Conflict) => {
-      setUnresolvedConflicts((prevUnresolvedConflicts) => {
-        return [...prevUnresolvedConflicts, conflict];
-      });
-    };
+  //   const handleConflictAnalysis = (conflict: Conflict) => {
+  //     setUnresolvedConflicts((prevUnresolvedConflicts) => {
+  //       return [...prevUnresolvedConflicts, conflict];
+  //     });
+  //   };
 
-    Object.entries(passes.pass_1).map(([key, _]) => {
-      type GPTDataKey = keyof typeof passes.pass_1;
-      const typesafeKey = key as GPTDataKey;
-      let pass_1 = passes.pass_1[typesafeKey];
-      let pass_2 = passes.pass_2[typesafeKey];
-      let pass_3 = passes.pass_3[typesafeKey];
+  //   Object.entries(passes.pass_1).map(([key, _]) => {
+  //     type GPTDataKey = keyof typeof passes.pass_1;
+  //     const typesafeKey = key as GPTDataKey;
+  //     let pass_1 = passes.pass_1[typesafeKey];
+  //     let pass_2 = passes.pass_2[typesafeKey];
+  //     let pass_3 = passes.pass_3[typesafeKey];
 
-      if (editedEntry[typesafeKey] !== undefined) {
-        return;
-      }
+  //     if (editedEntry[typesafeKey] !== undefined) {
+  //       return;
+  //     }
 
-      // join strings together in case of comparing authors
-      if (
-        Array.isArray(pass_1) &&
-        Array.isArray(pass_2) &&
-        Array.isArray(pass_3)
-      ) {
-        pass_1 = pass_1.join();
-        pass_2 = pass_2.join();
-        pass_3 = pass_3.join();
-      }
+  //     // join strings together in case of comparing authors
+  //     if (
+  //       Array.isArray(pass_1) &&
+  //       Array.isArray(pass_2) &&
+  //       Array.isArray(pass_3)
+  //     ) {
+  //       pass_1 = pass_1.join();
+  //       pass_2 = pass_2.join();
+  //       pass_3 = pass_3.join();
+  //     }
 
-      // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
-      if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
-        setEditedEntry((prevState) => ({
-          ...prevState,
-          [typesafeKey]: passes.pass_1[typesafeKey],
-        }));
-        return;
-      }
-      // if only 2 out of 3 entries are equal
-      else if (pass_1 === pass_2 || pass_1 === pass_3) {
-        const conflict: Conflict = {
-          severity: 1,
-          dataType: key,
-        };
-        setEditedEntry((prevState) => ({
-          ...prevState,
-          [typesafeKey]: passes.pass_1[typesafeKey],
-        }));
-        handleConflictAnalysis(conflict);
-      } else if (pass_2 === pass_3) {
-        const conflict: Conflict = {
-          severity: 1,
-          dataType: key,
-        };
-        setEditedEntry((prevState) => ({
-          ...prevState,
-          [typesafeKey]: passes.pass_2[typesafeKey],
-        }));
-        handleConflictAnalysis(conflict);
-      } else {
-        const conflict: Conflict = {
-          severity: 2,
-          dataType: key,
-        };
-        handleConflictAnalysis(conflict);
-      }
-    });
-  }, [passes]);
+  //     // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
+  //     if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
+  //       setEditedEntry((prevState) => ({
+  //         ...prevState,
+  //         [typesafeKey]: passes.pass_1[typesafeKey],
+  //       }));
+  //       return;
+  //     }
+  //     // if only 2 out of 3 entries are equal
+  //     else if (pass_1 === pass_2 || pass_1 === pass_3) {
+  //       const conflict: Conflict = {
+  //         severity: 1,
+  //         dataType: key,
+  //       };
+  //       setEditedEntry((prevState) => ({
+  //         ...prevState,
+  //         [typesafeKey]: passes.pass_1[typesafeKey],
+  //       }));
+  //       handleConflictAnalysis(conflict);
+  //     } else if (pass_2 === pass_3) {
+  //       const conflict: Conflict = {
+  //         severity: 1,
+  //         dataType: key,
+  //       };
+  //       setEditedEntry((prevState) => ({
+  //         ...prevState,
+  //         [typesafeKey]: passes.pass_2[typesafeKey],
+  //       }));
+  //       handleConflictAnalysis(conflict);
+  //     } else {
+  //       const conflict: Conflict = {
+  //         severity: 2,
+  //         dataType: key,
+  //       };
+  //       handleConflictAnalysis(conflict);
+  //     }
+  //   });
+  // }, [passes]);
 
   return (
     <div className="flex flex-col gap-2 p-4">

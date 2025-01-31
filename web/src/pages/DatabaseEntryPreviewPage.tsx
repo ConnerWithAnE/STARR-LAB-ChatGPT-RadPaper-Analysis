@@ -3,21 +3,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { GPTResponse, UpdateData } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
+import { useForm } from "../DataContext";
 
 export default function DatabaseEntryPreviewPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const data = location.state.resp;
 
-  const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
+  const { initialGPTPasses, setInitialGPTPasses } = useForm();
+  setInitialGPTPasses(data);
+
+  //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
   const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
 
   const handleSave = (index: number, tableData: UpdateData) => {
-    setEditedEntries((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[index] = tableData;
-      return updatedData;
-    });
+    // setEditedEntries((prevData) => {
+    //   const updatedData = [...prevData];
+    //   updatedData[index] = tableData;
+    //   return updatedData;
+    // });
   };
 
   const navigateToUpload = () => {
@@ -36,9 +40,12 @@ export default function DatabaseEntryPreviewPage() {
     setPaperAreaHeight(window.innerHeight - 200 - 65); // 200 for header, 65 for navbar
   };
 
-  const onHandleDeleteEntry = (entry: GPTResponse) => {
-    const newData = gptPasses.filter((item) => item !== entry);
-    setGPTPasses(newData);
+  const onHandleDeleteEntry = (index: number) => {
+    // console.log("delete", index);
+    // const entryToDelete = gptPasses[index];
+    // const newData = gptPasses.filter((item) => item !== entryToDelete);
+    // console.log("newData", newData);
+    // setGPTPasses(newData);
   };
 
   useEffect(() => {
@@ -69,14 +76,11 @@ export default function DatabaseEntryPreviewPage() {
                 height: paperAreaHeight - 30,
               }}
             >
-              {gptPasses.map((entry: GPTResponse, index: number) => (
+              {initialGPTPasses.map((entry: GPTResponse, index: number) => (
                 <EntrySliver
                   gptPass={entry}
                   index={index}
-                  key={index}
-                  savedEntry={editedEntries[index]}
                   onHandleDeleteChange={onHandleDeleteEntry}
-                  onHandleSaveEntry={handleSave}
                 />
               ))}
             </div>

@@ -1,4 +1,4 @@
-import { GPTResponse, UpdateData } from "../../types/types";
+import { GPTResponse, hasEmptyProperty, UpdateData } from "../../types/types";
 import {
   Modal,
   ModalContent,
@@ -8,41 +8,128 @@ import {
   useDisclosure,
   Button,
 } from "@nextui-org/react";
-import EditEntry from "../../pages/edit-entry";
-import { useState } from "react";
+import EditEntry, { Conflict } from "../../pages/edit-entry";
+import { useEffect, useRef, useState } from "react";
+import { MdWarningAmber } from "react-icons/md";
+import { useForm } from "../../DataContext";
 
 // TempPaperData is for testing only
 type EntrySliverProp = {
   gptPass: GPTResponse;
   index: number;
-  savedEntry: UpdateData;
-  onHandleDeleteChange: (entry: GPTResponse) => void;
-  onHandleSaveEntry: (index: number, tableData: UpdateData) => void;
+  onHandleDeleteChange: (index: number) => void;
 };
 
 export default function EntrySliver({
   gptPass,
   index,
-  savedEntry,
   onHandleDeleteChange,
-  onHandleSaveEntry,
 }: EntrySliverProp) {
+  // for the modal
   const { onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
+
+  // for modifying entries
+  const { addEntry, tableEntries } = useForm();
+  // this state prop is to handle modifying the individual entry before updating the overall form
   const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
+    const savedEntry = tableEntries[index];
     if (savedEntry) {
       return savedEntry;
     } else {
-      return {
-        paper_name: gptPass.pass_1.paper_name,
-        author: gptPass.pass_1.author,
-      } as UpdateData;
+      return {} as UpdateData;
     }
   });
+  // React's strict mode makes every callback run twice. This is to prevent that
+  const hasRun = useRef(false);
+
+  //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
+  const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
+  const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict[]>(
+    []
+  );
+
+  useEffect(() => {
+    if (hasRun.current) return; // Prevent duplicate execution
+    hasRun.current = true;
+
+    const handleConflictAnalysis = (conflict: Conflict) => {
+      setUnresolvedConflicts((prevUnresolvedConflicts) => {
+        return [...prevUnresolvedConflicts, conflict];
+      });
+    };
+
+    Object.entries(passes.pass_1).map(([key, _]) => {
+      type GPTDataKey = keyof typeof passes.pass_1;
+      const typesafeKey = key as GPTDataKey;
+      let pass_1 = passes.pass_1[typesafeKey];
+      let pass_2 = passes.pass_2[typesafeKey];
+      let pass_3 = passes.pass_3[typesafeKey];
+
+      // if the entry has already been edited, it should bypass this process completely
+      if (editedEntry[typesafeKey] !== undefined) {
+        return;
+      }
+
+      // join strings together in case of comparing authors
+      if (
+        Array.isArray(pass_1) &&
+        Array.isArray(pass_2) &&
+        Array.isArray(pass_3)
+      ) {
+        pass_1 = pass_1.join();
+        pass_2 = pass_2.join();
+        pass_3 = pass_3.join();
+      }
+
+      // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
+      if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
+        setEditedEntry((prevState) => ({
+          ...prevState,
+          [typesafeKey]: passes.pass_1[typesafeKey],
+        }));
+        return;
+      }
+      // if only 2 out of 3 entries are equal
+      else if (pass_1 === pass_2 || pass_1 === pass_3) {
+        const conflict: Conflict = {
+          severity: 1,
+          dataType: key,
+        };
+        setEditedEntry((prevState) => ({
+          ...prevState,
+          [typesafeKey]: passes.pass_1[typesafeKey],
+        }));
+        handleConflictAnalysis(conflict);
+      } else if (pass_2 === pass_3) {
+        const conflict: Conflict = {
+          severity: 1,
+          dataType: key,
+        };
+        setEditedEntry((prevState) => ({
+          ...prevState,
+          [typesafeKey]: passes.pass_2[typesafeKey],
+        }));
+        handleConflictAnalysis(conflict);
+      } else {
+        const conflict: Conflict = {
+          severity: 2,
+          dataType: key,
+        };
+        handleConflictAnalysis(conflict);
+      }
+    });
+
+    // this is to handle cases where an entry has not been added to the overall list of edited entries
+    if (!hasEmptyProperty(editedEntry)) {
+      addEntry(editedEntry);
+    }
+  }, [passes]);
 
   const handleCancel = () => {
     setEditedEntry({
       paper_name: editedEntry.paper_name,
+      author: editedEntry.author,
     } as UpdateData);
     setOpen(false);
   };
@@ -53,7 +140,6 @@ export default function EntrySliver({
 
   const handleSave = () => {
     setOpen(false);
-    onHandleSaveEntry(index, editedEntry);
   };
 
   return (
@@ -73,10 +159,23 @@ export default function EntrySliver({
           {editedEntry.author}
         </div>
       </div>
-      <div className="col-span-2 flex items-center justify-center">
+      <div className="col-span-2 flex flex-row items-center justify-center gap-2">
+        <div>
+          {unresolvedConflicts.map((conflict) => {
+            return (
+              <div className="text-xs text-left text-slate-900">
+                {conflict.severity === 1 ? (
+                  <MdWarningAmber color="yellow" size="1.5em" />
+                ) : (
+                  <MdWarningAmber color="red" size="1.5em" />
+                )}
+              </div>
+            );
+          })}
+        </div>
         <button
           className="bg-usask-green text-[#DADADA]"
-          onClick={() => onHandleDeleteChange(gptPass)}
+          onClick={() => onHandleDeleteChange(index)}
         >
           Delete Entry
         </button>
@@ -103,6 +202,7 @@ export default function EntrySliver({
                     entryData={gptPass}
                     editedEntry={editedEntry}
                     setEditedEntry={setEditedEntry}
+                    unresolvedConflicts={unresolvedConflicts}
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>
