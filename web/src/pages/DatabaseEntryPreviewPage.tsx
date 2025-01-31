@@ -1,6 +1,6 @@
 import { Button } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GPTResponse, UpdateData } from "../types/types";
+import { GPTResponse } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
@@ -14,15 +14,15 @@ export default function DatabaseEntryPreviewPage() {
   setInitialGPTPasses(data);
 
   //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
-  const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
+  //const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
 
-  const handleSave = (index: number, tableData: UpdateData) => {
-    // setEditedEntries((prevData) => {
-    //   const updatedData = [...prevData];
-    //   updatedData[index] = tableData;
-    //   return updatedData;
-    // });
-  };
+  // const handleSave = (index: number, tableData: UpdateData) => {
+  //   // setEditedEntries((prevData) => {
+  //   //   const updatedData = [...prevData];
+  //   //   updatedData[index] = tableData;
+  //   //   return updatedData;
+  //   // });
+  // };
 
   const navigateToUpload = () => {
     navigate("/upload");
@@ -41,6 +41,7 @@ export default function DatabaseEntryPreviewPage() {
   };
 
   const onHandleDeleteEntry = (index: number) => {
+    console.log("delete", index);
     // console.log("delete", index);
     // const entryToDelete = gptPasses[index];
     // const newData = gptPasses.filter((item) => item !== entryToDelete);
