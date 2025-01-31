@@ -1,14 +1,15 @@
-import { useState as _useState } from 'react';
-import { Route, Routes, BrowserRouter, useLocation } from 'react-router-dom';
-import './App.css';
-import CASCallback from './auth/CASCallback';
-import _ProtectedRoute from './auth/ProtectedRoute';
-import UploadPage from './pages/UploadPage';
-import ModifyPage from './pages/ModifyPage';
-import Nav from './components/nav-bar/nav-bar';
-import EditEntry from './pages/edit-entry';
-import FrontPage from './pages/FrontPage';
-import UploadSelectionPage from './pages/UploadSelectionPage';
+import { useState as _useState } from "react";
+import { Route, Routes, BrowserRouter, useLocation } from "react-router-dom";
+import "./App.css";
+import CASCallback from "./auth/CASCallback";
+import _ProtectedRoute from "./auth/ProtectedRoute";
+import UploadPage from "./pages/UploadPage";
+import ModifyPage from "./pages/ModifyPage";
+import Nav from "./components/nav-bar/nav-bar";
+import FrontPage from "./pages/FrontPage";
+import UploadSelectionPage from "./pages/UploadSelectionPage";
+import DatabaseEntryPreviewPage from "./pages/DatabaseEntryPreviewPage";
+import { TableDataFormProvider } from "./DataContext";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function Main() {
   const location = useLocation();
 
   // Check if the current path is `/` (FrontPage)
-  const showNav = location.pathname !== '/';
+  const showNav = location.pathname !== "/";
 
   return (
     <div className="flex flex-col h-screen bg-white">
@@ -32,7 +33,6 @@ function Main() {
           {/* Unprotected routes */}
           <Route path="/" element={<FrontPage />} />
           <Route path="/cas-callback" element={<CASCallback />} />
-          <Route path="edit-entry" element={<EditEntry paperData={[]} />} />
 
           {/* Protected Routes */}
           <Route
@@ -44,6 +44,14 @@ function Main() {
             }
           />
           <Route path="/upload-selection" element={<UploadSelectionPage />} />
+          <Route
+            path="/upload/edit"
+            element={
+              <TableDataFormProvider>
+                <DatabaseEntryPreviewPage />
+              </TableDataFormProvider>
+            }
+          ></Route>
           <Route
             path="/modify"
             element={
@@ -57,6 +65,5 @@ function Main() {
     </div>
   );
 }
-
 
 export default App;

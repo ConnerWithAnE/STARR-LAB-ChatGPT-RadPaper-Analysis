@@ -28,9 +28,9 @@ const upload = multer({
 
 function getAuthMiddleware() {
   if (config.AuthEnable) {
-    return authenticateJWT; 
+    return authenticateJWT;
   }
-  return (req: Request, res: Response, next: Function) => next(); 
+  return (req: Request, res: Response, next: Function) => next();
 }
 
 export default function adminRouter(
@@ -77,33 +77,32 @@ export default function adminRouter(
     "/parseRequest",
     getAuthMiddleware(),
     upload.array("pdfs"),
-    (req: Request, res: Response) => {
-          try {
-            // TODO
-            
-            if (config.MockData) {
-              import("../../test/testfiles/parse_response.json").then(
-                (module) => {
-                  res.send(module.default);
-                },
-              );
-            } else {
-              parsePapers(req.files, gptController).then(
-                (result: GPTResponse[]) => {
-                  console.log(responseToJSON(result));
-                  res.send(responseToJSON(result));
-                },
-              );
-            }
-          } catch (error) {
-            console.error(`${error}`);
-          }
-        },
+    async (req: Request, res: Response) => {
+      try {
+        // TODO
+        if (config.MockData) {
+          import("../../test/testfiles/parse_response.json").then((module) => {
+            console.log("Sending mock data...")
+            res.send(module.default);
+          });
+        } else {
+          await parsePapers(req.files, gptController).then(
+            (result: GPTResponse[]) => {
+              console.log(responseToJSON(result));
+              res.send(responseToJSON(result));
+            },
+          );
+        }
+      } catch (error) {
+        console.error(`${error}`);
+      }
+    },
   );
 
   router.post(
     "/getFullPapers",
-    getAuthMiddleware(), (req: Request, res: Response) => {
+    getAuthMiddleware(),
+    (req: Request, res: Response) => {
       try {
         // More intricate searches can be employed later similar to the table filter
         getFullPaperRows(req.body.search, dbController).then(

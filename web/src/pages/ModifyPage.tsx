@@ -51,7 +51,7 @@ export default function ModifyPage() {
     };
 
     return (
-        <div className="flex flex-col items-center bg h-full">
+        <div className="flex flex-col items-center bg h-screen pt-[65px]">
             <div className="bg-[#F4F4F4] w-[70%]">
                 <div>
                     <div className="py-[4%] text-[#343434] text-4xl">Modify Paper Data</div>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Orders Table with Filters</title>
+        <style>
+            /* General styles */
+            content {
+                width: 100%;
+            }
+
+            .header {
+                box-sizing: border-box;
+            }
+
+            #content #section-1 .container-fluid {
+                max-width: none;
+            }
+
+            .main-container {
+                background-color: #969696;
+            }
+
+            .table-container {
+                width: 100%;
+                overflow-x: auto;
+                background: #afafaf;
+                border-radius: 8px;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Table styles */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 1200px; /* Minimum width to allow horizontal scrolling */
+            }
+
+            td {
+                padding: 12px 16px;
+                text-align: left;
+                border-bottom: 1px solid #3a3a50;
+                border-left: 1px solid #3a3a50;
+                border-right: 1px solid #3a3a50;
+            }
+
+            .table-container th.custom-header-class {
+                padding: 8px 16px;
+                text-align: center;
+                border-left: 1px solid #2c2c3d;
+                border-right: 1px solid #2c2c3d;
+                background-color: #0a613b;
+                font-weight: 500;
+                color: #dcdfe4;
+                white-space: nowrap; /* Prevent headers from wrapping */
+            }
+
+            td {
+                border-top: 1px solid #2c2f3a;
+                white-space: nowrap; /* Prevent content from wrapping */
+                color: #222222;
+            }
+
+            tr:hover {
+            }
+
+            /* Input styles */
+            .filter-input {
+                width: 100%;
+                padding: 6px;
+                border: 1px solid #2c2f3a;
+                border-radius: 4px;
+                background-color: #a0a0a0;
+                color: #1d1d1d;
+                font-size: 12px;
+                box-sizing: border-box;
+            }
+
+            .filter-input::placeholder {
+                color: #6b7280;
+            }
+
+            /* Pagination styles */
+            .pagination {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin-top: 20px; /* Space between table and pagination */
+            }
+
+            .pagination button {
+                background-color: #0b6a41;
+                border: none;
+                color: #ffffff;
+                padding: 8px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+
+            .pagination button:hover {
+                background-color: #0a613b;
+            }
+
+            .pagination button.active {
+                background-color: #095836;
+                color: #ffffff;
+            }
+
+            /* Icon for the right menu dots */
+            .icon-menu {
+                cursor: pointer;
+                color: #9ca3af;
+                font-size: 20px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Table container -->
+        <div class="main-container">
+            <div class="table-container">
+                <table id="radiationTable">
+                    <thead>
+                        <tr>
+                            <th class="custom-header-class">Year</th>
+                            <th class="custom-header-class">Paper Name</th>
+                            <th class="custom-header-class">Author(s)</th>
+                            <th class="custom-header-class">Part Number</th>
+                            <th class="custom-header-class">Type</th>
+                            <th class="custom-header-class">Manufacturer</th>
+                            <th class="custom-header-class">
+                                Testing Location
+                            </th>
+                            <th class="custom-header-class">Testing Type</th>
+                            <th class="custom-header-class">Data Type</th>
+                            <th class="custom-header-class">Custom Field 1</th>
+                            <th class="custom-header-class">Custom Field 2</th>
+                            <th class="custom-header-class">Custom Field 3</th>
+                            <th class="custom-header-class">Custom Field 4</th>
+                            <th class="custom-header-class">Custom Field 5</th>
+                            <th class="custom-header-class">Custom Field 6</th>
+                            <th class="custom-header-class">Custom Field 7</th>
+                            <th class="custom-header-class">Custom Field 8</th>
+                            <th class="custom-header-class">Custom Field 9</th>
+                            <th class="custom-header-class">Custom Field 10</th>
+                            <th class="custom-header-class">Custom Field 11</th>
+                            <th class="custom-header-class">Custom Field 12</th>
+                            <th class="custom-header-class">Custom Field 13</th>
+                            <th class="custom-header-class">Custom Field 14</th>
+                            <th class="custom-header-class">Custom Field 15</th>
+                            <th class="custom-header-class">Custom Field 16</th>
+                        </tr>
+                        <tr>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                            <th class="custom-header-class">
+                                <input class="filter-input" type="text" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Add rows dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination outside the table container -->
+            <div class="pagination">
+                
+            </div>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const tableBody = document.querySelector(
+                    "#radiationTable tbody"
+                );
+                const paginationContainer =
+                    document.querySelector(".pagination");
+                const itemsPerPage = 10;
+                let currentPage = 1;
+                let data = [];
+
+                // Example function to populate the table dynamically (optional)
+                fetch("http://localhost:3000/api/dataRequest/tableRequest", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    //body: JSON.stringify(data),
+                })
+                    .then((response) => response.json()) // Parse JSON response
+                    .then((fetchData) => {
+                        console.log(fetchData);
+                        data = fetchData;
+                        renderTable(currentPage); // Render the table for the first page
+                        createPaginationButtons(data.length);
+                    });
+
+                function renderTable(page) {
+                    tableBody.innerHTML = "";
+                    // Calculate the start and end indices for the current page
+                    const startIndex = (page - 1) * itemsPerPage;
+                    const endIndex = startIndex + itemsPerPage;
+
+                    // Slice the data array to get the items for the current page
+                    const pageData = data.slice(startIndex, endIndex);
+
+                    pageData.forEach((item, index) => {
+                        addRow(item, startIndex + index);
+                    });
+                }
+
+                function addRow(data, index) {
+                    const row = document.createElement("tr");
+
+                    // Assuming 'data' is an object with keys like 'name' and 'message'
+                    for (let key in data) {
+                        if (data.hasOwnProperty(key)) {
+                            if (key === "ROWID") {
+                                continue;
+                            } else {
+                                const cell = document.createElement("td");
+                                cell.textContent = data[key]; // Add the value to the cell
+
+                                row.appendChild(cell);
+                            }
+                        }
+                    }
+                    let backgroundC = index % 2 === 0 ? "#DADADA" : "#EEEEEE";
+                    row.style.backgroundColor = backgroundC;
+                    tableBody.appendChild(row);
+                }
+
+                function createPaginationButtons(totalItems) {
+                    const totalPages = Math.ceil(totalItems / itemsPerPage);
+                    paginationContainer.innerHTML = ""; // Clear existing pagination buttons
+
+                    for (let i = 1; i <= totalPages; i++) {
+                        const button = document.createElement("button");
+                        button.textContent = i;
+                        button.classList.add(i === currentPage ? "active" : null);
+                        button.addEventListener("click", () => {
+                            currentPage = i;
+                            renderTable(currentPage); // Render the new page
+                            updatePaginationButtons();
+                        });
+                        paginationContainer.appendChild(button);
+                    }
+                }
+
+                function updatePaginationButtons() {
+                    const buttons =
+                        paginationContainer.querySelectorAll("button");
+                    buttons.forEach((button) => {
+                        button.classList.remove("active");
+                    });
+                    const activeButton = paginationContainer.querySelector(
+                        `button:nth-child(${currentPage})`
+                    );
+                    if (activeButton) {
+                        activeButton.classList.add("active");
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
