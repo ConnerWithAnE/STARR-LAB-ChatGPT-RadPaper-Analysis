@@ -10,8 +10,9 @@ import {
 } from "@nextui-org/react";
 import EditEntry, { Conflict } from "../../pages/edit-entry";
 import { useEffect, useRef, useState } from "react";
-import { MdWarningAmber } from "react-icons/md";
 import { useForm } from "../../DataContext";
+import { HiCheckCircle } from "react-icons/hi2";
+import { HiExclamationCircle } from "react-icons/hi2";
 
 // TempPaperData is for testing only
 type EntrySliverProp = {
@@ -122,7 +123,6 @@ export default function EntrySliver({
         handleConflictAnalysis(conflict);
       }
     });
-    console.log("entry at end of useEffect", editedEntry);
 
     setEditedEntry(updatedEntry);
 
@@ -166,29 +166,48 @@ export default function EntrySliver({
           {editedEntry.author}
         </div>
       </div>
-      <div className="col-span-2 flex flex-row items-center justify-center gap-2">
+      <div className="col-span-2 flex flex-col gap-2">
         <div>
+          <div>
+            {unresolvedConflicts.length === 0 ? (
+              <div className="flex flex-row gap-2">
+                <HiCheckCircle color="green" size="1.5em" /> No Problems
+              </div>
+            ) : (
+              <></>
+            )}
+          </div>
           {unresolvedConflicts.map((conflict) => {
             return (
-              <div className="text-xs text-left text-slate-900">
+              <div className="text-left text-slate-900">
                 {conflict.severity === 1 ? (
-                  <MdWarningAmber color="yellow" size="1.5em" />
+                  <div className="flex flex-row gap-2">
+                    <HiExclamationCircle color="#FF4542" size="1.5em" /> Review
+                    Required
+                  </div>
                 ) : (
-                  <MdWarningAmber color="red" size="1.5em" />
+                  <></>
                 )}
               </div>
             );
           })}
         </div>
-        <button
-          className="bg-usask-green text-[#DADADA]"
-          onClick={() => onHandleDeleteChange(index)}
-        >
-          Delete Entry
-        </button>
-        <button className="bg-usask-green text-[#DADADA]" onClick={handleOpen}>
-          Modify Entry
-        </button>
+        <div className="flex flex-row justify-end gap-2">
+          <Button
+            className="bg-[#ff5353] text-white rounded-md"
+            size="md"
+            onClick={() => onHandleDeleteChange(index)}
+          >
+            Delete
+          </Button>
+          <Button
+            className="bg-usask-green text-[#DADADA] rounded-md"
+            size="md"
+            onClick={handleOpen}
+          >
+            Review
+          </Button>
+        </div>
       </div>
 
       <Modal
