@@ -1,4 +1,11 @@
-import { Button } from "@nextui-org/react";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  useDisclosure,
+} from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GPTResponse } from "../types/types";
 import { useEffect, useState } from "react";
@@ -13,6 +20,11 @@ export default function DatabaseEntryPreviewPage() {
   const { initialGPTPasses, setInitialGPTPasses, tableEntries } = useForm();
   setInitialGPTPasses(data);
 
+  const { onOpenChange } = useDisclosure();
+  // for the exit modal
+  const [isOpen, setIsOpen] = useState(false);
+  const [confirmExit, setConfirmExit] = useState(false);
+
   //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
   //const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
 
@@ -24,8 +36,22 @@ export default function DatabaseEntryPreviewPage() {
   //   // });
   // };
 
-  const navigateToUpload = () => {
-    navigate("/upload");
+  useEffect(() => {
+    if (confirmExit) {
+      navigate("/upload");
+    }
+  }, [confirmExit]);
+
+  const handleExit = () => {
+    setIsOpen(true);
+  };
+
+  const stayOnPage = () => {
+    setIsOpen(false);
+  };
+
+  const exit = () => {
+    setConfirmExit(true);
   };
 
   const checkEntries = () => {
@@ -99,10 +125,42 @@ export default function DatabaseEntryPreviewPage() {
         <Button
           className="bg-[#ff5353] text-white rounded-md"
           type="submit"
-          onClick={navigateToUpload}
+          onClick={handleExit}
         >
           Cancel
         </Button>
+      </div>
+
+      <div>
+        <Modal
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+          hideCloseButton={true}
+        >
+          <ModalContent>
+            {() => (
+              <>
+                <ModalBody>
+                  <div className="flex flex-col gap-4 text-center p-4">
+                    <h2>Discard changes?</h2>
+                    <p>All entries will be discarded.</p>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button className="bg-[#ff5353] text-white" onPress={exit}>
+                    Yes
+                  </Button>
+                  <Button
+                    className="bg-usask-green text-[#DADADA]"
+                    onPress={stayOnPage}
+                  >
+                    No
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
       </div>
     </div>
   );

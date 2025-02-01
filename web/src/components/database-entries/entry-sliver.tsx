@@ -183,7 +183,7 @@ export default function EntrySliver({
                 {conflict.severity === 1 ? (
                   <div className="flex flex-row gap-2">
                     <HiExclamationCircle color="#FF4542" size="1.5em" /> Review
-                    Required
+                    Recommended
                   </div>
                 ) : (
                   <></>
@@ -215,6 +215,7 @@ export default function EntrySliver({
         onOpenChange={onOpenChange}
         size="full"
         scrollBehavior="inside"
+        hideCloseButton={true}
       >
         <ModalContent>
           {() => {
@@ -232,7 +233,10 @@ export default function EntrySliver({
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="light" onPress={handleCancel}>
+                  <Button
+                    className="bg-[#ff5353] text-white rounded-md"
+                    onPress={handleCancel}
+                  >
                     Cancel
                   </Button>
                   <Button
