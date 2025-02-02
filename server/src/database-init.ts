@@ -5,18 +5,21 @@ import path from "path";
 const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: path.resolve(__dirname, "../database.db"),
-  //   storage: "./database.db",
+  // logging: false
 });
 
-// Test the connection
-(async () => {
+const initializeDatabase = async () => {
   try {
     await sequelize.authenticate();
     console.log("Database connection has been established successfully.");
+
+    // Sync all defined models to the database
+    await sequelize.sync({ alter: true }); // `alter: true` will update tables to match the models
+    console.log("Database schema synchronized successfully.");
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Unable to connect to the database or sync schema:", error);
     throw error;
   }
-})();
+};
 
-export default sequelize;
+export { sequelize, initializeDatabase };

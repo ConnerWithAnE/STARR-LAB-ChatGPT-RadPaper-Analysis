@@ -3,7 +3,9 @@ import sqlite3 from "sqlite3";
 import cors from "cors";
 import bodyParser from "body-parser";
 import { open, Database } from "sqlite";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
+
+import { initializeDatabase } from "./database-init";
 
 // Import routers
 
@@ -15,9 +17,10 @@ import adminRouter from "./routes/admin-router";
 import { GPTController } from "./gpt-controller";
 import { GPTModel } from "./enums";
 
+dotenv.config();
+
 const app = express();
 const PORT = process.env.PORT || 3000; // Use environment variable if available, otherwise default to 3000
-dotenv.config();dotenv.config();
 /* In the future this will be used to ensure that only requests from certain domains are accepted
 const corsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allowed: boolean) => void) => {
@@ -35,30 +38,45 @@ const corsOptions = {
 };
 
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ limit: '10mb', extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
-async function initializeSystem(): Promise<{dbController: DatabaseController, gptController: GPTController}> {
+async function initializeSystem(): Promise<{
+  dbController: DatabaseController;
+  gptController: GPTController;
+}> {
   const db = await open({
     filename: "./database.db",
     driver: sqlite3.Database,
   });
-  return {dbController: new DatabaseController(db), gptController: new GPTController(GPTModel.GPT4Turbo)};
+  return {
+    dbController: new DatabaseController(db),
+    gptController: new GPTController(GPTModel.GPT4Turbo),
+  };
 }
 
-initializeSystem().then(({dbController, gptController}) => {
+initializeSystem().then(({ dbController, gptController }) => {
   app.use("/", exampleRouter);
   //app.use("/getTable", tableRouter)
   app.use("/api/dataRequest", cascadeRouter(dbController));
   app.use("/api/adminRequest", adminRouter(dbController, gptController));
-    //FOR QUICKLY TESTING A PAPER: Uncomment paper to test it. Run "localhost:3000/parse" in a browser to parse the paper and see results in console
-    // app.use("/parse", () => {        
-    //     gptController.runGPTAnalysis(["./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"]);
-    //     // gptController.runGPTAnalysis(["./test/testfiles/A_radiation_tolerant_video_camera_for_high_total_dose_environments.pdf"]);
-    //     // gptController.runGPTAnalysis(["./test/testfiles/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf"]);
-    //     // gptController.runGPTAnalysis(["./test/testfiles/Solar_flare_proton_environment_for_estimating_downtime_of_spacecraft_CCDs.pdf"]);
-    //     // gptController.runGPTAnalysis(["./test/testfiles/slvk121.pdf"]);
-    // });
+  //FOR QUICKLY TESTING A PAPER: Uncomment paper to test it. Run "localhost:3000/parse" in a browser to parse the paper and see results in console
+  // app.use("/parse", () => {
+  //     gptController.runGPTAnalysis(["./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"]);
+  //     // gptController.runGPTAnalysis(["./test/testfiles/A_radiation_tolerant_video_camera_for_high_total_dose_environments.pdf"]);
+  //     // gptController.runGPTAnalysis(["./test/testfiles/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf"]);
+  //     // gptController.runGPTAnalysis(["./test/testfiles/Solar_flare_proton_environment_for_estimating_downtime_of_spacecraft_CCDs.pdf"]);
+  //     // gptController.runGPTAnalysis(["./test/testfiles/slvk121.pdf"]);
+  // });
+
+  (async () => {
+    try {
+      await initializeDatabase(); // Call it once
+      console.log("Database initialized successfully.");
+    } catch (error) {
+      console.error("Failed to initialize the database:", error);
+    }
+  })();
 
   app.listen(PORT, () => {
     console.log(`Server is running on ${PORT}`);
