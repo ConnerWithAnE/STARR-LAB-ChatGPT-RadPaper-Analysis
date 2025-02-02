@@ -85,9 +85,6 @@ TestingData.init(
     flight: {
       type: DataTypes.BOOLEAN,
     },
-    notes: {
-      type: DataTypes.TEXT,
-    },
   },
   { sequelize, modelName: "testing_data" },
 );
@@ -126,6 +123,9 @@ TIDData.init(
       type: DataTypes.BOOLEAN,
     },
     power_usage_description: {
+      type: DataTypes.TEXT,
+    },
+    special_notes: {
       type: DataTypes.TEXT,
     },
   },
@@ -169,6 +169,9 @@ SEEData.init(
     cross_section_type: {
       type: DataTypes.TEXT,
     },
+    special_notes: {
+      type: DataTypes.TEXT,
+    },
   },
   { sequelize, modelName: "see_data" },
 );
@@ -186,6 +189,9 @@ DDData.init(
       type: DataTypes.FLOAT,
     },
     damage_level_description: {
+      type: DataTypes.TEXT,
+    },
+    special_notes: {
       type: DataTypes.TEXT,
     },
   },
