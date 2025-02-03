@@ -26,9 +26,12 @@ export default function EntrySliver({
   index,
   onHandleDeleteChange,
 }: EntrySliverProp) {
-  // for the modal
+  // for the edit-entry modal
   const { onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
+
+  // for the cancel edit entry modal
+  const [openCancelModal, setOpenCancelModal] = useState(false);
 
   // for modifying entries
   const { addEntry, updateEntry2, tableEntries } = useForm();
@@ -138,6 +141,11 @@ export default function EntrySliver({
       author: editedEntry.author,
     } as UpdateData);
     setOpen(false);
+    setOpenCancelModal(false);
+  };
+
+  const handleOpenCancelModal = () => {
+    setOpenCancelModal(true);
   };
 
   const handleOpen = () => {
@@ -210,6 +218,7 @@ export default function EntrySliver({
         </div>
       </div>
 
+      {/* edit-entry modal */}
       <Modal
         isOpen={open}
         onOpenChange={onOpenChange}
@@ -235,7 +244,7 @@ export default function EntrySliver({
                 <ModalFooter>
                   <Button
                     className="bg-[#ff5353] text-white rounded-md"
-                    onPress={handleCancel}
+                    onPress={handleOpenCancelModal}
                   >
                     Cancel
                   </Button>
@@ -249,6 +258,36 @@ export default function EntrySliver({
               </>
             );
           }}
+        </ModalContent>
+      </Modal>
+
+      {/* cancel edit modal */}
+      <Modal isOpen={openCancelModal} hideCloseButton={true}>
+        <ModalContent>
+          {() => (
+            <>
+              <ModalBody>
+                <div className="flex flex-col gap-4 text-center p-4">
+                  <h2>Discard changes?</h2>
+                  <p>All changes to this entry will be discarded.</p>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  className="bg-[#ff5353] text-white"
+                  onPress={handleCancel}
+                >
+                  Yes
+                </Button>
+                <Button
+                  className="bg-usask-green text-[#DADADA]"
+                  onPress={() => setOpenCancelModal(false)}
+                >
+                  No
+                </Button>
+              </ModalFooter>
+            </>
+          )}
         </ModalContent>
       </Modal>
     </div>
