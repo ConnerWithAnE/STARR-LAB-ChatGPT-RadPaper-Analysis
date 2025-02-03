@@ -1,4 +1,10 @@
-import { GPTResponse, hasEmptyProperty, UpdateData } from "../../types/types";
+import {
+  GPTResponse,
+  hasEmptyProperty,
+  Severity,
+  UpdateData,
+  Conflict,
+} from "../../types/types";
 import {
   Modal,
   ModalContent,
@@ -8,13 +14,13 @@ import {
   useDisclosure,
   Button,
 } from "@nextui-org/react";
-import EditEntry, { Conflict } from "../../pages/edit-entry";
+import EditEntry from "../../pages/edit-entry";
 import { useEffect, useRef, useState } from "react";
 import { useForm } from "../../DataContext";
 import { HiCheckCircle } from "react-icons/hi2";
+import { HiExclamationTriangle } from "react-icons/hi2";
 import { HiExclamationCircle } from "react-icons/hi2";
 
-// TempPaperData is for testing only
 type EntrySliverProp = {
   gptPass: GPTResponse;
   index: number;
@@ -49,19 +55,33 @@ export default function EntrySliver({
 
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
-  const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict[]>(
-    []
-  );
+  const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>({
+    yellowSeverity: [],
+    redSeverity: [],
+  });
 
   useEffect(() => {
     if (hasRun.current) return; // Prevent duplicate execution
     hasRun.current = true;
     let updatedEntry = { ...editedEntry };
+    const updatedConflicts = {
+      yellowSeverity: [...unresolvedConflicts.yellowSeverity],
+      redSeverity: [...unresolvedConflicts.redSeverity],
+    };
 
-    const handleConflictAnalysis = (conflict: Conflict) => {
-      setUnresolvedConflicts((prevUnresolvedConflicts) => {
-        return [...prevUnresolvedConflicts, conflict];
-      });
+    const addConflict2 = (
+      currentConflicts: Conflict,
+      dataType: string,
+      severity: Severity
+    ) => {
+      switch (severity) {
+        case 1:
+          currentConflicts.yellowSeverity.push(dataType);
+          break;
+        case 2:
+          currentConflicts.redSeverity.push(dataType);
+          break;
+      }
     };
 
     console.log("passes", passes);
@@ -99,35 +119,24 @@ export default function EntrySliver({
       }
       // if only 2 out of 3 entries are equal
       else if (pass_1 === pass_2 || pass_1 === pass_3) {
-        const conflict: Conflict = {
-          severity: 1,
-          dataType: key,
-        };
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
         };
-        handleConflictAnalysis(conflict);
+        addConflict2(updatedConflicts, key, 1);
       } else if (pass_2 === pass_3) {
-        const conflict: Conflict = {
-          severity: 1,
-          dataType: key,
-        };
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_2[typesafeKey],
         };
-        handleConflictAnalysis(conflict);
+        addConflict2(updatedConflicts, key, 1);
       } else {
-        const conflict: Conflict = {
-          severity: 2,
-          dataType: key,
-        };
-        handleConflictAnalysis(conflict);
+        addConflict2(updatedConflicts, key, 2);
       }
     });
 
     setEditedEntry(updatedEntry);
+    setUnresolvedConflicts(updatedConflicts);
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
     if (!hasEmptyProperty(editedEntry)) {
@@ -177,28 +186,48 @@ export default function EntrySliver({
       <div className="col-span-2 flex flex-col gap-2">
         <div>
           <div>
-            {unresolvedConflicts.length === 0 ? (
-              <div className="flex flex-row gap-2">
-                <HiCheckCircle color="green" size="1.5em" /> No Problems
-              </div>
+            {unresolvedConflicts.redSeverity.length > 0 ? (
+              <>
+                <div className="text-left text-slate-900">
+                  <div className="flex flex-row gap-2">
+                    <HiExclamationCircle color="#FF4542" size="1.5em" /> Review
+                    Required
+                  </div>
+                </div>
+              </>
             ) : (
               <></>
             )}
           </div>
-          {unresolvedConflicts.map((conflict) => {
-            return (
-              <div className="text-left text-slate-900">
-                {conflict.severity === 1 ? (
+          <div>
+            {unresolvedConflicts.redSeverity.length === 0 &&
+            unresolvedConflicts.yellowSeverity.length > 0 ? (
+              <>
+                <div className="text-left text-slate-900">
                   <div className="flex flex-row gap-2">
-                    <HiExclamationCircle color="#FF4542" size="1.5em" /> Review
-                    Recommended
+                    <HiExclamationTriangle color="#fdc700" size="1.5em" />
+                    Review Recommended
                   </div>
-                ) : (
-                  <></>
-                )}
-              </div>
-            );
-          })}
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
+          <div>
+            {unresolvedConflicts.redSeverity.length === 0 &&
+            unresolvedConflicts.yellowSeverity.length === 0 ? (
+              <>
+                <div className="text-left text-slate-900">
+                  <div className="flex flex-row gap-2">
+                    <HiCheckCircle color="green" size="1.5em" /> No Problems
+                  </div>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
         <div className="flex flex-row justify-end gap-2">
           <Button
