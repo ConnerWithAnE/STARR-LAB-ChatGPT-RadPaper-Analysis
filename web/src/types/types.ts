@@ -85,6 +85,11 @@ function isTesting(data: unknown): data is Testing {
   return data === "SEE" || data === "TID" || data === "DD" || data === "OTHER";
 }
 
+export type Conflict = {
+  yellowSeverity: string[];
+  redSeverity: string[];
+};
+
 export function hasEmptyProperty(obj: UpdateData): boolean {
   return Object.values(obj).some(
     (value) =>

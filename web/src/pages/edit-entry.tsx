@@ -1,21 +1,20 @@
 import { Accordion, AccordionItem, Input, Textarea } from "@nextui-org/react";
 import { useState } from "react";
-import { PaperData, UpdateData, validationFunc } from "../types/types";
+import {
+  PaperData,
+  UpdateData,
+  validationFunc,
+  Conflict,
+} from "../types/types";
 import { GPTResponse } from "../types/types";
 import { MdWarningAmber } from "react-icons/md";
-import { Severity } from "../types/types";
 
 type PaperProps = {
   paperData?: PaperData;
   entryData?: GPTResponse;
   editedEntry: UpdateData;
   setEditedEntry: React.Dispatch<React.SetStateAction<UpdateData>>;
-  unresolvedConflicts: Conflict[];
-};
-
-export type Conflict = {
-  severity: Severity;
-  dataType: string;
+  unresolvedConflicts: Conflict;
 };
 
 export default function EditEntry({
@@ -144,16 +143,19 @@ export default function EditEntry({
         </div>
         <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
-          {unresolvedConflicts.map((conflict) => {
+          {unresolvedConflicts.redSeverity.map((conflict) => {
             return (
-              <div className="flex flex-row gap-2 align-center justify-center">
-                <br></br>
-                {conflict.severity === 1 ? (
-                  <MdWarningAmber color="yellow" size="1.5em" />
-                ) : (
-                  <MdWarningAmber color="red" size="1.5em" />
-                )}
-                {conflict.dataType}
+              <div className="flex flex-row gap-2">
+                <MdWarningAmber color="red" size="1.5em" />
+                <div>{conflict}</div>
+              </div>
+            );
+          })}
+          {unresolvedConflicts.yellowSeverity.map((conflict) => {
+            return (
+              <div key={conflict} className="flex flex-row gap-2">
+                <MdWarningAmber color="yellow" size="1.5em" />
+                <div>{conflict}</div>
               </div>
             );
           })}
