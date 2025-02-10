@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GPTResponse } from "../types/types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
 
@@ -17,7 +17,7 @@ export default function DatabaseEntryPreviewPage() {
   const location = useLocation();
   const data = location.state.resp;
 
-  const { initialGPTPasses, setInitialGPTPasses, tableEntries } = useForm();
+  const { initialGPTPasses, setInitialGPTPasses, tableEntries, removeEntry, removePass } = useForm();
   setInitialGPTPasses(data);
 
   const { onOpenChange } = useDisclosure();
@@ -66,13 +66,21 @@ export default function DatabaseEntryPreviewPage() {
     setPaperAreaHeight(window.innerHeight - 200 - 65); // 200 for header, 65 for navbar
   };
 
+  // const hasRun = useRef(false);
+
+  // useEffect(() => {
+  //   if (hasRun.current) return; // Prevent duplicate execution
+  // });
+
   const onHandleDeleteEntry = (index: number) => {
-    console.log("delete", index);
-    // console.log("delete", index);
-    // const entryToDelete = gptPasses[index];
-    // const newData = gptPasses.filter((item) => item !== entryToDelete);
-    // console.log("newData", newData);
-    // setGPTPasses(newData);
+    console.log("delete", index);     // index is ROWID
+    console.log("Data: ", data)
+    removeEntry(index);
+    removePass(index);
+
+    // console.log("Updated data: ", data)
+    // console.log("Updated GPT passes: ", initialGPTPasses);
+    console.log("Delete Done!")
   };
 
   useEffect(() => {

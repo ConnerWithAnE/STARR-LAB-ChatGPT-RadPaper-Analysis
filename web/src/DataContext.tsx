@@ -23,6 +23,7 @@ interface TableDataContextType {
   updateEntry2: (id: number, value: UpdateData) => void;
   addEntry: (entry: UpdateData) => void;
   removeEntry: (id: number) => void;
+  removePass: (id: number) => void;
   retrieveEntry: (id: number) => UpdateData | undefined;
 }
 
@@ -34,6 +35,7 @@ const defaultValue: TableDataContextType = {
   updateEntry2: () => {},
   addEntry: () => {},
   removeEntry: () => {},
+  removePass: () => {},
   tableEntries: [],
   retrieveEntry: () => undefined,
 };
@@ -53,6 +55,10 @@ export const TableDataFormProvider = ({
   useEffect(() => {
     console.log("Updated contacts:", tableEntries);
   }, [tableEntries]);
+
+  useEffect(() => {
+    console.log("Updated GPT Passes:", initialGPTPasses);
+  }, [initialGPTPasses]);
 
   function updateEntry<K extends keyof UpdateData>(
     id: number,
@@ -86,6 +92,24 @@ export const TableDataFormProvider = ({
 
   function removeEntry(id: number) {
     setTableEntries((prev) => prev.filter((entry) => entry.ROWID !== id));
+    console.log("GPs:", initialGPTPasses);
+  }
+
+  function removePass(indexROWID: number) {
+    // Get array index from ROWID
+    var arr_ind: number = tableEntries.findIndex((item) => item.ROWID === indexROWID);
+    console.log(arr_ind)
+    // const passes = initialGPTPasses;
+    // setInitialGPTPasses(passes.splice(arr_ind, 1))
+
+    const updatedPasses: GPTResponse[] = []
+    for(let i = 0; i < initialGPTPasses.length; i++) {
+      if(i !== arr_ind) {
+        updatedPasses.push(initialGPTPasses[i]);
+      }
+    }
+    console.log("UpdatedPasses:", updatedPasses)
+    setInitialGPTPasses(updatedPasses)
   }
 
   function retrieveEntry(id: number) {
@@ -101,6 +125,7 @@ export const TableDataFormProvider = ({
         updateEntry,
         addEntry,
         removeEntry,
+        removePass,
         retrieveEntry,
         updateEntry2,
       }}
