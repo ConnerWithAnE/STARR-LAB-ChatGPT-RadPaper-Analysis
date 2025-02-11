@@ -23,10 +23,8 @@ export default function DatabaseEntryPreviewPage() {
   // for the exit modal
   const [isOpen, setIsOpen] = useState(false);
   const [confirmExit, setConfirmExit] = useState(false);
-  const [passData, setPassData] = useState(data);
-  console.log("Setting data...")
+  const [passData, setPassData] = useState(data);       // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
-  console.log("SetData: ", passData);
 
   //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
   //const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
@@ -69,23 +67,14 @@ export default function DatabaseEntryPreviewPage() {
     setPaperAreaHeight(window.innerHeight - 200 - 65); // 200 for header, 65 for navbar
   };
 
-  // const hasRun = useRef(false);
-
-  // useEffect(() => {
-  //   if (hasRun.current) return; // Prevent duplicate execution
-  // });
-
   const onHandleDeleteEntry = (index: number) => {
     console.log("delete", index);     // index is ROWID
-    console.log("Data: ", passData)
     
-    setPassData(removePass(index));
+    const updatePasses = removePass(index);
+    setPassData(updatePasses);
     setInitialGPTPasses(passData)
     removeEntry(index);
-    // let data2 = location.state.resp;
 
-    console.log("Updated data: ", passData)
-    // console.log("Updated GPT passes: ", initialGPTPasses);
     console.log("Delete Done!")
   };
 

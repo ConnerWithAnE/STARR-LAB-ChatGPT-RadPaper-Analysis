@@ -57,7 +57,7 @@ export const TableDataFormProvider = ({
   }, [tableEntries]);
 
   useEffect(() => {
-    console.log("Updated GPT Passes:", initialGPTPasses);
+    console.log("Updated GPTPasses:", initialGPTPasses);
   }, [initialGPTPasses]);
 
   function updateEntry<K extends keyof UpdateData>(
@@ -103,7 +103,6 @@ export const TableDataFormProvider = ({
         updatedPasses.push(initialGPTPasses[i]);
       }
     }
-    console.log("UpdatedPasses:", updatedPasses)
     return updatedPasses;
   }
 
