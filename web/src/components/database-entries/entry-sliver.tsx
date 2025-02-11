@@ -35,6 +35,7 @@ export default function EntrySliver({
   // for the edit-entry modal
   const { onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
+  console.log(gptPass)
 
   // for the cancel edit entry modal
   const [openCancelModal, setOpenCancelModal] = useState(false);
@@ -50,6 +51,19 @@ export default function EntrySliver({
       return { ROWID: index } as UpdateData;
     }
   });
+  console.log(editedEntry)
+  console.log(gptPass.pass_1.paper_name === editedEntry.paper_name)
+  console.log("TableEntries: ", tableEntries)
+
+  useEffect(() => {
+    let newentry = tableEntries[index];
+    if (newentry) {
+      return setEditedEntry(newentry);
+    } else {
+      setEditedEntry({ ROWID: index } as UpdateData);
+    }
+  }, [tableEntries]);
+
   // React's strict mode makes every callback run twice. This is to prevent that
   const hasRun = useRef(false);
 
