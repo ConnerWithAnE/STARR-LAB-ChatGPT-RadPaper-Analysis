@@ -28,7 +28,7 @@ export default function PaperGallery({ papers }: PaperGalleryProps) {
 
     return (
         <div
-            className="overflow-y-scroll"
+            className="overflow-y-scroll "
             style={{
                 height: paperAreaHeight - 30,
                 

@@ -1,0 +1,743 @@
+You are a radiation effects reasearcher. Use your knowledge to give very concise and numerical answers to the questions. Please do not give citations
+
+"What is the title of the paper",
+  "Which year was the paper published",
+  "What are all of the author's names, in the format (J. Doe) in a \"¶\" separated list",
+  "What is the part no. of the part studied by the paper. If there is more than one, list them",     // There can be more than one part no. in a paper
+  "What is the type of part or parts (eg. switching regulator) mentioned in the paper. If there is more than one, list them",
+  "Who is the manufacturer. If there is more than one, list them",         // There can be more than one manufacturer in a paper if multiple parts are mentioned
+  "What is the type of testing location: Respond to this question with \"Terrestrial\" for a terrestial testing location, or \"Flight\" for a flight testing location",
+  "What type of testing was done: Respond to this question with \"TID\" for Total Ionizing Dose testing, \"SEE\" for heavy ion, proton, laser, or neutron testing, \"DD\" for displacement damage testing, or \"OTHER\" if you are not completely 100% sure",
+
+Radiation Effects Predicted, Observed, and
+Compared for Spacecraft Systems
+Bruce E. Pritchard, Gary M. Swift, Allan H. Johnston
+Jet Propulsion Laboratory
+California Institute of Technology
+Pasadena, California USA
+Bruce.E.Pritchard@jpl.nasa.gov
+tively few papers have dealt with the performance of working
+spacecraft that were designed to withstand space radiation
+effects.
+
+Abstract—This paper documents radiation effects observed in
+selected spacecraft at the system and subsystem levels, and where
+possible, relates them to predicted radiation effects in parts.
+Comparisons are also made as functions of design paradigm,
+assurance philosophy, and the vintage and complexity of the
+parts and the system.
+
+II. PREFACE
+Before beginning discussions of anomalies, it is important
+to stress a few points. The most important point to remember
+is that, in many cases, observed anomalies or component failures have occurred long after the intended or expected design
+life. Such systems have met every criterion for success, and
+such a system can scarcely be criticized for experiencing
+“failures” after all requirements have been met. Indeed, most
+of the spacecraft mentioned herein have been very successful
+in completing their mission goals. The point is simply to note
+what component or systems failures are observed, even if they
+are beyond their design life, and determine if this information
+can be of use in future designs, some of which may have even
+longer life or higher radiation requirements.
+
+Keywords—radiation; latchup; spacecraft; anomalies;
+optocouplers
+
+I.
+INTRODUCTION
+Most available technical information on radiation effects is
+for component or subsystem tests, and such tests are almost
+always limited to terrestrial radiation simulators (e.g., ion
+beam accelerators, Cobalt-60 cells, etc.). Very few studies
+have addressed radiation effects observed in space at the system level, although some spacecraft have carried component
+test boards for the express purpose of testing significant numbers of parts in space expected to be susceptible to radiation
+effects. This paper concentrates on system-level responses
+observed and/or predicted to occur in spacecraft electronic and
+optoelectronic parts due to radiation exposure, and where possible, correlation between the two. Missions considered in this
+paper were selected on the basis of experiencing “interesting”
+or otherwise significant anomalies providing information on
+various radiation effects in systems. Typical single-event upsets (SEUs) are not noted herein, as they are expected and
+almost always mitigated. Table 1 lists the missions considered
+in this paper.
+
+Table 1. Selected Missions with Associated Radiation Issues
+Mission
+
+Launch
+Date
+
+Purpose
+
+Radiation Issue(s)
+
+Safe-holds; analog switches
+may fail due to total dose (has
+Planetary
+exploration (Jupiter) already exceeded its design
+requirement)
+Earth observation
+TOPEXPermanent failure of
+8-10-92 (oceanography);
+Poseidon
+optocouplers
+1336 km, 66°)
+Modem anomaly on surface of
+Mars
+Mars surface
+12-4-96
+Mars; later concluded unlikely
+Pathfinder
+exploration
+to be caused by radiation.
+Planetary
+Transients in comparators
+Cassini 10-15-97 exploration (Saturn
+Solid-state recorder errors
+and its moon, Titan)
+Technology demonLatchup in stellar reference
+Deep
+strations, ion propul10-24-98
+unit, upset in solar panel control
+Space 1
+sion, interplanetary
+electronics, safe-hold.
+exploration (comet)
+Earth observation
+GPS receiver failure, 1553 bus
+QuikScat 6-19-99
+(oceanography)
+lockups
+Map chemicals &
+Entered Safe mode, due to
+Mars
+4-7-01 minerals, look for
+processor reset caused by latch
+Odyssey
+hydrogen/water
+upset in DRAM.
+Resets, reboots, double-bit
+errors in MMU-A, some GPS
+Gravity mapping
+GRACE
+3-17-02
+errors and A-ICU failure
+(~485 km, 89°)
+(possible)
+Galileo
+
+Various radiation effects have been predicted to occur in
+spacecraft electronic parts due to the different types of radiation in space. A number of flight anomalies have been observed in spacecraft. This paper gathers analytical predictions,
+assembles available observational data from the spacecraft,
+and where possible, compares data with predictions. The
+goals are not only to correlate observations with predictions,
+thereby improving our knowledge of space radiation effects,
+but also to provide guidance in designs of future spacecraft
+electronics to have improved tolerance to the various radiation
+effects.
+A limited amount of information is available from the
+CRRES (Combined Release and Radiation Effects Satellite)
+program [1,2], as well as a few others [3,4,5]. However, relaThe research in this paper was carried out at the Jet Propulsion Laboratory,
+California Institute of Technology, under contract with the National Aeronautics and Space Administration (NASA).
+
+10-18-89
+
+0-7803-7544-0/02/$17.00 © 2002 IEEE
+
+7
+Authorized licensed use limited to: University of Saskatchewan. Downloaded on November 23,2024 at 01:00:58 UTC from IEEE Xplore. Restrictions apply.
+
+design life, as well as beyond its radiation requirements. It was
+originally designed to last three years, but the spacecraft still
+operates and continues to provide data. Proton-induced displacement damage failures have occurred in some of its 4N49
+optocouplers. Earlier failures have been observed with these
+parts in applications involving status signals, which are not
+flight-critical. More recently, failures have been observed in
+thruster command circuits. The failure times and proton fluences correlate with the circuit applications’ required Current
+Transfer Ratios (CTRs) [9]. The status circuits had a higher
+CTR requirement (0.5), whereas the thruster circuit’s requirement was lower (0.2). Thus, it is logical that the degradation
+would cause failure earlier in the circuit with the higher requirement, and in fact, this was the case.
+
+Another important point is that anomalies cannot always
+be fully resolved. Anomalies can occur for a variety of reasons
+unrelated to ionizing radiation in electronic components, e.g.,
+EMI, spacecraft charging, temperature effects, shock, vibration, and premature component failures for reliability reasons,
+etc. This paper only discusses anomalies where radiation is
+either the proven root cause or else a strong candidate.
+III.
+
+DISCUSSION
+
+A. Galileo
+Galileo was launched in October 18, 1989 on a planetary
+exploration mission to Jupiter. Its design was classical for
+deep space missions designed in the early eighties. It was built
+with fully tested, space-quality parts that were either radiationhardened or screened for hardness. Several safe-holds have
+been observed (none of which significantly impacted the mission). These are believed to be due to SEUs. No destructive
+latchups have been observed. (Far more detailed analysis is
+provided in [6].) These observations are consistent with the
+design approach, which included using hardened parts with
+system-level redundancy including some error detection capability (i.e., parity), but limited correction capability. Error Detection and Correction (EDAC) was not used, because the
+parts were designed for SEU immunity. Sandia manufactured
+radiation-hardened CMOS versions of the AM2901 bit-slice
+(known as the SA2901) and several related chips specifically
+for Galileo, and these were tested by JPL and found to meet
+all requirements [7].
+
+At the time of the original calculations, the manufacturer of
+the flight lot of parts was not known. Therefore, parts of two
+qualified vendors were tested, and the results correlated well
+with the observed failures [9]. The manufacturer of the flight
+optocouplers has since been determined to be Texas Instruments (TI). Unfortunately, available test data for TI parts [10]
+only covers the range of 1-10 mA, whereas the forward current of the status circuit application is 0.55 mA. However, if
+CTR were extrapolated to 0.5 mA (as suggested by the spacing of the CTR data points over the 1-10 mA range), CTR
+would be expected to drop below 0.5 at approximately 2
+krads. This corresponds to a fluence of ~1.3 x 106 p/cm2,
+which is consistent with the failure fluence calculated in [9].
+The thruster latch valve circuits operate at 8 mA and only
+require a CTR value of 0.2. These parts were predicted [9] to
+fail 8.5-10 years after launch. One circuit failed in May 2001,
+which was 8.75 years after launch, which was well inside the
+predicted window of time for failure. The estimated fluence at
+that time was 5.78 x 1010 p/cm2 (proton dose of 8.67 krads).
+However, available test data for TI parts does not contain
+enough information to calculate a failure fluence.
+
+Galileo has been an extremely successful mission. Its mission has been extended twice, and it has now absorbed approximately four times more radiation than it was designed to
+(~600 krads vs. 150 krads), and it continues to operate properly. None of the radiation anomalies has impacted the mission. All the appropriate actions were taken in the design to
+assure that no radiation failures would occur.
+
+C. Mars Pathfinder
+Launched on December 4, 1996, to explore the surface of
+Mars, this is another example of a mission that met all its mission requirements. Pathfinder and the Sojourner rover used
+many parts that were either radiation hardened or else
+screened to meet its radiation requirements. It did experience a
+nondestructive anomaly in a modem circuit on the surface of
+Mars, but the unit was still able to complete its mission. An
+investigation concluded that the anomaly was not likely to
+have been caused by an SEU or latchup.
+
+As Galileo’s goals were met and exceeded, attention shifted
+to extending its mission to accomplish further scientific investigation. One item to consider in such a mission extension is
+the expected remaining life of its parts, which required considering both the radiation exposures accumulated thus far, plus
+those anticipated in a mission extension. Analytical predictions have been made regarding total dose failure on DG-181
+analog switches. Based on calculated total ionizing dose, at
+least one of these parts has reached its circuit design threshold
+for parametric failure [8]. This is not a problem, as Galileo no
+longer relies on that part for any critical functions.
+
+D. Cassini
+Cassini was launched on October 15, 1997. It used a SolidState Recorder (SSR) instead of a mechanical tape recorder.
+The SSR has experienced single-bit errors in line with predictions. However, the SSR has had a double-bit error rate much
+higher than predicted. In addition, its Solid-State Power
+Switches (SSPS) have averaged 1½ trips per year. These
+anomalies are discussed in the following subsections.
+
+In terms of lessons to offer for future spacecraft designers,
+Galileo is basically a list of things done right. Use of modern
+EDAC capability (i.e., modified Hamming code) is more typical in present designs, but Galileo’s approach worked well,
+primarily because of its widespread use of hardened parts.
+However, even hardened parts such as those used in Galileo
+can experience occasional SEUs, and these are probably irreducible without use of redundancy and/or software that is alert
+to detection of SEU-induced anomalies.
+
+1) Uncorrectable Double-Bit Errors: Unlike the SEU
+error rate, the number of uncorrectable, double-bit errors
+observed in the Solid-State Recorder (SSR) was much higher
+than originally predicted (i.e., orders of magnitude). Research
+has shown that the high density dynamic RAMs (Oki 1Mb x 4
+DRAMs, which was high density at the time) are very
+
+B. TOPEX/Poseidon
+Launched on August 10, 1992 into a 66°, 1336-km orbit,
+this is another example of a mission that has met all requirements and still continues to operate well beyond its intended
+
+8
+Authorized licensed use limited to: University of Saskatchewan. Downloaded on November 23,2024 at 01:00:58 UTC from IEEE Xplore. Restrictions apply.
+
+susceptible to Multiple-Bit Upsets (MBUs) [11]. Furthermore,
+while Error Detection and Correction (EDAC) was utilized as
+required in the SSR (i.e., Single-Bit Correction, Double-Bit
+Detection, known as SEC-DED), the design did not anticipate
+the manner in which MBUs could occur within words. The
+design uses DRAMs that are four bits wide, and the bits are
+physically separated such that MBUs cannot occur in a 4-bit
+segment. The same research showed that the SSR stored each
+39-bit word divided across five DRAMs (32 bits of data plus 7
+bits for EDAC). Thus, when a word is read, two read passes of
+20 bits each (4 per DRAM) are required to obtain 39 bits. (The
+40th bit is unused.) In the first read pass, the first 4-bit segment in each DRAM is accessed. However, the second read
+pass for a word accesses the next 4-bit segment in each
+DRAM. Unfortunately, each of the bits in the second read pass
+is physically adjacent to its corresponding counterpart in the
+first read pass. Thus, an MBU corrupts two bits in a 39-bit
+word. Therefore, the SEC-DED EDAC cannot correct the
+word. However, the same research noted (with the benefit of
+hindsight) that this problem could have been corrected in the
+design by switching the least significant address line with any
+other address line. This would have eliminated the MBU
+susceptibility, thereby greatly reducing the system-level
+noncorrectable error rate.
+
+Figure 1. Comparison of Cassini Solid-State Power Switch trips due to
+Single-Event Transients (SETs) observed versus calculated.
+
+Mean Time to Trip has roughly followed the expected GCR
+flux increase. Since the solar maximum is expected to last for
+another few years (i.e., through 2005), the trip rate is expected
+to remain fairly constant for the rest of the voyage to Saturn,
+as the GCR flux will remain near its minimum. (Cassini is due
+to arrive at Saturn on July 4, 2004.)
+
+2) Single-Event Transients (SETs): As noted earlier, Cassini also utilizes a number of Solid-State Power Switches
+(206), and these have experienced seven trips in the 4½ years
+since its launch [12]. The trips always occur in the same mode
+(i.e., always tripping from the off state), and no switch has
+tripped more than once. The cause of these trips has been
+studied and documented [13,14]. A graph of the observed trips
+(solid lines) is shown in Figure 1, and except for when two
+trips occurred only 13 days apart, it shows a fairly smooth
+curve. The dashed line in Figure 1 shows a prediction of how
+many trips would be expected based on the Solar-modulated
+GCR cycle and the data from [13] and [14]. The prediction
+shows a decline in the trip rate and indicates a continued low
+rate through the remainder of the voyage to Saturn. Extrapolation of the curve suggests that Cassini can expect to have
+about two more trips before it reaches Saturn. The shape of the
+curve suggests a gradual lengthening of time between trips.
+
+E. QuikScat/Seawinds
+Ball Aerospace provided a complete Flight Anomaly Log
+for the Quick Scatterometer/Seawinds satellite, along with a
+summary report [15]. QuikScat’s first anomaly was an SEU in
+the Spacecraft Control Computer three days after launch. This
+was a correctable error in an unused portion of memory. A
+rate gyro and a Global Positioning System (GPS) receiver
+have been reported as failed and upsets were reported on the
+1553 bus. However, Ball noted that the rate gyro failure was
+not related to radiation, but was caused by a mirror degradation of the gyro.
+The Motorola GPS receiver #1 (Viceroy model) lost half its
+channels on August 27, 2000. It failed completely on May 11,
+2001 after a minor proton event. Attempts to restart it were not
+successful, and operations were switched to receiver #2. Ball
+believes some options remain to revive the failed receiver, and
+these will be tried when time permits. The reason for the failure is not yet known. However, these failures are consistent
+with single-event latchup (SEL).
+
+The Galactic Cosmic Ray flux is modulated by the solar cycle,
+and the flux varies by a factor of 2 to 10 (most commonly, 4 to
+5). The flux is greatest when solar activity is minimal, and it
+is lowest when solar activity is maximal. The solar cycle is
+near its maximum now, with many flares having occurred over
+the past year. However, at launch, the solar cycle was near its
+minimum. Thus, the GCR flux was near maximum at launch,
+and has declined since that time. The GCR flux has been close
+to minimum for the past couple of years. For its first three
+years, its distance from the Sun ranged from as close as Venus
+out to that of Mars, with one gravitational-assist flyby of the
+Earth and two past Venus. With five of the trips occurring in
+the inner solar system area, the initial fall-off in the trip rate
+appears to be due more to modulation of the GCR rate as the
+solar cycle has transitioned from minimum to maximum,
+which would cause the GCR rate to decrease over this period
+of time. The first four trips occurred about once every four
+months through March 1999. However, after that, the trip rate
+has decreased by a factor of 3 to once every 11 months and
+has been virtually linear with time, roughly corresponding to
+the GCR minimum due to solar max. (During this time, it has
+traveled from the orbit of Venus out well past Jupiter.) The
+
+Studies of other modern GPS receivers (e.g., the Collins
+GEM-III and a more modern successor) reveal the presence of
+many potentially latchable ICs. These include numerous linear
+CMOS voltage converters and regulators, as well as various
+large digital CMOS ICs, such as microprocessors, RAMs, and
+custom ASICs. A latchup induced in any one of these could
+result in a device burnout, which would cause a failure of the
+receiver, or a microlatch (as noted in [4], which provides additional information on a GPS receiver in space).
+This is complicated by the fact that many GPS receiver designs have battery-powered standby modes. Thus, when the
+receiver is “off,” several circuits remain active on battery
+power (sometimes using a CMOS DC-to-DC converter to
+change the battery voltage to that required by the digital ICs).
+These circuits include a clock/calendar function, memories to
+hold ephemeris data, and if military accuracy is required, clas-
+
+9
+Authorized licensed use limited to: University of Saskatchewan. Downloaded on November 23,2024 at 01:00:58 UTC from IEEE Xplore. Restrictions apply.
+
+strictions on the tests and the statistics, and to advise the part
+user on the limitations of the conclusions.
+
+sified keys to enable the high accuracy positioning function. In
+addition, certain power monitoring circuitry continually
+checks for the presence of external bus voltage (e.g., +5 or
++3.3 Vdc) that is normally supplied by the host system when
+the receiver is “on.” The clock and ephemeris allow the receiver to quickly determine which satellites to look for at a
+given time when power to the receiver is turned on. This allows the receiver to obtain proper positioning information
+much more rapidly (i.e., in seconds) than if the receiver had to
+search for each satellite and download everything needed to
+determine position (which can take several minutes). Thus, a
+considerable number of parts are powered continually. Therefore, they are always susceptible to latchup in space, instead of
+only when the receiver is powered “on.”
+
+Often, the assumption of zero cross section based on such
+statistically small sample sizes will not significantly impact a
+system-level SEE assessment. This is because the system-level
+response is typically dominated by a relatively small number
+of part types (typically half a dozen to a dozen) such as microprocessors, a few memory types, a few digital ASICs or
+FPGAs, and perhaps some large, linear CMOS parts.
+F. DEEP SPACE 1
+Also known as DS-1, this spacecraft, launched on October
+24, 1998, flew various advanced demonstration technologies,
+including an ion propulsion system. DS-1 experienced failure
+of a stellar reference unit (SRU) [16] and an upset in an FPGA
+register in the Gimbal Drive Electronics, which resulted in a
+loss of power from one solar panel, causing a safe-hold [17].
+However, this was corrected
+
+Furthermore, some GPS receiver designs utilize large hybrids that contain numerous CMOS dice, many of which are at
+least potentially susceptible to latchup. Considering the number of various types of ICs, and the probable mix of manufacturers, date codes, and foundries, traceability of such components is almost impossible. This makes it very difficult to determine hardness of parts already assembled into hybrids or
+receivers, since as-built records are often not available. Thus,
+latchup risk is very difficult to determine.
+
+The SRU was power-cycled twice in an attempt to restore
+functionality. This was unsuccessful. However, the SRU had
+previously experiencing intermittent problems that started
+occurring shortly after launch. While these had all been investigated, and various tests conducted, no explanation was ever
+considered satisfactory. Thus, the final failure may be due to a
+latchup, with earlier transient failures having been caused by
+SEUs. But other failure modes could not be ruled out (e.g.,
+thermal stress, aging, shock/vibration stresses associated with
+launch, etc.). Prior to the final failure, the longest outage was
+28 minutes. While some SEUs can or have caused failures that
+can require long system recovery times (seconds to several
+minutes), there is no ready explanation of how an SEUinduced failure could result in a recovery time of 28 minutes,
+unless some thermal event was induced (e.g., a nondestructive
+latchup or some other high current mode). Thus, a thermal
+event induced by a cosmic ray is a possibility. However, total
+failure of an integrated circuit or a transistor is consistent with
+a latchup or single-event gate rupture (SEGR) caused by a
+cosmic ray. Unfortunately, there is insufficient information to
+confirm latchup or SEGR as the failure mode, although there
+are several parts in the SRU with known or suspected latchup
+susceptibility.
+
+On the positive side, latchup is not a common event, and
+from an SEU standpoint, at least some GPS receivers that
+have been tested for SEU have proven to be fairly robust [4].
+Errors can be tolerated or corrected in most cases, keys can be
+rewritten, ephemeris data and time can be updated from the
+satellites, and most system designs can tolerate either occasional unavailability or degraded accuracy. In at least some
+systems, even entire failure of the GPS receiver will not necessarily cause failure of the mission. This will depend on the
+system architecture, the nature of the specific failure, and the
+nature of the receiver’s usage in the system.
+However, with regard to latchup, the negative aspect is that
+for most missions lasting a few to several years, the probability of latchup occurring in one potentially susceptible part or
+another becomes fairly high. This is partly mitigated by the
+likelihood that certain latchups are local within a chip rather
+than involving the entire chip, or the latchup is otherwise nondestructive. Thus, power cycling can often be effective in restoring proper functioning in such cases. In addition, SEL testing is often conducted at high temperatures, whereas electronics in many space systems typically operate at temperatures
+that are more moderate in order to improve reliability. Lower
+temperatures generally reduce the probability of latchup.
+
+G. Mars Odyssey
+Launched on April 7, 2001, Odyssey successfully arrived at
+Mars on October 24, 2001. It has been performing very well.
+However, a couple of weeks after launch (April 24), it went
+into Safe Mode due to corrupted memory [18]. It was determined that this was caused by a cosmic ray ion striking a diagnostic latch in a DRAM, which resulted in a burst error. The
+event was termed a MEEB (Memory Error External Bus) after
+the symptom observed. This was consistent with ground radiation test results on the IBM LUNA-C DRAMs [19]. The
+software was revised to mitigate future events of this type.
+
+Another problem with regard to latchup is the statistical
+limitations related to small sample sizes typically used in SEL
+testing. Very often, only three to five parts are tested. When
+none are observed to latch, they are then declared to be
+“latchup-immune.” While this can be a fair statement for the
+tested samples, it is statistically questionable to extrapolate
+immunity for an entire lot of parts (let alone other lots) based
+on such small sample sizes. This is typically justified by citing
+the high costs of testing and the limited availability of test
+samples, especially when such samples can be quite expensive. These are perfectly legitimate arguments, and it is not
+appropriate to devote disproportionate resources to testing for
+every possible effect to the highest accuracy with large sample
+sizes. The message here is simply to not overstate conclusions
+when small sample sizes are used, to note the appropriate re-
+
+H. GRACE
+The Gravity Recovery And Climate Experiment (GRACE)
+consists of two spacecraft that were launched together on
+March 17, 2002. The experiment is a collaboration of many
+organizations (government, industrial, and academic), several
+of which are international [20]. The two spacecraft orbit in
+tandem 220 km apart in a near-polar orbit (~485 km inclined
+
+10
+Authorized licensed use limited to: University of Saskatchewan. Downloaded on November 23,2024 at 01:00:58 UTC from IEEE Xplore. Restrictions apply.
+
+some latchup sensitivity in testing, they were rated as moderate risk, due to low predicted event rates and/or nondestructive nature of observed latchups. The ASIC was observed in ground radiation testing to latch in several ways
+(both destructively and nondestructively) with a wide range of
+currents. The estimated latchup rate in orbit was initially predicted to be two to three times a year during normal solar activity, but up to two to three times a day if hit by a large solar
+flare [25]. However, based on JPL test data [26], the mean
+time to latchup for the current solar condition (i.e., solar
+maximum) is estimated to be between 100-200 years [27].
+This is consistent with ~20 ASIC-years of powered, on-orbit
+experience without a destructive latchup [22]. Not all ASIC
+latchup modes were destructive. Thus, it was assumed that if
+the GPS receiver were powered off during a solar flare, the
+ASIC only represented a moderate risk [25].
+
+at 89°). They use modified BlackJack GPS receivers to obtain
+precise measurements of position, including micron-level data
+from a Ka band link between the spacecraft. Thus, slight deviations from expected orbital paths are recorded, and these
+are used to map the Earth’s gravity with unprecedented precision.
+This project utilized a wide spectrum of part types ranging
+from unhardened, commercial types all the way up to radiation-hardened, class S parts. However, heritage hardware designs that had successfully flown before were utilized where
+possible. Also, EDAC was utilized, and some modules were
+provided some protection against latchup by incorporating
+overcurrent detection and circumvention circuitry (although
+this was done at the board level, not the part level). The AsBuilt Parts Lists for the various modules were reviewed by
+JPL prior to launch, and some radiation risks were noted.
+(Risks were defined as those that would result in component
+failure, such as total dose, single-event gate rupture (SEGR),
+or latchup, which was presumed to be destructive unless circumvented or known to be nondestructive.) Due to the moderate total dose requirements of the mission, no parts were
+judged high risk. However, some parts were judged high risk
+with respect to latchup and/or SEGR. These risks are partly
+offset by use of redundancy and latchup protection circuitry.
+
+IV. OBSERVATIONS
+Redundancy is a highly effective approach. However, it
+cannot be relied upon too heavily for protection against radiation-induced failures. The reason for this is that redundant
+modules are included to protect against any type of failure in a
+system, not just radiation-induced failures. Thus, if two modules are used where each has a radiation failure probability of
+10%, one is tempted to calculate that the failure rate for the
+system will only be 1%. However, for a cold-spared module,
+the actual failure probability for the set is somewhat higher.
+But it is certainly possible for either module to fail due to
+other reasons unrelated to radiation. In fact, there have been a
+number of instances where a redundant module did not even
+survive launch stresses to reach orbital insertion. In such
+cases, the system is reduced to single-string status, in which
+case, any failure of the remaining module can result in partial
+or total loss of the functions performed by that module.
+
+In its first four months on orbit, GRACE has experienced
+several anomalies. Single-event upset is a possible cause in
+several of these, including resets, double-bit errors, and some
+GPS errors. Problems developed with one of the two Instrument Control Units (ICU) on one of the spacecraft, which
+failed. When the ICU anomaly occurred, there were also
+abrupt changes in the current from the primary power to the
+ICU. Thus, it is possible that the ICU anomaly was caused by
+a latchup, as it does contain parts that may be susceptible to
+latchup. However, the limited diagnostic information that is
+available, along with the complex interactions between circuit
+elements, does not allow a definite conclusion to be made.
+While latchup was initially suspected, the anomaly investigation team concluded that the failure was most likely caused by
+failure of a DC/DC converter [21]. The spacecraft is now
+operating with its redundant ICU, and the two spacecraft are
+operating as expected.
+
+Latchup circumvention has become increasingly popular for
+space programs (and it’s long been used in many military systems to protect them from latchup that could be caused by
+high dose rates emitted by nuclear weapons). For space programs, parts are typically tested for latchup using latchup detection and protection circuitry. This circuitry monitors current
+in the Device Under Test (DUT). When an overcurrent condition characteristic of latchup is detected, power to the DUT is
+very rapidly removed to protect it from burnout. Parts so
+tested typically survive and operate properly after power is
+reapplied, and they are subsequently characterized for latchup
+over several LET values. The success of this technique in
+laboratory testing has led to incorporation of this approach to
+protect sensitive parts used in spacecraft design. Obviously,
+the twin keys to success in this approach are rapid detection of
+a latchup overcurrent and equally rapid removal of power.
+Both of these schemes depend on close proximity to the part
+to be circumvented. Ideally, the device currents should be
+monitored individually, and when the current exceeds a predetermined safe, peak value, the device power must be rapidly
+removed.
+
+I.
+
+GPS Receivers
+The BlackJack GPS receiver contains many SEE-sensitive
+parts. No destructive latchup has occurred in this receiver
+aboard the CHAMP, SAC-C, and Jason spacecraft after more
+than four cumulative years on orbit [22]. Since the most recent
+software upload, the receiver on CHAMP has experienced
+eight resets in three months, and the systems operations team
+believes that these are caused by a watchdog timer that resets
+the receiver when the algorithm cannot track enough GPS
+satellites to calculate a navigation solution. This receiver utilizes Dynamic Random Access Memories (DRAMs), but does
+not incorporate EDAC. Thirteen part types had been identified
+as latchup risks and were subsequently tested [23,24]. Seven
+types (CGS74LCT2524 clock driver, LMC6081 op amp,
+LTC1153 circuit breaker, MAX962 comparator, MC74LCX08
+AND gate, MC74HC4538 multivibrator, and SN74LVT16244
+buffer/driver) showed no latchup sensitivity during testing.
+However, while test results for the AM29LV800 Flash memory, DS1670 system controller, DS1803 digital potentiometer,
+MT48LCIN16 SDRAM, and OR2T15A25240 FPGA showed
+
+This approach has three shortcomings. The first is that devices tested for latchup are often not characterized for their
+latchup destruction parameters. It is very difficult to determine if power removal is fast enough to prevent damage, if
+devices are not tested to allow destruction. (Hardened military
+systems face a similar problem, but they have several advantages in this regard. First, high dose rate is much easier to detect than overcurrent. Also, dose rate can be detected much
+
+11
+Authorized licensed use limited to: University of Saskatchewan. Downloaded on November 23,2024 at 01:00:58 UTC from IEEE Xplore. Restrictions apply.
+
+earlier than overcurrent. Finally, long-term reliability is generally not essential after such an exposure.)
+
+cated for radiation effects. While it may seem counterintuitive,
+this has actually helped determine the appropriate resource
+level to devote to mission assurance and radiation effects. (If
+too much is devoted to mission assurance, there is less available for a mission. On the other hand, if too little is devoted to
+mission assurance, the risk of losing a mission increases.)
+Thus, only by varying the level of mission assurance resources
+can an appropriate balance be determined.
+
+The second shortcoming (noted earlier) is that detection and
+protection are most effective when performed at the part level.
+However, due to cost, it is more attractive to perform this at
+the board level. Unfortunately, the desire to reduce cost conflicts with the need for individual protection.
+Finally, recent research at JPL has shown that, even when
+parts have been circumvented and appear to function properly
+afterward, significant latent damage was observed [28,29].
+Examples included melted and displaced aluminum inside
+such parts. Thus, even when latchup protection is employed, it
+is necessary to test such parts using the actual flight circuitry
+planned, perform post-test examination of circumvented parts
+to check for latent damage, and test some parts to destruction
+in order to determine design margin.
+
+In terms of recommendations, appropriate assessment of
+latchup and single-event gate rupture must remain high priorities with testing highly recommended. While latchup circumvention is sometimes used, it is not recommended as a standard design technique unless the proper part and circuit testing
+is performed. Even when this is done, parts must be tested in
+the flight-configuration circumvention circuitry, and post-test
+Destructive Physical Analysis photographs of parts that have
+been circumvented during testing must be examined for signs
+of latent damage.
+
+V. SUMMARY, CONCLUSIONS, AND RECOMMENDATIONS
+This paper has discussed radiation effect predictions and
+observations on spacecraft systems, and has compared them
+where possible. The purpose of this effort has been to identify
+failure modes that can be mitigated in future system designs.
+A prime example of this was the investigation of the high rate
+of uncorrectable double-bit errors observed in the Cassini
+Solid-State Recorder, as well as the trips of its Solid-State
+Power Switches. In cases of permanent damage, predictions
+have been fairly accurate when the environment has remained
+close to expected values. However, single-event effects are
+more random, especially as they affect system response.
+
+ACKNOWLEDGMENTS
+The authors wish to thank Marda Barthuli of Ball Aerospace & Technologies Corporation for providing much of the
+information on QuikScat/Seawinds, as well as Dwight Eckert
+of Lockheed Martin regarding Mars Odyssey. Many people at
+JPL also provided significant helpful information including:
+Parviz “Perry” Danesh, Mike Gross, A. “Robb” Frederickson,
+Frank Stott, Mike Sierchio, and Parag Vaze.
+REFERENCES
+
+In terms of lessons learned, each of these missions offers
+valuable advice. Galileo is obviously the success that all missions strive for. Repeating this degree of success is more challenging now for a variety of reasons, the most important of
+which are resource constraints and the extensive changes in
+the semiconductor industry. However, with judicious choice
+of parts, careful analysis, testing, and appropriate application
+in system designs, hardness requirements can still be met.
+(Cassini and Mars Odyssey are good examples of this.)
+
+[1]
+
+E.G. Mullen and K.P. Ray, “CRRES microelectronics test package
+(MEP),” IEEE Trans. Nuc. Sci., April 1993, pp. 228-232.
+[2] A.B. Campbell, “SEU flight data from the CRRES MEP,” IEEE Trans.
+Nuc. Sci., December 1991, pp. 1647-1654.
+[3] D.R. Croley, H.B. Garrett, G.B. Murphy, and T.L. Garrand, “Solar
+particle induced upsets in the TDRS-1 attitude control system RAM
+during the October 1989 solar particle events,” IEEE Trans. Nuc. Sci.,
+October 1995, pp. 1489-96.
+[4] M.K. Oldfield, C.I. Underwood, M.J. Unwin, R. Harboe-Sorensen, and
+V. Asenek, “Pre- and post-flight radiation performance evaluation of the
+space GPS receiver (SGR),” RADECS 1999, pp. 418-423.
+[5] R. Harboe-Sorensen, F.X. Guerre, H. Constans, J. van Dooren, G. Berger, and W. Hajdas, “Single event transient characterization of analog
+ICs for ESA’s satellites,” RADECS 1999, pp. 573-581.
+[6] P.D. Fieseler, S. Ardalan, and A.R. Frederickson, “The radiation effects
+on Galileo spacecraft systems at Jupiter,” IEEE Trans. Nuc. Sci., in
+press.
+[7] A. Giddings, F.W. Hewlett, R.K. Treece, D. Nichols, L.S. Smith, and J.
+Zoutendyk, “Single event upset immune integrated circuits for Project
+Galileo,” IEEE Trans. Nuc. Sci., December 1985, pp. 4159-4163.
+[8] A.R. Frederickson, J.M. Ratliff, and G.M. Swift, “On-orbit measurement
+of JFET leakage current and its annealing as functions of dose and bias
+at Jupiter,” IEEE Trans. Nuc. Sci., in press.
+[9] G.M. Swift and A.H. Johnston, “Evaluation of the Space Environment
+on TOPEX-Poseidon and On-Board Failure of Optocouplers,” Jet
+Propulsion Laboratory Document JPL D-14157, February 7, 1997.
+[10] K. LaBel, et al., “Compendium of recent optocoupler radiation test
+data,” 2000 IEEE Radiation Effects Data Workshop Record, pp. 123146.
+[11] G.M. Swift and S.M. Guertin, “In-flight observations of multiple-bit
+upset in DRAMs,” IEEE Trans. Nuc. Sci., Dec. 2000, pp. 2386-91.
+[12] Private communication (E-mail) from J. Solario, Jet Propulsion Laboratory, May 16, 2002.
+
+TOPEX/Poseidon showed the importance of considering
+displacement damage in susceptible components such as optocouplers. While this mission has far exceeded all of its goals
+and requirements, it shows the need to consider and appropriately derate such parts in future spacecraft designs.
+Cassini has continued to perform quite well, despite some
+unexpected anomalies. Study of these anomalies has improved
+understanding of the relationships between parts and the system architectures in which they are used, and this is expected
+to be helpful in future spacecraft designs.
+Deep Space 1 met all mission goals, including those of
+mission extensions. While some anomalies did occur, these
+were all resolved, suitable workarounds were developed and
+implemented, and this provided extremely valuable experience
+in investigation and resolution of anomalies.
+The design era and component complexity do not appear
+to have been significant influences on anomalies or failures.
+However, more anomalies and failures have tended to occur
+when a lower level of mission assurance resources was allo-
+
+12
+Authorized licensed use limited to: University of Saskatchewan. Downloaded on November 23,2024 at 01:00:58 UTC from IEEE Xplore. Restrictions apply.
+
+[22] C.E. Dunn, Jet Propulsion Laboratory, private communication (E-mail),
+July 31, 2002.
+[23] M.V. O’Bryan, et al., “Radiation damage and single-event effect results
+for candidate spacecraft electronics,” 2000 IEEE Radiation Effects Data
+Workshop Record, pp. 106-122.
+[24] M.V. O’Bryan, et al., “Radiation damage and single-event effect results
+for microelectronics,” 1999 IEEE Radiation Effects Data Workshop
+Record, pp. 1-14.
+[25] M. Tasevoli, “GPS SEL/SEU Technical Risk” summary chart, NASA
+Goddard Space Flight Center, October 2000.
+[26] L. Scheick, “SEE Measurement for the SDRAM and the Blackjack
+ASIC,” JPL report, December 1999.
+[27] L. Edmonds, Jet Propulsion Laboratory, private communication, Aug. 1,
+2002.
+[28] H.N. Becker, “Latent Damage from Single-Event Latchup,” presented at
+the Thirteenth Biennial Single Event Effects Symposium, April 23-25,
+2002, Manhattan Beach, CA.
+[29] H.N. Becker, T.F. Miyahira, and A.H. Johnston, “Latchup in CMOS
+devices from single-event latchup,” IEEE Trans. Nuc. Sci., in press.
+
+[13] A.H. Johnston, G.M. Swift, T.F. Miyahira, and L.D. Edmonds, “A
+model for single-event transients in comparators,” IEEE Trans. Nuc.
+Sci., December 2000, pp. 2624-33.
+[14] A.H. Johnston, G.M. Swift, and L.D. Edmonds, “Single-Event Upset
+Tests of Power Switches,” JPL internal memo, unpublished.
+[15] M. Barthuli (E-mail), “RE: Flight Radiation Anomaly Data for Quickscat/Seawinds,” with attached spreadsheet, QS_Log_JPL.xls, January
+14, 2002.
+[16] M.D. Rayman and P. Varghese, “The Deep Space 1 extended mission,”
+Acta Astronautica 48, No. 5-12, pp. 693-705 (2001).
+[17] D.W. Caldwell, “DS1 GDE/Power Anomaly, 1998, Day 300: Analysis
+and Resolution,” Jet Propulsion Laboratory, 4 November 1998.
+[18] D.L. Eckert, “Odyssey MEEB Analysis,” Lockheed-Martin presentation,
+September 18, 2001.
+[19] K.A. LaBel, M.M. Gates, A.K. Moran, H.S. Kim, C.M. Seidleck, P.
+Marshall, J. Kinnison, and B. Carkhoff, “Radiation effect characterization and test methods of single-chip and multi-chip stacked 16Mbit
+DRAMs,” IEEE Trans. Nuc. Sci., December 1996, pp. 2974-81.
+[20] GRACE website - http://www.csr.utexas.edu/grace/.
+[21] M.A. Gross, T.T. Nguyen, and C. Winn, “ICU In-Orbit Failure
+Analysis,” Jet Propulsion Laboratory memorandum GPO-02-016, July
+19, 2002.
+
+13
+Authorized licensed use limited to: University of Saskatchewan. Downloaded on November 23,2024 at 01:00:58 UTC from IEEE Xplore. Restrictions apply.
+
+

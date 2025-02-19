@@ -1,12 +1,12 @@
 
 export const TID_targeted_questions = [
-  "What type was the radiation source(Co60, Protons, Electrons)?",
-  "What was the total dose to which the part was exposed?",
-  "Were there any failures, if so, when?",
+  "What type was the radiation source(Co60, Sr90, Protons, Electrons)?",
+  "What was the total dose to which the part was exposed(possible units are rad, rad(Si), krad, krad(Si), Gy, Gy(Si), kGy, kGy(Si) )?",
+  "What was functional failure total ionizing dose?",
 ];
 
 export const SEE_targeted_questions = [
-  "What type was the radiation source?",
+  "What type was the radiation source(eavy ions (MeVcm2/mg), protons (MeV), neutrons (MeV), laser (pJ, uJ, mJ and associated wavelength)?",
   "What was the energy of the source?",
   "Were there any failures, if so, when?",
 ];

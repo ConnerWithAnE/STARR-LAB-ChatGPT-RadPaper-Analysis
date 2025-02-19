@@ -45,10 +45,29 @@ each time.
 Simply run the below command in the `server` directory
 
 ```sh
-npm run start-dev
+npm run dev
 ```
 
 This will start a development server with the `ts-node` and `nodemon` packages. This allows for easy development via cold-reloading. `ts-node` allows for running the typescript code without the need for compliation while `nodemon` monitors for changes to any `.ts` or `.js` files.
+
+**Flags**
+
+
+| Flag | Descriptions |
+| --- | --- |
+| MOCK_DATA | Enables Mock paper data for testing | 
+| AUTH_OFF | Disables authentication when set to 'false' |
+
+Flags can be called with the following commands
+
+```sh
+MOCK_DATA=true npm run dev
+
+AUTH_OFF=true npm run dev
+
+MOCK_DATA=true AUTH_OFF=true npm run dev
+```
+
 
 ## Testing
 

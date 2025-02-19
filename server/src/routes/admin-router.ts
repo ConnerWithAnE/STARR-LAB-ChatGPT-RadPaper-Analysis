@@ -1,11 +1,12 @@
 import express, { Request, Response, Router, NextFunction } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, GPTResponse, TableData, RadData, Testing } from "../types";
+import { GetQuery, GPTResponse, TableData, Testing, UpdateData, InsertData } from "../types";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import authenticateJWT from "../auth/jwt-auth";
 import { GPTController } from "../gpt-controller";
 import multer from "multer";
+import config from "../config";
 
 // Set up custom storage for multer
 const storage = multer.diskStorage({
@@ -25,6 +26,13 @@ const upload = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
 }); // 10mb limit
 
+function getAuthMiddleware() {
+  if (config.AuthEnable) {
+    return authenticateJWT;
+  }
+  return (req: Request, res: Response, next: Function) => next();
+}
+
 export default function adminRouter(
   dbController: DatabaseController,
   gptController: GPTController,
@@ -37,7 +45,7 @@ export default function adminRouter(
   // THIS WILL NOT WORK WITH RAW PAPERS, Data MUST be in InsertData format
   router.post(
     "/insertPapers",
-    authenticateJWT,
+    getAuthMiddleware(),
     async (req: Request, res: Response) => {
       try {
         await insertRows(
@@ -54,15 +62,37 @@ export default function adminRouter(
   );
 
   router.post(
+    "/updatePaper",
+    getAuthMiddleware(),
+    async (req: Request, res: Response) => {
+      try {
+        await dbController.updatePaper(req.body as UpdateData)
+      } catch (error) {
+        console.error(`${error}`);
+      }
+    }
+  );
+
+  router.post(
     "/parseRequest",
-    //authenticateJWT,
+    getAuthMiddleware(),
     upload.array("pdfs"),
-    (req: Request, res: Response) => {
+    async (req: Request, res: Response) => {
       try {
         // TODO
-        parsePapers(req.files, gptController).then((result: GPTResponse[]) => {
-          res.send(responseToJSON(result));
-        });
+        if (config.MockData) {
+          import("../../test/testfiles/parse_response.json").then((module) => {
+            console.log("Sending mock data...")
+            res.send(module.default);
+          });
+        } else {
+          await parsePapers(req.files, gptController).then(
+            (result: GPTResponse[]) => {
+              console.log(responseToJSON(result));
+              res.send(responseToJSON(result));
+            },
+          );
+        }
       } catch (error) {
         console.error(`${error}`);
       }
@@ -71,7 +101,8 @@ export default function adminRouter(
 
   router.post(
     "/getFullPapers",
-    /*authenticateJWT,*/ (req: Request, res: Response) => {
+    getAuthMiddleware(),
+    (req: Request, res: Response) => {
       try {
         // More intricate searches can be employed later similar to the table filter
         getFullPaperRows(req.body.search, dbController).then(
@@ -139,7 +170,7 @@ export default function adminRouter(
 }
 
 async function insertRows(
-  insertData: TableData[],
+  insertData: InsertData[],
   dbcontroller: DatabaseController,
 ): Promise<void> {
   for (const paper in insertData) {
@@ -151,11 +182,12 @@ async function parsePapers(
   files: any,
   gptController: GPTController,
 ): Promise<GPTResponse[]> {
-  const fileList: string[] = files.map((file: Express.Multer.File) => file.path);
+  const fileList: string[] = files.map(
+    (file: Express.Multer.File) => file.path,
+  );
   console.log(fileList);
-  //gptController.runGPTAnalysis(fileList);
-  const temp: GPTResponse[] = [];
-  return temp;
+  const gptResults = await gptController.runGPTAnalysis(fileList);
+  return gptResults;
 }
 
 async function getFullPaperRows(
@@ -165,7 +197,7 @@ async function getFullPaperRows(
   return await dbController.getFullData(search);
 }
 
-function insertDataRequestFromJSON(body: any): TableData[] {
+function insertDataRequestFromJSON(body: any): InsertData[] {
   // Ensure body is an array of objects matching the InsertData structure
   if (!Array.isArray(body)) {
     throw new Error("Invalid body format: expected an array.");
@@ -174,7 +206,7 @@ function insertDataRequestFromJSON(body: any): TableData[] {
   // Return a list of rows to insert
   return body.map((entry) => {
     // Return the validated entry as InsertData
-    return { ...entry } as TableData;
+    return { ...entry } as InsertData;
   });
 }
 
