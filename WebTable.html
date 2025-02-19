@@ -6,10 +6,6 @@
         <title>Orders Table with Filters</title>
         <style>
             /* General styles */
-            content {
-                width: 100%;
-            }
-
             .header {
                 box-sizing: border-box;
             }
@@ -19,7 +15,9 @@
             }
 
             .main-container {
-                background-color: #969696;
+                background-color: #afafaf;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                border-radius: 8px;
             }
 
             .table-container {
@@ -27,40 +25,189 @@
                 overflow-x: auto;
                 background: #afafaf;
                 border-radius: 8px;
-                padding: 20px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                padding: 10px 10px 0px 10px;
             }
 
             /* Table styles */
             table {
                 width: 100%;
                 border-collapse: collapse;
+                border-radius: 8px;
                 min-width: 1200px; /* Minimum width to allow horizontal scrolling */
+            }
+            
+            
+           
+            
+                
+            #radiationTable {
+                border-radius: 8px;   
+            }
+            
+            .table-responsive {
+                border-radius: 8px;
             }
 
             td {
                 padding: 12px 16px;
-                text-align: left;
+                text-align: center;
                 border-bottom: 1px solid #3a3a50;
                 border-left: 1px solid #3a3a50;
                 border-right: 1px solid #3a3a50;
             }
 
+            
             .table-container th.custom-header-class {
                 padding: 8px 16px;
                 text-align: center;
-                border-left: 1px solid #2c2c3d;
-                border-right: 1px solid #2c2c3d;
-                background-color: #0a613b;
+                background-color: #0b6a41;
                 font-weight: 500;
                 color: #dcdfe4;
                 white-space: nowrap; /* Prevent headers from wrapping */
             }
+            
+            
+            .table-container th.custom-header-class.head {
+                padding: 8px 16px 0px 16px;
+                text-align: center;
+                background-color: #0b6a41;
+                font-weight: 500;
+                color: #dcdfe4;
+                white-space: nowrap; /* Prevent headers from wrapping */
+            }
+            
+            
+            
+            /* Section Headers */
+            
+        
+            .table-container th.section-header-general {
+                background-color: #4d74db;
+                color: black;
+                text-align: center;
+                font-weight: bold;
+                padding: 12px;
+            }
+            
+            .table-container th.gen:nth-child(even) {
+                background-color: #7493e3;
+                color: #2D2D2D;
+            }
+            
+            .table-container th.gen:nth-child(odd) {
+                background-color: #9cb2eb;
+                color: #2D2D2D;
+            }
+
+            .table-container th.section-header-tid {
+                background-color: #c7e1b2;
+                color: black;
+                text-align: center;
+                font-weight: bold;
+                padding: 12px;
+            }
+            
+            .table-container th.tid:nth-child(even) {
+                background-color: #d7eac9;
+                color: #2D2D2D;
+            }
+            
+            .table-container th.tid:nth-child(odd) {
+                background-color: #e3f0d9;
+                color: #2D2D2D;
+            }
+
+            .table-container th.section-header-see {
+                background-color: #b19cd8;
+                color: black;
+                text-align: center;
+                font-weight: bold;
+                padding: 12px;
+            }
+            
+            .table-container th.see:nth-child(even) {
+                background-color: #c8bae4;
+                color: #2D2D2D;
+            }
+            
+            .table-container th.see:nth-child(odd) {
+                background-color: #d8ceec;
+                color: #2D2D2D;
+            }
+
+            .table-container th.section-header-dd {
+                background-color: #bdd7ee;
+                color: black;
+                text-align: center;
+                font-weight: bold;
+                padding: 12px;
+            }
+            
+            .table-container th.dd:nth-child(even) {
+                background-color: #d1e3f3;
+                color: #2D2D2D;
+            }
+            
+            .table-container th.dd:nth-child(odd) {
+                background-color: #deebf7;
+                color: #2D2D2D;
+            }
+            
+            
+            
+            
+            
+            /* Style for the expandable cell */
+            .expandable-cell {
+              position: relative;
+              width: 200px; /* Set a fixed width for the content box */
+              max-width: 100%; /* Ensure it doesn't overflow the table cell */
+              overflow: hidden;
+            }
+            
+            /* Style for the expand button */
+            .expand-btn {
+              background-color: transparent; /* Make the background transparent */
+              border: none; /* Remove the border */
+              color: #3964d7; /* Blue color for the arrow */
+              font-size: 18px; /* Adjust size of the arrow */
+              cursor: pointer;
+              padding: 0; /* Remove padding */
+              display: inline-block; /* Ensure it sits next to text */
+            }
+            
+            /* When the content is expanded */
+            .expandable-content {
+              margin-top: 10px;
+              padding: 10px;
+              background-color: #f9f9f9;
+              border: 1px solid #ddd;
+              border-radius: 5px;
+              max-height: 100px; /* Initial max-height (cut off the content) */
+              overflow: hidden; /* Hide overflow content */
+              transition: max-height 0.5s ease-out; /* Smooth transition for expanding */
+            }
+            
+            /* Hover effect for the expand button */
+            .expand-btn:hover {
+              color: #335ac2; /* Darker blue when hovering */
+            }
+            
+            
+            
+            
 
             td {
                 border-top: 1px solid #2c2f3a;
                 white-space: nowrap; /* Prevent content from wrapping */
                 color: #222222;
+            }
+            
+            
+            table#radiationTable th, 
+            table#radiationTable td, 
+            table#radiationTable tr {
+                border: none !important;
             }
 
             tr:hover {
@@ -70,9 +217,9 @@
             .filter-input {
                 width: 100%;
                 padding: 6px;
-                border: 1px solid #2c2f3a;
+                border: 1px solid #eceef1;
                 border-radius: 4px;
-                background-color: #a0a0a0;
+                background-color: white;
                 color: #1d1d1d;
                 font-size: 12px;
                 box-sizing: border-box;
@@ -87,11 +234,12 @@
                 display: flex;
                 justify-content: center;
                 gap: 8px;
-                margin-top: 20px; /* Space between table and pagination */
+                padding-bottom: 10px;
+                
             }
 
             .pagination button {
-                background-color: #0b6a41;
+                background-color: #3964d7;
                 border: none;
                 color: #ffffff;
                 padding: 8px 12px;
@@ -100,11 +248,11 @@
             }
 
             .pagination button:hover {
-                background-color: #0a613b;
+                background-color: #335ac2;
             }
 
             .pagination button.active {
-                background-color: #095836;
+                background-color:#2e50ac;
                 color: #ffffff;
             }
 
@@ -121,126 +269,99 @@
         <!-- Table container -->
         <div class="main-container">
             <div class="table-container">
-                <table id="radiationTable">
-                    <thead>
-                        <tr>
-                            <th class="custom-header-class">Year</th>
-                            <th class="custom-header-class">Paper Name</th>
-                            <th class="custom-header-class">Author(s)</th>
-                            <th class="custom-header-class">Part Number</th>
-                            <th class="custom-header-class">Type</th>
-                            <th class="custom-header-class">Manufacturer</th>
-                            <th class="custom-header-class">
-                                Testing Location
-                            </th>
-                            <th class="custom-header-class">Testing Type</th>
-                            <th class="custom-header-class">Data Type</th>
-                            <th class="custom-header-class">Custom Field 1</th>
-                            <th class="custom-header-class">Custom Field 2</th>
-                            <th class="custom-header-class">Custom Field 3</th>
-                            <th class="custom-header-class">Custom Field 4</th>
-                            <th class="custom-header-class">Custom Field 5</th>
-                            <th class="custom-header-class">Custom Field 6</th>
-                            <th class="custom-header-class">Custom Field 7</th>
-                            <th class="custom-header-class">Custom Field 8</th>
-                            <th class="custom-header-class">Custom Field 9</th>
-                            <th class="custom-header-class">Custom Field 10</th>
-                            <th class="custom-header-class">Custom Field 11</th>
-                            <th class="custom-header-class">Custom Field 12</th>
-                            <th class="custom-header-class">Custom Field 13</th>
-                            <th class="custom-header-class">Custom Field 14</th>
-                            <th class="custom-header-class">Custom Field 15</th>
-                            <th class="custom-header-class">Custom Field 16</th>
-                        </tr>
-                        <tr>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                            <th class="custom-header-class">
-                                <input class="filter-input" type="text" />
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Add rows dynamically -->
-                    </tbody>
-                </table>
+            <table id="radiationTable">
+            <thead>
+            <tr class="rad-table-tr-columns">
+            <th class="section-header-general" colspan="13">General</th>
+            <th class="section-header-tid" colspan="9">TID</th>
+            <th class="section-header-see" colspan="7">SEE</th>
+            <th class="section-header-dd" colspan="4">DD</th>
+            </tr>
+            <tr class="rad-table-tr-subcolumns"><!-- General Data -->
+            <th class="custom-header-class head gen">Year</th>
+            <th class="custom-header-class head gen">Paper Name</th>
+            <th class="custom-header-class head gen">Author(s)</th>
+            <th class="custom-header-class head gen">Part Number</th>
+            <th class="custom-header-class head gen">Type</th>
+            <th class="custom-header-class head gen">Manufacturer</th>
+            <!-- Testing Data -->
+            <th class="custom-header-class head gen">Testing Type</th>
+            <th class="custom-header-class head gen">Max Fluence</th>
+            <th class="custom-header-class head gen">Energy</th>
+            <th class="custom-header-class head gen">Facility</th>
+            <th class="custom-header-class head gen">Environment</th>
+            <th class="custom-header-class head gen">Terrestrial</th>
+            <th class="custom-header-class head gen">Flight</th>
+            <!-- TID Data -->
+            <th class="custom-header-class head tid">Source</th>
+            <th class="custom-header-class head tid">Max TID</th>
+            <th class="custom-header-class head tid">Dose Rate</th>
+            <th class="custom-header-class head tid">ELDRS</th>
+            <th class="custom-header-class head tid">P Pion</th>
+            <th class="custom-header-class head tid">Dose To Failure</th>
+            <th class="custom-header-class head tid">Increased Power Usage</th>
+            <th class="custom-header-class head tid">Power Usage Description</th>
+            <th class="custom-header-class head tid">Special Notes</th>
+            <!-- SEE Data -->
+            <th class="custom-header-class head see">Source</th>
+            <th class="custom-header-class head see">Type</th>
+            <th class="custom-header-class head see">Amplitude</th>
+            <th class="custom-header-class head see">Duration</th>
+            <th class="custom-header-class head see">Cross Section</th>
+            <th class="custom-header-class head see">Cross Section Type</th>
+            <th class="custom-header-class head see">Special Notes</th>
+            <!-- DD Data -->
+            <th class="custom-header-class head dd">Source</th>
+            <th class="custom-header-class head dd">Damage Level</th>
+            <th class="custom-header-class head dd">Damage Level Description</th>
+            <th class="custom-header-class head dd">Special Notes</th>
+            </tr>
+            <tr class="rad-table-tr"><!-- General Data -->
+            <th class="custom-header-class gen"><input class="filter-input" id="year" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="paper_name" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="author" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="part_no" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="type" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="manufacturer" type="text" /></th>
+            <!-- Testing Data -->
+            <th class="custom-header-class gen"><input class="filter-input" id="testing_type" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="max_fluence" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="energy" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="facility" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="environment" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="terrestrial" type="text" /></th>
+            <th class="custom-header-class gen"><input class="filter-input" id="flight" type="text" /></th>
+            <!-- TID Data -->
+            <th class="custom-header-class tid"><input class="filter-input" id="source_tid" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="max_tid" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="dose_rate" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="ELDRS" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="p_pion" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="dose_to_failure" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="increased_power_usage" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="power_usage_description" type="text" /></th>
+            <th class="custom-header-class tid"><input class="filter-input" id="special_notes_tid" type="text" /></th>
+            <!-- SEE Data -->
+            <th class="custom-header-class see"><input class="filter-input" id="source_see" type="text" /></th>
+            <th class="custom-header-class see"><input class="filter-input" id="type_see" type="text" /></th>
+            <th class="custom-header-class see"><input class="filter-input" id="amplitude" type="text" /></th>
+            <th class="custom-header-class see"><input class="filter-input" id="duration" type="text" /></th>
+            <th class="custom-header-class see"><input class="filter-input" id="cross_section" type="text" /></th>
+            <th class="custom-header-class see"><input class="filter-input" id="cross_section_types" type="text" /></th>
+            <th class="custom-header-class see"><input class="filter-input" id="special_notes_see" type="text" /></th>
+            <!-- DD Data -->
+            <th class="custom-header-class dd"><input class="filter-input" id="source_dd" type="text" /></th>
+            <th class="custom-header-class dd"><input class="filter-input" id="damage_level" type="text" /></th>
+            <th class="custom-header-class dd"><input class="filter-input" id="damage_level_description" type="text" /></th>
+            <th class="custom-header-class dd"><input class="filter-input" id="special_notes_dd" type="text" /></th>
+            </tr>
+            </thead>
+            <tbody><!-- Add rows dynamically --></tbody>
+            </table>
             </div>
-
             <!-- Pagination outside the table container -->
-            <div class="pagination">
-                
+            <div class="pagination"></div>
             </div>
-        </div>
         <script>
             document.addEventListener("DOMContentLoaded", () => {
                 const tableBody = document.querySelector(
@@ -251,22 +372,51 @@
                 const itemsPerPage = 10;
                 let currentPage = 1;
                 let data = [];
-
-                // Example function to populate the table dynamically (optional)
-                fetch("http://localhost:3000/api/dataRequest/tableRequest", {
+                let inputData = {};
+                
+                updateTable();
+                
+                const inputChanged = (event) => {
+                    const id = event.target.id;
+                    //console.log(id);
+                    const value = event.target.value
+                    //console.log(inputData);
+                    inputData[id] = value;
+                    updateTable();
+                }
+                
+                const inputs = document.querySelectorAll('input[type="text"]');
+                
+              
+                inputs.forEach(input => {
+                    input.addEventListener('input', inputChanged)
+                })
+                
+                
+                
+                function updateTable() {
+                    fetchData()
+                    .then((response) => response.json()) // Parse JSON response
+                    .then((fetchData) => {
+                        console.log(fetchData);
+                         data = fetchData;
+                        renderTable(currentPage); // Render the table for the first page
+                        createPaginationButtons(data.length);
+                    });
+                }
+                    
+                    
+                function fetchData() {
+                    return fetch("https://starr-lab-server.usask.ca/api/dataRequest/tableRequest", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    //body: JSON.stringify(data),
+                    mode: "cors",
+                    body: JSON.stringify(inputData),
                 })
-                    .then((response) => response.json()) // Parse JSON response
-                    .then((fetchData) => {
-                        console.log(fetchData);
-                        data = fetchData;
-                        renderTable(currentPage); // Render the table for the first page
-                        createPaginationButtons(data.length);
-                    });
+                }
+                
 
                 function renderTable(page) {
                     tableBody.innerHTML = "";
@@ -290,6 +440,15 @@
                         if (data.hasOwnProperty(key)) {
                             if (key === "ROWID") {
                                 continue;
+                            }
+                            else if (key.includes("special_notes") || key.includes ("_description") || key.includes("author")) {
+                                
+                                /* TODO: Need to make these expandable so they take up less space */
+                               const cell = document.createElement("td");
+                                cell.textContent = data[key]; // Add the value to the cell
+
+                                row.appendChild(cell);
+                                                        
                             } else {
                                 const cell = document.createElement("td");
                                 cell.textContent = data[key]; // Add the value to the cell
@@ -313,6 +472,7 @@
                         button.classList.add(i === currentPage ? "active" : null);
                         button.addEventListener("click", () => {
                             currentPage = i;
+                            
                             renderTable(currentPage); // Render the new page
                             updatePaginationButtons();
                         });
