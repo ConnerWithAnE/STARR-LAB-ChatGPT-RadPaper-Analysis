@@ -50,10 +50,10 @@ export const questions = [
   // "Reference the page number for each answer for the above questions in a \"¶\" separated list. If you are unable to give a page number or the answer is N/A, provide the answer N/A"
 ];
 
-export const prompt = `Please answer the following questions, as concisely as possible, and with a heavy emphasis on numbers instead of words.\n
-    Use standard text and do not provide citations for any answer.
-    If you are unable to answer the question accurately, provide the answer N/A.
-    Answer each question, and separate the answers with a "ø" character as a delimiter between them.\n`;
+// export const prompt = `Please answer the following questions, as concisely as possible, and with a heavy emphasis on numbers instead of words.\n
+//     Use standard text and do not provide citations for any answer.
+//     If you are unable to answer the question accurately, provide the answer N/A.
+//     Answer each question, and separate the answers with a "ø" character as a delimiter between them.\n`;
 
 // TODO: Need to incorporate the 3 sets of questions below, into prompts
 
@@ -76,3 +76,56 @@ export const sort_prompts = `Please answer the following question, as concisely 
     Use standard text and do not provide citations for each of your answer.
     Answer the question with the keyword for one of the 5 papers.
     If you are unable to answer the question accurately, provide the answer N/A.`;
+
+//////////////////
+// UPDATED prompts
+export const prompt = 
+`Provide data hierarchically: start with the paper's general information, followed by part-specific details, and then all test results categorized by type (TID, SEE, and DD).
+For each test type (TID, SEE, or DD), allow multiple entries if applicable.
+Use "ø" to separate answers, "|" to separate items within lists, and "¶" to separate multiple tests of the same type.
+Provide numerical values where applicable.
+If you cannot answer a question, respond with "N/A".
+Do not include citations or explanations in your answers.`
+
+export const paper_info_prompts = 
+  `1. What is the title of the paper?
+  2. Which year was the paper published?
+  3. What are the names of all authors in the format (J. Doe), separated by "|"?`
+
+export const part_info_prompts = 
+`For each part described in the paper:
+1. What is the part number?
+2. What is the type of the part (e.g., switching regulator, optocoupler)?
+3. Who is the manufacturer of the part?`
+
+export const test_prompt = `For each part, provide all test results categorized by type. For each test type (TID, SEE, or DD), include one or more test results as needed.`
+
+export const general_test_info_prompts = 
+    `1. What is the test environment? ("Terrestrial", "Flight", or "Both")
+    2. What is the dose rate (rad/s)?
+    3. What is the maximum fluence (#/cm²)?
+    4. What is the beam energy (MeV)?`
+
+export const TID_test_info_prompts = 
+`For each TID test performed on the part, provide:
+1. What was the radiation source? ("Co60", "Protons", "Electrons", "Sr90)
+2. What was the total ionizing dose (rad, rad(Si), krad, krad(Si), Gy, Gy(Si), kGy, kGy(Si))?
+3. Was ELDRS observed? ("Yes" or "No")
+4. Were X-rays involved? ("Yes" or "No")
+5. Were P-pions involved? ("Yes" or "No")
+6. What was functional failure TID? `
+
+export const SEE_test_info_prompts = 
+`For each SEE test performed on the part, provide:
+1. What was the particle source? ("H", "P", "L", "N", "E")
+2. What SEE types were observed? ("SEU", "SET", "SEFI", "SEL", "SEB", "SEGR", separated by "|")
+3. What were the amplitude (mV) and duration (µs) of effects?
+4. What were the cross-section values (cm²)?
+5. What was the SEE threshold  ?` //Not super sure about the units here
+
+
+export const DD_test_info_prompts =
+`For each DD test performed on the part, provide:
+  1. What was the particle source? ("Protons", "Neutrons")
+  2. What was the damage level (arbitrary units)?
+  3. What was functional failure DD?`

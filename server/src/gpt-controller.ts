@@ -32,7 +32,8 @@ export class GPTController {
       name: "Radiation Effects Researcher",
       instructions:
         "You are a radiation effects researcher. Use your knowledge to give very concise and numerical answers to the questions. Please do not give citations.",
-      model: this.model,
+      // You are a radiation effects researcher specializing in extracting detailed numerical data about parts tested in scientific papers. Use your expertise to provide structured and concise answers for each part and all tests performed on it."
+        model: this.model,
       tools: [{ type: "file_search" }],
       temperature: 0.1,
     };
