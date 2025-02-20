@@ -121,11 +121,10 @@ export const SEE_test_info_prompts =
 2. What SEE types were observed? ("SEU", "SET", "SEFI", "SEL", "SEB", "SEGR", separated by "|")
 3. What were the amplitude (mV) and duration (µs) of effects?
 4. What were the cross-section values (cm²)?
-5. What was the SEE threshold  ?` //Not super sure about the units here
-
+5. What was the SEE threshold  ?` //Not super sure about this question
 
 export const DD_test_info_prompts =
 `For each DD test performed on the part, provide:
   1. What was the particle source? ("Protons", "Neutrons")
   2. What was the damage level (arbitrary units)?
-  3. What was functional failure DD?`
+  3. What was functional failure DD?` //Not super sure about this question
