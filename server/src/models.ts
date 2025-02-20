@@ -6,7 +6,9 @@ import {
   CreationOptional,
   ForeignKey,
   HasManyAddAssociationMixin,
+  HasManyAddAssociationsMixin,
   BelongsToManyAddAssociationMixin,
+  BelongsToManyAddAssociationsMixin,
 } from "sequelize";
 import { sequelize } from "./database-init";
 
@@ -22,7 +24,7 @@ class Author extends Model<
 
   // Mixin for associations
   declare addPaper: BelongsToManyAddAssociationMixin<Paper, number>;
-  declare addPapers: BelongsToManyAddAssociationMixin<Paper, number>;
+  declare addPapers: BelongsToManyAddAssociationsMixin<Paper, number>;
 }
 
 Author.init(
@@ -44,11 +46,11 @@ class Paper extends Model<
 
   // Mixins for associations
   declare addAuthor: BelongsToManyAddAssociationMixin<Author, number>;
-  declare addAuthors: BelongsToManyAddAssociationMixin<Author, number>;
+  declare addAuthors: BelongsToManyAddAssociationsMixin<Author, number>;
   declare addPart: BelongsToManyAddAssociationMixin<Part, number>;
-  declare addParts: BelongsToManyAddAssociationMixin<Part, number>;
+  declare addParts: BelongsToManyAddAssociationsMixin<Part, number>;
   declare addTestingData: HasManyAddAssociationMixin<TestingData, number>;
-  declare addTestingDatas: HasManyAddAssociationMixin<TestingData, number>;
+  declare addTestingDatas: HasManyAddAssociationsMixin<TestingData, number>;
 }
 
 Paper.init(
@@ -75,9 +77,9 @@ class Part extends Model<InferAttributes<Part>, InferCreationAttributes<Part>> {
 
   // Mixins for associations
   declare addPaper: BelongsToManyAddAssociationMixin<Paper, number>;
-  declare addPapers: BelongsToManyAddAssociationMixin<Paper, number>;
+  declare addPapers: BelongsToManyAddAssociationsMixin<Paper, number>;
   declare addTestingData: HasManyAddAssociationMixin<TestingData, number>;
-  declare addTestingDatas: HasManyAddAssociationMixin<TestingData, number>;
+  declare addTestingDatas: HasManyAddAssociationsMixin<TestingData, number>;
 }
 
 Part.init(
