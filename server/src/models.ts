@@ -85,7 +85,7 @@ class Part extends Model<InferAttributes<Part>, InferCreationAttributes<Part>> {
 Part.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    name: { type: DataTypes.TEXT, allowNull: false, unique: true },
+    name: { type: DataTypes.TEXT, allowNull: false },
     type: { type: DataTypes.TEXT },
     manufacturer: { type: DataTypes.TEXT },
   },
