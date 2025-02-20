@@ -86,5 +86,13 @@ initializeSystem().then(({ dbController, gptController }) => {
       dbController.closeDB();
       console.log("Database connection closed.");
     });
+
+    //
+    // Handle graceful shutdown
+    // process.on("SIGINT", async () => {
+    //   console.log("Shutting down...");
+    //   await dbController.closeDB();
+    //   process.exit(0);
+    // });
   });
 });
