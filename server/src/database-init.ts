@@ -4,7 +4,7 @@ import path from "path";
 // Initialize Sequelize with SQLite
 const sequelize = new Sequelize({
   dialect: "sqlite",
-  storage: path.resolve(__dirname, "../database.db"),
+  storage: path.resolve(__dirname, "../databaseb.db"),
   // logging: false
 });
 
@@ -23,3 +23,4 @@ const initializeDatabase = async () => {
 };
 
 export { sequelize, initializeDatabase };
+import "./models";
