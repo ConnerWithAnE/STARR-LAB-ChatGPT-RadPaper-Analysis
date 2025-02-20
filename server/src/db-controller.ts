@@ -6,8 +6,6 @@ import {
   TIDData,
   SEEData,
   DDData,
-  PaperAuthor,
-  PaperPart,
 } from "./models";
 import { sequelize } from "./database-init";
 import { Op } from "sequelize";
@@ -19,6 +17,8 @@ import {
   TIDDataType,
   SEEDataType,
   DDDataType,
+  FullDataType,
+  PaperWithRelations,
 } from "./types";
 
 export class DatabaseController {
@@ -294,7 +294,7 @@ export class DatabaseController {
     return testingData.get({ plain: true });
   }
 
-  /** -------------------- TID, SEE, DD CRUD -------------------- */
+  /** -------------------- TID CRUD -------------------- */
 
   /** Add TID data to a specific TestingData */
   async addTIDData(
@@ -341,6 +341,8 @@ export class DatabaseController {
     return await TIDData.destroy({ where: { id: tidDataId } });
   }
 
+  /** -------------------- SEE CRUD -------------------- */
+
   /** Add SEE data to a specific TestingData */
   async addSEEData(
     testingDataId: number,
@@ -385,6 +387,8 @@ export class DatabaseController {
   async deleteSEEData(seeDataId: number): Promise<number> {
     return await SEEData.destroy({ where: { id: seeDataId } });
   }
+
+  /** -------------------- DD CRUD -------------------- */
 
   /** Add DD data to a specific TestingData */
   async addDDData(
@@ -442,16 +446,16 @@ export class DatabaseController {
     return await Author.count();
   }
   /** Get full data */
-  async getFullData(search?: string) {
+  async getFullData(search?: string): Promise<FullDataType[]> {
     const whereClause = search ? { name: { [Op.like]: `%${search}%` } } : {};
 
-    const papers = await Paper.findAll({
+    const papers: PaperWithRelations[] = await Paper.findAll({
       where: whereClause,
       include: [
         {
           model: Author,
-          attributes: ["id", "name"], // Exclude join table attributes
-          through: { attributes: [] },
+          attributes: ["id", "name"],
+          through: { attributes: [] }, // Exclude join table attributes
         },
         {
           model: Part,
@@ -510,7 +514,307 @@ export class DatabaseController {
       ],
     });
 
-    return papers;
+    return papers.map((paper) => ({
+      id: paper.id,
+      name: paper.name,
+      year: paper.year,
+      authors:
+        paper.Authors?.map((author) => ({
+          id: author.id,
+          name: author.name,
+        })) || [],
+      parts:
+        paper.Parts?.map((part) => ({
+          id: part.id,
+          name: part.name,
+          type: part.type,
+          manufacturer: part.manufacturer,
+        })) || [],
+      testingData:
+        paper.TestingData?.map((test) => ({
+          id: test.id,
+          testing_type: test.testing_type,
+          max_fluence: test.max_fluence,
+          energy: test.energy,
+          facility: test.facility,
+          environment: test.environment,
+          terrestrial: test.terrestrial,
+          flight: test.flight,
+          tidData: test.tidData
+            ? {
+                id: test.tidData.id,
+                source: test.tidData.source,
+                max_tid: test.tidData.max_tid,
+                dose_rate: test.tidData.dose_rate,
+                eldrs: test.tidData.eldrs,
+                p_pion: test.tidData.p_pion,
+                dose_to_failure: test.tidData.dose_to_failure,
+                increased_power_usage: test.tidData.increased_power_usage,
+                power_usage_description: test.tidData.power_usage_description,
+                special_notes: test.tidData.special_notes || "",
+              }
+            : undefined,
+          seeData: test.seeData
+            ? {
+                id: test.seeData.id,
+                source: test.seeData.source,
+                type: test.seeData.type,
+                amplitude: test.seeData.amplitude,
+                duration: test.seeData.duration,
+                cross_section: test.seeData.cross_section,
+                cross_section_type: test.seeData.cross_section_type,
+                special_notes: test.seeData.special_notes || "",
+              }
+            : undefined,
+          ddData: test.ddData
+            ? {
+                id: test.ddData.id,
+                source: test.ddData.source,
+                damage_level: test.ddData.damage_level,
+                damage_level_description: test.ddData.damage_level_description,
+                special_notes: test.ddData.special_notes || "",
+              }
+            : undefined,
+        })) || [],
+    }));
+  }
+
+  async getFilteredData(
+    filters: Partial<FullDataType>,
+  ): Promise<FullDataType[]> {
+    const paperWhere: any = {};
+    const authorWhere: any = {};
+    const partWhere: any = {};
+    const testingDataWhere: any = {};
+    const tidDataWhere: any = {};
+    const seeDataWhere: any = {};
+    const ddDataWhere: any = {};
+
+    // Apply filters dynamically
+    if (filters.name) {
+      if (Array.isArray(filters.name)) {
+        paperWhere.name = { [Op.in]: filters.name }; // Matches any paper name provided
+      } else {
+        paperWhere.name = { [Op.like]: `%${filters.name}%` };
+      }
+    }
+
+    if (filters.year) {
+      if (Array.isArray(filters.year)) {
+        paperWhere.year = { [Op.in]: filters.year }; // Matches multiple years
+      } else {
+        paperWhere.year = filters.year;
+      }
+    }
+
+    if (filters.authors) {
+      const authorNames = filters.authors
+        .map((author) => author.name)
+        .filter(Boolean);
+      if (authorNames.length > 0) {
+        authorWhere.name = { [Op.in]: authorNames }; // Matches any author in the provided list
+      }
+    }
+
+    if (filters.parts) {
+      const partNames = filters.parts.map((part) => part.name).filter(Boolean);
+      const partTypes = filters.parts.map((part) => part.type).filter(Boolean);
+
+      if (partNames.length > 0) {
+        partWhere.name = { [Op.in]: partNames };
+      }
+      if (partTypes.length > 0) {
+        partWhere.type = { [Op.in]: partTypes };
+      }
+    }
+
+    if (filters.testingData) {
+      const testingTypes = filters.testingData
+        .map((test) => test.testing_type)
+        .filter(Boolean);
+      const testingFacilities = filters.testingData
+        .map((test) => test.facility)
+        .filter(Boolean);
+
+      if (testingTypes.length > 0) {
+        testingDataWhere.testing_type = { [Op.in]: testingTypes };
+      }
+      if (testingFacilities.length > 0) {
+        testingDataWhere.facility = { [Op.in]: testingFacilities };
+      }
+    }
+
+    if (filters.testingData?.some((test) => test.tidData)) {
+      const tidSources = filters.testingData
+        .map((test) => test.tidData?.source)
+        .filter(Boolean);
+
+      if (tidSources.length > 0) {
+        tidDataWhere.source = { [Op.in]: tidSources };
+      }
+    }
+
+    if (filters.testingData?.some((test) => test.seeData)) {
+      const seeSources = filters.testingData
+        .map((test) => test.seeData?.source)
+        .filter(Boolean);
+
+      if (seeSources.length > 0) {
+        seeDataWhere.source = { [Op.in]: seeSources };
+      }
+    }
+
+    if (filters.testingData?.some((test) => test.ddData)) {
+      const ddSources = filters.testingData
+        .map((test) => test.ddData?.source)
+        .filter(Boolean);
+
+      if (ddSources.length > 0) {
+        ddDataWhere.source = { [Op.in]: ddSources };
+      }
+    }
+
+    // Fetch filtered data
+    const papers: PaperWithRelations[] = await Paper.findAll({
+      where: Object.keys(paperWhere).length ? paperWhere : undefined,
+      include: [
+        {
+          model: Author,
+          where: Object.keys(authorWhere).length ? authorWhere : undefined,
+          attributes: ["id", "name"],
+          through: { attributes: [] },
+        },
+        {
+          model: Part,
+          where: Object.keys(partWhere).length ? partWhere : undefined,
+          attributes: ["id", "name", "type", "manufacturer"],
+          through: { attributes: [] },
+        },
+        {
+          model: TestingData,
+          where: Object.keys(testingDataWhere).length
+            ? testingDataWhere
+            : undefined,
+          attributes: [
+            "testing_type",
+            "max_fluence",
+            "energy",
+            "facility",
+            "environment",
+            "terrestrial",
+            "flight",
+          ],
+          include: [
+            {
+              model: TIDData,
+              where: Object.keys(tidDataWhere).length
+                ? tidDataWhere
+                : undefined,
+              attributes: [
+                "source",
+                "max_tid",
+                "dose_rate",
+                "eldrs",
+                "p_pion",
+                "dose_to_failure",
+                "increased_power_usage",
+                "power_usage_description",
+                "special_notes",
+              ],
+            },
+            {
+              model: SEEData,
+              where: Object.keys(seeDataWhere).length
+                ? seeDataWhere
+                : undefined,
+              attributes: [
+                "source",
+                "type",
+                "amplitude",
+                "duration",
+                "cross_section",
+                "cross_section_type",
+                "special_notes",
+              ],
+            },
+            {
+              model: DDData,
+              where: Object.keys(ddDataWhere).length ? ddDataWhere : undefined,
+              attributes: [
+                "source",
+                "damage_level",
+                "damage_level_description",
+                "special_notes",
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    return papers.map((paper) => ({
+      id: paper.id,
+      name: paper.name,
+      year: paper.year,
+      authors:
+        paper.Authors?.map((author) => ({
+          id: author.id,
+          name: author.name,
+        })) || [],
+      parts:
+        paper.Parts?.map((part) => ({
+          id: part.id,
+          name: part.name,
+          type: part.type,
+          manufacturer: part.manufacturer,
+        })) || [],
+      testingData:
+        paper.TestingData?.map((test) => ({
+          id: test.id,
+          testing_type: test.testing_type,
+          max_fluence: test.max_fluence,
+          energy: test.energy,
+          facility: test.facility,
+          environment: test.environment,
+          terrestrial: test.terrestrial,
+          flight: test.flight,
+          tidData: test.tidData
+            ? {
+                id: test.tidData.id,
+                source: test.tidData.source,
+                max_tid: test.tidData.max_tid,
+                dose_rate: test.tidData.dose_rate,
+                eldrs: test.tidData.eldrs,
+                p_pion: test.tidData.p_pion,
+                dose_to_failure: test.tidData.dose_to_failure,
+                increased_power_usage: test.tidData.increased_power_usage,
+                power_usage_description: test.tidData.power_usage_description,
+                special_notes: test.tidData.special_notes || "",
+              }
+            : undefined,
+          seeData: test.seeData
+            ? {
+                id: test.seeData.id,
+                source: test.seeData.source,
+                type: test.seeData.type,
+                amplitude: test.seeData.amplitude,
+                duration: test.seeData.duration,
+                cross_section: test.seeData.cross_section,
+                cross_section_type: test.seeData.cross_section_type,
+                special_notes: test.seeData.special_notes || "",
+              }
+            : undefined,
+          ddData: test.ddData
+            ? {
+                id: test.ddData.id,
+                source: test.ddData.source,
+                damage_level: test.ddData.damage_level,
+                damage_level_description: test.ddData.damage_level_description,
+                special_notes: test.ddData.special_notes || "",
+              }
+            : undefined,
+        })) || [],
+    }));
   }
 
   /** Close the database connection */

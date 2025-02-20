@@ -33,6 +33,9 @@ export type TestData = {
   environment: string;
   terrestrial: boolean;
   flight: boolean;
+  tidData?: TIDDataType;
+  seeData?: SEEDataType;
+  ddData?: DDDataType;
 };
 
 // Type to ensure testing types are consistent
@@ -76,11 +79,19 @@ export type DDDataType = {
   special_notes?: string;
 };
 
-// Type for filtering papers
-export type FilterData = {
-  name?: string;
-  year?: number;
-  manufacturer?: string;
+export type PaperWithRelations = PaperData & {
+  Authors?: AuthorData[];
+  Parts?: PartData[];
+  TestingData?: TestData[];
+};
+
+export type FullDataType = {
+  id: number;
+  name: string;
+  year: number;
+  authors: AuthorData[];
+  parts: PartData[];
+  testingData: TestData[];
 };
 
 // Type of testing done
