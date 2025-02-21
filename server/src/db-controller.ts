@@ -24,23 +24,23 @@ import {
 export class DatabaseController {
   /** -------------------- AUTHOR CRUD -------------------- */
 
-  async addAuthor(name: string): Promise<AuthorData> {
-    const [author] = await Author.findOrCreate({ where: { name } });
-    return author.get({ plain: true }); // Turn instance to plain object
+  async addAuthor(
+    name: string,
+  ): Promise<{ author: AuthorData; created: boolean }> {
+    const [author, created] = await Author.findOrCreate({ where: { name } });
+    return { author: author.get({ plain: true }), created };
   }
 
   /** Get a specific author by ID */
-  async getAuthorById(authorId: number): Promise<AuthorData> {
+  async getAuthorById(authorId: number): Promise<AuthorData | null> {
     const author = await Author.findByPk(authorId);
-    if (!author) throw new Error("Author not found");
-    return author.get({ plain: true });
+    return author ? author.get({ plain: true }) : null;
   }
 
   /** Get a specific author by Name */
-  async getAuthorByName(name: string): Promise<AuthorData> {
+  async getAuthorByName(name: string): Promise<AuthorData | null> {
     const author = await Author.findOne({ where: { name } });
-    if (!author) throw new Error("Author not found");
-    return author.get({ plain: true });
+    return author ? author.get({ plain: true }) : null;
   }
 
   /** Get all authors */
@@ -50,11 +50,12 @@ export class DatabaseController {
   }
 
   /** Update an author's name */
-  async updateAuthor(updateData: Partial<AuthorData>): Promise<AuthorData> {
+  async updateAuthor(
+    updateData: Partial<AuthorData>,
+  ): Promise<AuthorData | null> {
     const { id, ...dataWithoutId } = updateData; // Ensure we do not update the id
     const author = await Author.findByPk(id);
-    if (!author) throw new Error("Author not found");
-
+    if (!author) return null;
     await author.update(dataWithoutId);
     return author.get({ plain: true });
   }
