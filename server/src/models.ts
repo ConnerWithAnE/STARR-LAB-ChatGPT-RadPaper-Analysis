@@ -9,6 +9,7 @@ import {
   HasManyAddAssociationsMixin,
   BelongsToManyAddAssociationMixin,
   BelongsToManyAddAssociationsMixin,
+  ModelStatic,
 } from "sequelize";
 import { sequelize } from "./database-init";
 
@@ -25,12 +26,13 @@ class Author extends Model<
   // Mixin for associations
   declare addPaper: BelongsToManyAddAssociationMixin<Paper, number>;
   declare addPapers: BelongsToManyAddAssociationsMixin<Paper, number>;
+  declare setPapers: BelongsToManyAddAssociationsMixin<Paper, number>;
 }
 
 Author.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    name: { type: DataTypes.TEXT, allowNull: false, unique: true },
+    name: { type: DataTypes.TEXT, allowNull: false },
   },
   { sequelize, modelName: "author" },
 );
@@ -49,8 +51,8 @@ class Paper extends Model<
   declare addAuthors: BelongsToManyAddAssociationsMixin<Author, number>;
   declare addPart: BelongsToManyAddAssociationMixin<Part, number>;
   declare addParts: BelongsToManyAddAssociationsMixin<Part, number>;
-  declare addTestingData: HasManyAddAssociationMixin<TestingData, number>;
-  declare addTestingDatas: HasManyAddAssociationsMixin<TestingData, number>;
+  declare addTest: HasManyAddAssociationMixin<Test, number>;
+  declare addTests: HasManyAddAssociationsMixin<Test, number>;
 }
 
 Paper.init(
@@ -78,8 +80,8 @@ class Part extends Model<InferAttributes<Part>, InferCreationAttributes<Part>> {
   // Mixins for associations
   declare addPaper: BelongsToManyAddAssociationMixin<Paper, number>;
   declare addPapers: BelongsToManyAddAssociationsMixin<Paper, number>;
-  declare addTestingData: HasManyAddAssociationMixin<TestingData, number>;
-  declare addTestingDatas: HasManyAddAssociationsMixin<TestingData, number>;
+  declare addTest: HasManyAddAssociationMixin<Test, number>;
+  declare addTests: HasManyAddAssociationsMixin<Test, number>;
 }
 
 Part.init(
@@ -99,10 +101,7 @@ Paper.belongsToMany(Part, { through: PaperPart });
 Part.belongsToMany(Paper, { through: PaperPart });
 
 // ------------------ TESTING DATA TABLE ------------------
-class TestingData extends Model<
-  InferAttributes<TestingData>,
-  InferCreationAttributes<TestingData>
-> {
+class Test extends Model<InferAttributes<Test>, InferCreationAttributes<Test>> {
   declare id: CreationOptional<number>;
   declare testing_type: "TID" | "SEE" | "DD";
   declare max_fluence: number;
@@ -117,12 +116,12 @@ class TestingData extends Model<
   declare partId: ForeignKey<Part["id"]>;
 
   // Mixin for association
-  declare addTIDData: HasManyAddAssociationMixin<TIDData, number>;
-  declare addSEEData: HasManyAddAssociationMixin<SEEData, number>;
-  declare addDDData: HasManyAddAssociationMixin<DDData, number>;
+  declare addTid: HasManyAddAssociationMixin<Tid, number>;
+  declare addSee: HasManyAddAssociationMixin<See, number>;
+  declare addDd: HasManyAddAssociationMixin<Dd, number>;
 }
 
-TestingData.init(
+Test.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     testing_type: { type: DataTypes.ENUM("TID", "SEE", "DD") },
@@ -133,28 +132,25 @@ TestingData.init(
     terrestrial: { type: DataTypes.BOOLEAN },
     flight: { type: DataTypes.BOOLEAN },
   },
-  { sequelize, modelName: "testing_data" },
+  { sequelize, modelName: "test" },
 );
 
-Paper.hasMany(TestingData, { foreignKey: "paperId" });
-Part.hasMany(TestingData, { foreignKey: "partId" });
-TestingData.belongsTo(Paper, {
+Paper.hasMany(Test, { foreignKey: "paperId" });
+Part.hasMany(Test, { foreignKey: "partId" });
+Test.belongsTo(Paper, {
   foreignKey: "paperId",
   onDelete: "SET NULL",
   onUpdate: "CASCADE",
 });
 
-TestingData.belongsTo(Part, {
+Test.belongsTo(Part, {
   foreignKey: "partId",
   onDelete: "SET NULL",
   onUpdate: "CASCADE",
 });
 
 // ------------------ TID DATA TABLE ------------------
-class TIDData extends Model<
-  InferAttributes<TIDData>,
-  InferCreationAttributes<TIDData>
-> {
+class Tid extends Model<InferAttributes<Tid>, InferCreationAttributes<Tid>> {
   declare id: CreationOptional<number>;
   declare source: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays";
   declare max_tid: number;
@@ -167,10 +163,10 @@ class TIDData extends Model<
   declare special_notes?: string;
 
   // Foreign Key
-  declare testingDataId: ForeignKey<TestingData["id"]>;
+  declare testId: ForeignKey<Test["id"]>;
 }
 
-TIDData.init(
+Tid.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     source: {
@@ -191,17 +187,14 @@ TIDData.init(
     power_usage_description: { type: DataTypes.TEXT },
     special_notes: { type: DataTypes.TEXT },
   },
-  { sequelize, modelName: "tid_data" },
+  { sequelize, modelName: "tid" },
 );
 
-TestingData.hasOne(TIDData);
-TIDData.belongsTo(TestingData);
+Test.hasOne(Tid);
+Tid.belongsTo(Test);
 
 // ----------------- SEE DATA TABLE -----------------
-class SEEData extends Model<
-  InferAttributes<SEEData>,
-  InferCreationAttributes<SEEData>
-> {
+class See extends Model<InferAttributes<See>, InferCreationAttributes<See>> {
   declare id: CreationOptional<number>;
   declare source: "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron";
   declare type:
@@ -217,10 +210,10 @@ class SEEData extends Model<
   declare cross_section_type: string;
   declare special_notes?: string;
 
-  declare testingDataId: ForeignKey<TestingData["id"]>;
+  declare testId: ForeignKey<Test["id"]>;
 }
 
-SEEData.init(
+See.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     source: {
@@ -248,17 +241,14 @@ SEEData.init(
     cross_section_type: { type: DataTypes.TEXT },
     special_notes: { type: DataTypes.TEXT },
   },
-  { sequelize, modelName: "see_data" },
+  { sequelize, modelName: "see" },
 );
 
-TestingData.hasOne(SEEData);
-SEEData.belongsTo(TestingData);
+Test.hasOne(See);
+See.belongsTo(Test);
 
 // ----------------- DD DATA TABLE -----------------
-class DDData extends Model<
-  InferAttributes<DDData>,
-  InferCreationAttributes<DDData>
-> {
+class Dd extends Model<InferAttributes<Dd>, InferCreationAttributes<Dd>> {
   declare id: CreationOptional<number>;
   declare source: "Protons" | "Neutrons";
   declare damage_level: number;
@@ -266,10 +256,10 @@ class DDData extends Model<
   declare special_notes?: string;
 
   // Foreign key reference
-  declare testingDataId: ForeignKey<TestingData["id"]>;
+  declare testId: ForeignKey<Test["id"]>;
 }
 
-DDData.init(
+Dd.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     source: { type: DataTypes.ENUM("Protons", "Neutrons") },
@@ -277,11 +267,11 @@ DDData.init(
     damage_level_description: { type: DataTypes.TEXT },
     special_notes: { type: DataTypes.TEXT },
   },
-  { sequelize, modelName: "dd_data" },
+  { sequelize, modelName: "dd" },
 );
 
-TestingData.hasOne(DDData);
-DDData.belongsTo(TestingData);
+Test.hasOne(Dd);
+Dd.belongsTo(Test);
 
 export {
   Author,
@@ -289,9 +279,20 @@ export {
   Part,
   PaperAuthor,
   PaperPart,
-  TestingData,
-  TIDData,
-  SEEData,
-  DDData,
+  Test,
+  Tid,
+  See,
+  Dd,
   sequelize,
+};
+export const models: Record<string, ModelStatic<Model>> = {
+  Author,
+  Paper,
+  Part,
+  PaperAuthor,
+  PaperPart,
+  Test,
+  Tid,
+  See,
+  Dd,
 };
