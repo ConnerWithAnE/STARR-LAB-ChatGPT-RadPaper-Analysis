@@ -98,24 +98,34 @@ async function initializeSystem(): Promise<{
     app.use("/api/dataRequest", cascadeRouter(dbController));
     //app.use("/api/adminRequest", adminRouter(dbController, gptController));
 
-    const server = app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+    //for testing
+    app.get("/test-gpt", async (req, res) => {
+      try {
+        console.log("Initializing GPTController...");
+        const gptController = new GPTController(GPTModel.GPT4Turbo);
+        const testFiles = [
+          "./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf",
+        ];
+
+        console.log("Running GPT Analysis...");
+        const results = await gptController.runGPTAnalysis(testFiles);
+
+        console.log("GPT Analysis Results:", results);
+        res.json(results);
+      } catch (error) {
+        console.error("Error during GPT analysis:", error);
+        res.status(500).json({ error: "GPT analysis failed", details: error });
+      }
     });
 
-    // Handle clean shutdown
-    const shutdownHandler = async () => {
-      console.log("Shutting down...");
-      try {
-        await dbController.closeDB();
-        console.log("Database connection closed.");
-      } catch (error) {
-        console.error("Error closing database:", error);
-      }
-      process.exit(0);
-    };
+    app.listen(PORT, () => {
+      console.log(`Server is running on ${PORT}`);
 
-    process.on("exit", shutdownHandler);
-    process.on("SIGINT", shutdownHandler);
-    process.on("SIGTERM", shutdownHandler);
+      // Close the database when the app is shutting down
+      process.on("exit", () => {
+        dbController.closeDB();
+        console.log("Database connection closed.");
+      });
+    });
   });
 })();

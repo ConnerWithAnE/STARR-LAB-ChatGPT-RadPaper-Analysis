@@ -279,49 +279,6 @@ export class GenericController {
   }
 
   /** 🔹 Filter records dynamically based on provided query parameters */
-  //   static async filter<T extends ModelKey>(modelName: T, filters: any) {
-  //     console.log(`Filtering ${modelName} with filters:`, filters);
-
-  //     // Format model name (ensure singular and capitalized)
-  //     const formattedName = this.formatModelName(modelName);
-  //     const model = models[formattedName];
-
-  //     if (!model) throw new Error(`Invalid model name: ${modelName}`);
-
-  //     // Prepare query conditions for Sequelize
-  //     const whereConditions: Record<string, any> = {};
-  //     const includeRelations: any[] = [];
-
-  //     for (const key in filters) {
-  //       if (!filters[key]) continue; // Ignore empty filters
-
-  //       if (Object.keys((model as any).rawAttributes).includes(key)) {
-  //         // Field exists in model attributes → Direct filter
-  //         whereConditions[key] = { [Op.like]: `%${filters[key]}%` };
-  //       } else if ((model as any).associations[key]) {
-  //         // If it's a valid association, attempt to filter related models
-  //         console.log(`Including relation for filtering: ${key}`);
-  //         includeRelations.push({
-  //           model: models[key.charAt(0).toUpperCase() + key.slice(1)], // Convert to correct model name
-  //           where: { name: { [Op.like]: `%${filters[key]}%` } }, // Match related model names
-  //         });
-  //       }
-  //     }
-
-  //     console.log("Final WHERE conditions:", whereConditions);
-  //     console.log(
-  //       "Including relations:",
-  //       includeRelations.map((r) => r.model.name),
-  //     );
-
-  //     // Fetch filtered records, including related models
-  //     const records = await model.findAll({
-  //       where: whereConditions,
-  //       include: includeRelations,
-  //     });
-
-  //     return records.map((r) => r.get({ plain: true }));
-  //   }
   static async filter<T extends ModelKey>(modelName: T, filters: any) {
     console.log(`Filtering ${modelName} with filters:`, filters);
 
@@ -338,36 +295,88 @@ export class GenericController {
     for (const key in filters) {
       if (!filters[key]) continue; // Ignore empty filters
 
-      // Check if the field is a direct attribute of the model
-      if (Object.keys((model as any).rawAttributes).includes(key)) {
-        whereConditions[key] = { [Op.like]: `%${filters[key]}%` };
-      } else if ((model as any).associations[key]) {
-        // If it's a valid association, attempt to filter related models
-        console.log(`Including relation for filtering: ${key}`);
+      if (key.includes(".")) {
+        // 🔹 Handling related model fields (e.g., "authors.specialization")
+        const [relation, field] = key.split(".");
 
-        // Convert key to singular model name
-        const relatedModelName =
-          key.charAt(0).toUpperCase() + key.slice(1).replace(/s$/, "");
+        console.log(
+          `Filtering related model '${relation}' on field '${field}'`,
+        );
 
-        if (models[relatedModelName]) {
-          includeRelations.push({
-            model: models[relatedModelName], // Use the related model
-            required: true, // Ensures only records with a matching related entry are returned
-            where: {
-              name: { [Op.like]: `%${filters[key]}%` }, // Assuming `name` is the searchable field
-            },
-          });
+        if (model.associations[relation]) {
+          const relatedModelName = this.capitalize(relation.replace(/s$/, ""));
+          const relatedModel = models[relatedModelName];
+
+          if (relatedModel) {
+            console.log(
+              `Available fields for related model '${relatedModelName}':`,
+              Object.keys(relatedModel.getAttributes()),
+            ); // 🔹 Log available fields
+
+            if (field in relatedModel.getAttributes()) {
+              // Convert numeric values explicitly
+              const fieldType = relatedModel.getAttributes()[field].type;
+              let value = filters[key];
+
+              if (
+                fieldType.constructor.name.includes("INTEGER") ||
+                fieldType.constructor.name.includes("FLOAT") ||
+                fieldType.constructor.name.includes("DECIMAL")
+              ) {
+                value = Number(value); // Convert to number
+              } else if (fieldType.constructor.name.includes("STRING")) {
+                value = { [Op.like]: `%${filters[key]}%` }; // Ensure LIKE is used correctly
+              } else {
+                value = filters[key]; // Default case
+              }
+
+              includeRelations.push({
+                model: relatedModel,
+                as: relation,
+                required: true,
+                where: {
+                  [field]: value,
+                },
+              });
+            } else {
+              console.warn(
+                `Invalid field '${field}' for relation '${relation}' in model '${relatedModelName}'`,
+              );
+            }
+          } else {
+            console.warn(`Invalid related model: ${relation}`);
+          }
         } else {
-          console.warn(`No model found for relation: ${relatedModelName}`);
+          console.warn(`Invalid related model: ${relation}`);
         }
+      } else if (Object.keys(model.getAttributes()).includes(key)) {
+        // 🔹 Handling direct model fields
+        const fieldType = model.getAttributes()[key].type;
+        let value = filters[key];
+
+        if (
+          fieldType.constructor.name.includes("INTEGER") ||
+          fieldType.constructor.name.includes("FLOAT") ||
+          fieldType.constructor.name.includes("DECIMAL")
+        ) {
+          value = Number(value); // Convert to number for exact match
+        } else if (fieldType.constructor.name.includes("STRING")) {
+          value = { [Op.like]: `%${filters[key]}%` }; // Ensure LIKE is used correctly
+        }
+
+        whereConditions[key] = value; // Apply exact match for numbers, LIKE for strings
+      } else {
+        console.warn(`Field '${key}' does not exist in ${formattedName}`);
       }
     }
 
-    console.log("Final WHERE conditions:", whereConditions);
-    console.log(
-      "Including relations:",
-      includeRelations.map((r) => r.model.name),
-    );
+    console.log("Final WHERE conditions for main model:", whereConditions);
+
+    console.log("Including relations and their WHERE conditions:");
+    includeRelations.forEach((relation) => {
+      console.log(` - Relation: ${relation.model?.name || "UNKNOWN"}`);
+      console.log(`   WHERE:`, relation.where);
+    });
 
     // Fetch filtered records, including related models
     const records = await model.findAll({
@@ -375,6 +384,156 @@ export class GenericController {
       include: includeRelations,
     });
 
+    console.log("Found records:", records.length);
+
     return records.map((r) => r.get({ plain: true }));
   }
+
+  //   static async bulkCreate(data: any) {
+  //     console.log(`Bulk creating entities...`);
+
+  //     const createdInstances: Record<string, any[]> = {};
+  //     const idMapping: Record<string, Record<number, number>> = {}; // Track old → new IDs
+
+  //     // Step 1: Create standalone entities
+  //     for (const modelName in data) {
+  //       const formattedName = this.formatModelName(modelName);
+  //       const model = models[formattedName];
+
+  //       if (!model) {
+  //         console.warn(`Skipping invalid model name: ${modelName}`);
+  //         continue;
+  //       }
+
+  //       idMapping[modelName] = {}; // Initialize ID mapping for this model
+
+  //       // Process each entity in the provided data
+  //       createdInstances[modelName] = await Promise.all(
+  //         data[modelName].map(async (item: any) => {
+  //           const itemCopy = { ...item };
+  //           delete itemCopy.id; // Remove user-provided ID to let DB generate it
+
+  //           // Create a new entity
+  //           const newEntity = await model.create(itemCopy);
+
+  //           // Ensure ID retrieval works with explicit typing
+  //           const newEntityId = newEntity.getDataValue("id") as number;
+
+  //           if (item.id) {
+  //             idMapping[modelName][item.id] = newEntityId; // Store mapping
+  //           }
+
+  //           return newEntity;
+  //         }),
+  //       );
+  //     }
+
+  //     console.log("Standalone entities created. Processing relationships...");
+
+  //     // Step 2: Process relationships
+  //     for (const modelName in data) {
+  //       for (const instanceData of data[modelName]) {
+  //         const newId = instanceData.id
+  //           ? idMapping[modelName][instanceData.id] || instanceData.id
+  //           : createdInstances[modelName].find(
+  //               (inst) => inst.name === instanceData.name,
+  //             )?.id;
+
+  //         if (!newId) continue;
+
+  //         const instance = createdInstances[modelName].find(
+  //           (inst) => inst.id === newId,
+  //         );
+
+  //         const relatedData = this.extractRelatedData(
+  //           models[this.formatModelName(modelName)],
+  //           instanceData,
+  //         );
+
+  //         // Replace old IDs with new ones in relationships
+  //         for (const key in relatedData) {
+  //           relatedData[key] = relatedData[key].map(
+  //             (oldId: number) => idMapping[key]?.[oldId] || oldId,
+  //           );
+  //         }
+
+  //         await this.processAssociations(instance, modelName, relatedData, true);
+  //       }
+  //     }
+
+  //     console.log("Bulk creation completed.");
+  //     return createdInstances;
+  //   }
+
+  // bugg code below, setting relationships with temps ids
+  //   static async bulkCreate(data: any) {
+  //     console.log(`Bulk creating entities...`);
+
+  //     const createdInstances: Record<string, any[]> = {};
+  //     const idMapping: Record<string, Record<number, number>> = {}; // Map temp_id → real DB ID
+
+  //     // Step 1: Create standalone entities first (ignore relationships for now)
+  //     for (const modelName in data) {
+  //       const formattedName = this.formatModelName(modelName);
+  //       const model = models[formattedName];
+
+  //       if (!model) {
+  //         console.warn(`Skipping invalid model name: ${modelName}`);
+  //         continue;
+  //       }
+
+  //       idMapping[modelName] = {}; // Initialize mapping for this model
+
+  //       // Create entities
+  //       createdInstances[modelName] = await Promise.all(
+  //         data[modelName].map(async (item: any) => {
+  //           const itemCopy = { ...item };
+  //           delete itemCopy.temp_id; // Remove user-provided temp_id
+
+  //           // Create entity in DB
+  //           const newEntity = await model.create(itemCopy);
+  //           const newEntityId = newEntity.getDataValue("id") as number; // Get DB-assigned ID
+
+  //           if (item.temp_id) {
+  //             idMapping[modelName][item.temp_id] = newEntityId; // Store temp_id → real_id mapping
+  //           }
+
+  //           return newEntity;
+  //         }),
+  //       );
+  //     }
+
+  //     console.log("Standalone entities created. Processing relationships...");
+
+  //     // Step 2: Process relationships now that all IDs are known
+  //     for (const modelName in data) {
+  //       for (const instanceData of data[modelName]) {
+  //         const newId = idMapping[modelName][instanceData.temp_id];
+
+  //         if (!newId) continue;
+
+  //         const instance = createdInstances[modelName].find(
+  //           (inst) => inst.id === newId,
+  //         );
+
+  //         const relatedData = this.extractRelatedData(
+  //           models[this.formatModelName(modelName)],
+  //           instanceData,
+  //         );
+
+  //         // 🔥 **Fix: Replace temp IDs with real database IDs**
+  //         for (const key in relatedData) {
+  //           relatedData[key] = relatedData[key].map(
+  //             (tempId: number) => idMapping[key]?.[tempId] || tempId,
+  //           );
+  //         }
+
+  //         // Process relationships correctly
+  //         await this.processAssociations(instance, modelName, relatedData, true);
+  //       }
+  //     }
+
+  //     console.log("Bulk creation completed.");
+  //     return createdInstances;
+  //   }
 }

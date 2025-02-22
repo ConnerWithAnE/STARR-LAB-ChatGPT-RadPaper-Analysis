@@ -11,6 +11,18 @@ export default function cascadeRouter(
 ): Router {
   const router = Router();
 
+  // router.post("/bulk", async (req: Request, res: Response) => {
+  //   try {
+  //     const data = req.body;
+  //     console.log("Processing bulk creation...");
+  //     const createdInstances = await GenericController.bulkCreate(data);
+  //     res.status(201).json(createdInstances);
+  //   } catch (error) {
+  //     console.error("Error in bulk creation:", error);
+  //     res.status(500).json({ error: "Internal Server Error" });
+  //   }
+  // });
+
   /** Create a new record for any model */
   router.post("/:model", async (req: Request, res: Response) => {
     try {

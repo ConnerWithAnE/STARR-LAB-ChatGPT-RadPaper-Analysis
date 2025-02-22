@@ -14,7 +14,7 @@ const initializeDatabase = async () => {
     console.log("Database connection has been established successfully.");
 
     // Sync all defined models to the database
-    await sequelize.sync({ alter: true }); // `alter: true` will update tables to match the models
+    await sequelize.sync(); // `alter: true` will update tables to match the models
     console.log("Database schema synchronized successfully.");
   } catch (error) {
     console.error("Unable to connect to the database or sync schema:", error);
