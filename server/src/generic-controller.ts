@@ -27,7 +27,12 @@ export class GenericController {
     // Process and associate related records
     await this.processAssociations(instance, formattedName, relatedData, true);
 
-    return instance.get({ plain: true });
+    //get the full instance, not just id and defined fields
+    const instanceId = instance.getDataValue("id");
+    const fullInstance = this.getById(modelName, instanceId);
+
+    return fullInstance;
+    //return instance.get({ plain: true });
   }
 
   /** Format model name: Singularize and capitalize */
@@ -71,7 +76,7 @@ export class GenericController {
     return relatedData;
   }
 
-  /** 🔹 Process and associate related records */
+  /** Process and associate related records */
   private static async processAssociations(
     instance: any,
     modelName: string,
@@ -85,7 +90,7 @@ export class GenericController {
           ? `add${this.capitalize(relationKey)}`
           : `set${this.capitalize(relationKey)}`
         : `set${this.capitalize(relationKey)}`;
-      const singularModelName = this.capitalize(relationKey).replace(/s$/, ""); // Convert to singular
+      const singularModelName = this.formatModelName(relationKey);
 
       console.log(`Processing relation: ${relationKey} for ${modelName}`);
 
@@ -121,7 +126,11 @@ export class GenericController {
 
       // Use the correct association method (add vs set)
       console.log(`Trying to use ${relationMethod}`);
-      console.log(`Instance has methods:`, Object.keys(instance));
+      // console.log(`Instance has methods:`, Object.keys(instance));
+      console.log(
+        "Instance prototype methods:",
+        Object.getOwnPropertyNames(Object.getPrototypeOf(instance)),
+      );
 
       if (typeof instance[relationMethod] === "function") {
         console.log(`Using ${relationMethod}()`);
@@ -144,7 +153,7 @@ export class GenericController {
     return name.charAt(0).toUpperCase() + name.slice(1);
   }
 
-  /** 🔹 Get all records, including valid relationships */
+  /**  Get all records, including valid relationships */
   static async getAll<T extends ModelKey>(modelName: T) {
     console.log(`Fetching all records for: ${modelName}`);
 
@@ -176,7 +185,7 @@ export class GenericController {
     return records.map((r) => r.get({ plain: true }));
   }
 
-  /** 🔹 Get a single record by ID, including valid relationships */
+  /**  Get a single record by ID, including valid relationships */
   static async getById<T extends ModelKey>(modelName: T, id: number) {
     console.log(`Fetching record with ID: ${id} from model: ${modelName}`);
 
@@ -213,7 +222,7 @@ export class GenericController {
     return record.get({ plain: true });
   }
 
-  /** 🔹 Update a record, allowing append or set for relations */
+  /**  Update a record, allowing append or set for relations */
   static async update<T extends ModelKey>(
     modelName: T,
     id: number,
@@ -249,10 +258,15 @@ export class GenericController {
       append,
     );
 
-    return instance.get({ plain: true });
+    //get the full instance, not just id and defined fields
+    const instanceId = instance.getDataValue("id");
+    const fullInstance = this.getById(modelName, instanceId);
+
+    return fullInstance;
+    //return instance.get({ plain: true });
   }
 
-  /** 🔹 Delete a record by ID */
+  /**  Delete a record by ID */
   static async delete<T extends ModelKey>(modelName: T, id: number) {
     console.log(`Deleting ${modelName} with ID ${id}`);
 
@@ -278,7 +292,7 @@ export class GenericController {
     return deletedCount; // 0 if not found, 1 if deleted
   }
 
-  /** 🔹 Filter records dynamically based on provided query parameters */
+  /**  Filter records dynamically based on provided query parameters */
   static async filter<T extends ModelKey>(modelName: T, filters: any) {
     console.log(`Filtering ${modelName} with filters:`, filters);
 
@@ -296,7 +310,7 @@ export class GenericController {
       if (!filters[key]) continue; // Ignore empty filters
 
       if (key.includes(".")) {
-        // 🔹 Handling related model fields (e.g., "authors.specialization")
+        //  Handling related model fields (e.g., "parts.type")
         const [relation, field] = key.split(".");
 
         console.log(
@@ -311,7 +325,7 @@ export class GenericController {
             console.log(
               `Available fields for related model '${relatedModelName}':`,
               Object.keys(relatedModel.getAttributes()),
-            ); // 🔹 Log available fields
+            ); //  Log available fields
 
             if (field in relatedModel.getAttributes()) {
               // Convert numeric values explicitly
@@ -324,7 +338,7 @@ export class GenericController {
                 fieldType.constructor.name.includes("DECIMAL")
               ) {
                 value = Number(value); // Convert to number
-              } else if (fieldType.constructor.name.includes("STRING")) {
+              } else if (fieldType.constructor.name.includes("TEXT")) {
                 value = { [Op.like]: `%${filters[key]}%` }; // Ensure LIKE is used correctly
               } else {
                 value = filters[key]; // Default case
@@ -350,7 +364,7 @@ export class GenericController {
           console.warn(`Invalid related model: ${relation}`);
         }
       } else if (Object.keys(model.getAttributes()).includes(key)) {
-        // 🔹 Handling direct model fields
+        //  Handling direct model fields
         const fieldType = model.getAttributes()[key].type;
         let value = filters[key];
 
@@ -360,7 +374,7 @@ export class GenericController {
           fieldType.constructor.name.includes("DECIMAL")
         ) {
           value = Number(value); // Convert to number for exact match
-        } else if (fieldType.constructor.name.includes("STRING")) {
+        } else if (fieldType.constructor.name.includes("TEXT")) {
           value = { [Op.like]: `%${filters[key]}%` }; // Ensure LIKE is used correctly
         }
 
@@ -521,7 +535,7 @@ export class GenericController {
   //           instanceData,
   //         );
 
-  //         // 🔥 **Fix: Replace temp IDs with real database IDs**
+  //         // **Fix: Replace temp IDs with real database IDs**
   //         for (const key in relatedData) {
   //           relatedData[key] = relatedData[key].map(
   //             (tempId: number) => idMapping[key]?.[tempId] || tempId,
