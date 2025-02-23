@@ -1,14 +1,12 @@
 import express, { Request, Response, Router, NextFunction } from "express";
-import { DatabaseController } from "../db-controller"; // Keep DatabaseController
+//import { DatabaseController } from "../db-controller"; // Keep DatabaseController
 import { FullDataType } from "../types"; // Use the latest types
 import authenticateJWT from "../auth/jwt-auth";
 import { GenericController } from "../generic-controller";
 
 const router = express.Router();
 
-export default function cascadeRouter(
-  dbController: DatabaseController,
-): Router {
+export default function cascadeRouter(dbController: GenericController): Router {
   const router = Router();
 
   // router.post("/bulk", async (req: Request, res: Response) => {

@@ -12,7 +12,8 @@ import { initializeDatabase } from "./database-init";
 import exampleRouter from "./routes/example-router";
 import cascadeRouter from "./routes/cascade-router";
 // import { DatabaseController } from "./database-controller";
-import { DatabaseController } from "./db-controller";
+//import { DatabaseController } from "./db-controller";
+import { GenericController as DatabaseController } from "./generic-controller";
 
 import adminRouter from "./routes/admin-router";
 import { GPTController } from "./gpt-controller";

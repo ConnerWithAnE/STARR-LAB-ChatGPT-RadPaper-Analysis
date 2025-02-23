@@ -1,5 +1,6 @@
 import { models } from "./models"; // Import all Sequelize models dynamically
 import { Model, Op } from "sequelize";
+import { sequelize } from "./database-init";
 
 type ModelKey = keyof typeof models; // Ensures only valid model names are used
 
@@ -401,6 +402,11 @@ export class GenericController {
     console.log("Found records:", records.length);
 
     return records.map((r) => r.get({ plain: true }));
+  }
+  /** Close the database connection */
+  async closeDB(): Promise<void> {
+    await sequelize.close();
+    console.log("Database connection closed successfully");
   }
 
   //   static async bulkCreate(data: any) {
