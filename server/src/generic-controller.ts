@@ -14,7 +14,7 @@ export class GenericController {
     const model = models[formattedName];
     if (!model) {
       console.error(`Invalid model name: ${modelName}`);
-      return null;
+      return { error: `Invalid model name: ${modelName}`, status: 400 };
     }
 
     console.log(`Creating ${formattedName} with data:`, data);
@@ -22,11 +22,23 @@ export class GenericController {
     // Extract related data (arrays) and remove from main payload
     const relatedData = this.extractRelatedData(model, data);
 
+    if ("error" in relatedData) {
+      return relatedData;
+    }
+
     // Create the main instance
     const instance = await model.create(data);
 
     // Process and associate related records
-    await this.processAssociations(instance, formattedName, relatedData, true);
+    const associationResult = await this.processAssociations(
+      instance,
+      formattedName,
+      relatedData,
+      true,
+    );
+    if (associationResult?.error) {
+      return associationResult;
+    }
 
     //get the full instance, not just id and defined fields
     const instanceId = instance.getDataValue("id");
@@ -45,7 +57,7 @@ export class GenericController {
   private static extractRelatedData(
     model: any,
     data: any,
-  ): Record<string, number[]> {
+  ): Record<string, number[]> | {} {
     const relatedData: Record<string, number[]> = {};
 
     for (const key in data) {
@@ -70,6 +82,10 @@ export class GenericController {
           delete data[key];
         } else {
           console.warn(`Invalid relation: ${pluralRelation}`);
+          return {
+            error: `Invalid relation: ${pluralRelation}`,
+            status: 400,
+          };
         }
       }
     }
@@ -98,7 +114,10 @@ export class GenericController {
       const relatedModel = models[singularModelName];
       if (!relatedModel) {
         console.warn(`Missing related model: ${singularModelName}`);
-        continue;
+        return {
+          error: `Missing related model: ${singularModelName}`,
+          status: 400,
+        };
       }
 
       // Handle empty arrays when append is false → Remove all relations
@@ -122,7 +141,11 @@ export class GenericController {
       console.log(`Found related instances: ${relatedInstances.length}`);
 
       if (relatedInstances.length !== relatedData[relationKey].length) {
-        throw new Error(`Some ${relationKey} not found or invalid`);
+        console.log(`Some ${relationKey} not found or invalid`);
+        return {
+          error: `Some ${relationKey} not found or invalid`,
+          status: 400,
+        };
       }
 
       // Use the correct association method (add vs set)
@@ -137,7 +160,11 @@ export class GenericController {
         console.log(`Using ${relationMethod}()`);
 
         if (!isPlural && relatedInstances.length > 1) {
-          throw new Error(`Expected only one ${relationKey} but got multiple`);
+          console.warn(`Expected only one ${relationKey} but got multiple`);
+          return {
+            error: `Expected only one ${relationKey} but got multiple`,
+            status: 400,
+          };
         }
 
         await instance[relationMethod](
@@ -161,7 +188,14 @@ export class GenericController {
     // Format model name (ensure singular and capitalized)
     const formattedName = this.formatModelName(modelName);
     const model = models[formattedName];
-    if (!model) throw new Error(`Invalid model name: ${modelName}`);
+
+    if (!model) {
+      console.warn(`Invalid model name: ${modelName}`);
+      return {
+        error: `Invalid model name: ${modelName}`,
+        status: 400,
+      };
+    }
 
     // Dynamically find all associated models, checking for both singular and plural associations
     const associatedModels = Object.entries(models)
@@ -194,7 +228,13 @@ export class GenericController {
     const formattedName = this.formatModelName(modelName);
     const model = models[formattedName];
 
-    if (!model) throw new Error(`Invalid model name: ${modelName}`);
+    if (!model) {
+      console.warn(`Invalid model name: ${modelName}`);
+      return {
+        error: `Invalid model name: ${modelName}`,
+        status: 400,
+      };
+    }
 
     // Dynamically find all associated models, checking for both singular and plural associations
     const associatedModels = Object.entries(models)
@@ -236,13 +276,22 @@ export class GenericController {
     const formattedName = this.formatModelName(modelName);
     const model = models[formattedName];
 
-    if (!model) throw new Error(`Invalid model name: ${modelName}`);
+    if (!model) {
+      console.warn(`Invalid model name: ${modelName}`);
+      return {
+        error: `Invalid model name: ${modelName}`,
+        status: 400,
+      };
+    }
 
     // Find the existing record
     const instance = await model.findByPk(id);
     if (!instance) {
       console.warn(`Record with ID ${id} not found in ${formattedName}`);
-      return null;
+      return {
+        error: `Record with ID ${id} not found in ${formattedName}`,
+        status: 404,
+      };
     }
 
     // Extract related data (array of IDs) and remove them from main payload
@@ -252,12 +301,15 @@ export class GenericController {
     await instance.update(data);
 
     // Process and associate related records, handling empty arrays correctly
-    await this.processAssociations(
+    const associationResult = await this.processAssociations(
       instance,
       formattedName,
       relatedData,
       append,
     );
+    if (associationResult?.error) {
+      return associationResult; // Return error if associations failed
+    }
 
     //get the full instance, not just id and defined fields
     const instanceId = instance.getDataValue("id");
@@ -276,8 +328,8 @@ export class GenericController {
     const model = models[formattedName];
 
     if (!model) {
-      console.error(`Invalid model name: ${modelName}`);
-      throw new Error(`Invalid model name: ${modelName}`);
+      console.warn(`Invalid model name: ${modelName}`);
+      return -1;
     }
 
     // Attempt to delete the record
@@ -290,7 +342,7 @@ export class GenericController {
       console.log(`Successfully deleted ${formattedName} with ID ${id}`);
     }
 
-    return deletedCount; // 0 if not found, 1 if deleted
+    return deletedCount; // 0 if not found, 1 if deleted, -1 if error
   }
 
   /**  Filter records dynamically based on provided query parameters */
@@ -301,7 +353,12 @@ export class GenericController {
     const formattedName = this.formatModelName(modelName);
     const model = models[formattedName];
 
-    if (!model) throw new Error(`Invalid model name: ${modelName}`);
+    if (!model) {
+      return {
+        error: `Invalid model name: ${modelName}`,
+        status: 400,
+      };
+    }
 
     // Prepare query conditions for Sequelize
     const whereConditions: Record<string, any> = {};
@@ -357,12 +414,24 @@ export class GenericController {
               console.warn(
                 `Invalid field '${field}' for relation '${relation}' in model '${relatedModelName}'`,
               );
+              return {
+                error: `Invalid field '${field}' for relation '${relation}' in model '${relatedModelName}'`,
+                status: 400,
+              };
             }
           } else {
             console.warn(`Invalid related model: ${relation}`);
+            return {
+              error: `Invalid related model: ${relation}`,
+              status: 400,
+            };
           }
         } else {
           console.warn(`Invalid related model: ${relation}`);
+          return {
+            error: `Invalid related model: ${relation}`,
+            status: 400,
+          };
         }
       } else if (Object.keys(model.getAttributes()).includes(key)) {
         //  Handling direct model fields
@@ -382,6 +451,10 @@ export class GenericController {
         whereConditions[key] = value; // Apply exact match for numbers, LIKE for strings
       } else {
         console.warn(`Field '${key}' does not exist in ${formattedName}`);
+        return {
+          error: `Field '${key}' does not exist in ${formattedName}`,
+          status: 400,
+        };
       }
     }
 

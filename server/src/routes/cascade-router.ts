@@ -30,8 +30,10 @@ export default function cascadeRouter(dbController: GenericController): Router {
 
       const createdInstance = await GenericController.create(modelName, data);
 
-      if (!createdInstance) {
-        res.status(400).json({ error: "Invalid data or relationships" });
+      if (!Array.isArray(createdInstance) && "error" in createdInstance) {
+        res
+          .status(createdInstance.status || 400)
+          .json({ error: createdInstance.error });
         return;
       }
 
@@ -49,6 +51,12 @@ export default function cascadeRouter(dbController: GenericController): Router {
       console.log(`Processing GET request for model: ${modelName}`);
 
       const records = await GenericController.getAll(modelName);
+
+      if (!Array.isArray(records) && "error" in records) {
+        res.status(records.status || 500).json({ error: records.error });
+        return;
+      }
+
       res.json(records);
     } catch (error) {
       console.error(`Error retrieving ${req.params.model}:`, error);
@@ -64,6 +72,11 @@ export default function cascadeRouter(dbController: GenericController): Router {
       console.log(`Filtering ${modelName} with`, filters);
 
       const records = await GenericController.filter(modelName, filters);
+
+      if (!Array.isArray(records) && "error" in records) {
+        res.status(records.status || 500).json({ error: records.error });
+        return;
+      }
 
       res.json(records);
     } catch (error) {
@@ -86,6 +99,11 @@ export default function cascadeRouter(dbController: GenericController): Router {
 
       if (!record) {
         res.status(404).json({ error: "Record not found" });
+        return;
+      }
+
+      if (record.error) {
+        res.status(record.status || 500).json({ error: record.error });
         return;
       }
 
@@ -122,8 +140,10 @@ export default function cascadeRouter(dbController: GenericController): Router {
         append,
       );
 
-      if (!updatedInstance) {
-        res.status(404).json({ error: `${modelName} not found` });
+      if (updatedInstance.error) {
+        res
+          .status(updatedInstance.status || 500)
+          .json({ error: updatedInstance.error });
         return;
       }
 
@@ -148,7 +168,12 @@ export default function cascadeRouter(dbController: GenericController): Router {
       const deletedCount = await GenericController.delete(modelName, id);
 
       if (deletedCount === 0) {
-        res.status(404).json({ error: `${modelName} not found` });
+        res
+          .status(404)
+          .json({ error: `No record found with ID ${id} in ${modelName}` });
+        return;
+      } else if (deletedCount === -1) {
+        res.status(400).json({ error: `Invalid model name: ${modelName}` });
         return;
       }
 
