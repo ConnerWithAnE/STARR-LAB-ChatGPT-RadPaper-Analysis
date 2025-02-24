@@ -8,6 +8,7 @@ import {
 } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GPTResponse } from "../types/types";
+import { InsertData } from "../../../server/src/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
@@ -55,8 +56,60 @@ export default function DatabaseEntryPreviewPage() {
     setConfirmExit(true);
   };
 
-  const checkEntries = () => {
-    console.log("entries", tableEntries);
+  async function checkEntries() {
+    // console.log("entries", tableEntries);
+    let insertPapers: InsertData[] = [];
+    // Check if all fields are filled out
+    tableEntries.forEach((entry) => {
+      if (entry.paper_name === undefined || entry.author === undefined 
+          || entry.year === undefined || entry.part_no === undefined 
+          || entry.type === undefined || entry.manufacturer === undefined 
+          || entry.testing_location === undefined || entry.testing_type === undefined 
+          || entry.data_type === undefined) {
+        alert("Please fill out all fields before submitting.");
+        return;
+      }
+      // If they are filled then convert from UpdateData to InsertData
+      else {
+        let newEntry: InsertData = {
+          paper_name: entry.paper_name,
+          year: entry.year,
+          author: entry.author,
+          part_no: entry.part_no,
+          type: entry.type,
+          manufacturer: entry.manufacturer,
+          testing_location: entry.testing_location,
+          testing_type: entry.testing_type,
+          data_type: entry.data_type,
+        };
+        insertPapers.push(newEntry);
+      }
+    });
+    console.log("insertPapers", insertPapers);
+    
+    // Send to database
+    // const token = localStorage.getItem("jwtToken");
+    // try {
+    //   const response = await fetch(
+    //     "http://localhost:3000/api/adminRequest/insertPapers",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //       body: JSON.stringify(insertPapers),
+    //     }
+    //   );
+    //   if (response.ok) {
+    //     alert("Papers successfully added to database.");
+    //   }
+    //   else {
+    //     console.error(`Failed to insert papers: ${response.status}`);
+    //   }
+    // } catch (error) {
+    //   console.error(`Error inserting papers: ${error}`);
+    //   throw error;
+    // }
   };
 
   const [paperAreaHeight, setPaperAreaHeight] = useState<number>(

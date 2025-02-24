@@ -22,7 +22,7 @@ export type UpdateData = {
   type?: string;
   manufacturer?: string;
   testing_location?: TestLocation;
-  testing_type?: string;
+  testing_type?: Testing;
   data_type?: number;
 };
 
