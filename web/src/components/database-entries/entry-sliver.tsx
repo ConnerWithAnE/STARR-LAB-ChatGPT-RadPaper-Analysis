@@ -52,8 +52,9 @@ export default function EntrySliver({
     }
   });
 
-  useEffect(() => {       // To reset editedEntries if a paper was deleted from /upload/edit
-    let newentry = tableEntries[index];
+  useEffect(() => {
+    // To reset editedEntries if a paper was deleted from /upload/edit
+    const newentry = tableEntries[index];
     if (newentry) {
       return setEditedEntry(newentry);
     } else {

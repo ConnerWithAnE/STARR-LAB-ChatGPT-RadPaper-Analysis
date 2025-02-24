@@ -12,9 +12,9 @@ import { UpdateData } from "./types/types";
 
 //updateContact<K extends keyof Contact>(id: number, field: K, value: Contact[K])
 interface TableDataContextType {
-  initialGPTPasses: GPTResponse[]; // Adjust the type of `data` based on your use case
+  initialGPTPasses: GPTResponse[];
   setInitialGPTPasses: (data: GPTResponse[]) => void; // Function to update the data
-  tableEntries: UpdateData[]; // Adjust the type of `data` based on your use case
+  tableEntries: UpdateData[];
   updateEntry: <K extends keyof UpdateData>(
     id: number,
     key: string,
@@ -22,7 +22,6 @@ interface TableDataContextType {
   ) => void;
   updateEntry2: (id: number, value: UpdateData) => void;
   addEntry: (entry: UpdateData) => void;
-  removeEntry: (id: number) => void;
   removePass: (id: number) => GPTResponse[];
   retrieveEntry: (id: number) => UpdateData | undefined;
 }
@@ -34,7 +33,6 @@ const defaultValue: TableDataContextType = {
   updateEntry: () => {},
   updateEntry2: () => {},
   addEntry: () => {},
-  removeEntry: () => {},
   removePass: () => [],
   tableEntries: [],
   retrieveEntry: () => undefined,
@@ -90,16 +88,14 @@ export const TableDataFormProvider = ({
     console.log("tableEntries", tableEntries);
   }
 
-  function removeEntry(id: number) {
-    setTableEntries((prev) => prev.filter((entry) => entry.ROWID !== id));
-  }
-
   function removePass(indexROWID: number) {
     // Get array index from ROWID
-    var arr_ind: number = tableEntries.findIndex((item) => item.ROWID === indexROWID);
-    const updatedPasses: GPTResponse[] = []
-    for(let i = 0; i < initialGPTPasses.length; i++) {
-      if(i !== arr_ind) {
+    const arr_ind: number = tableEntries.findIndex(
+      (item) => item.ROWID === indexROWID
+    );
+    const updatedPasses: GPTResponse[] = [];
+    for (let i = 0; i < initialGPTPasses.length; i++) {
+      if (i !== arr_ind) {
         updatedPasses.push(initialGPTPasses[i]);
       }
     }
@@ -118,7 +114,6 @@ export const TableDataFormProvider = ({
         tableEntries,
         updateEntry,
         addEntry,
-        removeEntry,
         removePass,
         retrieveEntry,
         updateEntry2,
