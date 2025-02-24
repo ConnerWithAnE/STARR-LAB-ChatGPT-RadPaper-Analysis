@@ -26,6 +26,8 @@ export default function cascadeRouter(dbController: GenericController): Router {
     try {
       const modelName = req.params.model;
       const data = req.body;
+      delete data.id;
+
       const createdInstance = await GenericController.create(modelName, data);
 
       if (!createdInstance) {
@@ -111,6 +113,7 @@ export default function cascadeRouter(dbController: GenericController): Router {
       const data = req.body;
       const append = data.append || false; // Default is `false` (replace mode)
       delete data.append; // Remove `append` flag from request body
+      delete data.id;
 
       const updatedInstance = await GenericController.update(
         modelName,
