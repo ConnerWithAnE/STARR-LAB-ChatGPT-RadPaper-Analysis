@@ -89,8 +89,13 @@ export default function UploadPage() {
           state: { resp: result },
         });
         setFiles([]);
-      } else {
-        console.error(`Failed to fetch papers: ${response.status}`);
+      }
+      else {
+        const err_res = await response.json();
+        if(err_res.message) { console.error(`${err_res.message}`); }
+        else {
+          console.error(`Failed to fetch papers: ${response.status}`);
+        }
       }
     } catch (error) {
       console.error(`Error fetching papers: ${error}`);
