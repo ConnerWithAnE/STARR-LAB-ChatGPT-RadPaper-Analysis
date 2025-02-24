@@ -17,13 +17,20 @@ export default function DatabaseEntryPreviewPage() {
   const location = useLocation();
   const data = location.state.resp;
 
-  const { initialGPTPasses, setInitialGPTPasses, tableEntries, removeEntry, removePass } = useForm();
+  const {
+    initialGPTPasses,
+    setInitialGPTPasses,
+    tableEntries,
+    removePass,
+    redConflicts,
+  } = useForm();
 
   const { onOpenChange } = useDisclosure();
+  const [disabled, setDisabled] = useState(false);
   // for the exit modal
   const [isOpen, setIsOpen] = useState(false);
   const [confirmExit, setConfirmExit] = useState(false);
-  const [passData, setPassData] = useState(data);       // need this hook so that GPTpasses persist between renders
+  const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
 
   //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
@@ -36,6 +43,14 @@ export default function DatabaseEntryPreviewPage() {
   //   //   return updatedData;
   //   // });
   // };
+
+  useEffect(() => {
+    if (redConflicts.length > 0) {
+      setDisabled(true);
+    } else {
+      setDisabled(false);
+    }
+  }, [redConflicts]);
 
   useEffect(() => {
     if (confirmExit) {
@@ -68,14 +83,13 @@ export default function DatabaseEntryPreviewPage() {
   };
 
   const onHandleDeleteEntry = (index: number) => {
-    console.log("delete", index);     // index is ROWID
-    
+    console.log("delete", index); // index is ROWID
+
     const updatePasses = removePass(index);
     setPassData(updatePasses);
-    setInitialGPTPasses(passData)
-    removeEntry(index);
+    setInitialGPTPasses(passData);
 
-    console.log("Delete Done!")
+    console.log("Delete Done!");
   };
 
   useEffect(() => {
@@ -121,6 +135,7 @@ export default function DatabaseEntryPreviewPage() {
       <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
         <Button
           className="bg-usask-green text-white rounded-md"
+          isDisabled={disabled}
           onClick={checkEntries}
         >
           Submit

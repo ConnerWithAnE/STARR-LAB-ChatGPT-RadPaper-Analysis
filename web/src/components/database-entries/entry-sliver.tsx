@@ -41,7 +41,7 @@ export default function EntrySliver({
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   // for modifying entries
-  const { addEntry, updateEntry2, tableEntries } = useForm();
+  const { addEntry, updateEntry2, tableEntries, setRedConflict } = useForm();
   // this state prop is to handle modifying the individual entry before updating the overall form
   const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
     const savedEntry = tableEntries[index];
@@ -149,6 +149,7 @@ export default function EntrySliver({
 
     setEditedEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
+    setRedConflict(index, updatedConflicts.redSeverity);
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
     if (!hasEmptyProperty(editedEntry)) {
@@ -175,6 +176,24 @@ export default function EntrySliver({
 
   const handleSave = () => {
     updateEntry2(index, editedEntry);
+    const updatedConflicts: Conflict = {
+      yellowSeverity: [],
+      redSeverity: [],
+    };
+    Object.entries(editedEntry).forEach(([key, value]) => {
+      if (typeof value === "string" || typeof value === "number") {
+        if (value.toString() === "") {
+          updatedConflicts.redSeverity.push(key);
+        }
+      } else {
+        if (value.length === 0) {
+          updatedConflicts.redSeverity.push(key);
+        }
+      }
+    });
+    setRedConflict(index, updatedConflicts.redSeverity);
+    setUnresolvedConflicts(updatedConflicts);
+
     setOpen(false);
   };
 

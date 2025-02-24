@@ -10,6 +10,11 @@ import { UpdateData } from "./types/types";
 
 // Define the shape of the data
 
+type RedConflicts = {
+  id: number;
+  fields: string[];
+};
+
 //updateContact<K extends keyof Contact>(id: number, field: K, value: Contact[K])
 interface TableDataContextType {
   initialGPTPasses: GPTResponse[];
@@ -24,6 +29,9 @@ interface TableDataContextType {
   addEntry: (entry: UpdateData) => void;
   removePass: (id: number) => GPTResponse[];
   retrieveEntry: (id: number) => UpdateData | undefined;
+  redConflicts: RedConflicts[];
+  setRedConflict: (id: number, fields: string[]) => void;
+  removeRedConflict: (id: number, field: string) => void;
 }
 
 // Define the default value of the context
@@ -36,6 +44,9 @@ const defaultValue: TableDataContextType = {
   removePass: () => [],
   tableEntries: [],
   retrieveEntry: () => undefined,
+  redConflicts: [],
+  setRedConflict: () => {},
+  removeRedConflict: () => {},
 };
 
 // Create the context
@@ -49,6 +60,7 @@ export const TableDataFormProvider = ({
 }) => {
   const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse[]>([]);
   const [tableEntries, setTableEntries] = useState<UpdateData[]>([]);
+  const [redConflicts, setRedConflicts] = useState<RedConflicts[]>([]);
 
   useEffect(() => {
     console.log("Updated contacts:", tableEntries);
@@ -106,6 +118,46 @@ export const TableDataFormProvider = ({
     return tableEntries.find((entry) => entry.ROWID === id);
   }
 
+  function setRedConflict(id: number, fields: string[]) {
+    if (!redConflicts.find((conflict) => conflict.id === id)) {
+      setRedConflicts((prev) => {
+        const newConflict: RedConflicts = {
+          id: id,
+          fields: [...fields],
+        };
+        return [...prev, newConflict];
+      });
+    } else {
+      setRedConflicts((prev) => {
+        const newConflicts = prev.map((conflict) => {
+          if (conflict.id === id) {
+            return {
+              id: id,
+              fields: [...fields],
+            };
+          }
+          return conflict;
+        });
+        return newConflicts.filter((conflict) => conflict.fields.length > 0);
+      });
+    }
+  }
+
+  function removeRedConflict(id: number, field: string) {
+    setRedConflicts((prev) => {
+      const newConflicts = prev.map((conflict) => {
+        if (conflict.id === id) {
+          return {
+            id: id,
+            fields: conflict.fields.filter((f) => f !== field),
+          };
+        }
+        return conflict;
+      });
+      return newConflicts.filter((conflict) => conflict.fields.length > 0);
+    });
+  }
+
   return (
     <TableDataContext.Provider
       value={{
@@ -117,6 +169,9 @@ export const TableDataFormProvider = ({
         removePass,
         retrieveEntry,
         updateEntry2,
+        redConflicts,
+        setRedConflict,
+        removeRedConflict,
       }}
     >
       {children}
