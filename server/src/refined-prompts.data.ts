@@ -44,18 +44,19 @@ export const prompts = {
         - Environmental conditions
         - Was the test conducted in a terrestrial setting? (Yes/No)
         - Was the test conducted in-flight? (Yes/No)
-        - Source of radiation (Co60, Protons, Electrons, Heavy ions, X-rays)
+        - Source of radiation (Co60, Protons, Electrons, Heavy ions, X-rays Pions)
         - Maximum TID level
         - Dose rate
         - Was Enhanced Low Dose Rate Sensitivity (ELDRS) observed? (Yes/No)
-        - Was P-pion used? (Yes/No)
         - Dose to failure
         - Was increased power usage observed? (Yes/No)
         - Description of power usage increase
+        - If power current leakage is present, at what rate
+        - How long was it failing for
         - Any special notes
   
         Format:
-        Max Fluence ø Energy ø Facility Name ø Environmental Conditions ø Terrestrial ø Flight ø Source ø Max TID ø Dose Rate ø ELDRS ø P-pion ø Dose to Failure ø Increased Power Usage ø Power Usage Description ø Special Notes`,
+        Max Fluence ø Energy ø Facility Name ø Environmental Conditions ø Terrestrial ø Flight ø Source ø Max TID ø Dose Rate ø ELDRS ø Dose to Failure ø Increased Power Usage ø Power Usage Description ø current leakage ø failing time ø Special Notes`,
 
     seeData: `Describe the conditions under which radiation testing was conducted. Extract Single Event Effects (SEE) data using "ø":
         - Maximum fluence
@@ -65,10 +66,11 @@ export const prompts = {
         - Was the test conducted in a terrestrial setting? (Yes/No)
         - Was the test conducted in-flight? (Yes/No)
         - Radiation source (Heavy ions, Protons, Laser, Neutron, Electron)
-        - Type of SEE observed (SEU, SET, SEFI, SEL, SEB, SEGR)
+        - Type of SEE observed (SEU, SEDR, SET, SEFI, SEL, SEB, SEGR, MBU, SES, SEJ, SED, SEBID, SEHE, SEN, SEPH, SECD, SEICS, SEIPC, SEITR, SECL, SECS, SECC, SETV, SEM, SEF, SEPC, SEA. SETR, SEPF, SEQT, SESD)
         - Amplitude of effect
         - Duration of effect
-        - Cross-section value
+        - Cross-section saturation value
+        - Cross-section threshold value
         - Cross-section type
         - Any special notes
         
