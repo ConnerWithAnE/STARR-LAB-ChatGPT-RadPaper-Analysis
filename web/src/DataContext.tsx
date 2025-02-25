@@ -20,12 +20,7 @@ interface TableDataContextType {
   initialGPTPasses: GPTResponse[];
   setInitialGPTPasses: (data: GPTResponse[]) => void; // Function to update the data
   tableEntries: UpdateData[];
-  updateEntry: <K extends keyof UpdateData>(
-    id: number,
-    key: string,
-    value: UpdateData[K]
-  ) => void;
-  updateEntry2: (id: number, value: UpdateData) => void;
+  updateEntry: (id: number, value: UpdateData) => void;
   addEntry: (entry: UpdateData) => void;
   removePass: (id: number) => GPTResponse[];
   retrieveEntry: (id: number) => UpdateData | undefined;
@@ -39,7 +34,6 @@ const defaultValue: TableDataContextType = {
   initialGPTPasses: [],
   setInitialGPTPasses: () => {},
   updateEntry: () => {},
-  updateEntry2: () => {},
   addEntry: () => {},
   removePass: () => [],
   tableEntries: [],
@@ -70,19 +64,7 @@ export const TableDataFormProvider = ({
     console.log("Updated GPTPasses:", initialGPTPasses);
   }, [initialGPTPasses]);
 
-  function updateEntry<K extends keyof UpdateData>(
-    id: number,
-    key: string,
-    value: UpdateData[K]
-  ) {
-    setTableEntries((prev) =>
-      prev.map((entry) =>
-        entry.ROWID === id ? { ...entry, [key]: value } : entry
-      )
-    );
-  }
-
-  function updateEntry2(id: number, value: UpdateData) {
+  function updateEntry(id: number, value: UpdateData) {
     setTableEntries((prev) =>
       prev.map((entry) => (entry.ROWID === id ? { ...value } : entry))
     );
@@ -105,6 +87,7 @@ export const TableDataFormProvider = ({
     const arr_ind: number = tableEntries.findIndex(
       (item) => item.ROWID === indexROWID
     );
+    removeEntry(indexROWID);
     const updatedPasses: GPTResponse[] = [];
     for (let i = 0; i < initialGPTPasses.length; i++) {
       if (i !== arr_ind) {
@@ -112,6 +95,10 @@ export const TableDataFormProvider = ({
       }
     }
     return updatedPasses;
+  }
+
+  function removeEntry(id: number) {
+    setTableEntries((prev) => prev.filter((entry) => entry.ROWID !== id));
   }
 
   function retrieveEntry(id: number) {
@@ -164,11 +151,10 @@ export const TableDataFormProvider = ({
         initialGPTPasses,
         setInitialGPTPasses,
         tableEntries,
-        updateEntry,
         addEntry,
         removePass,
         retrieveEntry,
-        updateEntry2,
+        updateEntry,
         redConflicts,
         setRedConflict,
         removeRedConflict,

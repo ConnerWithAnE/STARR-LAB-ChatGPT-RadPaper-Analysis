@@ -109,7 +109,7 @@ export default function EditEntry({
                                 ]?.toString()}
                                 onChange={handleChange}
                                 validate={(value) => {
-                                  if (value === "") {
+                                  if (isNaN(parseInt(value))) {
                                     return "Please enter a value";
                                   }
                                 }}

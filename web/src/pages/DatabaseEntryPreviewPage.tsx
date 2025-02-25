@@ -45,6 +45,7 @@ export default function DatabaseEntryPreviewPage() {
   // };
 
   useEffect(() => {
+    console.log("redConflicts", redConflicts);
     if (redConflicts.length > 0) {
       setDisabled(true);
     } else {
