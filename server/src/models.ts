@@ -45,6 +45,8 @@ class Paper extends Model<
   declare id: CreationOptional<number>;
   declare name: string;
   declare year: number;
+  declare createdAt: CreationOptional<Date>;
+  declare updatedAt: CreationOptional<Date>;
 
   // Mixins for associations
   declare addAuthor: BelongsToManyAddAssociationMixin<Author, number>;
@@ -66,6 +68,8 @@ Paper.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: DataTypes.TEXT, allowNull: false },
     year: { type: DataTypes.INTEGER },
+    createdAt: DataTypes.DATE,
+    updatedAt: DataTypes.DATE,
   },
   { sequelize, modelName: "paper" },
 );

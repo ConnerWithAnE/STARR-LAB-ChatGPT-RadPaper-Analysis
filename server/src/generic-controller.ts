@@ -486,188 +486,7 @@ export class GenericController {
     console.log("Database connection closed successfully");
   }
 
-  // static async createFullPaper(data: any) {
-  //   console.log("Processing full paper creation:", data);
-
-  //   // Extract and validate main paper data
-  //   const paperData = { ...data };
-  //   delete paperData.authors;
-  //   delete paperData.parts;
-  //   delete paperData.tids;
-  //   delete paperData.sees;
-  //   delete paperData.dds;
-
-  //   // Find or Create Paper
-  //   const [paper, paperCreated] =
-  //     await models.Paper.findOrCreate({
-  //       where: { name: paperData.name, year: paperData.year },
-  //       defaults: paperData,
-  //     })as [Paper, boolean];
-
-  //   console.log(
-  //     `Paper ${paperCreated ? "created" : "found"}:`,
-  //     paper.get({ plain: true }),
-  //   );
-
-  //   // Helper function to find or create entities dynamically
-  //   async function findOrCreateEntity(modelName: string, items: any[]) {
-  //     if (!items || !Array.isArray(items)) return [];
-
-  //     return await Promise.all(
-  //       items.map(async (item) => {
-  //         const searchCriteria = { ...item };
-  //         delete searchCriteria.id;
-  //         delete searchCriteria.createdAt;
-  //         delete searchCriteria.updatedAt;
-
-  //         const [entity] = await models[modelName].findOrCreate({
-  //           where: searchCriteria,
-  //           defaults: item,
-  //         });
-
-  //         return entity;
-  //       }),
-  //     );
-  //   }
-
-  //   // Find or Create Authors
-  //   const authors = await findOrCreateEntity("Author", data.authors) as Author[];
-  //   if (authors.length) await paper.addAuthors(authors);
-
-  //   // Find or Create Parts
-  //   const parts = await findOrCreateEntity("Part", data.parts) as Part[];
-  //   if (parts.length) await paper.addParts(parts);
-
-  //   // Find or Create TIDs and Link to Paper & Parts
-  //   const tids = await findOrCreateEntity("Tid", data.tids) as Tid[];
-  //   for (const tid of tids) {
-  //     await tid.setPaper(paper);
-  //     const linkedPart = parts.find((p) => p.name === tid.name);
-  //     if (linkedPart) await tid.setPart(linkedPart);
-  //   }
-
-  //   // Find or Create SEEs and Link to Paper & Parts
-  //   const sees = await findOrCreateEntity("See", data.sees) as See[];
-  //   for (const see of sees) {
-  //     await see.setPaper(paper);
-  //     const linkedPart = parts.find((p) => p.name === see.name);
-  //     if (linkedPart) await see.setPart(linkedPart);
-  //   }
-
-  //   // Find or Create DDs and Link to Paper & Parts
-  //   const dds = await findOrCreateEntity("Dd", data.dds) as Dd[];
-  //   for (const dd of dds) {
-  //     await dd.setPaper(paper);
-  //     const linkedPart = parts.find((p) => p.name === dd.name);
-  //     if (linkedPart) await dd.setPart(linkedPart);
-  //   }
-
-  //   console.log("Paper and all related entities processed successfully.");
-
-  //   return {
-  //     paper: paper.get({ plain: true }),
-  //     authors: authors.map((a) => a.get({ plain: true })),
-  //     parts: parts.map((p) => p.get({ plain: true })),
-  //     tids: tids.map((t) => t.get({ plain: true })),
-  //     sees: sees.map((s) => s.get({ plain: true })),
-  //     dds: dds.map((d) => d.get({ plain: true })),
-  //   };
-  // }
-
-  // static async createFullPaper(data: any) {
-  //   console.log("Processing full paper creation:", data);
-
-  //   // Extract and validate main paper data
-  //   const paperData = { ...data };
-  //   delete paperData.authors;
-  //   delete paperData.parts;
-
-  //   // Find or Create Paper
-  //   const [paper, paperCreated] = (await models.Paper.findOrCreate({
-  //     where: { name: paperData.name, year: paperData.year },
-  //     defaults: paperData,
-  //   })) as [Paper, boolean];
-
-  //   console.log(
-  //     `Paper ${paperCreated ? "created" : "found"}:`,
-  //     paper.get({ plain: true }),
-  //   );
-
-  //   async function findOrCreateEntity(modelName: string, items: any[]) {
-  //     if (!items || !Array.isArray(items)) return [];
-
-  //     const results = [];
-  //     for (const item of items) {
-  //       const searchCriteria = { ...item };
-  //       delete searchCriteria.id;
-  //       delete searchCriteria.createdAt;
-  //       delete searchCriteria.updatedAt;
-
-  //       const [entity] = await models[modelName].findOrCreate({
-  //         where: searchCriteria,
-  //         defaults: item,
-  //       });
-
-  //       results.push(entity);
-  //     }
-
-  //     return results;
-  //   }
-
-  //   // Find or Create Authors and Associate with Paper
-  //   const authors = (await findOrCreateEntity(
-  //     "Author",
-  //     data.authors,
-  //   )) as Author[];
-  //   if (authors.length) await paper.addAuthors(authors);
-
-  //   // Find or Create Parts and Associate with Paper
-  //   const parts = (await findOrCreateEntity("Part", data.parts)) as Part[];
-  //   if (parts.length) await paper.addParts(parts);
-
-  //   // Process tids, sees, and dds inside each part
-  //   for (const partData of data.parts) {
-  //     // Find the corresponding Part entity
-  //     const part = parts.find((p) => p.name === partData.name);
-  //     if (!part) continue;
-
-  //     // Process TIDs
-  //     if (partData.tids && partData.tids.length > 0) {
-  //       const tids = (await findOrCreateEntity("Tid", partData.tids)) as Tid[];
-  //       for (const tid of tids) {
-  //         await tid.setPaper(paper); // Associate with paper
-  //         await tid.setPart(part); // Associate with part
-  //       }
-  //     }
-
-  //     // Process SEEs
-  //     if (partData.sees && partData.sees.length > 0) {
-  //       const sees = (await findOrCreateEntity("See", partData.sees)) as See[];
-  //       for (const see of sees) {
-  //         await see.setPaper(paper); // Associate with paper
-  //         await see.setPart(part); // Associate with part
-  //       }
-  //     }
-
-  //     // Process DDs
-  //     if (partData.dds && partData.dds.length > 0) {
-  //       const dds = (await findOrCreateEntity("Dd", partData.dds)) as Dd[];
-  //       for (const dd of dds) {
-  //         await dd.setPaper(paper); // Associate with paper
-  //         await dd.setPart(part); // Associate with part
-  //       }
-  //     }
-  //   }
-
-  //   console.log("Paper and all related entities processed successfully.");
-
-  //   return {
-  //     paper: paper.get({ plain: true }),
-  //     authors: authors.map((a) => a.get({ plain: true })),
-  //     parts: parts.map((p) => p.get({ plain: true })),
-  //   };
-  // }
-
+  /** Create full paper as well as related instance by giving full object */
   static async createFullPaper(data: any) {
     console.log("Processing full paper creation:", data);
 
@@ -758,9 +577,23 @@ export class GenericController {
     console.log("Paper and all related entities processed successfully.");
 
     return {
-      paper: paper.get({ plain: true }),
+      id: paper.id,
+      name: paper.name,
+      year: paper.year,
+      createdAt: paper.createdAt,
+      updatedAt: paper.updatedAt,
       authors: authors.map((a) => a.get({ plain: true })),
-      parts: parts.map((p) => p.get({ plain: true })),
+      parts: await Promise.all(
+        parts.map(async (p) => {
+          return models.Part.findByPk(p.getDataValue("id"), {
+            include: [
+              { model: models.Tid },
+              { model: models.See },
+              { model: models.Dd },
+            ],
+          }).then((part) => part?.get({ plain: true }));
+        }),
+      ),
     };
   }
 }
