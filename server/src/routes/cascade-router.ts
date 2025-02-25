@@ -44,7 +44,21 @@ export default function cascadeRouter(dbController: GenericController): Router {
     }
   });
 
-  /** 🔹 Get all records for any model */
+  router.post("/papers/full", async (req: Request, res: Response) => {
+    try {
+      const data = req.body;
+      console.log("Received request for full paper creation:", data);
+
+      const createdPaper = await GenericController.createFullPaper(data);
+
+      res.status(201).json(createdPaper);
+    } catch (error) {
+      console.error("Error creating full paper:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  /** Get all records for any model */
   router.get("/:model", async (req: Request, res: Response) => {
     try {
       const modelName = req.params.model;
@@ -84,7 +98,7 @@ export default function cascadeRouter(dbController: GenericController): Router {
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
-  /** 🔹 Route to get a single record by ID */
+  /**  Route to get a single record by ID */
   router.get("/:model/:id", async (req: Request, res: Response) => {
     try {
       const modelName = req.params.model;
@@ -117,7 +131,7 @@ export default function cascadeRouter(dbController: GenericController): Router {
     }
   });
 
-  /** 🔹 Update a record by ID for any model */
+  /**  Update a record by ID for any model */
   router.put("/:model/:id", async (req: Request, res: Response) => {
     try {
       const modelName = req.params.model;
@@ -154,7 +168,7 @@ export default function cascadeRouter(dbController: GenericController): Router {
     }
   });
 
-  /** 🔹 Delete a record by ID for any model */
+  /**  Delete a record by ID for any model */
   router.delete("/:model/:id", async (req: Request, res: Response) => {
     try {
       const modelName = req.params.model;

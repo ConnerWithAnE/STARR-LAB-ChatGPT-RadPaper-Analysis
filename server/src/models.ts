@@ -51,8 +51,14 @@ class Paper extends Model<
   declare addAuthors: BelongsToManyAddAssociationsMixin<Author, number>;
   declare addPart: BelongsToManyAddAssociationMixin<Part, number>;
   declare addParts: BelongsToManyAddAssociationsMixin<Part, number>;
-  declare addTest: HasManyAddAssociationMixin<Test, number>;
-  declare addTests: HasManyAddAssociationsMixin<Test, number>;
+  // declare addTest: HasManyAddAssociationMixin<Test, number>;
+  // declare addTests: HasManyAddAssociationsMixin<Test, number>;
+  declare addTid: HasManyAddAssociationMixin<Tid, number>;
+  declare addTids: HasManyAddAssociationMixin<Tid, number>;
+  declare addSee: HasManyAddAssociationMixin<See, number>;
+  declare addSees: HasManyAddAssociationMixin<See, number>;
+  declare addDd: HasManyAddAssociationMixin<Dd, number>;
+  declare addDds: HasManyAddAssociationMixin<Dd, number>;
 }
 
 Paper.init(
@@ -80,8 +86,14 @@ class Part extends Model<InferAttributes<Part>, InferCreationAttributes<Part>> {
   // Mixins for associations
   declare addPaper: BelongsToManyAddAssociationMixin<Paper, number>;
   declare addPapers: BelongsToManyAddAssociationsMixin<Paper, number>;
-  declare addTest: HasManyAddAssociationMixin<Test, number>;
-  declare addTests: HasManyAddAssociationsMixin<Test, number>;
+  // declare addTest: HasManyAddAssociationMixin<Test, number>;
+  // declare addTests: HasManyAddAssociationsMixin<Test, number>;
+  declare addTid: HasManyAddAssociationMixin<Tid, number>;
+  declare addTids: HasManyAddAssociationMixin<Tid, number>;
+  declare addSee: HasManyAddAssociationMixin<See, number>;
+  declare addSees: HasManyAddAssociationMixin<See, number>;
+  declare addDd: HasManyAddAssociationMixin<Dd, number>;
+  declare addDds: HasManyAddAssociationMixin<Dd, number>;
 }
 
 Part.init(
@@ -101,74 +113,98 @@ Paper.belongsToMany(Part, { through: PaperPart });
 Part.belongsToMany(Paper, { through: PaperPart });
 
 // ------------------ TESTING DATA TABLE ------------------
-class Test extends Model<InferAttributes<Test>, InferCreationAttributes<Test>> {
+// class Test extends Model<InferAttributes<Test>, InferCreationAttributes<Test>> {
+//   declare id: CreationOptional<number>;
+//   declare testing_type: "TID" | "SEE" | "DD";
+//   declare max_fluence: number;
+//   declare energy: number;
+//   declare facility: string;
+//   declare environment: string;
+//   declare terrestrial: boolean;
+//   declare flight: boolean;
+
+//   // Foreign Keys
+//   declare paperId: ForeignKey<Paper["id"]>;
+//   declare partId: ForeignKey<Part["id"]>;
+
+//   // Mixin for association
+//   declare addTid: HasManyAddAssociationMixin<Tid, number>;
+//   declare addSee: HasManyAddAssociationMixin<See, number>;
+//   declare addDd: HasManyAddAssociationMixin<Dd, number>;
+// }
+
+// Test.init(
+//   {
+//     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+//     testing_type: { type: DataTypes.ENUM("TID", "SEE", "DD") },
+//     max_fluence: { type: DataTypes.FLOAT },
+//     energy: { type: DataTypes.FLOAT },
+//     facility: { type: DataTypes.TEXT },
+//     environment: { type: DataTypes.TEXT },
+//     terrestrial: { type: DataTypes.BOOLEAN },
+//     flight: { type: DataTypes.BOOLEAN },
+//   },
+//   { sequelize, modelName: "test" },
+// );
+
+// Paper.hasMany(Test, { foreignKey: "paperId" });
+// Part.hasMany(Test, { foreignKey: "partId" });
+// Test.belongsTo(Paper, {
+//   foreignKey: "paperId",
+//   onDelete: "SET NULL",
+//   onUpdate: "CASCADE",
+// });
+
+// Test.belongsTo(Part, {
+//   foreignKey: "partId",
+//   onDelete: "SET NULL",
+//   onUpdate: "CASCADE",
+// });
+
+// ------------------ TID DATA TABLE ------------------
+class Tid extends Model<InferAttributes<Tid>, InferCreationAttributes<Tid>> {
   declare id: CreationOptional<number>;
-  declare testing_type: "TID" | "SEE" | "DD";
   declare max_fluence: number;
   declare energy: number;
   declare facility: string;
   declare environment: string;
   declare terrestrial: boolean;
   declare flight: boolean;
+  declare source:
+    | "Co60"
+    | "Protons"
+    | "Electrons"
+    | "Heavy ions"
+    | "X-rays"
+    | "Pions";
+  declare max_tid: number;
+  declare dose_rate: number;
+  declare eldrs: boolean;
+  declare dose_to_failure: number;
+  declare increased_power_usage: boolean;
+  declare power_usage_description: string;
+  declare special_notes?: string;
 
+  // // Foreign Key
+  // declare testId: ForeignKey<Test["id"]>;
   // Foreign Keys
   declare paperId: ForeignKey<Paper["id"]>;
   declare partId: ForeignKey<Part["id"]>;
 
-  // Mixin for association
-  declare addTid: HasManyAddAssociationMixin<Tid, number>;
-  declare addSee: HasManyAddAssociationMixin<See, number>;
-  declare addDd: HasManyAddAssociationMixin<Dd, number>;
+  // Mixin for associations
+  declare setPaper: BelongsToManyAddAssociationMixin<Paper, number>;
+  declare setPart: BelongsToManyAddAssociationMixin<Part, number>;
 }
 
-Test.init(
+Tid.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
-    testing_type: { type: DataTypes.ENUM("TID", "SEE", "DD") },
     max_fluence: { type: DataTypes.FLOAT },
     energy: { type: DataTypes.FLOAT },
     facility: { type: DataTypes.TEXT },
     environment: { type: DataTypes.TEXT },
     terrestrial: { type: DataTypes.BOOLEAN },
     flight: { type: DataTypes.BOOLEAN },
-  },
-  { sequelize, modelName: "test" },
-);
-
-Paper.hasMany(Test, { foreignKey: "paperId" });
-Part.hasMany(Test, { foreignKey: "partId" });
-Test.belongsTo(Paper, {
-  foreignKey: "paperId",
-  onDelete: "SET NULL",
-  onUpdate: "CASCADE",
-});
-
-Test.belongsTo(Part, {
-  foreignKey: "partId",
-  onDelete: "SET NULL",
-  onUpdate: "CASCADE",
-});
-
-// ------------------ TID DATA TABLE ------------------
-class Tid extends Model<InferAttributes<Tid>, InferCreationAttributes<Tid>> {
-  declare id: CreationOptional<number>;
-  declare source: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays";
-  declare max_tid: number;
-  declare dose_rate: number;
-  declare eldrs: boolean;
-  declare p_pion: boolean;
-  declare dose_to_failure: number;
-  declare increased_power_usage: boolean;
-  declare power_usage_description: string;
-  declare special_notes?: string;
-
-  // Foreign Key
-  declare testId: ForeignKey<Test["id"]>;
-}
-
-Tid.init(
-  {
-    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     source: {
       type: DataTypes.ENUM(
         "Co60",
@@ -181,7 +217,6 @@ Tid.init(
     max_tid: { type: DataTypes.FLOAT },
     dose_rate: { type: DataTypes.FLOAT },
     eldrs: { type: DataTypes.BOOLEAN },
-    p_pion: { type: DataTypes.BOOLEAN },
     dose_to_failure: { type: DataTypes.FLOAT },
     increased_power_usage: { type: DataTypes.BOOLEAN },
     power_usage_description: { type: DataTypes.TEXT },
@@ -189,13 +224,31 @@ Tid.init(
   },
   { sequelize, modelName: "tid" },
 );
+Paper.hasMany(Tid, { foreignKey: "paperId" });
+Part.hasMany(Tid, { foreignKey: "partId" });
+Tid.belongsTo(Paper, {
+  foreignKey: "paperId",
+  onDelete: "SET NULL",
+  onUpdate: "CASCADE",
+});
 
-Test.hasOne(Tid);
-Tid.belongsTo(Test);
+Tid.belongsTo(Part, {
+  foreignKey: "partId",
+  onDelete: "SET NULL",
+  onUpdate: "CASCADE",
+});
+// Test.hasOne(Tid);
+// Tid.belongsTo(Test);
 
 // ----------------- SEE DATA TABLE -----------------
 class See extends Model<InferAttributes<See>, InferCreationAttributes<See>> {
   declare id: CreationOptional<number>;
+  declare max_fluence: number;
+  declare energy: number;
+  declare facility: string;
+  declare environment: string;
+  declare terrestrial: boolean;
+  declare flight: boolean;
   declare source: "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron";
   declare type:
     | "Single Event Upset"
@@ -210,12 +263,25 @@ class See extends Model<InferAttributes<See>, InferCreationAttributes<See>> {
   declare cross_section_type: string;
   declare special_notes?: string;
 
-  declare testId: ForeignKey<Test["id"]>;
+  // declare testId: ForeignKey<Test["id"]>;
+  // Foreign Keys
+  declare paperId: ForeignKey<Paper["id"]>;
+  declare partId: ForeignKey<Part["id"]>;
+
+  // Mixin for associations
+  declare setPaper: BelongsToManyAddAssociationMixin<Paper, number>;
+  declare setPart: BelongsToManyAddAssociationMixin<Part, number>;
 }
 
 See.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    max_fluence: { type: DataTypes.FLOAT },
+    energy: { type: DataTypes.FLOAT },
+    facility: { type: DataTypes.TEXT },
+    environment: { type: DataTypes.TEXT },
+    terrestrial: { type: DataTypes.BOOLEAN },
+    flight: { type: DataTypes.BOOLEAN },
     source: {
       type: DataTypes.ENUM(
         "Heavy ions",
@@ -244,24 +310,56 @@ See.init(
   { sequelize, modelName: "see" },
 );
 
-Test.hasOne(See);
-See.belongsTo(Test);
+// Test.hasOne(See);
+// See.belongsTo(Test);
+Paper.hasMany(See, { foreignKey: "paperId" });
+Part.hasMany(See, { foreignKey: "partId" });
+See.belongsTo(Paper, {
+  foreignKey: "paperId",
+  onDelete: "SET NULL",
+  onUpdate: "CASCADE",
+});
+
+See.belongsTo(Part, {
+  foreignKey: "partId",
+  onDelete: "SET NULL",
+  onUpdate: "CASCADE",
+});
 
 // ----------------- DD DATA TABLE -----------------
 class Dd extends Model<InferAttributes<Dd>, InferCreationAttributes<Dd>> {
   declare id: CreationOptional<number>;
+  declare max_fluence: number;
+  declare energy: number;
+  declare facility: string;
+  declare environment: string;
+  declare terrestrial: boolean;
+  declare flight: boolean;
   declare source: "Protons" | "Neutrons";
   declare damage_level: number;
   declare damage_level_description: string;
   declare special_notes?: string;
 
-  // Foreign key reference
-  declare testId: ForeignKey<Test["id"]>;
+  // // Foreign key reference
+  // declare testId: ForeignKey<Test["id"]>;
+  // Foreign Keys
+  declare paperId: ForeignKey<Paper["id"]>;
+  declare partId: ForeignKey<Part["id"]>;
+
+  // Mixin for associations
+  declare setPaper: BelongsToManyAddAssociationMixin<Paper, number>;
+  declare setPart: BelongsToManyAddAssociationMixin<Part, number>;
 }
 
 Dd.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    max_fluence: { type: DataTypes.FLOAT },
+    energy: { type: DataTypes.FLOAT },
+    facility: { type: DataTypes.TEXT },
+    environment: { type: DataTypes.TEXT },
+    terrestrial: { type: DataTypes.BOOLEAN },
+    flight: { type: DataTypes.BOOLEAN },
     source: { type: DataTypes.ENUM("Protons", "Neutrons") },
     damage_level: { type: DataTypes.FLOAT },
     damage_level_description: { type: DataTypes.TEXT },
@@ -270,8 +368,21 @@ Dd.init(
   { sequelize, modelName: "dd" },
 );
 
-Test.hasOne(Dd);
-Dd.belongsTo(Test);
+// Test.hasOne(Dd);
+// Dd.belongsTo(Test);
+Paper.hasMany(Dd, { foreignKey: "paperId" });
+Part.hasMany(Dd, { foreignKey: "partId" });
+Dd.belongsTo(Paper, {
+  foreignKey: "paperId",
+  onDelete: "SET NULL",
+  onUpdate: "CASCADE",
+});
+
+Dd.belongsTo(Part, {
+  foreignKey: "partId",
+  onDelete: "SET NULL",
+  onUpdate: "CASCADE",
+});
 
 export {
   Author,
@@ -279,7 +390,7 @@ export {
   Part,
   PaperAuthor,
   PaperPart,
-  Test,
+  // Test,
   Tid,
   See,
   Dd,
@@ -291,7 +402,7 @@ export const models: Record<string, ModelStatic<Model>> = {
   Part,
   PaperAuthor,
   PaperPart,
-  Test,
+  // Test,
   Tid,
   See,
   Dd,

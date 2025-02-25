@@ -37,7 +37,13 @@ export const prompts = {
         Format:
         Testing Type ø Max Fluence ø Energy ø Facility Name ø Environmental Conditions ø Terrestrial ø Flight`,
 
-    tidData: `Extract Total Ionizing Dose (TID) data. Use "ø" as a delimiter:
+    tidData: `Describe the conditions under which radiation testing was conducted. Extract Total Ionizing Dose (TID) data. Use "ø" as a delimiter:
+        - Maximum fluence
+        - Energy levels
+        - Facility name
+        - Environmental conditions
+        - Was the test conducted in a terrestrial setting? (Yes/No)
+        - Was the test conducted in-flight? (Yes/No)
         - Source of radiation (Co60, Protons, Electrons, Heavy ions, X-rays)
         - Maximum TID level
         - Dose rate
@@ -49,28 +55,40 @@ export const prompts = {
         - Any special notes
   
         Format:
-        Source ø Max TID ø Dose Rate ø ELDRS ø P-pion ø Dose to Failure ø Increased Power Usage ø Power Usage Description ø Special Notes`,
+        Max Fluence ø Energy ø Facility Name ø Environmental Conditions ø Terrestrial ø Flight ø Source ø Max TID ø Dose Rate ø ELDRS ø P-pion ø Dose to Failure ø Increased Power Usage ø Power Usage Description ø Special Notes`,
 
-    seeData: `Extract Single Event Effects (SEE) data using "ø":
+    seeData: `Describe the conditions under which radiation testing was conducted. Extract Single Event Effects (SEE) data using "ø":
+        - Maximum fluence
+        - Energy levels
+        - Facility name
+        - Environmental conditions
+        - Was the test conducted in a terrestrial setting? (Yes/No)
+        - Was the test conducted in-flight? (Yes/No)
         - Radiation source (Heavy ions, Protons, Laser, Neutron, Electron)
         - Type of SEE observed (SEU, SET, SEFI, SEL, SEB, SEGR)
-        - Amplitude
-        - Duration
+        - Amplitude of effect
+        - Duration of effect
         - Cross-section value
         - Cross-section type
         - Any special notes
         
         Format:
-        Source ø Type ø Amplitude ø Duration ø Cross-section ø Cross-section Type ø Special Notes`,
+        Max Fluence ø Energy ø Facility Name ø Environmental Conditions ø Terrestrial ø Flight ø Source ø Type ø Amplitude ø Duration ø Cross-section ø Cross-section Type ø Special Notes`,
 
-    ddData: `Extract Displacement Damage (DD) data using "ø":
+    ddData: `Describe the conditions under which radiation testing was conducted. Extract Displacement Damage (DD) data using "ø":
+        - Maximum fluence
+        - Energy levels
+        - Facility name
+        - Environmental conditions
+        - Was the test conducted in a terrestrial setting? (Yes/No)
+        - Was the test conducted in-flight? (Yes/No)
         - Radiation source (Protons, Neutrons)
         - Level of damage observed
         - Description of damage effects
         - Any special notes
         
         Format:
-        Source ø Damage Level ø Description ø Special Notes`,
+        Max Fluence ø Energy ø Facility Name ø Environmental Conditions ø Terrestrial ø Flight ø Source ø Damage Level ø Description ø Special Notes`,
 
     summary: `Provide a structured summary of all extracted data ensuring completeness and clarity.
         Return the response in a structured format with each field separated by "ø".`,
