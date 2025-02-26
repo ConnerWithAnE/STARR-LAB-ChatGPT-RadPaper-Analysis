@@ -8,7 +8,7 @@ type RenderPassProps = {
     pass_2: unknown;
     pass_3: unknown;
   };
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleChange: (name: string, value: string | number) => void;
   key: string;
 };
 
@@ -19,6 +19,12 @@ export default function RenderPass({
 }: RenderPassProps) {
   const [final_result, setFinalResult] = useState<string>("");
   const [type, setType] = useState<string>("");
+
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setFinalResult(value);
+    handleChange(key, value);
+  };
 
   useEffect(() => {
     switch (typeof passes.pass_1) {
@@ -100,7 +106,7 @@ export default function RenderPass({
                   className="max-w-xs"
                   placeholder="Enter your description"
                   value={final_result}
-                  onChange={handleChange}
+                  onChange={onChange}
                   description="Please enter each author's name separated by quotes."
                   validate={(value) => {
                     if (value === "") {
@@ -117,7 +123,7 @@ export default function RenderPass({
                   className="max-w-xs"
                   placeholder="Enter your description"
                   value={final_result}
-                  onChange={handleChange}
+                  onChange={onChange}
                   validate={(value) => {
                     if (isNaN(parseInt(value))) {
                       return "Please enter a value";
@@ -131,6 +137,7 @@ export default function RenderPass({
                   label="Select a value"
                   orientation="horizontal"
                   defaultValue={final_result}
+                  onChange={onChange}
                 >
                   <Radio value="true">True</Radio>
                   <Radio value="false">False</Radio>

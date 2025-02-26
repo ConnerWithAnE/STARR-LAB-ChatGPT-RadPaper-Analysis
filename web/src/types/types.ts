@@ -1,16 +1,76 @@
-export type PaperData = {
-  ROWID: number;
-  paper_name: string;
-  author: string[];
-  /*
+export type FullDataType = {
+  id: number;
+  name: string;
   year: number;
-  part_no: string;
+  authors: AuthorData[];
+  parts: PartData[];
+  testingData: TestData[];
+};
+
+export type AuthorData = {
+  id: number;
+  name: string;
+};
+
+export type PartData = {
+  id: number;
+  name: string;
   type: string;
   manufacturer: string;
   testing_location: TestLocation;
+};
+
+export type TestData = {
+  id: number;
   testing_type: Testing;
   data_type: number;
-  */
+  max_fluence: number;
+  energy: number;
+  facility: string;
+  environment: string;
+  terrestrial: boolean;
+  flight: boolean;
+  tidData?: TIDDataType;
+  seeData?: SEEDataType;
+  ddData?: DDDataType;
+};
+
+export type TIDDataType = {
+  id: number;
+  source: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays";
+  max_tid: number;
+  dose_rate: number;
+  eldrs: boolean;
+  p_pion: boolean;
+  dose_to_failure: number;
+  increased_power_usage: boolean;
+  power_usage_description: string;
+  special_notes?: string;
+};
+
+export type SEEDataType = {
+  id: number;
+  source: "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron";
+  type:
+    | "Single Event Upset"
+    | "Single Event Transient"
+    | "Single Event Functional Interrupt"
+    | "Single Event Latch-up"
+    | "Single Event Burnout"
+    | "Single Event Gate Rupture";
+  amplitude: number;
+  duration: number;
+  cross_section: number;
+  cross_section_type: string;
+  special_notes?: string;
+};
+
+export type DDDataType = {
+  id: number;
+  source: "Protons" | "Neutrons";
+  damage_level: number;
+  damage_level_description: string;
+  special_notes?: string;
 };
 
 export type UpdateData = {
