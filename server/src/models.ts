@@ -51,16 +51,21 @@ class Paper extends Model<
   // Mixins for associations
   declare addAuthor: BelongsToManyAddAssociationMixin<Author, number>;
   declare addAuthors: BelongsToManyAddAssociationsMixin<Author, number>;
+  declare setAuthors: BelongsToManyAddAssociationsMixin<Author, number>;
   declare addPart: BelongsToManyAddAssociationMixin<Part, number>;
   declare addParts: BelongsToManyAddAssociationsMixin<Part, number>;
+  declare setParts: BelongsToManyAddAssociationsMixin<Part, number>;
   // declare addTest: HasManyAddAssociationMixin<Test, number>;
   // declare addTests: HasManyAddAssociationsMixin<Test, number>;
   declare addTid: HasManyAddAssociationMixin<Tid, number>;
-  declare addTids: HasManyAddAssociationMixin<Tid, number>;
+  declare addTids: HasManyAddAssociationsMixin<Tid, number>;
+  declare setTids: HasManyAddAssociationsMixin<Tid, number>;
   declare addSee: HasManyAddAssociationMixin<See, number>;
-  declare addSees: HasManyAddAssociationMixin<See, number>;
+  declare addSees: HasManyAddAssociationsMixin<See, number>;
+  declare setSees: HasManyAddAssociationsMixin<See, number>;
   declare addDd: HasManyAddAssociationMixin<Dd, number>;
-  declare addDds: HasManyAddAssociationMixin<Dd, number>;
+  declare addDds: HasManyAddAssociationsMixin<Dd, number>;
+  declare setDds: HasManyAddAssociationsMixin<Dd, number>;
 }
 
 Paper.init(
@@ -93,11 +98,14 @@ class Part extends Model<InferAttributes<Part>, InferCreationAttributes<Part>> {
   // declare addTest: HasManyAddAssociationMixin<Test, number>;
   // declare addTests: HasManyAddAssociationsMixin<Test, number>;
   declare addTid: HasManyAddAssociationMixin<Tid, number>;
-  declare addTids: HasManyAddAssociationMixin<Tid, number>;
+  declare addTids: HasManyAddAssociationsMixin<Tid, number>;
+  declare setTids: HasManyAddAssociationsMixin<Tid, number>;
   declare addSee: HasManyAddAssociationMixin<See, number>;
-  declare addSees: HasManyAddAssociationMixin<See, number>;
+  declare addSees: HasManyAddAssociationsMixin<See, number>;
+  declare setSees: HasManyAddAssociationsMixin<See, number>;
   declare addDd: HasManyAddAssociationMixin<Dd, number>;
-  declare addDds: HasManyAddAssociationMixin<Dd, number>;
+  declare addDds: HasManyAddAssociationsMixin<Dd, number>;
+  declare setDds: HasManyAddAssociationsMixin<Dd, number>;
 }
 
 Part.init(

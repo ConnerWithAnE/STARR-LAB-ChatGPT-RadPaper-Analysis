@@ -51,9 +51,72 @@ export default function cascadeRouter(dbController: GenericController): Router {
 
       const createdPaper = await GenericController.createFullPaper(data);
 
+      if (createdPaper.error) {
+        res
+          .status(createdPaper.status || 500)
+          .json({ error: createdPaper.error });
+      }
+
       res.status(201).json(createdPaper);
     } catch (error) {
       console.error("Error creating full paper:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  router.put("/papers/full/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        res.status(400).json({ error: "Invalid ID format" });
+        return;
+      }
+
+      const data = req.body;
+      const append = data.append;
+      delete data.append; // Remove append flag from request body
+
+      console.log(
+        `Received request to update paper ID ${id} with append=${append}`,
+      );
+      const updatedPaper = await GenericController.updateFullPaper(
+        id,
+        data,
+        append,
+      );
+
+      if (updatedPaper.error) {
+        res
+          .status(updatedPaper.status || 500)
+          .json({ error: updatedPaper.error });
+      } else {
+        res.json(updatedPaper);
+      }
+    } catch (error) {
+      console.error("Error updating full paper:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  });
+
+  router.get("/papers/full/:id", async (req: Request, res: Response) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (isNaN(id)) {
+        res.status(400).json({ error: "Invalid paper ID format" });
+        return;
+      }
+
+      console.log(`Received request to fetch full paper with ID: ${id}`);
+      const paper = await GenericController.getFullPaperById(id);
+
+      if (paper.error) {
+        res.status(paper.status || 500).json({ error: paper.error });
+        return;
+      }
+
+      res.json(paper);
+    } catch (error) {
+      console.error("Error fetching full paper:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   });

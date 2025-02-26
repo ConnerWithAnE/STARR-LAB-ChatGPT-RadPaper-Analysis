@@ -2,6 +2,7 @@ import { models } from "./models"; // Import all Sequelize models dynamically
 import { Model, Op } from "sequelize";
 import { sequelize } from "./database-init";
 import { Author, Paper, Part, Tid, See, Dd } from "./models";
+import { BlobOptions } from "buffer";
 
 type ModelKey = keyof typeof models; // Ensures only valid model names are used
 
@@ -47,139 +48,6 @@ export class GenericController {
 
     return fullInstance;
     //return instance.get({ plain: true });
-  }
-
-  /** Format model name: Singularize and capitalize */
-  private static formatModelName(name: string): string {
-    return name.replace(/s$/, "").replace(/^./, (c) => c.toUpperCase());
-  }
-
-  /** Extract related data and remove from main payload */
-  private static extractRelatedData(
-    model: any,
-    data: any,
-  ): Record<string, number[]> | {} {
-    const relatedData: Record<string, number[]> = {};
-
-    for (const key in data) {
-      if (Array.isArray(data[key])) {
-        const pluralRelation = key;
-        const singularRelation = key.slice(0, -1); // Remove trailing 's'
-
-        console.log(`Checking relation: ${pluralRelation}`);
-
-        console.log(
-          `Available associations for ${model.name}:`,
-          Object.keys(model.associations),
-        );
-
-        if (model.associations[pluralRelation]) {
-          console.log(`Valid relation found: ${pluralRelation}`);
-          relatedData[pluralRelation] = data[key];
-          delete data[key];
-        } else if (model.associations[singularRelation]) {
-          console.log(`Valid singular relation found: ${singularRelation}`);
-          relatedData[singularRelation] = data[key];
-          delete data[key];
-        } else {
-          console.warn(`Invalid relation: ${pluralRelation}`);
-          return {
-            error: `Invalid relation: ${pluralRelation}`,
-            status: 400,
-          };
-        }
-      }
-    }
-
-    return relatedData;
-  }
-
-  /** Process and associate related records */
-  private static async processAssociations(
-    instance: any,
-    modelName: string,
-    relatedData: Record<string, number[]>,
-    append: boolean,
-  ) {
-    for (const relationKey in relatedData) {
-      const isPlural = relationKey.endsWith("s");
-      const relationMethod = isPlural
-        ? append
-          ? `add${this.capitalize(relationKey)}`
-          : `set${this.capitalize(relationKey)}`
-        : `set${this.capitalize(relationKey)}`;
-      const singularModelName = this.formatModelName(relationKey);
-
-      console.log(`Processing relation: ${relationKey} for ${modelName}`);
-
-      const relatedModel = models[singularModelName];
-      if (!relatedModel) {
-        console.warn(`Missing related model: ${singularModelName}`);
-        return {
-          error: `Missing related model: ${singularModelName}`,
-          status: 400,
-        };
-      }
-
-      // Handle empty arrays when append is false → Remove all relations
-      if (!append && relatedData[relationKey].length === 0) {
-        console.log(
-          `Removing all ${relationKey} associations from ${modelName}`,
-        );
-        if (typeof instance[relationMethod] === "function") {
-          await instance[relationMethod]([]);
-        } else {
-          console.warn(`Missing association method: ${relationMethod}`);
-        }
-        continue;
-      }
-
-      // Fetch related instances
-      const relatedInstances = await relatedModel.findAll({
-        where: { id: relatedData[relationKey] },
-      });
-
-      console.log(`Found related instances: ${relatedInstances.length}`);
-
-      if (relatedInstances.length !== relatedData[relationKey].length) {
-        console.log(`Some ${relationKey} not found or invalid`);
-        return {
-          error: `Some ${relationKey} not found or invalid`,
-          status: 400,
-        };
-      }
-
-      // Use the correct association method (add vs set)
-      console.log(`Trying to use ${relationMethod}`);
-      // console.log(`Instance has methods:`, Object.keys(instance));
-      console.log(
-        "Instance prototype methods:",
-        Object.getOwnPropertyNames(Object.getPrototypeOf(instance)),
-      );
-
-      if (typeof instance[relationMethod] === "function") {
-        console.log(`Using ${relationMethod}()`);
-
-        if (!isPlural && relatedInstances.length > 1) {
-          console.warn(`Expected only one ${relationKey} but got multiple`);
-          return {
-            error: `Expected only one ${relationKey} but got multiple`,
-            status: 400,
-          };
-        }
-
-        await instance[relationMethod](
-          isPlural ? relatedInstances : relatedInstances[0],
-        );
-      } else {
-        console.warn(`Missing association method: ${relationMethod}`);
-      }
-    }
-  }
-
-  /**  Capitalize first letter of a string */
-  private static capitalize(name: string): string {
-    return name.charAt(0).toUpperCase() + name.slice(1);
   }
 
   /**  Get all records, including valid relationships */
@@ -480,25 +348,20 @@ export class GenericController {
 
     return records.map((r) => r.get({ plain: true }));
   }
-  /** Close the database connection */
-  async closeDB(): Promise<void> {
-    await sequelize.close();
-    console.log("Database connection closed successfully");
-  }
 
-  /** Create full paper as well as related instance by giving full object */
+  /** Create full paper along with related entities */
   static async createFullPaper(data: any) {
     console.log("Processing full paper creation:", data);
 
-    // Extract and validate main paper data
-    const paperData = { ...data };
-    delete paperData.authors;
-    delete paperData.parts;
+    // Validate required fields
+    if (!data.name || !data.year) {
+      return { error: "Paper year or name missing", status: 400 };
+    }
 
-    // Find or Create Paper
+    // Create Paper
     const [paper, paperCreated] = (await models.Paper.findOrCreate({
-      where: { name: paperData.name, year: paperData.year },
-      defaults: paperData,
+      where: { name: data.name, year: data.year },
+      defaults: data,
     })) as [Paper, boolean];
 
     console.log(
@@ -506,94 +369,345 @@ export class GenericController {
       paper.get({ plain: true }),
     );
 
-    async function findOrCreateEntity(modelName: string, items: any[]) {
-      if (!items || !Array.isArray(items)) return [];
+    // Handle authors, parts, and related tests
+    await this.handleAuthorsAndParts(paper, data, true);
 
-      const results = [];
-      for (const item of items) {
-        const searchCriteria = { ...item };
-        delete searchCriteria.id;
-        delete searchCriteria.createdAt;
-        delete searchCriteria.updatedAt;
-        delete searchCriteria.tids;
-        delete searchCriteria.sees;
-        delete searchCriteria.dds;
+    console.log("Paper and all related entities processed successfully.");
+    return await this.getFullPaperById(paper.id);
+  }
 
-        const [entity] = await models[modelName].findOrCreate({
-          where: searchCriteria,
-          defaults: searchCriteria,
-        });
+  /** Update an existing paper with the ability to append or replace related entities */
+  static async updateFullPaper(id: number, data: any, append = true) {
+    console.log(`Updating paper with ID ${id}`, data);
 
-        results.push(entity);
-      }
+    // Find existing paper
+    const paper = (await models.Paper.findByPk(id, {
+      include: [models.Author, models.Part],
+    })) as Paper;
+    if (!paper) return { error: "Paper not found", status: 404 };
 
-      return results;
+    // Update paper fields
+    const paperData = { ...data };
+    delete paperData.authors;
+    delete paperData.parts;
+    // delete paperData.tids;
+    // delete paperData.sees;
+    // delete paperData.sees;
+    await paper.update(paperData);
+
+    // Handle authors, parts, and related tests
+    await this.handleAuthorsAndParts(paper, data, append);
+
+    console.log("Paper successfully updated.");
+    return await this.getFullPaperById(id);
+  }
+
+  /** Retrieve a full paper object by ID */
+  static async getFullPaperById(id: number) {
+    console.log(`Fetching full paper with ID: ${id}`);
+
+    // Find the paper with authors and parts included
+    const paper = await models.Paper.findByPk(id, {
+      include: [
+        { model: models.Author, as: "authors" },
+        {
+          model: models.Part,
+          as: "parts",
+          include: [
+            { model: models.Tid, as: "tids" },
+            { model: models.See, as: "sees" },
+            { model: models.Dd, as: "dds" },
+          ],
+        },
+      ],
+    });
+
+    // Error handling if paper is not found
+    if (!paper) {
+      console.warn(`Paper with ID ${id} not found.`);
+      return { error: "Paper not found", status: 404 };
     }
 
-    // Find or Create Authors
-    const authors = (await findOrCreateEntity(
-      "Author",
-      data.authors,
-    )) as Author[];
-    if (authors.length) await paper.addAuthors(authors);
+    // Convert raw Sequelize object to plain JSON
+    const paperData = paper.get({ plain: true });
 
-    // Find or Create Parts
-    const parts = (await findOrCreateEntity("Part", data.parts)) as Part[];
-    if (parts.length) await paper.addParts(parts);
+    return {
+      ...paperData,
+      authors: Array.isArray(paperData.authors) ? paperData.authors : [],
+      parts: Array.isArray(paperData.parts)
+        ? paperData.parts.map((part: any) => ({
+            ...part,
+            tids: Array.isArray(part.tids) ? part.tids : [],
+            sees: Array.isArray(part.sees) ? part.sees : [],
+            dds: Array.isArray(part.dds) ? part.dds : [],
+          }))
+        : [],
+    };
+  }
 
-    // Process TIDs, SEEs, and DDS inside each part
-    for (const partData of data.parts) {
+  /** Close the database connection */
+  async closeDB(): Promise<void> {
+    await sequelize.close();
+    console.log("Database connection closed successfully");
+  }
+
+  /*------------------ HELPER FUNCTIONS ------------------*/
+
+  /** Format model name: Singularize and capitalize */
+  private static formatModelName(name: string): string {
+    return name.replace(/s$/, "").replace(/^./, (c) => c.toUpperCase());
+  }
+
+  /**  Capitalize first letter of a string */
+  private static capitalize(name: string): string {
+    return name.charAt(0).toUpperCase() + name.slice(1);
+  }
+
+  /** Extract related data and remove from main payload */
+  private static extractRelatedData(
+    model: any,
+    data: any,
+  ): Record<string, number[]> | {} {
+    const relatedData: Record<string, number[]> = {};
+
+    for (const key in data) {
+      if (Array.isArray(data[key])) {
+        const pluralRelation = key;
+        const singularRelation = key.slice(0, -1); // Remove trailing 's'
+
+        console.log(`Checking relation: ${pluralRelation}`);
+
+        console.log(
+          `Available associations for ${model.name}:`,
+          Object.keys(model.associations),
+        );
+
+        if (model.associations[pluralRelation]) {
+          console.log(`Valid relation found: ${pluralRelation}`);
+          relatedData[pluralRelation] = data[key];
+          delete data[key];
+        } else if (model.associations[singularRelation]) {
+          console.log(`Valid singular relation found: ${singularRelation}`);
+          relatedData[singularRelation] = data[key];
+          delete data[key];
+        } else {
+          console.warn(`Invalid relation: ${pluralRelation}`);
+          return {
+            error: `Invalid relation: ${pluralRelation}`,
+            status: 400,
+          };
+        }
+      }
+    }
+
+    return relatedData;
+  }
+
+  /** Process and associate related records */
+  private static async processAssociations(
+    instance: any,
+    modelName: string,
+    relatedData: Record<string, number[]>,
+    append: boolean,
+  ) {
+    for (const relationKey in relatedData) {
+      const isPlural = relationKey.endsWith("s");
+      const relationMethod = isPlural
+        ? append
+          ? `add${this.capitalize(relationKey)}`
+          : `set${this.capitalize(relationKey)}`
+        : `set${this.capitalize(relationKey)}`;
+      const singularModelName = this.formatModelName(relationKey);
+
+      console.log(`Processing relation: ${relationKey} for ${modelName}`);
+
+      const relatedModel = models[singularModelName];
+      if (!relatedModel) {
+        console.warn(`Missing related model: ${singularModelName}`);
+        return {
+          error: `Missing related model: ${singularModelName}`,
+          status: 400,
+        };
+      }
+
+      // Handle empty arrays when append is false → Remove all relations
+      if (!append && relatedData[relationKey].length === 0) {
+        console.log(
+          `Removing all ${relationKey} associations from ${modelName}`,
+        );
+        if (typeof instance[relationMethod] === "function") {
+          await instance[relationMethod]([]);
+        } else {
+          console.warn(`Missing association method: ${relationMethod}`);
+        }
+        continue;
+      }
+
+      // Fetch related instances
+      const relatedInstances = await relatedModel.findAll({
+        where: { id: relatedData[relationKey] },
+      });
+
+      console.log(`Found related instances: ${relatedInstances.length}`);
+
+      if (relatedInstances.length !== relatedData[relationKey].length) {
+        console.log(`Some ${relationKey} not found or invalid`);
+        return {
+          error: `Some ${relationKey} not found or invalid`,
+          status: 400,
+        };
+      }
+
+      // Use the correct association method (add vs set)
+      console.log(`Trying to use ${relationMethod}`);
+      // console.log(`Instance has methods:`, Object.keys(instance));
+      console.log(
+        "Instance prototype methods:",
+        Object.getOwnPropertyNames(Object.getPrototypeOf(instance)),
+      );
+
+      if (typeof instance[relationMethod] === "function") {
+        console.log(`Using ${relationMethod}()`);
+
+        if (!isPlural && relatedInstances.length > 1) {
+          console.warn(`Expected only one ${relationKey} but got multiple`);
+          return {
+            error: `Expected only one ${relationKey} but got multiple`,
+            status: 400,
+          };
+        }
+
+        await instance[relationMethod](
+          isPlural ? relatedInstances : relatedInstances[0],
+        );
+      } else {
+        console.warn(`Missing association method: ${relationMethod}`);
+      }
+    }
+  }
+
+  /**
+   * Helper function to handle Authors and Parts in both Create and Update operations
+   */
+  static async handleAuthorsAndParts(paper: Paper, data: any, append: boolean) {
+    // Handle authors
+    if (data.authors) {
+      const authors = (await this.manageEntities(
+        "Author",
+        data.authors,
+      )) as Author[];
+      append
+        ? await paper.addAuthors(authors)
+        : await paper.setAuthors(authors);
+    }
+
+    // Handle parts
+    if (data.parts) {
+      const parts = (await this.manageEntities("Part", data.parts)) as Part[];
+      append ? await paper.addParts(parts) : await paper.setParts(parts);
+      await this.handleTestsForParts(parts, paper, data.parts, append);
+    }
+  }
+
+  /**
+   * Helper function to process `Tids`, `Sees`, and `Dds` for parts
+   */
+  static async handleTestsForParts(
+    parts: Part[],
+    paper: Paper,
+    partsData: any[],
+    append: boolean,
+  ) {
+    for (const partData of partsData) {
       const part = parts.find((p) => p.name === partData.name);
       if (!part) continue;
 
-      // Create TIDs
-      if (partData.tids) {
-        const tids = (await findOrCreateEntity("Tid", partData.tids)) as Tid[];
-        for (const tid of tids) {
-          await tid.setPaper(paper);
-          await tid.setPart(part);
-        }
+      console.log(`Processing part: ${partData.name}`);
+
+      // Handle tids
+      if (Array.isArray(partData.tids)) {
+        const tids = (await this.manageEntities(
+          "Tid",
+          partData.tids,
+          true,
+        )) as Tid[];
+        append ? await part.addTids(tids) : await part.setTids(tids);
+        append ? await paper.addTids(tids) : await paper.setTids(tids);
       }
 
-      // Create SEEs
-      if (partData.sees) {
-        const sees = (await findOrCreateEntity("See", partData.sees)) as See[];
-        for (const see of sees) {
-          await see.setPaper(paper);
-          await see.setPart(part);
-        }
+      // Handle sees
+      if (Array.isArray(partData.sees)) {
+        const sees = (await this.manageEntities(
+          "See",
+          partData.sees,
+          true,
+        )) as See[];
+        append ? await part.addSees(sees) : await part.setSees(sees);
+        append ? await paper.addSees(sees) : await paper.setSees(sees);
       }
 
-      // Create DDS
-      if (partData.dds) {
-        const dds = (await findOrCreateEntity("Dd", partData.dds)) as Dd[];
-        for (const dd of dds) {
-          await dd.setPaper(paper);
-          await dd.setPart(part);
+      // Handle dds
+      if (Array.isArray(partData.dds)) {
+        const dds = (await this.manageEntities(
+          "Dd",
+          partData.dds,
+          true,
+        )) as Dd[];
+        append ? await part.addDds(dds) : await part.setDds(dds);
+        append ? await paper.addDds(dds) : await paper.setDds(dds);
+      }
+    }
+  }
+
+  /**
+   * Helper function to find or create related entities
+   * @param modelName Model to search
+   * @param items Array of items to find or create
+   * @param alwaysCreate If true, always creates a new entry
+   */
+  static async manageEntities(
+    modelName: string,
+    items: any[],
+    alwaysCreate = false,
+  ) {
+    if (!items || !Array.isArray(items)) return [];
+
+    const results = [];
+    for (const item of items) {
+      const searchCriteria = { ...item };
+      delete searchCriteria.createdAt;
+      delete searchCriteria.updatedAt;
+      delete searchCriteria.tids;
+      delete searchCriteria.sees;
+      delete searchCriteria.dds;
+
+      if (alwaysCreate) {
+        // Always create a new record
+        const entity = await models[modelName].create(searchCriteria);
+        results.push(entity);
+      } else {
+        let entity;
+        if (searchCriteria.id) {
+          // Find the existing record by ID
+          entity = await models[modelName].findByPk(searchCriteria.id);
+          if (entity) {
+            // Update the record if it exists
+            await entity.update(searchCriteria);
+          }
         }
+
+        if (!entity) {
+          // If no matching record exists, create a new one
+          [entity] = await models[modelName].findOrCreate({
+            where: searchCriteria,
+            defaults: searchCriteria,
+          });
+        }
+
+        results.push(entity);
       }
     }
 
-    console.log("Paper and all related entities processed successfully.");
-
-    return {
-      id: paper.id,
-      name: paper.name,
-      year: paper.year,
-      createdAt: paper.createdAt,
-      updatedAt: paper.updatedAt,
-      authors: authors.map((a) => a.get({ plain: true })),
-      parts: await Promise.all(
-        parts.map(async (p) => {
-          return models.Part.findByPk(p.getDataValue("id"), {
-            include: [
-              { model: models.Tid },
-              { model: models.See },
-              { model: models.Dd },
-            ],
-          }).then((part) => part?.get({ plain: true }));
-        }),
-      ),
-    };
+    return results;
   }
 }
