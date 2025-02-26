@@ -268,7 +268,10 @@ export class GenericController {
                 fieldType.constructor.name.includes("DECIMAL")
               ) {
                 value = Number(value); // Convert to number
-              } else if (fieldType.constructor.name.includes("TEXT")) {
+              } else if (
+                fieldType.constructor.name.includes("TEXT") ||
+                fieldType.constructor.name.includes("ENUM")
+              ) {
                 value = { [Op.like]: `%${filters[key]}%` }; // Ensure LIKE is used correctly
               } else {
                 value = filters[key]; // Default case
@@ -345,6 +348,13 @@ export class GenericController {
     });
 
     console.log("Found records:", records.length);
+
+    if (modelName == "papers") {
+      console.log("AAAAAAAA");
+      return Promise.all(
+        records.map((r) => this.getFullPaperById(r.getDataValue("id"))),
+      );
+    }
 
     return records.map((r) => r.get({ plain: true }));
   }
@@ -443,6 +453,51 @@ export class GenericController {
           }))
         : [],
     };
+  }
+
+  /** Retrieve all papers with full related data */
+  static async getFullPaper() {
+    console.log("Fetching all papers with full data format.");
+
+    // Fetch all papers with authors, parts, and nested relationships
+    const papers = await models.Paper.findAll({
+      include: [
+        { model: models.Author, as: "authors" },
+        {
+          model: models.Part,
+          as: "parts",
+          include: [
+            { model: models.Tid, as: "tids" },
+            { model: models.See, as: "sees" },
+            { model: models.Dd, as: "dds" },
+          ],
+        },
+      ],
+    });
+
+    // If no papers found, return an empty array
+    if (!papers || papers.length === 0) {
+      console.warn("No papers found.");
+      return [];
+    }
+
+    // Convert all paper models to the structured format
+    return papers.map((paper) => {
+      const paperData = paper.get({ plain: true });
+
+      return {
+        ...paperData,
+        authors: Array.isArray(paperData.authors) ? paperData.authors : [],
+        parts: Array.isArray(paperData.parts)
+          ? paperData.parts.map((part: any) => ({
+              ...part,
+              tids: Array.isArray(part.tids) ? part.tids : [],
+              sees: Array.isArray(part.sees) ? part.sees : [],
+              dds: Array.isArray(part.dds) ? part.dds : [],
+            }))
+          : [],
+      };
+    });
   }
 
   /** Close the database connection */
