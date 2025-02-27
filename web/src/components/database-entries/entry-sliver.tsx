@@ -41,7 +41,7 @@ export default function EntrySliver({
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   // for modifying entries
-  const { addEntry, updateEntry: updateEntry2, tableEntries, setRedConflict } = useForm();
+  const { addEntry, updateEntry, tableEntries, setRedConflict } = useForm();
   // this state prop is to handle modifying the individual entry before updating the overall form
   const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
     const savedEntry = tableEntries[index];
@@ -152,7 +152,6 @@ export default function EntrySliver({
     if (updatedConflicts.redSeverity.length > 0) {
       setRedConflict(index, updatedConflicts.redSeverity);
     }
-    
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
     if (!hasEmptyProperty(editedEntry)) {
@@ -178,14 +177,14 @@ export default function EntrySliver({
   };
 
   const handleSave = () => {
-    updateEntry2(index, editedEntry);
-    console.log('editedEntry in handleSave', editedEntry);
+    updateEntry(index, editedEntry);
+    console.log("editedEntry in handleSave", editedEntry);
     const updatedConflicts: Conflict = {
       yellowSeverity: [],
       redSeverity: [],
     };
     Object.entries(editedEntry).forEach(([key, value]) => {
-      if (typeof value === "string" ) {
+      if (typeof value === "string") {
         if (value.toString() === "") {
           updatedConflicts.redSeverity.push(key);
         }
@@ -193,8 +192,7 @@ export default function EntrySliver({
         if (isNaN(value)) {
           updatedConflicts.redSeverity.push(key);
         }
-      }
-      else {
+      } else {
         if (value.length === 0) {
           updatedConflicts.redSeverity.push(key);
         }
