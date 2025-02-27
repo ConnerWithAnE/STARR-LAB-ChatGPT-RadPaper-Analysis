@@ -125,6 +125,13 @@ export type GPTResponse = {
   pass_3: GPTData;
 };
 
+//TODO: replace with the real thing lol
+export type GPTResponse2 = {
+  pass_1: FullDataType;
+  pass_2: FullDataType;
+  pass_3: FullDataType;
+};
+
 export type TableData = {
   id?: number;
   paper_name: string;
@@ -171,7 +178,7 @@ export type Conflict = {
   redSeverity: string[];
 };
 
-export function hasEmptyProperty(obj: UpdateData): boolean {
+export function hasEmptyProperty(obj: FullDataType): boolean {
   return Object.values(obj).some(
     (value) =>
       value === null ||

@@ -1,13 +1,17 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { useState } from "react";
-import { UpdateData, Conflict } from "../types/types";
-import { GPTResponse } from "../types/types";
+import {
+  UpdateData,
+  Conflict,
+  FullDataType,
+  GPTResponse2,
+} from "../types/types";
 import { MdWarningAmber } from "react-icons/md";
 import RenderPass from "../components/render-pass";
 
 type PaperProps = {
-  entryData?: GPTResponse;
-  editedEntry: UpdateData;
+  entryData?: GPTResponse2;
+  editedEntry: FullDataType;
   setEditedEntry: React.Dispatch<React.SetStateAction<UpdateData>>;
   unresolvedConflicts: Conflict;
 };
@@ -19,7 +23,7 @@ export default function EditEntry({
   unresolvedConflicts,
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
-  const [passes] = useState<GPTResponse>(entryData ?? ({} as GPTResponse));
+  const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
 
   const handleChange = (name: string, value: string | number) => {
     setEditedEntry((prevState) => ({

@@ -1,18 +1,18 @@
 import {
-  GPTResponse,
   hasEmptyProperty,
   Severity,
-  UpdateData,
   Conflict,
+  GPTResponse2,
+  FullDataType,
 } from "../../types/types";
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   useDisclosure,
   Button,
+  ModalHeader,
 } from "@nextui-org/react";
 import EditEntry from "../../pages/edit-entry";
 import { useEffect, useRef, useState } from "react";
@@ -22,7 +22,7 @@ import { HiExclamationTriangle } from "react-icons/hi2";
 import { HiExclamationCircle } from "react-icons/hi2";
 
 type EntrySliverProp = {
-  gptPass: GPTResponse;
+  gptPass: GPTResponse2;
   index: number;
   onHandleDeleteChange: (index: number) => void;
 };
@@ -43,12 +43,12 @@ export default function EntrySliver({
   // for modifying entries
   const { addEntry, updateEntry, tableEntries, setRedConflict } = useForm();
   // this state prop is to handle modifying the individual entry before updating the overall form
-  const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
+  const [editedEntry, setEditedEntry] = useState<FullDataType>(() => {
     const savedEntry = tableEntries[index];
     if (savedEntry) {
       return savedEntry;
     } else {
-      return { ROWID: index } as UpdateData;
+      return { id: index } as FullDataType;
     }
   });
 
@@ -58,7 +58,7 @@ export default function EntrySliver({
     if (newentry) {
       return setEditedEntry(newentry);
     } else {
-      setEditedEntry({ ROWID: index } as UpdateData);
+      setEditedEntry({ id: index } as FullDataType);
     }
   }, [tableEntries]);
 
@@ -66,7 +66,7 @@ export default function EntrySliver({
   const hasRun = useRef(false);
 
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
-  const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
+  const [passes] = useState<GPTResponse2>(gptPass ?? ({} as GPTResponse2));
   const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>({
     yellowSeverity: [],
     redSeverity: [],
@@ -99,8 +99,8 @@ export default function EntrySliver({
     console.log("passes", passes);
 
     Object.entries(passes.pass_1).map(([key]) => {
-      type GPTDataKey = keyof typeof passes.pass_1;
-      const typesafeKey = key as GPTDataKey;
+      type fullDataTypeKey = keyof typeof passes.pass_1;
+      const typesafeKey = key as fullDataTypeKey;
       let pass_1 = passes.pass_1[typesafeKey];
       let pass_2 = passes.pass_2[typesafeKey];
       let pass_3 = passes.pass_3[typesafeKey];
@@ -110,20 +110,17 @@ export default function EntrySliver({
         return;
       }
 
-      // join strings together in case of comparing authors
-      if (
-        Array.isArray(pass_1) &&
-        Array.isArray(pass_2) &&
-        Array.isArray(pass_3)
-      ) {
-        pass_1 = pass_1.join();
-        pass_2 = pass_2.join();
-        pass_3 = pass_3.join();
+      if (typesafeKey === "parts" || typesafeKey === "authors") {
+        pass_1 = JSON.stringify(pass_1);
+        pass_2 = JSON.stringify(pass_2);
+        pass_3 = JSON.stringify(pass_3);
       }
 
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
       if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
         console.log("pass_1", pass_1);
+        console.log("pass_2", pass_2);
+        console.log("pass_3", pass_3);
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
@@ -157,13 +154,15 @@ export default function EntrySliver({
     if (!hasEmptyProperty(editedEntry)) {
       addEntry(updatedEntry);
     }
+
+    console.log("editedEntry", editedEntry);
   }, [passes]);
 
   const handleCancel = () => {
     setEditedEntry({
-      paper_name: editedEntry.paper_name,
-      author: editedEntry.author,
-    } as UpdateData);
+      paper_name: editedEntry.name,
+      author: editedEntry.authors,
+    } as FullDataType);
     setOpen(false);
     setOpenCancelModal(false);
   };
@@ -216,10 +215,10 @@ export default function EntrySliver({
       </div>
       <div className="col-span-3">
         <div className="text-left text-lg text-slate-900">
-          {editedEntry.paper_name}
+          {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {editedEntry.author}
+          {editedEntry.authors?.map((author) => author.name + ", ")}
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">
@@ -287,7 +286,7 @@ export default function EntrySliver({
       </div>
 
       {/* edit-entry modal */}
-      <Modal
+      {/* <Modal
         isOpen={open}
         onOpenChange={onOpenChange}
         size="full"
@@ -299,7 +298,7 @@ export default function EntrySliver({
             return (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  {editedEntry.paper_name}
+                  {editedEntry?.name ?? ""}
                 </ModalHeader>
                 <ModalBody>
                   <EditEntry
@@ -327,7 +326,7 @@ export default function EntrySliver({
             );
           }}
         </ModalContent>
-      </Modal>
+      </Modal> */}
 
       {/* cancel edit modal */}
       <Modal isOpen={openCancelModal} hideCloseButton={true}>
