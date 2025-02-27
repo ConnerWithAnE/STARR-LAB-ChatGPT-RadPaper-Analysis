@@ -41,7 +41,7 @@ export default function EntrySliver({
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   // for modifying entries
-  const { addEntry, updateEntry2, tableEntries } = useForm();
+  const { addEntry, updateEntry, tableEntries, setRedConflict } = useForm();
   // this state prop is to handle modifying the individual entry before updating the overall form
   const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
     const savedEntry = tableEntries[index];
@@ -52,8 +52,9 @@ export default function EntrySliver({
     }
   });
 
-  useEffect(() => {       // To reset editedEntries if a paper was deleted from /upload/edit
-    let newentry = tableEntries[index];
+  useEffect(() => {
+    // To reset editedEntries if a paper was deleted from /upload/edit
+    const newentry = tableEntries[index];
     if (newentry) {
       return setEditedEntry(newentry);
     } else {
@@ -148,6 +149,9 @@ export default function EntrySliver({
 
     setEditedEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
+    if (updatedConflicts.redSeverity.length > 0) {
+      setRedConflict(index, updatedConflicts.redSeverity);
+    }
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
     if (!hasEmptyProperty(editedEntry)) {
@@ -173,7 +177,31 @@ export default function EntrySliver({
   };
 
   const handleSave = () => {
-    updateEntry2(index, editedEntry);
+    updateEntry(index, editedEntry);
+    console.log("editedEntry in handleSave", editedEntry);
+    const updatedConflicts: Conflict = {
+      yellowSeverity: [],
+      redSeverity: [],
+    };
+    Object.entries(editedEntry).forEach(([key, value]) => {
+      if (typeof value === "string") {
+        if (value.toString() === "") {
+          updatedConflicts.redSeverity.push(key);
+        }
+      } else if (typeof value === "number") {
+        if (isNaN(value)) {
+          updatedConflicts.redSeverity.push(key);
+        }
+      } else {
+        if (value.length === 0) {
+          updatedConflicts.redSeverity.push(key);
+        }
+      }
+    });
+    console.log("updatedConflicts", updatedConflicts);
+    setRedConflict(index, updatedConflicts.redSeverity);
+    setUnresolvedConflicts(updatedConflicts);
+
     setOpen(false);
   };
 

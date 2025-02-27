@@ -10,21 +10,24 @@ import { UpdateData } from "./types/types";
 
 // Define the shape of the data
 
+type RedConflicts = {
+  id: number;
+  fields: string[];
+};
+
 //updateContact<K extends keyof Contact>(id: number, field: K, value: Contact[K])
 interface TableDataContextType {
-  initialGPTPasses: GPTResponse[]; // Adjust the type of `data` based on your use case
+  initialGPTPasses: GPTResponse[];
   setInitialGPTPasses: (data: GPTResponse[]) => void; // Function to update the data
-  tableEntries: UpdateData[]; // Adjust the type of `data` based on your use case
-  updateEntry: <K extends keyof UpdateData>(
-    id: number,
-    key: string,
-    value: UpdateData[K]
-  ) => void;
-  updateEntry2: (id: number, value: UpdateData) => void;
+  tableEntries: UpdateData[];
+  updateEntry: (id: number, value: UpdateData) => void;
   addEntry: (entry: UpdateData) => void;
-  removeEntry: (id: number) => void;
   removePass: (id: number) => GPTResponse[];
   retrieveEntry: (id: number) => UpdateData | undefined;
+  removeEntry: (id: number) => void;
+  redConflicts: RedConflicts[];
+  setRedConflict: (id: number, fields: string[]) => void;
+  removeRedConflict: (id: number, field: string) => void;
 }
 
 // Define the default value of the context
@@ -32,12 +35,14 @@ const defaultValue: TableDataContextType = {
   initialGPTPasses: [],
   setInitialGPTPasses: () => {},
   updateEntry: () => {},
-  updateEntry2: () => {},
-  addEntry: () => {},
   removeEntry: () => {},
+  addEntry: () => {},
   removePass: () => [],
   tableEntries: [],
   retrieveEntry: () => undefined,
+  redConflicts: [],
+  setRedConflict: () => {},
+  removeRedConflict: () => {},
 };
 
 // Create the context
@@ -51,6 +56,7 @@ export const TableDataFormProvider = ({
 }) => {
   const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse[]>([]);
   const [tableEntries, setTableEntries] = useState<UpdateData[]>([]);
+  const [redConflicts, setRedConflicts] = useState<RedConflicts[]>([]);
 
   useEffect(() => {
     console.log("Updated contacts:", tableEntries);
@@ -60,19 +66,7 @@ export const TableDataFormProvider = ({
     console.log("Updated GPTPasses:", initialGPTPasses);
   }, [initialGPTPasses]);
 
-  function updateEntry<K extends keyof UpdateData>(
-    id: number,
-    key: string,
-    value: UpdateData[K]
-  ) {
-    setTableEntries((prev) =>
-      prev.map((entry) =>
-        entry.ROWID === id ? { ...entry, [key]: value } : entry
-      )
-    );
-  }
-
-  function updateEntry2(id: number, value: UpdateData) {
+  function updateEntry(id: number, value: UpdateData) {
     setTableEntries((prev) =>
       prev.map((entry) => (entry.ROWID === id ? { ...value } : entry))
     );
@@ -90,24 +84,65 @@ export const TableDataFormProvider = ({
     console.log("tableEntries", tableEntries);
   }
 
-  function removeEntry(id: number) {
-    setTableEntries((prev) => prev.filter((entry) => entry.ROWID !== id));
-  }
-
-  function removePass(indexROWID: number) {
-    // Get array index from ROWID
-    var arr_ind: number = tableEntries.findIndex((item) => item.ROWID === indexROWID);
-    const updatedPasses: GPTResponse[] = []
-    for(let i = 0; i < initialGPTPasses.length; i++) {
-      if(i !== arr_ind) {
+  function removePass(id: number) {
+    const updatedPasses: GPTResponse[] = [];
+    for (let i = 0; i < initialGPTPasses.length; i++) {
+      if (i !== id) {
         updatedPasses.push(initialGPTPasses[i]);
       }
     }
     return updatedPasses;
   }
 
+  function removeEntry(id: number) {
+    const newEntries = tableEntries.filter(
+      (entry) => tableEntries[id] !== entry
+    );
+    setTableEntries(newEntries);
+  }
+
   function retrieveEntry(id: number) {
     return tableEntries.find((entry) => entry.ROWID === id);
+  }
+
+  function setRedConflict(id: number, fields: string[]) {
+    if (!redConflicts.find((conflict) => conflict.id === id)) {
+      setRedConflicts((prev) => {
+        const newConflict: RedConflicts = {
+          id: id,
+          fields: [...fields],
+        };
+        return [...prev, newConflict];
+      });
+    } else {
+      setRedConflicts((prev) => {
+        const newConflicts = prev.map((conflict) => {
+          if (conflict.id === id) {
+            return {
+              id: id,
+              fields: [...fields],
+            };
+          }
+          return conflict;
+        });
+        return newConflicts.filter((conflict) => conflict.fields.length > 0);
+      });
+    }
+  }
+
+  function removeRedConflict(id: number, field: string) {
+    setRedConflicts((prev) => {
+      const newConflicts = prev.map((conflict) => {
+        if (conflict.id === id) {
+          return {
+            id: id,
+            fields: conflict.fields.filter((f) => f !== field),
+          };
+        }
+        return conflict;
+      });
+      return newConflicts.filter((conflict) => conflict.fields.length > 0);
+    });
   }
 
   return (
@@ -116,12 +151,14 @@ export const TableDataFormProvider = ({
         initialGPTPasses,
         setInitialGPTPasses,
         tableEntries,
-        updateEntry,
         addEntry,
-        removeEntry,
         removePass,
         retrieveEntry,
-        updateEntry2,
+        updateEntry,
+        redConflicts,
+        setRedConflict,
+        removeRedConflict,
+        removeEntry,
       }}
     >
       {children}
