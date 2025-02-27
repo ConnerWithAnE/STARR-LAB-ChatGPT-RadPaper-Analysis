@@ -22,6 +22,7 @@ export default function DatabaseEntryPreviewPage() {
     setInitialGPTPasses,
     tableEntries,
     removePass,
+    removeEntry,
     redConflicts,
   } = useForm();
 
@@ -89,6 +90,7 @@ export default function DatabaseEntryPreviewPage() {
     const updatePasses = removePass(index);
     setPassData(updatePasses);
     setInitialGPTPasses(passData);
+    removeEntry(index);
 
     console.log("Delete Done!");
   };

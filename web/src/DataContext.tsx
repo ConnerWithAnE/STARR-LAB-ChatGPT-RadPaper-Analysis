@@ -24,6 +24,7 @@ interface TableDataContextType {
   addEntry: (entry: UpdateData) => void;
   removePass: (id: number) => GPTResponse[];
   retrieveEntry: (id: number) => UpdateData | undefined;
+  removeEntry: (id: number) => void;
   redConflicts: RedConflicts[];
   setRedConflict: (id: number, fields: string[]) => void;
   removeRedConflict: (id: number, field: string) => void;
@@ -34,6 +35,7 @@ const defaultValue: TableDataContextType = {
   initialGPTPasses: [],
   setInitialGPTPasses: () => {},
   updateEntry: () => {},
+  removeEntry: () => {},
   addEntry: () => {},
   removePass: () => [],
   tableEntries: [],
@@ -82,15 +84,10 @@ export const TableDataFormProvider = ({
     console.log("tableEntries", tableEntries);
   }
 
-  function removePass(indexROWID: number) {
-    // Get array index from ROWID
-    const arr_ind: number = tableEntries.findIndex(
-      (item) => item.ROWID === indexROWID
-    );
-    removeEntry(indexROWID);
+  function removePass(id: number) {
     const updatedPasses: GPTResponse[] = [];
     for (let i = 0; i < initialGPTPasses.length; i++) {
-      if (i !== arr_ind) {
+      if (i !== id) {
         updatedPasses.push(initialGPTPasses[i]);
       }
     }
@@ -98,7 +95,10 @@ export const TableDataFormProvider = ({
   }
 
   function removeEntry(id: number) {
-    setTableEntries((prev) => prev.filter((entry) => entry.ROWID !== id));
+    const newEntries = tableEntries.filter(
+      (entry) => tableEntries[id] !== entry
+    );
+    setTableEntries(newEntries);
   }
 
   function retrieveEntry(id: number) {
@@ -158,6 +158,7 @@ export const TableDataFormProvider = ({
         redConflicts,
         setRedConflict,
         removeRedConflict,
+        removeEntry,
       }}
     >
       {children}
