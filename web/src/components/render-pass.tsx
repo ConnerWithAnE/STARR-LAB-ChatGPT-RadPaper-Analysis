@@ -27,6 +27,7 @@ export default function RenderPass({
   };
 
   useEffect(() => {
+    console.log("passes", passes);
     switch (typeof passes.pass_1) {
       case "string":
         setType("string");

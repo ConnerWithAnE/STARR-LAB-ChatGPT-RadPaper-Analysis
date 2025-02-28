@@ -286,7 +286,7 @@ export default function EntrySliver({
       </div>
 
       {/* edit-entry modal */}
-      {/* <Modal
+      <Modal
         isOpen={open}
         onOpenChange={onOpenChange}
         size="full"
@@ -302,7 +302,7 @@ export default function EntrySliver({
                 </ModalHeader>
                 <ModalBody>
                   <EditEntry
-                    entryData={gptPass}
+                    entryData={gptPass ?? {}}
                     editedEntry={editedEntry}
                     setEditedEntry={setEditedEntry}
                     unresolvedConflicts={unresolvedConflicts}
@@ -326,7 +326,7 @@ export default function EntrySliver({
             );
           }}
         </ModalContent>
-      </Modal> */}
+      </Modal>
 
       {/* cancel edit modal */}
       <Modal isOpen={openCancelModal} hideCloseButton={true}>
