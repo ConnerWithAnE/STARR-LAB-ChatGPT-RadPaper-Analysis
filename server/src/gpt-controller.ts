@@ -190,6 +190,8 @@ export class GPTController {
    *
    * Adds a message to the ChatGPT thread and runs it.
    * This collects all of the paper metadata
+   * 
+   * Parameters are given in a named object form
    *
    * @param assistantId the id of the chatgpt assistant to use
    * @param fileId the id of the file to search (file must have been already uploaded)
@@ -221,6 +223,8 @@ export class GPTController {
    *
    * Gets the initia part data and returns it as a list of Partial<ai_part> objects.
    * These contain info like the part name, type and manufacturer
+   * 
+   * Parameters are given in a named object form
    *
    * @param assistantId the id of the chatgpt assistant to use
    * @param fileId the id of the file to search (file must have been already uploaded)
@@ -254,10 +258,12 @@ export class GPTController {
 
   /**
    *
-   * @param assistantId
-   * @param fileId
-   * @param threadId
-   * @param parts
+   * Parameters are given in a named object form
+   * 
+   * @param assistantId the id of the chatgpt assistant to use
+   * @param fileId the id of the file to search (file must have been already uploaded)
+   * @param threadId the id of the thread to run (must already exist)
+   * @param parts the list of Partial<ai_part> objects to run the tests against
    * @returns
    */
   async getPartTests({
@@ -300,6 +306,20 @@ export class GPTController {
     return partTests;
   }
 
+  /**
+   *
+   * Get the test results related to specific tests
+   * i.e. SEE, TID, or DD
+   * 
+   *
+   * Parameters are given in a named object form
+   *
+   * @param assistantId the id of the chatgpt assistant to use
+   * @param fileId the id of the file to search (file must have been already uploaded)
+   * @param threadId the id of the thread to run (must already exist)
+   * @param parts the list of ai_part objects to run the tests against
+   * @returns a list of completed ai_parts
+   */
   async getSpecificTest({
     assistantId,
     fileId,
@@ -348,6 +368,17 @@ export class GPTController {
     return parts;
   }
 
+  /**
+   * Gets any tables and figures from the paper.
+   * This can be good to try and stimulate answers related to the figures
+   *
+   * Parameters are given in a named object form
+   *
+   * @param assistantId the id of the chatgpt assistant to use
+   * @param fileId the id of the file to search (file must have been already uploaded)
+   * @param threadId the id of the thread to run (must already exist)
+   * @returns
+   */
   async getTablesAndFigures({
     assistantId,
     fileId,
@@ -390,10 +421,7 @@ export class GPTController {
     const threadId = await this.createThread();
     if (!threadId) return;
     const ids = { assistantId, fileId, threadId };
-
-    console.log("Getting Paper Data\n");
     const papersData = await this.getPaperData({ ...ids });
-    console.log("Getting Part Data\n");
     const partData = await this.getSpecificTest({
       ...ids,
       parts: await this.getPartTests({
@@ -409,9 +437,7 @@ export class GPTController {
       JSON.stringify({ paper: papersData, parts: partData }, null, 2),
     );
 
-    console.log("🚀 Running thread to process all queries...");
-
-    // ✅ Correctly write structured JSON data
+    console.log("Running thread to process all queries...");
     const outputFile = pdfPath.replace(".pdf", "_extracted.json");
     fs.writeFileSync(
       outputFile,
@@ -427,18 +453,20 @@ export class GPTController {
    *
    * @param assistantId the id of the chatgpt assistant to use (must exist)
    * @param fileId the id of the file to search (file must have been already uploaded)
-   * @returns
+   * @returns an instance of ai_FullDataType containing a fully extracted paper
    */
   async processPaper(
     fileId: string,
     assistantId: string,
   ): Promise<ai_FullDataType> {
     const threadId = await this.createThread();
+
     const ids = { assistantId, fileId, threadId };
 
-    //console.log("Getting Paper Data\n");
+    // Getting paper data
     const papersData = await this.getPaperData({ ...ids });
-    //console.log("Getting Part Data\n");
+
+    // Getting the Part, Prelim and Specific data and passing them as arguments
     const partData = await this.getSpecificTest({
       ...ids,
       parts: await this.getPartTests({
@@ -447,6 +475,8 @@ export class GPTController {
       }),
     });
 
+    // Attempt to delete the thread, sometimes it doesn't work?
+    // It will say the thread doesn't exist, idfk lol
     try {
       await this.deleteThread(threadId);
     } catch {
@@ -460,6 +490,16 @@ export class GPTController {
     return final;
   }
 
+  /**
+   *
+   * Processes a list of pdfs using their local paths. Will upload the pdfs
+   * to the OpenAI api and then run each paper through the processPaper()
+   * function 3 times. The results are then packaged and returned
+   *
+   * @param pdfPaths a list of pdf paths to run through GPT
+   * @param assistant_id OPTIONALLY pass an id for an existing assistant
+   * @returns A list of ai_GPTResponse objects populated with the extracted data
+   */
   async processRadiationPapers(pdfPaths: string[], assistant_id?: string) {
     // Create a new assistant if one is not given
     let assistantId = assistant_id ?? (await this.createAssistant());
