@@ -93,7 +93,6 @@ export const questions = {
   },
   testingConditions: {
     prompt: `Describe the conditions under which radiation testing was conducted.:
-        - The name of the device provided, you are looking for data corresponding to this
         - Type of testing performed (ONLY ONE OF [ TID, SEE, DD])
         - Maximum fluence in exponential notation
         - Energy levels
@@ -107,7 +106,6 @@ export const questions = {
         Return the response as a **valid JSON object** with the following structure:
 
         {
-            "device_name": <string>,
             "testing_type": "TID | SEE | DD",
             "max_fluence": <number>,
             "energy_levels": "<string>",
@@ -142,7 +140,6 @@ export const questions = {
   },
   tidData: {
     prompt: `Describe the conditions under which radiation testing was conducted. Extract Total Ionizing Dose (TID) data:
-        - The name of the device provided, you are looking for data corresponding to this
         - Maximum fluence in exponential notation
         - Energy levels
         - Facility name
@@ -163,7 +160,6 @@ export const questions = {
         Return the response as a **valid JSON object** with the following structure:
 
         {
-            "device_name": <string>
             "max_fluence": <number>,
             "energy_levels": "<string>",
             "facility_name": "<string>",
@@ -231,7 +227,6 @@ export const questions = {
   },
   seeData: {
     prompt: `Describe the conditions under which radiation testing was conducted. Extract Single Event Effects (SEE) data:
-        - The name of the device provided, you are looking for data corresponding to this
         - Maximum fluence in exponential notation
         - Energy levels
         - Facility name
@@ -250,7 +245,6 @@ export const questions = {
         Return the response as a **valid JSON object** with the following structure:
 
         {
-        "device_name": <string>
         "max_fluence": number,
         "energy_levels": string,
         "facility_name": string,
@@ -315,7 +309,6 @@ export const questions = {
   },
   ddData: {
     prompt: `Describe the conditions under which radiation testing was conducted. Extract Displacement Damage (DD) data:
-        - The name of the device provided, you are looking for data corresponding to this
         - Maximum fluence in exponential notation
         - Energy levels
         - Facility name
@@ -330,7 +323,6 @@ export const questions = {
         Return the response as a **valid JSON object** with the following structure:
 
         {
-            "device_name": <string>
             "max_fluence": <number>,
             "energy_levels": "<string>",
             "facility_name": "<string>",

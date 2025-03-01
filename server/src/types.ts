@@ -94,9 +94,9 @@ export type PreliminaryTestData = {
   environmental_conditions: string;
   terrestrial: boolean;
   in_flight: boolean;
-  tidData?: TIDDataType[];
-  seeData?: SEEDataType[];
-  ddData?: DDDataType[];
+  tidData: TIDDataType[];
+  seeData: SEEDataType[];
+  ddData: DDDataType[];
 };
 
 // Type for adding a new part

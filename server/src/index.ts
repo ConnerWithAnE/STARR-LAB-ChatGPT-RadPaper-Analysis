@@ -105,8 +105,8 @@ async function initializeSystem(): Promise<{
     app.get("/test2-gpt", async (req, res) => {
       //const pdfFile = "./test/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf";
       //const pdfFile = "./test/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"; // Replace with actual file path
-      //const pdfFile = "./test/Single-Event_Effects_Measurements_on_COTS_Electronic_Devices_for_Use_on_NASA_Mars_Missions.pdf"
-      const pdfFile = "./test/Review_of_TID_Effects_Reported_in_ProASIC3_and_ProASIC3L_FPGAs_for_3D_PLUS_Camera_Heads.pdf";
+      const pdfFile = "./test/Single-Event_Effects_Measurements_on_COTS_Electronic_Devices_for_Use_on_NASA_Mars_Missions.pdf"
+      //const pdfFile = "./test/Review_of_TID_Effects_Reported_in_ProASIC3_and_ProASIC3L_FPGAs_for_3D_PLUS_Camera_Heads.pdf";
       processRadiationPaper(pdfFile);
     })
     app.get("/test-gpt", async (req, res) => {

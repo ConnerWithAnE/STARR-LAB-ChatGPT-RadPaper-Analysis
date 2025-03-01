@@ -2,16 +2,7 @@ import OpenAI from "openai";
 import fs from "fs";
 import dotenv from "dotenv";
 import { questions } from "./refined-prompts.data";
-import {
-  ai_paper,
-  ai_part,
-  ai_author,
-  FullDataType,
-  PartData,
-  AuthorData,
-  PreliminaryTestData,
-} from "./types";
-import { Author } from "./models";
+import { ai_paper, ai_part, PreliminaryTestData } from "./types";
 
 dotenv.config(); // Load environment variables
 
@@ -121,6 +112,7 @@ async function runThread(threadId: string, assistantId: string): Promise<any> {
     console.log(`⏳ Running thread... (Run ID: ${run.id})`);
 
     // Poll for completion
+    process.stdout.write("Waiting for completion...");
     while (true) {
       const runStatus = await openai.beta.threads.runs.retrieve(
         threadId,
@@ -132,8 +124,8 @@ async function runThread(threadId: string, assistantId: string): Promise<any> {
         return null;
       }
 
-      console.log("🔄 Waiting for completion...");
-      await new Promise((resolve) => setTimeout(resolve, 2000)); // Wait 2 seconds
+      process.stdout.write(".");
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 2 seconds
     }
 
     // Retrieve the assistant’s response
@@ -181,11 +173,15 @@ async function runThread(threadId: string, assistantId: string): Promise<any> {
  * @param threadId
  * @returns
  */
-async function getPaperData(
-  assistantId: string,
-  fileId: string,
-  threadId: string,
-): Promise<ai_paper> {
+async function getPaperData({
+  assistantId,
+  fileId,
+  threadId,
+}: {
+  assistantId: string;
+  fileId: string;
+  threadId: string;
+}): Promise<ai_paper> {
   await addMessage(threadId, fileId, questions.paperMetaData.prompt);
   const papermetdata_json = await runThread(threadId, assistantId);
   const paperObject = papermetdata_json as ai_paper;
@@ -199,15 +195,19 @@ async function getPaperData(
  * @param threadId
  * @returns
  */
-async function getPartData(
-  assistantId: string,
-  fileId: string,
-  threadId: string,
-): Promise<ai_part[]> {
+async function getPartData({
+  assistantId,
+  fileId,
+  threadId,
+}: {
+  assistantId: string;
+  fileId: string;
+  threadId: string;
+}): Promise<Partial<ai_part>[]> {
   await addMessage(threadId, fileId, questions.componentDetails.prompt);
   const partdata_json = await runThread(threadId, assistantId);
   const partObjects = partdata_json.map((part: any) => {
-    return part as ai_part;
+    return part as Partial<ai_part>;
   });
   return partObjects;
 }
@@ -220,74 +220,92 @@ async function getPartData(
  * @param parts
  * @returns
  */
-async function getPartTests(
-  assistantId: string,
-  fileId: string,
-  threadId: string,
-  parts: ai_part[],
-): Promise<PreliminaryTestData[]> {
-  const partTests: PreliminaryTestData[] = [];
+async function getPartTests({
+  assistantId,
+  fileId,
+  threadId,
+  parts,
+}: {
+  assistantId: string;
+  fileId: string;
+  threadId: string;
+  parts: Partial<ai_part>[];
+}): Promise<ai_part[]> {
+  const partTests: ai_part[] = [];
   for (const part of parts) {
     await addMessage(
       threadId,
       fileId,
-      `You are to only look for data related to this part ${part.device_name}, ${questions.testingConditions.prompt}`,
+      `You are to only look for data related to this part ${
+        part!.device_name
+      }, ${questions.testingConditions.prompt}`,
     );
     const partRun = await runThread(threadId, assistantId);
-    partTests.push(partRun as PreliminaryTestData);
+    partTests.push({
+      ...part,
+      preliminary_test_data: partRun.map((data: PreliminaryTestData) => ({
+        ...data,
+        seeData: data.seeData || [],
+        tidData: data.tidData || [],
+        ddData: data.ddData || [],
+      })),
+    } as ai_part);
   }
+  console.log(partTests);
   return partTests;
 }
 
-async function getSpecificTest(
-  assistantId: string,
-  fileId: string,
-  threadId: string,
-  partTests: PreliminaryTestData[],
-) {
-  let partSpecific: {
-    SEE: any[];
-    TID: any[];
-    DD: any[];
-  } = {
-    SEE: [],
-    TID: [],
-    DD: [],
-  };
-  for (const test of partTests) {
-    if (test.testing_type === "SEE") {
-      await addMessage(
-        threadId,
-        fileId,
-        `You are to only look for data related to this part ${test.device_name}, ${questions.seeData.prompt}`,
-      );
-      partSpecific.SEE.push(await runThread(threadId, assistantId));
-    } else if (test.testing_type === "TID") {
-      await addMessage(
-        threadId,
-        fileId,
-        `You are to only look for data related to this part ${test.device_name}, ${questions.tidData.prompt}`,
-      );
-      partSpecific.TID.push(await runThread(threadId, assistantId));
-    } else if (test.testing_type === "DD") {
-      await addMessage(
-        threadId,
-        fileId,
-        `You are to only look for data related to this part ${test.device_name}, ${questions.ddData.prompt}`,
-      );
-      partSpecific.DD.push(await runThread(threadId, assistantId));
-    } else {
-      console.log("Passing", test.testing_type);
+async function getSpecificTest({
+  assistantId,
+  fileId,
+  threadId,
+  parts,
+}: {
+  assistantId: string;
+  fileId: string;
+  threadId: string;
+  parts: ai_part[];
+}): Promise<ai_part[]> {
+  for (const part of parts) {
+    for (const test of part.preliminary_test_data) {
+      if (test.testing_type === "SEE") {
+        await addMessage(
+          threadId,
+          fileId,
+          `You are to only look for data related to this part ${part.device_name}, ${questions.seeData.prompt}`,
+        );
+        test.seeData.push(await runThread(threadId, assistantId));
+      } else if (test.testing_type === "TID") {
+        await addMessage(
+          threadId,
+          fileId,
+          `You are to only look for data related to this part ${part.device_name}, ${questions.tidData.prompt}`,
+        );
+        test.tidData.push(await runThread(threadId, assistantId));
+      } else if (test.testing_type === "DD") {
+        await addMessage(
+          threadId,
+          fileId,
+          `You are to only look for data related to this part ${part.device_name}, ${questions.ddData.prompt}`,
+        );
+        test.ddData.push(await runThread(threadId, assistantId));
+      } else {
+        console.log("Passing", test.testing_type);
+      }
     }
   }
-  return partSpecific;
+  return parts;
 }
 
-async function getTablesAndFigures(
-  assistantId: string,
-  fileId: string,
-  threadId: string,
-) {
+async function getTablesAndFigures({
+  assistantId,
+  fileId,
+  threadId,
+}: {
+  assistantId: string;
+  fileId: string;
+  threadId: string;
+}) {
   await addMessage(
     threadId,
     fileId,
@@ -315,73 +333,42 @@ export async function processRadiationPaper(pdfPath: string) {
 
   const threadId = await createThread();
   if (!threadId) return;
+  const ids = { assistantId, fileId, threadId };
 
   console.log("Getting Paper Data\n");
   //await addMessage(threadId, fileId, questions.paperMetaData.prompt);
   //const papermetdata_json = await runThread(threadId, assistantId);
-  const papersData = await getPaperData(assistantId, fileId, threadId);
+  const papersData = await getPaperData({ ...ids });
   console.log("Getting Part Data\n");
-  const partData = await getPartData(assistantId, fileId, threadId);
-
-  console.log("Getting Table and Figure Data");
-  const figureTableData = await getTablesAndFigures(
-    assistantId,
-    fileId,
-    threadId,
-  );
-
-  console.log("Getting Part Test");
-  const partTestData = await getPartTests(
-    assistantId,
-    fileId,
-    threadId,
-    partData,
-  );
-
-  console.log("Getting specific part tests");
-  const specificTestData = await getSpecificTest(
-    assistantId,
-    fileId,
-    threadId,
-    partTestData,
-  );
-
-  const fullData: FullDataType = {
-    name: papersData.paper_name,
-    year: papersData.year,
-    authors: papersData.authors.map((author) => author as AuthorData),
-    parts: partData.map((part) => part as PartData),
-    testingData: partTestData.map((test) => ({
-      id: test.id,
-      testing_type: test.testing_type,
-      max_fluence: test.max_fluence,
-      energy: test.energy,
-      facility: test.facility,
-      environment: test.environment,
-      terrestrial: test.terrestrial,
-      flight: test.flight,
-      // Adding specific test data
-      tidData: test.tidData,
-      seeData: test.seeData,
-      ddData: test.ddData,
-    })),
-  };
+  const partData = await getSpecificTest({
+    ...ids,
+    parts: await getPartTests({
+      ...ids,
+      parts: await getPartData({ ...ids }),
+    }),
+  });
 
   await deleteThread(threadId);
 
-  console.log("🔍 Extracted Data:", JSON.stringify(fullData, null, 2));
+  console.log(
+    "🔍 Extracted Data:",
+    JSON.stringify({ paper: papersData, parts: partData }, null, 2),
+  );
 
   console.log("🚀 Running thread to process all queries...");
 
   // ✅ Correctly write structured JSON data
   const outputFile = pdfPath.replace(".pdf", "_extracted.json");
-  fs.writeFileSync(outputFile, JSON.stringify(fullData, null, 4));
+  fs.writeFileSync(
+    outputFile,
+    JSON.stringify({ paper: papersData, parts: partData }, null, 4),
+  );
 
   console.log(`✅ Extraction complete! Data saved to ${outputFile}`);
 }
 
-/*
-async function processRadiationPapers(pdfPaths: string[], assistant_id?: string) {\
+
+async function processRadiationPapers(pdfPaths: string[], assistant_id?: string) {
     // Create a new assistant if one is not given
   let assistantId = assistant_id ?? await createAssistant();
   const fileIDs = await Promise.all(
@@ -393,4 +380,4 @@ async function processRadiationPapers(pdfPaths: string[], assistant_id?: string)
   }))
 
 }
-  */
+  
