@@ -94,8 +94,6 @@ export const questions = {
   testingConditions: {
     prompt: `Describe the conditions under which radiation testing was conducted.:
         - Type of testing performed (ONLY ONE OF [ TID, SEE, DD])
-        - Maximum fluence in exponential notation
-        - Energy levels
         - Facility name
         - Environmental conditions
         - Was the test conducted in a terrestrial setting? (Yes/No)
@@ -107,8 +105,6 @@ export const questions = {
 
         {
             "testing_type": "TID | SEE | DD",
-            "max_fluence": <number>,
-            "energy_levels": "<string>",
             "facility_name": "<string>",
             "environmental_conditions": "<string>",
             "terrestrial": <true | false>,
