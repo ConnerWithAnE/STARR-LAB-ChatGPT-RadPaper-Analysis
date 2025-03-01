@@ -4,7 +4,7 @@ import { GetQuery, GPTResponse, Testing } from "../types";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import authenticateJWT from "../auth/jwt-auth";
-import { GPTController } from "../oai-controller";
+import { GPTController } from "../gpt-controller";
 import multer from "multer";
 import config from "../config";
 
@@ -43,7 +43,7 @@ export default function adminRouter(
   // The data is in the correct format and ready to be input.
 
   // THIS WILL NOT WORK WITH RAW PAPERS, Data MUST be in InsertData format
-  /*
+  
   router.post(
     "/insertPapers",
     getAuthMiddleware(),
@@ -61,21 +61,9 @@ export default function adminRouter(
       }
     },
   );
-  */
+  
 
-  router.post(
-    "/testGPT",
-  async (req: Request, res: Response) => {
-    try {
-      await gptController.test();
-    } catch (error) {
-
-    }
-  })
-
-  return router;
-}
-  /*
+  
   router.post(
     "/updatePaper",
     getAuthMiddleware(),
@@ -228,4 +216,3 @@ function insertDataRequestFromJSON(body: any): InsertData[] {
 function responseToJSON(radDataArray: GPTResponse[]): string {
   return JSON.stringify(radDataArray, null, 2); // null and 2 prettify the JSON
 }
-*/
