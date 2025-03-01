@@ -16,8 +16,9 @@ import cascadeRouter from "./routes/cascade-router";
 import { GenericController as DatabaseController } from "./generic-controller";
 
 import adminRouter from "./routes/admin-router";
-import { GPTController } from "./gpt-controller";
+import { GPTController } from "./oai-controller";
 import { GPTModel } from "./enums";
+import { processRadiationPaper } from "./oaitest";
 
 dotenv.config();
 
@@ -100,16 +101,25 @@ async function initializeSystem(): Promise<{
     //app.use("/api/adminRequest", adminRouter(dbController, gptController));
 
     //for testing
+
+    app.get("/test2-gpt", async (req, res) => {
+      //const pdfFile = "./test/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf";
+      //const pdfFile = "./test/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"; // Replace with actual file path
+      //const pdfFile = "./test/Single-Event_Effects_Measurements_on_COTS_Electronic_Devices_for_Use_on_NASA_Mars_Missions.pdf"
+      const pdfFile = "./test/Review_of_TID_Effects_Reported_in_ProASIC3_and_ProASIC3L_FPGAs_for_3D_PLUS_Camera_Heads.pdf";
+      processRadiationPaper(pdfFile);
+    })
     app.get("/test-gpt", async (req, res) => {
       try {
         console.log("Initializing GPTController...");
-        const gptController = new GPTController(GPTModel.GPT4Turbo);
-        const testFiles = [
-          "./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf",
-        ];
+        const gptController = new GPTController(GPTModel.GPT4O);
+
+        //const testFiles = [
+          //"./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf",
+        //];
 
         console.log("Running GPT Analysis...");
-        const results = await gptController.runGPTAnalysis(testFiles);
+        const results = await gptController.test2()
 
         console.log("GPT Analysis Results:", results);
         res.json(results);

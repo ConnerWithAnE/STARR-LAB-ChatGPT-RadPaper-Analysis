@@ -14,6 +14,7 @@ import {
 import { prompt, questions } from "./prompts.data";
 import { threadId } from "worker_threads";
 
+
 export class GPTController {
   private static client: OpenAI;
   private model: GPTModel;
