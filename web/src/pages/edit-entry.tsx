@@ -61,11 +61,26 @@ export default function EditEntry({
         type PartDataKey = keyof PartData;
         const typesafeSubKey = key as PartDataKey;
         if (typesafeSubKey === "tids") {
-          return renderTids(part.tids ?? [], i);
+          return (
+            <div className="bg-slate-200 p-4 flex flex-col gap-2">
+              <span className="text-lg">Total Ionizing Dose Effects</span>
+              {renderTids(part.tids ?? [], i)}
+            </div>
+          );
         } else if (typesafeSubKey === "sees") {
-          return renderSees(part.sees ?? [], i);
+          return (
+            <div className="bg-slate-200 p-4 flex flex-col gap-2">
+              <span className="text-lg">Single Event Effects</span>
+              {renderSees(part.sees ?? [], i)}
+            </div>
+          );
         } else if (typesafeSubKey === "dds") {
-          return renderDDs(part.dds ?? [], i);
+          return (
+            <div className="bg-slate-200 p-4 flex flex-col gap-2">
+              <span className="text-lg">Damage Displacement</span>
+              {renderDDs(part.dds ?? [], i)}
+            </div>
+          );
         }
         return (
           <RenderPass
@@ -84,83 +99,130 @@ export default function EditEntry({
 
   const renderTids = (tids: TIDData[], partIndex: number) => {
     return tids.map((tid, i) => {
-      return Object.entries(tid).map(([key, value]) => {
-        type TIDDataKey = keyof TIDData;
-        const typesafeKey = key as TIDDataKey;
-        if (typesafeKey === "id") {
-          return;
-        }
-        return (
-          <RenderPass
-            passes={{
-              pass_1: value ?? "",
-              pass_2:
-                passes.pass_2?.parts?.[partIndex]?.tids?.[i]?.[typesafeKey] ??
-                "",
-              pass_3:
-                passes.pass_3?.parts?.[partIndex]?.tids?.[i]?.[typesafeKey] ??
-                "",
-            }}
-            handleChange={handleChange}
-            id={`${tid}-${typesafeKey}`}
-          ></RenderPass>
-        );
-      });
+      return (
+        <div>
+          <span>Test {i + 1}</span>
+          <div className="bg-slate-300 p-4">
+            {Object.entries(tid).map(([key, value]) => {
+              type TIDDataKey = keyof TIDData;
+              const typesafeKey = key as TIDDataKey;
+              if (typesafeKey === "id") {
+                return;
+              }
+              return (
+                <div>
+                  <span>{key}</span>
+                  <RenderPass
+                    passes={{
+                      pass_1: value ?? "",
+                      pass_2:
+                        passes.pass_2?.parts?.[partIndex]?.tids?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                      pass_3:
+                        passes.pass_3?.parts?.[partIndex]?.tids?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                    }}
+                    handleChange={handleChange}
+                    id={`${tid}-${typesafeKey}`}
+                  ></RenderPass>
+                </div>
+              );
+            })}
+          </div>
+          <br></br>
+        </div>
+      );
     });
   };
 
   const renderSees = (sees: SEEData[], partIndex: number) => {
     return sees.map((see, i) => {
-      return Object.entries(see).map(([key, value]) => {
-        type SEEDataKey = keyof SEEData;
-        const typesafeKey = key as SEEDataKey;
-        if (typesafeKey === "id") {
-          return;
-        }
-        return (
-          <RenderPass
-            passes={{
-              pass_1: value ?? "",
-              pass_2:
-                passes.pass_2?.parts?.[partIndex]?.sees?.[i]?.[typesafeKey] ??
-                "",
-              pass_3:
-                passes.pass_3?.parts?.[partIndex]?.sees?.[i]?.[typesafeKey] ??
-                "",
-            }}
-            handleChange={handleChange}
-            id={`${sees}-${typesafeKey}`}
-          ></RenderPass>
-        );
-      });
+      return (
+        <div>
+          <span>Test {i + 1}</span>
+          <div className="bg-slate-300 p-4">
+            {Object.entries(see).map(([key, value]) => {
+              type SEEDataKey = keyof SEEData;
+              const typesafeKey = key as SEEDataKey;
+              if (typesafeKey === "id") {
+                return;
+              }
+              return (
+                <div>
+                  <span>{key}</span>
+                  <RenderPass
+                    passes={{
+                      pass_1: value ?? "",
+                      pass_2:
+                        passes.pass_2?.parts?.[partIndex]?.sees?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                      pass_3:
+                        passes.pass_3?.parts?.[partIndex]?.sees?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                    }}
+                    handleChange={handleChange}
+                    id={`${sees}-${typesafeKey}`}
+                  ></RenderPass>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
     });
   };
 
   const renderDDs = (dds: DDData[], partIndex: number) => {
     return dds.map((dd, i) => {
-      return Object.entries(dd).map(([key, value]) => {
-        type DDDataKey = keyof DDData;
-        const typesafeKey = key as DDDataKey;
-        if (typesafeKey === "id") {
-          return;
-        }
-        return (
-          <RenderPass
-            passes={{
-              pass_1: value ?? "",
-              pass_2:
-                passes.pass_2?.parts?.[partIndex]?.dds?.[i]?.[typesafeKey] ??
-                "",
-              pass_3:
-                passes.pass_3?.parts?.[partIndex]?.dds?.[i]?.[typesafeKey] ??
-                "",
-            }}
-            handleChange={handleChange}
-            id={`${dds}-${typesafeKey}`}
-          ></RenderPass>
-        );
-      });
+      return (
+        <div>
+          <span>Test {i + 1}</span>
+          <div className="bg-slate-300 p-4">
+            {Object.entries(dd).map(([key, value]) => {
+              type DDDataKey = keyof DDData;
+              const typesafeKey = key as DDDataKey;
+              if (typesafeKey === "id") {
+                return;
+              }
+              return (
+                <div>
+                  <span>{key}</span>
+                  <RenderPass
+                    passes={{
+                      pass_1: value ?? "",
+                      pass_2:
+                        passes.pass_2?.parts?.[partIndex]?.dds?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                      pass_3:
+                        passes.pass_3?.parts?.[partIndex]?.dds?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                    }}
+                    handleChange={handleChange}
+                    id={`${dds}-${typesafeKey}`}
+                  ></RenderPass>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
     });
+  };
+
+  const renderPartAccordionItems = (): JSX.Element[] => {
+    return (
+      passes.pass_1.parts?.map((part, i) => (
+        <AccordionItem title={`Part ${i + 1}`} key={`part-${i}`}>
+          {renderParts([part])}
+        </AccordionItem>
+      )) ?? []
+    );
   };
 
   useEffect(() => {
@@ -208,20 +270,9 @@ export default function EditEntry({
             return <></>;
           })}
           <br></br>
-          {Object.entries(passes.pass_1).map(([key]): JSX.Element => {
-            type fullDataTypeKey = keyof FullDataType;
-            const typesafeKey = key as fullDataTypeKey;
-            if (typesafeKey === "parts") {
-              return (
-                <Accordion variant="light" isCompact selectionMode="multiple">
-                  <AccordionItem title={key} key={key}>
-                    {renderParts(passes.pass_1.parts ?? [])}
-                  </AccordionItem>
-                </Accordion>
-              );
-            }
-            return <></>;
-          })}
+          <Accordion variant="light" isCompact selectionMode="multiple">
+            {renderPartAccordionItems()}
+          </Accordion>
         </div>
         {/* <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
