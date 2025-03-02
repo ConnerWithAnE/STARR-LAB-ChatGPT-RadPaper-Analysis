@@ -61,11 +61,11 @@ export default function EditEntry({
         type PartDataKey = keyof PartData;
         const typesafeSubKey = key as PartDataKey;
         if (typesafeSubKey === "tids") {
-          return renderTids(part.tids ?? []);
+          return renderTids(part.tids ?? [], i);
         } else if (typesafeSubKey === "sees") {
-          return renderSees(part.sees ?? []);
+          return renderSees(part.sees ?? [], i);
         } else if (typesafeSubKey === "dds") {
-          return renderDDs(part.dds ?? []);
+          return renderDDs(part.dds ?? [], i);
         }
         return (
           <RenderPass
@@ -82,69 +82,84 @@ export default function EditEntry({
     });
   };
 
-  const renderTids = (tids: TIDData[]) => {
+  const renderTids = (tids: TIDData[], partIndex: number) => {
     return tids.map((tid, i) => {
-      for (var key in tid) {
+      return Object.entries(tid).map(([key, value]) => {
         type TIDDataKey = keyof TIDData;
-        let typesafeKey = key as TIDDataKey;
-        console.log("key", key);
-        console.log("value", tid[typesafeKey]);
+        const typesafeKey = key as TIDDataKey;
+        if (typesafeKey === "id") {
+          return;
+        }
         return (
           <RenderPass
             passes={{
-              pass_1: tid ?? {},
-              pass_2: passes.pass_2?.parts?.[i]?.tids?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
-              pass_3: passes.pass_3?.parts?.[i]?.tids?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+              pass_1: value ?? "",
+              pass_2:
+                passes.pass_2?.parts?.[partIndex]?.tids?.[i]?.[typesafeKey] ??
+                "",
+              pass_3:
+                passes.pass_3?.parts?.[partIndex]?.tids?.[i]?.[typesafeKey] ??
+                "",
             }}
             handleChange={handleChange}
-            id={`${tid}-${i}`}
+            id={`${tid}-${typesafeKey}`}
           ></RenderPass>
         );
-      }
+      });
     });
   };
 
-  const renderSees = (sees: SEEData[]) => {
+  const renderSees = (sees: SEEData[], partIndex: number) => {
     return sees.map((see, i) => {
-      for (var key in see) {
+      return Object.entries(see).map(([key, value]) => {
         type SEEDataKey = keyof SEEData;
-        let typesafeKey = key as SEEDataKey;
-        console.log("key", key);
-        console.log("value", see[typesafeKey]);
+        const typesafeKey = key as SEEDataKey;
+        if (typesafeKey === "id") {
+          return;
+        }
         return (
           <RenderPass
             passes={{
-              pass_1: see ?? {},
-              pass_2: passes.pass_2?.parts?.[i]?.sees?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
-              pass_3: passes.pass_3?.parts?.[i]?.sees?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+              pass_1: value ?? "",
+              pass_2:
+                passes.pass_2?.parts?.[partIndex]?.sees?.[i]?.[typesafeKey] ??
+                "",
+              pass_3:
+                passes.pass_3?.parts?.[partIndex]?.sees?.[i]?.[typesafeKey] ??
+                "",
             }}
             handleChange={handleChange}
-            id={`${see}-${i}`}
+            id={`${sees}-${typesafeKey}`}
           ></RenderPass>
         );
-      }
+      });
     });
   };
 
-  const renderDDs = (dds: DDData[]) => {
+  const renderDDs = (dds: DDData[], partIndex: number) => {
     return dds.map((dd, i) => {
-      for (var key in dd) {
+      return Object.entries(dd).map(([key, value]) => {
         type DDDataKey = keyof DDData;
-        let typesafeKey = key as DDDataKey;
-        console.log("key", key);
-        console.log("value", dd[typesafeKey]);
+        const typesafeKey = key as DDDataKey;
+        if (typesafeKey === "id") {
+          return;
+        }
         return (
           <RenderPass
             passes={{
-              pass_1: dd ?? {},
-              pass_2: passes.pass_2?.parts?.[i]?.dds?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
-              pass_3: passes.pass_3?.parts?.[i]?.dds?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+              pass_1: value ?? "",
+              pass_2:
+                passes.pass_2?.parts?.[partIndex]?.dds?.[i]?.[typesafeKey] ??
+                "",
+              pass_3:
+                passes.pass_3?.parts?.[partIndex]?.dds?.[i]?.[typesafeKey] ??
+                "",
             }}
             handleChange={handleChange}
-            id={`${dds}-${i}`}
+            id={`${dds}-${typesafeKey}`}
           ></RenderPass>
         );
-      }
+      });
     });
   };
 
@@ -156,41 +171,57 @@ export default function EditEntry({
     <div className="flex flex-col gap-2 p-4">
       <div className="flex flex-row justify-between gap-3">
         <div className="grow basis-1/3">
-          <Accordion variant="light" isCompact selectionMode="multiple">
-            {Object.entries(passes.pass_1).map(([key]) => {
-              type fullDataTypeKey = keyof FullDataType;
-              const typesafeKey = key as fullDataTypeKey;
+          {Object.entries(passes.pass_1).map(([key]): JSX.Element => {
+            type fullDataTypeKey = keyof FullDataType;
+            const typesafeKey = key as fullDataTypeKey;
 
-              // authors
+            if (typesafeKey === "id") {
+              return <></>;
+            }
+
+            if (typesafeKey !== "parts") {
               if (typesafeKey === "authors") {
                 return (
-                  <AccordionItem title={key} key={key}>
-                    {renderAuthors(passes.pass_1.authors ?? [])}
-                  </AccordionItem>
-                );
-                // parts
-              } else if (typesafeKey === "parts") {
-                return (
-                  <AccordionItem title={key} key={key}>
-                    {renderParts(passes.pass_1.parts ?? [])}
-                  </AccordionItem>
+                  <Accordion variant="light" isCompact selectionMode="multiple">
+                    <AccordionItem title={key} key={key}>
+                      {renderAuthors(passes.pass_1.authors ?? [])}
+                    </AccordionItem>
+                  </Accordion>
                 );
               }
               return (
-                <AccordionItem title={key} key={key}>
-                  <RenderPass
-                    passes={{
-                      pass_1: passes.pass_1[typesafeKey],
-                      pass_2: passes.pass_2[typesafeKey],
-                      pass_3: passes.pass_3[typesafeKey],
-                    }}
-                    handleChange={handleChange}
-                    id={key}
-                  ></RenderPass>
-                </AccordionItem>
+                <Accordion variant="light" isCompact selectionMode="multiple">
+                  <AccordionItem title={key} key={key}>
+                    <RenderPass
+                      passes={{
+                        pass_1: passes.pass_1[typesafeKey],
+                        pass_2: passes.pass_2[typesafeKey],
+                        pass_3: passes.pass_3[typesafeKey],
+                      }}
+                      handleChange={handleChange}
+                      id={key}
+                    ></RenderPass>
+                  </AccordionItem>
+                </Accordion>
               );
-            })}
-          </Accordion>
+            }
+            return <></>;
+          })}
+          <br></br>
+          {Object.entries(passes.pass_1).map(([key]): JSX.Element => {
+            type fullDataTypeKey = keyof FullDataType;
+            const typesafeKey = key as fullDataTypeKey;
+            if (typesafeKey === "parts") {
+              return (
+                <Accordion variant="light" isCompact selectionMode="multiple">
+                  <AccordionItem title={key} key={key}>
+                    {renderParts(passes.pass_1.parts ?? [])}
+                  </AccordionItem>
+                </Accordion>
+              );
+            }
+            return <></>;
+          })}
         </div>
         {/* <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
