@@ -9,13 +9,13 @@ type RenderPassProps = {
     pass_3: unknown;
   };
   handleChange: (name: string, value: string | number) => void;
-  key: string;
+  id: string;
 };
 
 export default function RenderPass({
   passes,
   handleChange,
-  key,
+  id,
 }: RenderPassProps) {
   const [final_result, setFinalResult] = useState<string>("");
   const [type, setType] = useState<string>("");
@@ -23,7 +23,7 @@ export default function RenderPass({
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setFinalResult(value);
-    handleChange(key, value);
+    //handleChange(key, value);
   };
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function RenderPass({
             case "string":
               return (
                 <Textarea
-                  name={key}
+                  name={id}
                   className="max-w-xs"
                   placeholder="Enter your description"
                   value={final_result}
@@ -119,7 +119,7 @@ export default function RenderPass({
             case "number":
               return (
                 <Input
-                  name={key}
+                  name={id}
                   type="number"
                   className="max-w-xs"
                   placeholder="Enter your description"
@@ -136,6 +136,7 @@ export default function RenderPass({
               return (
                 <RadioGroup
                   label="Select a value"
+                  key={id}
                   orientation="horizontal"
                   defaultValue={final_result}
                   onChange={onChange}

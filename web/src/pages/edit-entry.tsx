@@ -49,7 +49,7 @@ export default function EditEntry({
             pass_3: pass_3,
           }}
           handleChange={handleChange}
-          key={`authors-${i}`}
+          id={`authors-${i}`}
         ></RenderPass>
       );
     });
@@ -75,7 +75,7 @@ export default function EditEntry({
               pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
             }}
             handleChange={handleChange}
-            key={`${key}-${i}`}
+            id={`${key}-${i}`}
           ></RenderPass>
         );
       });
@@ -84,55 +84,67 @@ export default function EditEntry({
 
   const renderTids = (tids: TIDData[]) => {
     return tids.map((tid, i) => {
-      Object.entries(tid).map(([key, value], j) => {
+      for (var key in tid) {
         type TIDDataKey = keyof TIDData;
-        console.log("tid", tid);
+        let typesafeKey = key as TIDDataKey;
+        console.log("key", key);
+        console.log("value", tid[typesafeKey]);
         return (
           <RenderPass
             passes={{
-              pass_1: value ?? {},
-              pass_2: passes.pass_2?.parts?.[i]?.tids?.[j]?.[key] ?? {},
-              pass_3: passes.pass_3?.parts?.[i]?.tids?.[j] ?? {},
+              pass_1: tid ?? {},
+              pass_2: passes.pass_2?.parts?.[i]?.tids?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+              pass_3: passes.pass_3?.parts?.[i]?.tids?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
             }}
             handleChange={handleChange}
-            key={`${tid}-${i}`}
+            id={`${tid}-${i}`}
           ></RenderPass>
         );
-      });
+      }
     });
   };
 
   const renderSees = (sees: SEEData[]) => {
     return sees.map((see, i) => {
-      console.log("see", see);
-      return (
-        <RenderPass
-          passes={{
-            pass_1: see ?? {},
-            pass_2: passes.pass_2?.parts?.[i]?.sees?.[i] ?? {},
-            pass_3: passes.pass_3?.parts?.[i]?.sees?.[i] ?? {},
-          }}
-          handleChange={handleChange}
-          key={`${see}-${i}`}
-        ></RenderPass>
-      );
+      for (var key in see) {
+        type SEEDataKey = keyof SEEData;
+        let typesafeKey = key as SEEDataKey;
+        console.log("key", key);
+        console.log("value", see[typesafeKey]);
+        return (
+          <RenderPass
+            passes={{
+              pass_1: see ?? {},
+              pass_2: passes.pass_2?.parts?.[i]?.sees?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+              pass_3: passes.pass_3?.parts?.[i]?.sees?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+            }}
+            handleChange={handleChange}
+            id={`${see}-${i}`}
+          ></RenderPass>
+        );
+      }
     });
   };
 
   const renderDDs = (dds: DDData[]) => {
     return dds.map((dd, i) => {
-      console.log("dd", dd);
-      return (
-        <RenderPass
-          passes={{
-            pass_1: dd ?? {},
-            pass_2: passes.pass_2?.parts?.[i]?.dds?.[i] ?? {},
-            pass_3: passes.pass_3?.parts?.[i]?.dds?.[i] ?? {},
-          }}
-          handleChange={handleChange}
-          key={`${dd}-${i}`}
-        ></RenderPass>
-      );
+      for (var key in dd) {
+        type DDDataKey = keyof DDData;
+        let typesafeKey = key as DDDataKey;
+        console.log("key", key);
+        console.log("value", dd[typesafeKey]);
+        return (
+          <RenderPass
+            passes={{
+              pass_1: dd ?? {},
+              pass_2: passes.pass_2?.parts?.[i]?.dds?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+              pass_3: passes.pass_3?.parts?.[i]?.dds?.find(t => t[typesafeKey] !== undefined)?.[typesafeKey] ?? {},
+            }}
+            handleChange={handleChange}
+            id={`${dds}-${i}`}
+          ></RenderPass>
+        );
+      }
     });
   };
 
@@ -173,7 +185,7 @@ export default function EditEntry({
                       pass_3: passes.pass_3[typesafeKey],
                     }}
                     handleChange={handleChange}
-                    key={key}
+                    id={key}
                   ></RenderPass>
                 </AccordionItem>
               );
