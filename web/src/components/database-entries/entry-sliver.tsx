@@ -4,6 +4,7 @@ import {
   Conflict,
   GPTResponse2,
   FullDataType,
+  PartData,
 } from "../../types/types";
 import {
   Modal,
@@ -94,6 +95,43 @@ export default function EntrySliver({
           currentConflicts.redSeverity.push(dataType);
           break;
       }
+    };
+
+    const comparePartPasses = (
+      pass_1: PartData[],
+      pass_2: PartData[],
+      pass_3: PartData[]
+    ) => {
+      pass_1.forEach((part, i) => {
+        Object.entries(part).map(([key]) => {
+          type PartDataKey = keyof PartData;
+          const typesafeKey = key as PartDataKey;
+          let parts_1 = pass_1[i][typesafeKey];
+          let parts_2 = pass_2[i][typesafeKey];
+          let parts_3 = pass_3[i][typesafeKey];
+
+          if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
+            updatedEntry = {
+              ...updatedEntry,
+              [typesafeKey]: pass_1,
+            };
+          } else if (pass_1 === pass_2 || pass_1 === pass_3) {
+            updatedEntry = {
+              ...updatedEntry,
+              [typesafeKey]: pass_1,
+            };
+            addConflict2(updatedConflicts, key, 1);
+          } else if (pass_2 === pass_3) {
+            updatedEntry = {
+              ...updatedEntry,
+              [typesafeKey]: pass_2,
+            };
+            addConflict2(updatedConflicts, key, 1);
+          } else {
+            addConflict2(updatedConflicts, key, 2);
+          }
+        });
+      });
     };
 
     console.log("passes", passes);
