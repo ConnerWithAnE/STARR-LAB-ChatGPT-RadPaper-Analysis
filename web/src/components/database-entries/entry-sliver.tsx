@@ -98,10 +98,12 @@ export default function EntrySliver({
     };
 
     const comparePartPasses = (
+      partIndex: number,
       pass_1: PartData[],
       pass_2: PartData[],
       pass_3: PartData[]
-    ) => {
+    ): PartData[] => {
+      const updatedParts = [...editedEntry.parts ?? []];
       pass_1.forEach((part, i) => {
         Object.entries(part).map(([key]) => {
           type PartDataKey = keyof PartData;
@@ -110,28 +112,42 @@ export default function EntrySliver({
           let parts_2 = pass_2[i][typesafeKey];
           let parts_3 = pass_3[i][typesafeKey];
 
-          if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
-            updatedEntry = {
-              ...updatedEntry,
-              [typesafeKey]: pass_1,
+          if (key === "id") {
+            return;
+          }
+          if (key === "sees") {
+            return;
+          }
+          if (key === "tids") {
+            return;
+          }
+          if (key === "dds") {
+            return;
+          }
+
+          if (parts_1 === parts_2 && parts_1 === parts_3 && parts_2 === parts_3) {
+            updatedParts[partIndex] = {
+              ...updatedParts[partIndex],
+              [typesafeKey]: parts_1,
             };
-          } else if (pass_1 === pass_2 || pass_1 === pass_3) {
-            updatedEntry = {
-              ...updatedEntry,
-              [typesafeKey]: pass_1,
+          } else if (parts_1 === parts_2 || parts_1 === parts_3) {
+            updatedParts[partIndex] = {
+              ...updatedParts[partIndex],
+              [typesafeKey]: parts_1,
             };
-            addConflict2(updatedConflicts, key, 1);
-          } else if (pass_2 === pass_3) {
-            updatedEntry = {
-              ...updatedEntry,
-              [typesafeKey]: pass_2,
+            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
+          } else if (parts_2 === parts_3) {
+            updatedParts[partIndex] = {
+              ...updatedParts[partIndex],
+              [typesafeKey]: parts_2,
             };
-            addConflict2(updatedConflicts, key, 1);
+            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
           } else {
-            addConflict2(updatedConflicts, key, 2);
+            addConflict2(updatedConflicts, `${partIndex}-${key}`, 2);
           }
         });
       });
+      return updatedParts;
     };
 
     console.log("passes", passes);
