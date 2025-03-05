@@ -29,11 +29,22 @@ export default function EditEntry({
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
 
-  const handleChange = (name: string, value: string | number) => {
-    setEditedEntry((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateNestedProperty = (obj: any, path: string[], value: any): any => {
+    if (path.length === 1) {
+      return {
+        ...obj,
+        [path[0]]: value,
+      };
+    }
+    return {
+      ...obj,
+      [path[0]]: updateNestedProperty(obj[path[0]], path.slice(1), value),
+    };
+  };
+
+  const handleChange = (path: string[], value: string | number) => {
+    setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
     console.log("handlechange", editedEntry);
   };
 
@@ -48,7 +59,9 @@ export default function EditEntry({
             pass_2: pass_2,
             pass_3: pass_3,
           }}
-          handleChange={handleChange}
+          handleChange={(name, value) => {
+            handleChange(["authors", i.toString(), name], value);
+          }}
           id={`authors-${i}`}
         ></RenderPass>
       );
@@ -89,7 +102,9 @@ export default function EditEntry({
               pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
               pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
             }}
-            handleChange={handleChange}
+            handleChange={(name, value) =>
+              handleChange(["parts", i.toString(), name], value)
+            }
             id={`${key}-${i}`}
           ></RenderPass>
         );
@@ -124,7 +139,18 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    handleChange={handleChange}
+                    handleChange={(name, value) =>
+                      handleChange(
+                        [
+                          "parts",
+                          partIndex.toString(),
+                          "tids",
+                          i.toString(),
+                          name,
+                        ],
+                        value
+                      )
+                    }
                     id={`${tid}-${typesafeKey}`}
                   ></RenderPass>
                 </div>
@@ -164,7 +190,18 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    handleChange={handleChange}
+                    handleChange={(name, value) =>
+                      handleChange(
+                        [
+                          "parts",
+                          partIndex.toString(),
+                          "sees",
+                          i.toString(),
+                          name,
+                        ],
+                        value
+                      )
+                    }
                     id={`${sees}-${typesafeKey}`}
                   ></RenderPass>
                 </div>
@@ -203,7 +240,18 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    handleChange={handleChange}
+                    handleChange={(name, value) =>
+                      handleChange(
+                        [
+                          "parts",
+                          partIndex.toString(),
+                          "dds",
+                          i.toString(),
+                          name,
+                        ],
+                        value
+                      )
+                    }
                     id={`${dds}-${typesafeKey}`}
                   ></RenderPass>
                 </div>
@@ -260,7 +308,9 @@ export default function EditEntry({
                         pass_2: passes.pass_2[typesafeKey],
                         pass_3: passes.pass_3[typesafeKey],
                       }}
-                      handleChange={handleChange}
+                      handleChange={(name, value) =>
+                        handleChange([typesafeKey, name], value)
+                      }
                       id={key}
                     ></RenderPass>
                   </AccordionItem>
@@ -274,7 +324,7 @@ export default function EditEntry({
             {renderPartAccordionItems()}
           </Accordion>
         </div>
-        {/* <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
+        <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
           {unresolvedConflicts.redSeverity.map((conflict) => {
             return (
@@ -292,7 +342,7 @@ export default function EditEntry({
               </div>
             );
           })}
-        </div> */}
+        </div>
       </div>
     </div>
   );

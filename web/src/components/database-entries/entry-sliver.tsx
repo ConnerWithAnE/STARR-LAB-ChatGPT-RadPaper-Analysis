@@ -5,6 +5,9 @@ import {
   GPTResponse2,
   FullDataType,
   PartData,
+  TIDData,
+  SEEData,
+  DDData,
 } from "../../types/types";
 import {
   Modal,
@@ -97,35 +100,240 @@ export default function EntrySliver({
       }
     };
 
+    const compareSEETestPasses = (
+      partIndex: number,
+      testIndex: number,
+      pass_1: SEEData[],
+      pass_2: SEEData[],
+      pass_3: SEEData[]
+    ): SEEData[] => {
+      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.sees ?? [])];
+      pass_1.forEach((test, i) => {
+        Object.entries(test).map(([key]) => {
+          type SEEDataKey = keyof SEEData;
+          const typesafeKey = key as SEEDataKey;
+          const tests_1 = pass_1[i][typesafeKey];
+          const tests_2 = pass_2[i][typesafeKey];
+          const tests_3 = pass_3[i][typesafeKey];
+
+          if (
+            tests_1 === tests_2 &&
+            tests_1 === tests_3 &&
+            tests_2 === tests_3
+          ) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+          } else if (tests_1 === tests_2 || tests_1 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else if (tests_2 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_2,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else {
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              2
+            );
+          }
+        });
+      });
+      return updatedTests;
+    };
+
+    const compareDDTestPasses = (
+      partIndex: number,
+      testIndex: number,
+      pass_1: DDData[],
+      pass_2: DDData[],
+      pass_3: DDData[]
+    ): DDData[] => {
+      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.dds ?? [])];
+      pass_1.forEach((test, i) => {
+        Object.entries(test).map(([key]) => {
+          type DDDataKey = keyof DDData;
+          const typesafeKey = key as DDDataKey;
+          const tests_1 = pass_1[i][typesafeKey];
+          const tests_2 = pass_2[i][typesafeKey];
+          const tests_3 = pass_3[i][typesafeKey];
+
+          if (
+            tests_1 === tests_2 &&
+            tests_1 === tests_3 &&
+            tests_2 === tests_3
+          ) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+          } else if (tests_1 === tests_2 || tests_1 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else if (tests_2 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_2,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else {
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              2
+            );
+          }
+        });
+      });
+      return updatedTests;
+    };
+
+    const compareTIDTestPasses = (
+      partIndex: number,
+      testIndex: number,
+      pass_1: TIDData[],
+      pass_2: TIDData[],
+      pass_3: TIDData[]
+    ): TIDData[] => {
+      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.tids ?? [])];
+      pass_1.forEach((test, i) => {
+        Object.entries(test).map(([key]) => {
+          type TIDDataKey = keyof TIDData;
+          const typesafeKey = key as TIDDataKey;
+          const tests_1 = pass_1[i][typesafeKey];
+          const tests_2 = pass_2[i][typesafeKey];
+          const tests_3 = pass_3[i][typesafeKey];
+
+          if (
+            tests_1 === tests_2 &&
+            tests_1 === tests_3 &&
+            tests_2 === tests_3
+          ) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+          } else if (tests_1 === tests_2 || tests_1 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else if (tests_2 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_2,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else {
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              2
+            );
+          }
+        });
+      });
+      return updatedTests;
+    };
+
     const comparePartPasses = (
       partIndex: number,
       pass_1: PartData[],
       pass_2: PartData[],
       pass_3: PartData[]
     ): PartData[] => {
-      const updatedParts = [...editedEntry.parts ?? []];
+      const updatedParts = [...(editedEntry.parts ?? [])];
       pass_1.forEach((part, i) => {
         Object.entries(part).map(([key]) => {
           type PartDataKey = keyof PartData;
           const typesafeKey = key as PartDataKey;
-          let parts_1 = pass_1[i][typesafeKey];
-          let parts_2 = pass_2[i][typesafeKey];
-          let parts_3 = pass_3[i][typesafeKey];
+          const parts_1 = pass_1[i][typesafeKey];
+          const parts_2 = pass_2[i][typesafeKey];
+          const parts_3 = pass_3[i][typesafeKey];
 
           if (key === "id") {
             return;
           }
           if (key === "sees") {
-            return;
+            const updatedSEETests = compareSEETestPasses(
+              partIndex,
+              i,
+              parts_1 as SEEData[],
+              parts_2 as SEEData[],
+              parts_3 as SEEData[]
+            );
+            updatedParts[i] = {
+              ...updatedParts[i],
+              [typesafeKey]: updatedSEETests,
+            };
           }
           if (key === "tids") {
-            return;
+            const updatedTIDTests = compareTIDTestPasses(
+              partIndex,
+              i,
+              parts_1 as TIDData[],
+              parts_2 as TIDData[],
+              parts_3 as TIDData[]
+            );
+            updatedParts[i] = {
+              ...updatedParts[i],
+              [typesafeKey]: updatedTIDTests,
+            };
           }
           if (key === "dds") {
-            return;
+            const updatedDDTests = compareDDTestPasses(
+              partIndex,
+              i,
+              parts_1 as DDData[],
+              parts_2 as DDData[],
+              parts_3 as DDData[]
+            );
+            updatedParts[i] = {
+              ...updatedParts[i],
+              [typesafeKey]: updatedDDTests,
+            };
           }
 
-          if (parts_1 === parts_2 && parts_1 === parts_3 && parts_2 === parts_3) {
+          if (
+            parts_1 === parts_2 &&
+            parts_1 === parts_3 &&
+            parts_2 === parts_3
+          ) {
             updatedParts[partIndex] = {
               ...updatedParts[partIndex],
               [typesafeKey]: parts_1,
@@ -164,10 +372,24 @@ export default function EntrySliver({
         return;
       }
 
-      if (typesafeKey === "parts" || typesafeKey === "authors") {
+      if (typesafeKey === "authors") {
         pass_1 = JSON.stringify(pass_1);
         pass_2 = JSON.stringify(pass_2);
         pass_3 = JSON.stringify(pass_3);
+      }
+      if (typesafeKey === "parts") {
+        if (
+          Array.isArray(pass_1) &&
+          Array.isArray(pass_2) &&
+          Array.isArray(pass_3)
+        ) {
+          const updatedParts = comparePartPasses(index, pass_1, pass_2, pass_3);
+          updatedEntry = {
+            ...updatedEntry,
+            parts: updatedParts,
+          };
+          return;
+        }
       }
 
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set

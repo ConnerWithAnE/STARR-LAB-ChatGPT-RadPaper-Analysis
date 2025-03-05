@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GPTResponse2 } from "../types/types";
+import { FullDataType, GPTResponse2 } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
@@ -34,16 +34,16 @@ export default function DatabaseEntryPreviewPage() {
   const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
 
-  //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
-  //const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
+  const [gptPasses, setGPTPasses] = useState<GPTResponse2[]>(data ?? []);
+  const [editedEntries, setEditedEntries] = useState<FullDataType[]>([]);
 
-  // const handleSave = (index: number, tableData: UpdateData) => {
-  //   // setEditedEntries((prevData) => {
-  //   //   const updatedData = [...prevData];
-  //   //   updatedData[index] = tableData;
-  //   //   return updatedData;
-  //   // });
-  // };
+  const handleSave = (index: number, tableData: FullDataType) => {
+    setEditedEntries((prevData) => {
+      const updatedData = [...prevData];
+      updatedData[index] = tableData;
+      return updatedData;
+    });
+  };
 
   useEffect(() => {
     console.log("redConflicts", redConflicts);
