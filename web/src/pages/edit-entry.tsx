@@ -29,6 +29,10 @@ export default function EditEntry({
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
 
+  useEffect(() => {
+    console.log("editedEntry", editedEntry);
+  }, []);
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
     if (path.length === 1) {
@@ -44,8 +48,11 @@ export default function EditEntry({
   };
 
   const handleChange = (path: string[], value: string | number) => {
+    console.log("im here?");
+    console.log("path", path);
+    console.log("value", value);
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
-    console.log("handlechange", editedEntry);
+    // console.log("handlechange", editedEntry);
   };
 
   const renderAuthors = (authors: AuthorData[]) => {
@@ -59,10 +66,11 @@ export default function EditEntry({
             pass_2: pass_2,
             pass_3: pass_3,
           }}
+          currentEntry={editedEntry?.authors?.[i]?.name ?? ""}
           handleChange={(name, value) => {
             handleChange(["authors", i.toString(), name], value);
           }}
-          id={`authors-${i}`}
+          id={`name`}
         ></RenderPass>
       );
     });
@@ -102,6 +110,7 @@ export default function EditEntry({
               pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
               pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
             }}
+            currentEntry={editedEntry?.parts?.[i]?.[typesafeSubKey] ?? ""}
             handleChange={(name, value) =>
               handleChange(["parts", i.toString(), name], value)
             }
@@ -139,6 +148,11 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
+                    currentEntry={
+                      editedEntry?.parts?.[partIndex]?.tids?.[i]?.[
+                        typesafeKey
+                      ] ?? ""
+                    }
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -190,6 +204,11 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
+                    currentEntry={
+                      editedEntry?.parts?.[partIndex]?.sees?.[i]?.[
+                        typesafeKey
+                      ] ?? ""
+                    }
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -240,6 +259,11 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
+                    currentEntry={
+                      editedEntry?.parts?.[partIndex]?.dds?.[i]?.[
+                        typesafeKey
+                      ] ?? ""
+                    }
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -308,9 +332,10 @@ export default function EditEntry({
                         pass_2: passes.pass_2[typesafeKey],
                         pass_3: passes.pass_3[typesafeKey],
                       }}
-                      handleChange={(name, value) =>
-                        handleChange([typesafeKey, name], value)
-                      }
+                      currentEntry={editedEntry[typesafeKey] ?? ""}
+                      handleChange={(name, value) => {
+                        handleChange([typesafeKey], value);
+                      }}
                       id={key}
                     ></RenderPass>
                   </AccordionItem>
