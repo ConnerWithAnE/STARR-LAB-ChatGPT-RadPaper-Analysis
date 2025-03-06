@@ -327,11 +327,9 @@ export default function EntrySliver({
               ...updatedParts[i],
               [typesafeKey]: updatedSEETests,
             };
+            return;
           }
           if (key === "tids") {
-            console.log("tids 1", parts_1);
-            console.log("tids 2", parts_2);
-            console.log("tids 3", parts_3);
             const updatedTIDTests = compareTIDTestPasses(
               partIndex,
               i,
@@ -343,6 +341,7 @@ export default function EntrySliver({
               ...updatedParts[i],
               [typesafeKey]: updatedTIDTests,
             };
+            return;
           }
           if (key === "dds") {
             const updatedDDTests = compareDDTestPasses(
@@ -356,6 +355,7 @@ export default function EntrySliver({
               ...updatedParts[i],
               [typesafeKey]: updatedDDTests,
             };
+            return;
           }
 
           if (
@@ -380,6 +380,9 @@ export default function EntrySliver({
             };
             addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
           } else {
+            console.log("parts_1", parts_1);
+            console.log("parts_2", parts_2);
+            console.log("parts_3", parts_3);
             addConflict2(updatedConflicts, `${partIndex}-${key}`, 2);
           }
         });
