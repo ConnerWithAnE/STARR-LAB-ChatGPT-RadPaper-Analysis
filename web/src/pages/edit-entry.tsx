@@ -81,6 +81,9 @@ export default function EditEntry({
       return Object.entries(part).map(([key, value]) => {
         type PartDataKey = keyof PartData;
         const typesafeSubKey = key as PartDataKey;
+        if (typesafeSubKey === "id") {
+          return;
+        }
         if (typesafeSubKey === "tids") {
           return (
             <div className="bg-slate-200 p-4 flex flex-col gap-2">
@@ -104,18 +107,21 @@ export default function EditEntry({
           );
         }
         return (
-          <RenderPass
-            passes={{
-              pass_1: value ?? {},
-              pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
-              pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
-            }}
-            currentEntry={editedEntry?.parts?.[i]?.[typesafeSubKey] ?? ""}
-            handleChange={(name, value) =>
-              handleChange(["parts", i.toString(), name], value)
-            }
-            id={`${key}-${i}`}
-          ></RenderPass>
+          <div>
+            <span className="text-lg">{key}</span>
+            <RenderPass
+              passes={{
+                pass_1: value ?? {},
+                pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
+                pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
+              }}
+              currentEntry={editedEntry?.parts?.[i]?.[typesafeSubKey] ?? ""}
+              handleChange={(name, value) =>
+                handleChange(["parts", i.toString(), name], value)
+              }
+              id={`${key}`}
+            ></RenderPass>
+          </div>
         );
       });
     });
@@ -165,7 +171,7 @@ export default function EditEntry({
                         value
                       )
                     }
-                    id={`${tid}-${typesafeKey}`}
+                    id={`${typesafeKey}`}
                   ></RenderPass>
                 </div>
               );
@@ -221,7 +227,7 @@ export default function EditEntry({
                         value
                       )
                     }
-                    id={`${sees}-${typesafeKey}`}
+                    id={`${typesafeKey}`}
                   ></RenderPass>
                 </div>
               );
@@ -276,7 +282,7 @@ export default function EditEntry({
                         value
                       )
                     }
-                    id={`${dds}-${typesafeKey}`}
+                    id={`${typesafeKey}`}
                   ></RenderPass>
                 </div>
               );

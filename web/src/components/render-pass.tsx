@@ -31,8 +31,6 @@ export default function RenderPass({
   };
 
   useEffect(() => {
-    console.log("passes", passes);
-
     switch (typeof passes.pass_1) {
       case "string":
         setType("string");
@@ -101,6 +99,7 @@ export default function RenderPass({
                 <RadioGroup
                   label="Select a value"
                   key={id}
+                  name={id}
                   orientation="horizontal"
                   defaultValue={String(final_result)}
                   onChange={onChange}

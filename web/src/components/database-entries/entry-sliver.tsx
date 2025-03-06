@@ -7,6 +7,7 @@ import {
   TIDData,
   SEEData,
   DDData,
+  AuthorData,
 } from "../../types/types";
 import {
   Modal,
@@ -38,7 +39,6 @@ export default function EntrySliver({
   // for the edit-entry modal
   const { onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
-  // console.log(gptPass)
 
   // for the cancel edit entry modal
   const [openCancelModal, setOpenCancelModal] = useState(false);
@@ -55,6 +55,9 @@ export default function EntrySliver({
       return { id: index } as FullDataType;
     }
   });
+  const [authors, setAuthors] = useState<AuthorData[]>(
+    tableEntries[index]?.authors ?? []
+  );
 
   useEffect(() => {
     // To reset editedEntries if a paper was deleted from /upload/edit
@@ -110,6 +113,9 @@ export default function EntrySliver({
       const updatedTests = [...(editedEntry?.parts?.[partIndex]?.sees ?? [])];
       pass_1.forEach((test, i) => {
         Object.entries(test).map(([key]) => {
+          if (key === "id") {
+            return;
+          }
           type SEEDataKey = keyof SEEData;
           const typesafeKey = key as SEEDataKey;
           const tests_1 = pass_1[i][typesafeKey];
@@ -171,6 +177,9 @@ export default function EntrySliver({
       const updatedTests = [...(editedEntry?.parts?.[partIndex]?.dds ?? [])];
       pass_1.forEach((test, i) => {
         Object.entries(test).map(([key]) => {
+          if (key === "id") {
+            return;
+          }
           type DDDataKey = keyof DDData;
           const typesafeKey = key as DDDataKey;
           const tests_1 = pass_1[i][typesafeKey];
@@ -233,6 +242,9 @@ export default function EntrySliver({
         editedEntry?.parts?.[partIndex]?.tids ?? [];
       pass_1.forEach((test, i) => {
         Object.entries(test).map(([key]) => {
+          if (key === "id") {
+            return;
+          }
           type TIDDataKey = keyof TIDData;
           const typesafeKey = key as TIDDataKey;
           const tests_1 = pass_1[i][typesafeKey];
@@ -243,9 +255,6 @@ export default function EntrySliver({
             updatedTests.push({});
           }
 
-          if (key === "id") {
-            return;
-          }
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
@@ -418,6 +427,7 @@ export default function EntrySliver({
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
         };
+        console.log("updatedEntry", updatedEntry);
       }
       // if only 2 out of 3 entries are equal
       else if (pass_1 === pass_2 || pass_1 === pass_3) {
@@ -440,6 +450,7 @@ export default function EntrySliver({
     console.log("updatedEntry", updatedEntry);
 
     setEditedEntry(updatedEntry);
+    setAuthors(() => [...(updatedEntry.authors ?? [])]);
     addEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
@@ -455,7 +466,7 @@ export default function EntrySliver({
   const handleCancel = () => {
     setEditedEntry({
       paper_name: editedEntry.name,
-      author: editedEntry.authors,
+      author: editedEntry.authors ?? [],
     } as FullDataType);
     setOpen(false);
     setOpenCancelModal(false);
@@ -471,6 +482,13 @@ export default function EntrySliver({
 
   const handleSave = () => {
     updateEntry(index, editedEntry);
+    setAuthors((prev) =>
+      prev.map((author, i) => ({
+        ...author,
+        name: editedEntry?.authors?.[i]?.name ?? author.name,
+      }))
+    );
+
     console.log("editedEntry in handleSave", editedEntry);
     const updatedConflicts: Conflict = {
       yellowSeverity: [],
@@ -512,7 +530,7 @@ export default function EntrySliver({
           {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {/* {editedEntry.authors?.map((author) => author.name + ", ")} */}
+          {authors?.map((author) => (author.name ? author.name + ", " : ""))}
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">
