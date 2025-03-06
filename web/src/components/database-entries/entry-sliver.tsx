@@ -1,5 +1,4 @@
 import {
-  hasEmptyProperty,
   Severity,
   Conflict,
   GPTResponse2,
@@ -46,6 +45,7 @@ export default function EntrySliver({
 
   // for modifying entries
   const { addEntry, updateEntry, tableEntries, setRedConflict } = useForm();
+
   // this state prop is to handle modifying the individual entry before updating the overall form
   const [editedEntry, setEditedEntry] = useState<FullDataType>(() => {
     const savedEntry = tableEntries[index];
@@ -116,6 +116,10 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
+          if (!updatedTests[i]) {
+            updatedTests.push({});
+          }
+
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
@@ -173,6 +177,10 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
+          if (!updatedTests[i]) {
+            updatedTests.push({});
+          }
+
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
@@ -221,7 +229,8 @@ export default function EntrySliver({
       pass_2: TIDData[],
       pass_3: TIDData[]
     ): TIDData[] => {
-      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.tids ?? [])];
+      const updatedTests: TIDData[] =
+        editedEntry?.parts?.[partIndex]?.tids ?? [];
       pass_1.forEach((test, i) => {
         Object.entries(test).map(([key]) => {
           type TIDDataKey = keyof TIDData;
@@ -230,18 +239,25 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
+          if (!updatedTests[i]) {
+            updatedTests.push({});
+          }
+
+          if (key === "id") {
+            return;
+          }
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
             tests_2 === tests_3
           ) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTests[i] = {
+              ...updatedTests[i],
               [typesafeKey]: tests_1,
             };
           } else if (tests_1 === tests_2 || tests_1 === tests_3) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTests[i] = {
+              ...updatedTests[i],
               [typesafeKey]: tests_1,
             };
             addConflict2(
@@ -250,8 +266,8 @@ export default function EntrySliver({
               1
             );
           } else if (tests_2 === tests_3) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTests[i] = {
+              ...updatedTests[i],
               [typesafeKey]: tests_2,
             };
             addConflict2(
@@ -268,6 +284,7 @@ export default function EntrySliver({
           }
         });
       });
+      // console.log("updatedTests", updatedTests);
       return updatedTests;
     };
 
@@ -303,6 +320,9 @@ export default function EntrySliver({
             };
           }
           if (key === "tids") {
+            console.log("tids 1", parts_1);
+            console.log("tids 2", parts_2);
+            console.log("tids 3", parts_3);
             const updatedTIDTests = compareTIDTestPasses(
               partIndex,
               i,
@@ -358,7 +378,7 @@ export default function EntrySliver({
       return updatedParts;
     };
 
-    console.log("passes", passes);
+    //console.log("passes", passes);
 
     Object.entries(passes.pass_1).map(([key]) => {
       type fullDataTypeKey = keyof typeof passes.pass_1;
@@ -394,9 +414,6 @@ export default function EntrySliver({
 
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
       if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
-        console.log("pass_1", pass_1);
-        console.log("pass_2", pass_2);
-        console.log("pass_3", pass_3);
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
@@ -420,19 +437,20 @@ export default function EntrySliver({
       }
     });
 
+    console.log("updatedEntry", updatedEntry);
+
     setEditedEntry(updatedEntry);
+    addEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
       setRedConflict(index, updatedConflicts.redSeverity);
     }
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
-    if (!hasEmptyProperty(editedEntry)) {
-      addEntry(updatedEntry);
-    }
-
-    console.log("editedEntry", editedEntry);
-  }, [passes]);
+    // if (!hasEmptyProperty(editedEntry)) {
+    //   addEntry(updatedEntry);
+    // }
+  }, []);
 
   const handleCancel = () => {
     setEditedEntry({
@@ -494,7 +512,7 @@ export default function EntrySliver({
           {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {editedEntry.authors?.map((author) => author.name + ", ")}
+          {/* {editedEntry.authors?.map((author) => author.name + ", ")} */}
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">

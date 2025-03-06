@@ -157,6 +157,8 @@ export function validationFunc(data: unknown): string {
     return data;
   } else if (typeof data === "number") {
     return data.toString();
+  } else if (typeof data === "boolean") {
+    return String(data);
   } else if (isTestLocation(data) || isTesting(data)) {
     return data as string;
   } else if (Array.isArray(data)) {
