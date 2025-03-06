@@ -380,13 +380,14 @@ export default function EntrySliver({
             };
             addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
           } else {
-            console.log("parts_1", parts_1);
-            console.log("parts_2", parts_2);
-            console.log("parts_3", parts_3);
+            // console.log("parts_1", parts_1);
+            // console.log("parts_2", parts_2);
+            // console.log("parts_3", parts_3);
             addConflict2(updatedConflicts, `${partIndex}-${key}`, 2);
           }
         });
       });
+      console.log("updatedParts", updatedParts);
       return updatedParts;
     };
 
