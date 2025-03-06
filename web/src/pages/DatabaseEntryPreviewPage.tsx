@@ -7,8 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GPTResponse } from "../types/types";
-import { InsertData } from "../../../server/src/types";
+import { FullDataType, GPTResponse2 } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
@@ -35,16 +34,16 @@ export default function DatabaseEntryPreviewPage() {
   const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
 
-  //const [gptPasses, setGPTPasses] = useState<GPTResponse[]>(data ?? []);
-  //const [editedEntries, setEditedEntries] = useState<UpdateData[]>([]);
+  const [gptPasses, setGPTPasses] = useState<GPTResponse2[]>(data ?? []);
+  const [editedEntries, setEditedEntries] = useState<FullDataType[]>([]);
 
-  // const handleSave = (index: number, tableData: UpdateData) => {
-  //   // setEditedEntries((prevData) => {
-  //   //   const updatedData = [...prevData];
-  //   //   updatedData[index] = tableData;
-  //   //   return updatedData;
-  //   // });
-  // };
+  const handleSave = (index: number, tableData: FullDataType) => {
+    setEditedEntries((prevData) => {
+      const updatedData = [...prevData];
+      updatedData[index] = tableData;
+      return updatedData;
+    });
+  };
 
   useEffect(() => {
     console.log("redConflicts", redConflicts);
@@ -75,35 +74,34 @@ export default function DatabaseEntryPreviewPage() {
 
   async function checkEntries() {
     // console.log("entries", tableEntries);
-    let insertPapers: InsertData[] = [];
-    // Check if all fields are filled out
-    tableEntries.forEach((entry) => {
-      if (entry.paper_name === undefined || entry.author === undefined 
-          || entry.year === undefined || entry.part_no === undefined 
-          || entry.type === undefined || entry.manufacturer === undefined 
-          || entry.testing_location === undefined || entry.testing_type === undefined 
-          || entry.data_type === undefined) {
-        alert("Please fill out all fields before submitting.");
-        return;
-      }
-      // If they are filled then convert from UpdateData to InsertData
-      else {
-        let newEntry: InsertData = {
-          paper_name: entry.paper_name,
-          year: entry.year,
-          author: entry.author,
-          part_no: entry.part_no,
-          type: entry.type,
-          manufacturer: entry.manufacturer,
-          testing_location: entry.testing_location,
-          testing_type: entry.testing_type,
-          data_type: entry.data_type,
-        };
-        insertPapers.push(newEntry);
-      }
-    });
-    console.log("insertPapers", insertPapers);
-    
+    // let insertPapers: InsertData[] = [];
+    // // Check if all fields are filled out
+    // tableEntries.forEach((entry) => {
+    //   if (entry.paper_name === undefined || entry.author === undefined
+    //       || entry.year === undefined || entry.part_no === undefined
+    //       || entry.type === undefined || entry.manufacturer === undefined
+    //       || entry.testing_location === undefined || entry.testing_type === undefined
+    //       || entry.data_type === undefined) {
+    //     alert("Please fill out all fields before submitting.");
+    //     return;
+    //   }
+    //   // If they are filled then convert from UpdateData to InsertData
+    //   else {
+    //     let newEntry: InsertData = {
+    //       paper_name: entry.paper_name,
+    //       year: entry.year,
+    //       author: entry.author,
+    //       part_no: entry.part_no,
+    //       type: entry.type,
+    //       manufacturer: entry.manufacturer,
+    //       testing_location: entry.testing_location,
+    //       testing_type: entry.testing_type,
+    //       data_type: entry.data_type,
+    //     };
+    //     insertPapers.push(newEntry);
+    //   }
+    // });
+    // console.log("insertPapers", insertPapers);
     // Send to database
     // const token = localStorage.getItem("jwtToken");
     // try {
@@ -127,7 +125,7 @@ export default function DatabaseEntryPreviewPage() {
     //   console.error(`Error inserting papers: ${error}`);
     //   throw error;
     // }
-  };
+  }
 
   const [paperAreaHeight, setPaperAreaHeight] = useState<number>(
     window.innerHeight - 200 - 65
@@ -176,7 +174,7 @@ export default function DatabaseEntryPreviewPage() {
                 height: paperAreaHeight - 30,
               }}
             >
-              {initialGPTPasses.map((entry: GPTResponse, index: number) => (
+              {initialGPTPasses.map((entry: GPTResponse2, index: number) => (
                 <EntrySliver
                   gptPass={entry}
                   index={index}

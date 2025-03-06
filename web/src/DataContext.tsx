@@ -5,8 +5,7 @@ import {
   ReactNode,
   useEffect,
 } from "react";
-import { GPTResponse } from "./types/types";
-import { UpdateData } from "./types/types";
+import { GPTResponse2, FullDataType } from "./types/types";
 
 // Define the shape of the data
 
@@ -17,13 +16,12 @@ type RedConflicts = {
 
 //updateContact<K extends keyof Contact>(id: number, field: K, value: Contact[K])
 interface TableDataContextType {
-  initialGPTPasses: GPTResponse[];
-  setInitialGPTPasses: (data: GPTResponse[]) => void; // Function to update the data
-  tableEntries: UpdateData[];
-  updateEntry: (id: number, value: UpdateData) => void;
-  addEntry: (entry: UpdateData) => void;
-  removePass: (id: number) => GPTResponse[];
-  retrieveEntry: (id: number) => UpdateData | undefined;
+  initialGPTPasses: GPTResponse2[];
+  setInitialGPTPasses: (data: GPTResponse2[]) => void; // Function to update the data
+  tableEntries: FullDataType[];
+  updateEntry: (id: number, value: FullDataType) => void;
+  addEntry: (entry: FullDataType) => void;
+  removePass: (id: number) => GPTResponse2[];
   removeEntry: (id: number) => void;
   redConflicts: RedConflicts[];
   setRedConflict: (id: number, fields: string[]) => void;
@@ -39,7 +37,6 @@ const defaultValue: TableDataContextType = {
   addEntry: () => {},
   removePass: () => [],
   tableEntries: [],
-  retrieveEntry: () => undefined,
   redConflicts: [],
   setRedConflict: () => {},
   removeRedConflict: () => {},
@@ -54,8 +51,8 @@ export const TableDataFormProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse[]>([]);
-  const [tableEntries, setTableEntries] = useState<UpdateData[]>([]);
+  const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse2[]>([]);
+  const [tableEntries, setTableEntries] = useState<FullDataType[]>([]);
   const [redConflicts, setRedConflicts] = useState<RedConflicts[]>([]);
 
   useEffect(() => {
@@ -66,16 +63,18 @@ export const TableDataFormProvider = ({
     console.log("Updated GPTPasses:", initialGPTPasses);
   }, [initialGPTPasses]);
 
-  function updateEntry(id: number, value: UpdateData) {
-    setTableEntries((prev) =>
-      prev.map((entry) => (entry.ROWID === id ? { ...value } : entry))
-    );
+  function updateEntry(id: number, value: FullDataType) {
+    setTableEntries((prev) => {
+      const updatedEntries = [...prev];
+      updatedEntries[id] = value;
+      return updatedEntries;
+    });
   }
 
-  function addEntry(entry: UpdateData) {
+  function addEntry(entry: FullDataType) {
     console.log("entry", entry);
     setTableEntries((prev) => {
-      const newEntry: UpdateData = {
+      const newEntry: FullDataType = {
         ...entry,
       };
 
@@ -85,7 +84,7 @@ export const TableDataFormProvider = ({
   }
 
   function removePass(id: number) {
-    const updatedPasses: GPTResponse[] = [];
+    const updatedPasses: GPTResponse2[] = [];
     for (let i = 0; i < initialGPTPasses.length; i++) {
       if (i !== id) {
         updatedPasses.push(initialGPTPasses[i]);
@@ -99,10 +98,6 @@ export const TableDataFormProvider = ({
       (entry) => tableEntries[id] !== entry
     );
     setTableEntries(newEntries);
-  }
-
-  function retrieveEntry(id: number) {
-    return tableEntries.find((entry) => entry.ROWID === id);
   }
 
   function setRedConflict(id: number, fields: string[]) {
@@ -153,7 +148,6 @@ export const TableDataFormProvider = ({
         tableEntries,
         addEntry,
         removePass,
-        retrieveEntry,
         updateEntry,
         redConflicts,
         setRedConflict,

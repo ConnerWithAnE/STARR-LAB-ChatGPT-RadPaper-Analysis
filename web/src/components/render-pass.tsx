@@ -8,76 +8,39 @@ type RenderPassProps = {
     pass_2: unknown;
     pass_3: unknown;
   };
+  currentEntry: string | number | boolean;
   handleChange: (name: string, value: string | number) => void;
-  key: string;
+  id: string;
 };
 
 export default function RenderPass({
   passes,
+  currentEntry,
   handleChange,
-  key,
+  id,
 }: RenderPassProps) {
-  const [final_result, setFinalResult] = useState<string>("");
+  const [final_result, setFinalResult] = useState<string | number | boolean>(
+    currentEntry ?? ""
+  );
   const [type, setType] = useState<string>("");
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
+    const { name, value } = event.target;
     setFinalResult(value);
-    handleChange(key, value);
+    handleChange(name, value);
   };
 
   useEffect(() => {
     switch (typeof passes.pass_1) {
       case "string":
         setType("string");
-        if (
-          passes.pass_1 === passes.pass_2 &&
-          passes.pass_1 === passes.pass_3 &&
-          passes.pass_2 === passes.pass_3
-        ) {
-          setFinalResult(passes.pass_1);
-        } else if (
-          passes.pass_1 === passes.pass_2 ||
-          passes.pass_1 === passes.pass_3
-        ) {
-          setFinalResult(passes.pass_1);
-        } else if (passes.pass_2 === passes.pass_3) {
-          setFinalResult(passes.pass_2 as string);
-        }
         break;
       case "number":
         setType("number");
-        if (
-          passes.pass_1 === passes.pass_2 &&
-          passes.pass_1 === passes.pass_3 &&
-          passes.pass_2 === passes.pass_3
-        ) {
-          setFinalResult(passes.pass_1.toString());
-        } else if (
-          passes.pass_1 === passes.pass_2 ||
-          passes.pass_1 === passes.pass_3
-        ) {
-          setFinalResult(passes.pass_1.toString());
-        } else if (passes.pass_2 === passes.pass_3) {
-          setFinalResult((passes.pass_2 as number).toString());
-        }
         break;
       case "boolean":
         setType("boolean");
-        if (
-          passes.pass_1 === passes.pass_2 &&
-          passes.pass_1 === passes.pass_3 &&
-          passes.pass_2 === passes.pass_3
-        ) {
-          setFinalResult(passes.pass_1.toString());
-        } else if (
-          passes.pass_1 === passes.pass_2 ||
-          passes.pass_1 === passes.pass_3
-        ) {
-          setFinalResult(passes.pass_1.toString());
-        } else if (passes.pass_2 === passes.pass_3) {
-          setFinalResult((passes.pass_2 as boolean).toString());
-        }
+        break;
     }
   }, []);
 
@@ -102,12 +65,12 @@ export default function RenderPass({
             case "string":
               return (
                 <Textarea
-                  name={key}
+                  name={id}
                   className="max-w-xs"
                   placeholder="Enter your description"
-                  value={final_result}
+                  value={String(final_result)}
                   onChange={onChange}
-                  description="Please enter each author's name separated by quotes."
+                  description="Enter a value"
                   validate={(value) => {
                     if (value === "") {
                       return "Please enter a value";
@@ -118,11 +81,11 @@ export default function RenderPass({
             case "number":
               return (
                 <Input
-                  name={key}
+                  name={id}
                   type="number"
                   className="max-w-xs"
                   placeholder="Enter your description"
-                  value={final_result}
+                  value={String(final_result)}
                   onChange={onChange}
                   validate={(value) => {
                     if (isNaN(parseInt(value))) {
@@ -135,8 +98,10 @@ export default function RenderPass({
               return (
                 <RadioGroup
                   label="Select a value"
+                  key={id}
+                  name={id}
                   orientation="horizontal"
-                  defaultValue={final_result}
+                  defaultValue={String(final_result)}
                   onChange={onChange}
                 >
                   <Radio value="true">True</Radio>

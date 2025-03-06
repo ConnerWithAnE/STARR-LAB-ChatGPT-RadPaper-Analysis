@@ -1,18 +1,22 @@
 import {
-  GPTResponse,
-  hasEmptyProperty,
   Severity,
-  UpdateData,
   Conflict,
+  GPTResponse2,
+  FullDataType,
+  PartData,
+  TIDData,
+  SEEData,
+  DDData,
+  AuthorData,
 } from "../../types/types";
 import {
   Modal,
   ModalContent,
-  ModalHeader,
   ModalBody,
   ModalFooter,
   useDisclosure,
   Button,
+  ModalHeader,
 } from "@nextui-org/react";
 import EditEntry from "../../pages/edit-entry";
 import { useEffect, useRef, useState } from "react";
@@ -22,7 +26,7 @@ import { HiExclamationTriangle } from "react-icons/hi2";
 import { HiExclamationCircle } from "react-icons/hi2";
 
 type EntrySliverProp = {
-  gptPass: GPTResponse;
+  gptPass: GPTResponse2;
   index: number;
   onHandleDeleteChange: (index: number) => void;
 };
@@ -35,22 +39,25 @@ export default function EntrySliver({
   // for the edit-entry modal
   const { onOpenChange } = useDisclosure();
   const [open, setOpen] = useState(false);
-  // console.log(gptPass)
 
   // for the cancel edit entry modal
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   // for modifying entries
   const { addEntry, updateEntry, tableEntries, setRedConflict } = useForm();
+
   // this state prop is to handle modifying the individual entry before updating the overall form
-  const [editedEntry, setEditedEntry] = useState<UpdateData>(() => {
+  const [editedEntry, setEditedEntry] = useState<FullDataType>(() => {
     const savedEntry = tableEntries[index];
     if (savedEntry) {
       return savedEntry;
     } else {
-      return { ROWID: index } as UpdateData;
+      return { id: index } as FullDataType;
     }
   });
+  const [authors, setAuthors] = useState<AuthorData[]>(
+    tableEntries[index]?.authors ?? []
+  );
 
   useEffect(() => {
     // To reset editedEntries if a paper was deleted from /upload/edit
@@ -58,7 +65,7 @@ export default function EntrySliver({
     if (newentry) {
       return setEditedEntry(newentry);
     } else {
-      setEditedEntry({ ROWID: index } as UpdateData);
+      setEditedEntry({ id: index } as FullDataType);
     }
   }, [tableEntries]);
 
@@ -66,7 +73,7 @@ export default function EntrySliver({
   const hasRun = useRef(false);
 
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
-  const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
+  const [passes] = useState<GPTResponse2>(gptPass ?? ({} as GPTResponse2));
   const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>({
     yellowSeverity: [],
     redSeverity: [],
@@ -96,11 +103,298 @@ export default function EntrySliver({
       }
     };
 
-    console.log("passes", passes);
+    const compareSEETestPasses = (
+      partIndex: number,
+      testIndex: number,
+      pass_1: SEEData[],
+      pass_2: SEEData[],
+      pass_3: SEEData[]
+    ): SEEData[] => {
+      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.sees ?? [])];
+      pass_1.forEach((test, i) => {
+        Object.entries(test).map(([key]) => {
+          if (key === "id") {
+            return;
+          }
+          type SEEDataKey = keyof SEEData;
+          const typesafeKey = key as SEEDataKey;
+          const tests_1 = pass_1[i][typesafeKey];
+          const tests_2 = pass_2[i][typesafeKey];
+          const tests_3 = pass_3[i][typesafeKey];
+
+          if (!updatedTests[i]) {
+            updatedTests.push({});
+          }
+
+          if (
+            tests_1 === tests_2 &&
+            tests_1 === tests_3 &&
+            tests_2 === tests_3
+          ) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+          } else if (tests_1 === tests_2 || tests_1 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else if (tests_2 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_2,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else {
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              2
+            );
+          }
+        });
+      });
+      return updatedTests;
+    };
+
+    const compareDDTestPasses = (
+      partIndex: number,
+      testIndex: number,
+      pass_1: DDData[],
+      pass_2: DDData[],
+      pass_3: DDData[]
+    ): DDData[] => {
+      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.dds ?? [])];
+      pass_1.forEach((test, i) => {
+        Object.entries(test).map(([key]) => {
+          if (key === "id") {
+            return;
+          }
+          type DDDataKey = keyof DDData;
+          const typesafeKey = key as DDDataKey;
+          const tests_1 = pass_1[i][typesafeKey];
+          const tests_2 = pass_2[i][typesafeKey];
+          const tests_3 = pass_3[i][typesafeKey];
+
+          if (!updatedTests[i]) {
+            updatedTests.push({});
+          }
+
+          if (
+            tests_1 === tests_2 &&
+            tests_1 === tests_3 &&
+            tests_2 === tests_3
+          ) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+          } else if (tests_1 === tests_2 || tests_1 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_1,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else if (tests_2 === tests_3) {
+            updatedTests[testIndex] = {
+              ...updatedTests[testIndex],
+              [typesafeKey]: tests_2,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else {
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              2
+            );
+          }
+        });
+      });
+      return updatedTests;
+    };
+
+    const compareTIDTestPasses = (
+      partIndex: number,
+      testIndex: number,
+      pass_1: TIDData[],
+      pass_2: TIDData[],
+      pass_3: TIDData[]
+    ): TIDData[] => {
+      const updatedTests: TIDData[] =
+        editedEntry?.parts?.[partIndex]?.tids ?? [];
+      pass_1.forEach((test, i) => {
+        Object.entries(test).map(([key]) => {
+          if (key === "id") {
+            return;
+          }
+          type TIDDataKey = keyof TIDData;
+          const typesafeKey = key as TIDDataKey;
+          const tests_1 = pass_1[i][typesafeKey];
+          const tests_2 = pass_2[i][typesafeKey];
+          const tests_3 = pass_3[i][typesafeKey];
+
+          if (!updatedTests[i]) {
+            updatedTests.push({});
+          }
+
+          if (
+            tests_1 === tests_2 &&
+            tests_1 === tests_3 &&
+            tests_2 === tests_3
+          ) {
+            updatedTests[i] = {
+              ...updatedTests[i],
+              [typesafeKey]: tests_1,
+            };
+          } else if (tests_1 === tests_2 || tests_1 === tests_3) {
+            updatedTests[i] = {
+              ...updatedTests[i],
+              [typesafeKey]: tests_1,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else if (tests_2 === tests_3) {
+            updatedTests[i] = {
+              ...updatedTests[i],
+              [typesafeKey]: tests_2,
+            };
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              1
+            );
+          } else {
+            addConflict2(
+              updatedConflicts,
+              `${partIndex}-${testIndex}-${key}`,
+              2
+            );
+          }
+        });
+      });
+      // console.log("updatedTests", updatedTests);
+      return updatedTests;
+    };
+
+    const comparePartPasses = (
+      partIndex: number,
+      pass_1: PartData[],
+      pass_2: PartData[],
+      pass_3: PartData[]
+    ): PartData[] => {
+      const updatedParts = [...(editedEntry.parts ?? [])];
+      pass_1.forEach((part, i) => {
+        Object.entries(part).map(([key]) => {
+          type PartDataKey = keyof PartData;
+          const typesafeKey = key as PartDataKey;
+          const parts_1 = pass_1[i][typesafeKey];
+          const parts_2 = pass_2[i][typesafeKey];
+          const parts_3 = pass_3[i][typesafeKey];
+
+          if (key === "id") {
+            return;
+          }
+          if (key === "sees") {
+            const updatedSEETests = compareSEETestPasses(
+              partIndex,
+              i,
+              parts_1 as SEEData[],
+              parts_2 as SEEData[],
+              parts_3 as SEEData[]
+            );
+            updatedParts[i] = {
+              ...updatedParts[i],
+              [typesafeKey]: updatedSEETests,
+            };
+            return;
+          }
+          if (key === "tids") {
+            const updatedTIDTests = compareTIDTestPasses(
+              partIndex,
+              i,
+              parts_1 as TIDData[],
+              parts_2 as TIDData[],
+              parts_3 as TIDData[]
+            );
+            updatedParts[i] = {
+              ...updatedParts[i],
+              [typesafeKey]: updatedTIDTests,
+            };
+            return;
+          }
+          if (key === "dds") {
+            const updatedDDTests = compareDDTestPasses(
+              partIndex,
+              i,
+              parts_1 as DDData[],
+              parts_2 as DDData[],
+              parts_3 as DDData[]
+            );
+            updatedParts[i] = {
+              ...updatedParts[i],
+              [typesafeKey]: updatedDDTests,
+            };
+            return;
+          }
+
+          if (
+            parts_1 === parts_2 &&
+            parts_1 === parts_3 &&
+            parts_2 === parts_3
+          ) {
+            updatedParts[partIndex] = {
+              ...updatedParts[partIndex],
+              [typesafeKey]: parts_1,
+            };
+          } else if (parts_1 === parts_2 || parts_1 === parts_3) {
+            updatedParts[partIndex] = {
+              ...updatedParts[partIndex],
+              [typesafeKey]: parts_1,
+            };
+            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
+          } else if (parts_2 === parts_3) {
+            updatedParts[partIndex] = {
+              ...updatedParts[partIndex],
+              [typesafeKey]: parts_2,
+            };
+            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
+          } else {
+            console.log("parts_1", parts_1);
+            console.log("parts_2", parts_2);
+            console.log("parts_3", parts_3);
+            addConflict2(updatedConflicts, `${partIndex}-${key}`, 2);
+          }
+        });
+      });
+      return updatedParts;
+    };
+
+    //console.log("passes", passes);
 
     Object.entries(passes.pass_1).map(([key]) => {
-      type GPTDataKey = keyof typeof passes.pass_1;
-      const typesafeKey = key as GPTDataKey;
+      type fullDataTypeKey = keyof typeof passes.pass_1;
+      const typesafeKey = key as fullDataTypeKey;
       let pass_1 = passes.pass_1[typesafeKey];
       let pass_2 = passes.pass_2[typesafeKey];
       let pass_3 = passes.pass_3[typesafeKey];
@@ -110,24 +404,33 @@ export default function EntrySliver({
         return;
       }
 
-      // join strings together in case of comparing authors
-      if (
-        Array.isArray(pass_1) &&
-        Array.isArray(pass_2) &&
-        Array.isArray(pass_3)
-      ) {
-        pass_1 = pass_1.join();
-        pass_2 = pass_2.join();
-        pass_3 = pass_3.join();
+      if (typesafeKey === "authors") {
+        pass_1 = JSON.stringify(pass_1);
+        pass_2 = JSON.stringify(pass_2);
+        pass_3 = JSON.stringify(pass_3);
+      }
+      if (typesafeKey === "parts") {
+        if (
+          Array.isArray(pass_1) &&
+          Array.isArray(pass_2) &&
+          Array.isArray(pass_3)
+        ) {
+          const updatedParts = comparePartPasses(index, pass_1, pass_2, pass_3);
+          updatedEntry = {
+            ...updatedEntry,
+            parts: updatedParts,
+          };
+          return;
+        }
       }
 
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
       if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
-        console.log("pass_1", pass_1);
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
         };
+        console.log("updatedEntry", updatedEntry);
       }
       // if only 2 out of 3 entries are equal
       else if (pass_1 === pass_2 || pass_1 === pass_3) {
@@ -147,23 +450,27 @@ export default function EntrySliver({
       }
     });
 
+    console.log("updatedEntry", updatedEntry);
+
     setEditedEntry(updatedEntry);
+    setAuthors(() => [...(updatedEntry.authors ?? [])]);
+    addEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
       setRedConflict(index, updatedConflicts.redSeverity);
     }
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
-    if (!hasEmptyProperty(editedEntry)) {
-      addEntry(updatedEntry);
-    }
-  }, [passes]);
+    // if (!hasEmptyProperty(editedEntry)) {
+    //   addEntry(updatedEntry);
+    // }
+  }, []);
 
   const handleCancel = () => {
     setEditedEntry({
-      paper_name: editedEntry.paper_name,
-      author: editedEntry.author,
-    } as UpdateData);
+      paper_name: editedEntry.name,
+      author: editedEntry.authors ?? [],
+    } as FullDataType);
     setOpen(false);
     setOpenCancelModal(false);
   };
@@ -178,6 +485,13 @@ export default function EntrySliver({
 
   const handleSave = () => {
     updateEntry(index, editedEntry);
+    setAuthors((prev) =>
+      prev.map((author, i) => ({
+        ...author,
+        name: editedEntry?.authors?.[i]?.name ?? author.name,
+      }))
+    );
+
     console.log("editedEntry in handleSave", editedEntry);
     const updatedConflicts: Conflict = {
       yellowSeverity: [],
@@ -216,10 +530,10 @@ export default function EntrySliver({
       </div>
       <div className="col-span-3">
         <div className="text-left text-lg text-slate-900">
-          {editedEntry.paper_name}
+          {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {editedEntry.author}
+          {authors?.map((author) => (author.name ? author.name + ", " : ""))}
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">
@@ -299,11 +613,11 @@ export default function EntrySliver({
             return (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  {editedEntry.paper_name}
+                  {editedEntry?.name ?? ""}
                 </ModalHeader>
                 <ModalBody>
                   <EditEntry
-                    entryData={gptPass}
+                    entryData={gptPass ?? {}}
                     editedEntry={editedEntry}
                     setEditedEntry={setEditedEntry}
                     unresolvedConflicts={unresolvedConflicts}
