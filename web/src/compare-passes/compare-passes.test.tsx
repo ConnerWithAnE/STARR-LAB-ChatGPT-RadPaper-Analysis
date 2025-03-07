@@ -845,3 +845,285 @@ describe("createSEEEntries", () => {
     });
   });
 });
+
+describe("createPartEntries", () => {
+  describe("ideal test case", () => {
+    const mockGPTPasses = [
+      [
+        {
+          name: "KDFNK0234",
+          type: "Transistor",
+          manufacturer: "IDK",
+          tids: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          dds: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          sees: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+        },
+      ],
+      [
+        {
+          name: "KDFNK0234",
+          type: "Transistor",
+          manufacturer: "IDK",
+          tids: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          dds: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          sees: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+        },
+      ],
+      [
+        {
+          name: "KDFNK0234",
+          type: "Transistor",
+          manufacturer: "IDK",
+          tids: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          dds: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          sees: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+        },
+      ],
+    ];
+    const expectedParts = [
+      {
+        name: "KDFNK0234",
+        type: "Transistor",
+        manufacturer: "IDK",
+        tids: [
+          {
+            facility: "Canadian Light Source",
+            environment: "Water",
+            terrestrial: false,
+            flight: true,
+          },
+        ],
+        dds: [
+          {
+            facility: "Canadian Light Source",
+            environment: "Water",
+            terrestrial: false,
+            flight: true,
+          },
+        ],
+        sees: [
+          {
+            facility: "Canadian Light Source",
+            environment: "Water",
+            terrestrial: false,
+            flight: true,
+          },
+        ],
+      },
+    ];
+
+    test("createSEEEntries returns same object as GPTPasses", () => {
+      expect(
+        createPartEntries(
+          [],
+          mockGPTPasses[0],
+          mockGPTPasses[1],
+          mockGPTPasses[2]
+        )
+      ).toStrictEqual(expectedParts);
+    });
+  });
+
+  describe("yellow conflict", () => {
+    const mockGPTPasses = [
+      [
+        {
+          name: "KDFNK0234",
+          type: "Hades",
+          manufacturer: "IBM",
+          tids: [
+            {
+              facility: "Argentina",
+              environment: "Water",
+              terrestrial: true,
+              flight: true,
+            },
+          ],
+          dds: [
+            {
+              facility: "Argentina",
+              environment: "Water",
+              terrestrial: true,
+              flight: true,
+            },
+          ],
+          sees: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: true,
+              flight: true,
+            },
+          ],
+        },
+      ],
+      [
+        {
+          name: "KDFNK0234",
+          type: "Hades",
+          manufacturer: "IDK",
+          tids: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          dds: [
+            {
+              facility: "Argentina",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          sees: [
+            {
+              facility: "Argentina",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+        },
+      ],
+      [
+        {
+          name: "KDFNK0234",
+          type: "Transistor",
+          manufacturer: "IBM",
+          tids: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: false,
+              flight: true,
+            },
+          ],
+          dds: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: true,
+              flight: true,
+            },
+          ],
+          sees: [
+            {
+              facility: "Canadian Light Source",
+              environment: "Water",
+              terrestrial: true,
+              flight: true,
+            },
+          ],
+        },
+      ],
+    ];
+    const expectedParts = [
+      {
+        name: "KDFNK0234",
+        type: "Hades",
+        manufacturer: "IBM",
+        tids: [
+          {
+            facility: "Canadian Light Source",
+            environment: "Water",
+            terrestrial: false,
+            flight: true,
+          },
+        ],
+        dds: [
+          {
+            facility: "Argentina",
+            environment: "Water",
+            terrestrial: true,
+            flight: true,
+          },
+        ],
+        sees: [
+          {
+            facility: "Canadian Light Source",
+            environment: "Water",
+            terrestrial: true,
+            flight: true,
+          },
+        ],
+      },
+    ];
+
+    test("createSEEEntries returns same object as GPTPasses", () => {
+      expect(
+        createPartEntries(
+          [],
+          mockGPTPasses[0],
+          mockGPTPasses[1],
+          mockGPTPasses[2]
+        )
+      ).toStrictEqual(expectedParts);
+    });
+  });
+});
