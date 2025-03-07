@@ -212,26 +212,26 @@ export default function EntrySliver({
       yellowSeverity: [],
       redSeverity: [],
     };
-    Object.entries(editedEntry).forEach(([key, value]) => {
-      if (typeof value === "string") {
-        if (value.toString() === "") {
-          updatedConflicts.redSeverity.push(key);
-        }
-      } else if (typeof value === "number") {
-        if (isNaN(value)) {
-          updatedConflicts.redSeverity.push(key);
-        }
-      } else {
-        if (value.length === 0) {
-          updatedConflicts.redSeverity.push(key);
-        }
-      }
-    });
-    console.log("updatedConflicts", updatedConflicts);
+    // Object.entries(editedEntry).forEach(([key, value]) => {
+    //   if (typeof value === "string") {
+    //     if (value.toString() === "") {
+    //       updatedConflicts.redSeverity.push(key);
+    //     }
+    //   } else if (typeof value === "number") {
+    //     if (isNaN(value)) {
+    //       updatedConflicts.redSeverity.push(key);
+    //     }
+    //   } else {
+    //     if (value.length === 0) {
+    //       updatedConflicts.redSeverity.push(key);
+    //     }
+    //   }
+    // });
     setRedConflict(index, updatedConflicts.redSeverity);
     setUnresolvedConflicts(updatedConflicts);
 
     setOpen(false);
+    console.log("updatedConflicts", updatedConflicts);
   };
 
   return (
@@ -248,7 +248,12 @@ export default function EntrySliver({
           {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {authors?.map((author) => (author.name ? author.name + ", " : ""))}
+          {authors?.map((author, i) => {
+            if (i === authors?.length - 1) {
+              return author.name ? author.name : ""
+            }
+            return author.name ? author.name + ", " : ""
+          })}
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">
