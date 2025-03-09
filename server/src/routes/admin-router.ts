@@ -1,6 +1,6 @@
 import express, { Request, Response, Router, NextFunction } from "express";
 import { DatabaseController } from "../database-controller";
-import { GetQuery, GPTResponse, TableData, Testing, UpdateData, InsertData } from "../types";
+import { GetQuery, GPTResponse, Testing } from "../types";
 import axios from "axios";
 import jwt from "jsonwebtoken";
 import authenticateJWT from "../auth/jwt-auth";
@@ -43,6 +43,7 @@ export default function adminRouter(
   // The data is in the correct format and ready to be input.
 
   // THIS WILL NOT WORK WITH RAW PAPERS, Data MUST be in InsertData format
+  
   router.post(
     "/insertPapers",
     getAuthMiddleware(),
@@ -60,7 +61,9 @@ export default function adminRouter(
       }
     },
   );
+  
 
+  
   router.post(
     "/updatePaper",
     getAuthMiddleware(),

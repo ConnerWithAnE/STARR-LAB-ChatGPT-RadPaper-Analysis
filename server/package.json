@@ -5,7 +5,7 @@
   "scripts": {
     "test": "jest",
     "dev": "cross-env MOCK_DATA=${MOCK_DATA:-true} AUTH_OFF=${AUTH_OFF:-false} npx nodemon",
-    "start": "npm run build && node build/index.js",
+    "start": "npm run build && node build/src/index.js",
     "build": "tsc"
   },
   "keywords": [],

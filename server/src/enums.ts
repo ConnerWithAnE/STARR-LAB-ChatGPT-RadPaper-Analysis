@@ -1,4 +1,7 @@
 export enum GPTModel {
+
+    GPT4O = "gpt-4o",
+
     // GPT-4 Models
     GPT4 = "gpt-4",                  // Standard GPT-4 model for text and code completion
     GPT4Turbo = "gpt-4-turbo",        // Cost-effective and faster variant of GPT-4
