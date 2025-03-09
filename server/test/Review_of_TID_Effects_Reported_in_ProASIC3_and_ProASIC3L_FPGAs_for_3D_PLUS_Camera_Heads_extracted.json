@@ -1,0 +1,73 @@
+{
+    "paper": {
+        "paper_name": "Review of TID Effects Reported in ProASIC3 and ProASIC3L FPGAs for 3D PLUS Camera Heads",
+        "year": 2023,
+        "authors": [
+            {
+                "name": "A. L. Bosser"
+            },
+            {
+                "name": "P. Kohler"
+            },
+            {
+                "name": "J. Salles"
+            },
+            {
+                "name": "M. Foucher"
+            },
+            {
+                "name": "J. Bezine"
+            },
+            {
+                "name": "N. Perrot"
+            },
+            {
+                "name": "P.-X. Wang"
+            }
+        ],
+        "objective": "This paper compares original TID data from ProASIC3L FPGAs with existing literature, discusses the impact of different test flows on the TID response, and correlates the data with TID tests of 3D PLUS camera heads."
+    },
+    "parts": [
+        {
+            "device_name": "A3PE3000L",
+            "component_type": "FPGA",
+            "manufacturer": "Microchip (formerly Actel)",
+            "other_details": "Flash-based FPGA used in 3D PLUS space camera head module, sensitive to TID effects, tested under various bias conditions and dose rates.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "A3PE3000L",
+                    "testing_type": "TID",
+                    "max_fluence": 60000,
+                    "energy_levels": "60Co gamma rays",
+                    "facility_name": "Not specified",
+                    "environmental_conditions": "Static, no clock applied, nominal bias of 3.3V, 2.5V, and 1.5V on power rails",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "device_name": "A3PE3000L",
+                            "max_fluence": 60000,
+                            "energy_levels": "60Co gamma rays",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Static, no clock applied, nominal bias of 3.3V, 2.5V, and 1.5V on power rails",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs_observed": false,
+                            "dose_to_failure": 60,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "current_leakage": 0,
+                            "failing_time": "After 60 krad",
+                            "special_notes": "Functional recovery observed after annealing at 100°C"
+                        }
+                    ],
+                    "ddData": []
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,76 @@
+{
+    "parts": [
+        {
+            "device_name": "HM62256",
+            "component_type": "SRAM",
+            "manufacturer": "Hitachi",
+            "other_details": "32KB memory used for SEE detection, entire device operated for SEE detection, tested using Ram Static Test method"
+        },
+        {
+            "device_name": "HM65756",
+            "component_type": "SRAM",
+            "manufacturer": "Matra-MHS",
+            "other_details": "32KB memory used for storage of T225 process workspaces and data, partly tested using CRC and RST methods"
+        }
+    ],
+    "part_tests": [
+        {
+            "device_name": "HM62256",
+            "testing_type": "SEE",
+            "max_fluence": 10000000,
+            "energy_levels": "Proton: 10 MeV, Heavy Ion: 1.7 MeV/mg.cm²",
+            "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+            "environmental_conditions": "High Earth Orbit, solar maximum condition",
+            "terrestrial": false,
+            "in_flight": true
+        },
+        {
+            "device_name": "HM65756",
+            "testing_type": "SEE",
+            "max_fluence": 10000000,
+            "energy_levels": "Proton: 5 MeV, Heavy Ion: 0.1 MeV/mg.cm²",
+            "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+            "environmental_conditions": "High Earth Orbit, solar maximum condition",
+            "terrestrial": false,
+            "in_flight": true
+        }
+    ],
+    "part_specific": {
+        "SEE": [
+            {
+                "max_fluence": 10000000,
+                "energy_levels": "Proton: 10 MeV, Heavy Ion: 1.7 MeV/mg.cm²",
+                "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+                "environmental_conditions": "High Earth Orbit, solar maximum condition",
+                "terrestrial": false,
+                "in_flight": true,
+                "source": "Protons",
+                "see_type": "SEU",
+                "amplitude": 60,
+                "duration": 1,
+                "cross_section_saturation": 0.0000025,
+                "cross_section_threshold": 1.7,
+                "cross_section_type": "cm²/bit",
+                "special_notes": "Stuck bits observed during solar events, indicating presence of heavy ions"
+            },
+            {
+                "max_fluence": 10000000,
+                "energy_levels": "Proton: 5 MeV, Heavy Ion: 0.1 MeV/mg.cm²",
+                "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+                "environmental_conditions": "High Earth Orbit, solar maximum condition",
+                "terrestrial": false,
+                "in_flight": true,
+                "source": "Protons",
+                "see_type": "SEU",
+                "amplitude": 47,
+                "duration": 1,
+                "cross_section_saturation": 0.0000028,
+                "cross_section_threshold": 0.1,
+                "cross_section_type": "cm²/bit",
+                "special_notes": "SEU rate increase observed during solar events, particularly severe during the November 2001 event"
+            }
+        ],
+        "TID": [],
+        "DD": []
+    }
+}

@@ -1,0 +1,72 @@
+[
+    {
+        "device_name": "HM62256",
+        "component_type": "SRAM",
+        "manufacturer": "Hitachi",
+        "other_details": "32KB memory used for SEE detection, entirely tested using RST method"
+    },
+    {
+        "device_name": "HM65756",
+        "component_type": "SRAM",
+        "manufacturer": "Matra-MHS",
+        "other_details": "32KB memory, partly tested with CRC and RST methods, used for storage of T225 process workspaces and data"
+    }
+][
+    {
+        "device_name": "HM62256",
+        "testing_type": "SEE",
+        "max_fluence": 5.4e-13,
+        "energy_levels": "Proton Threshold: 10 MeV, Heavy Ion Threshold: 1.7 MeV/mg.cm²",
+        "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+        "environmental_conditions": "High Earth Orbit, solar maximum condition",
+        "terrestrial": false,
+        "in_flight": true
+    },
+    {
+        "device_name": "HM65756",
+        "testing_type": "SEE",
+        "max_fluence": 1.2e-12,
+        "energy_levels": "Proton Threshold: 5 MeV, Heavy Ion Threshold: 0.1 MeV/mg.cm²",
+        "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+        "environmental_conditions": "High Earth Orbit, solar maximum condition",
+        "terrestrial": false,
+        "in_flight": true
+    }
+]{
+    "SEE": [
+        {
+            "max_fluence": 0.0000025,
+            "energy_levels": "Proton Threshold: 10 MeV, Heavy Ion Threshold: 1.7 MeV/mg.cm²",
+            "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+            "environmental_conditions": "High Earth Orbit, solar maximum condition",
+            "terrestrial": false,
+            "in_flight": true,
+            "source": "Protons",
+            "see_type": "SEU",
+            "amplitude": 60,
+            "duration": 1,
+            "cross_section_saturation": 0.0000025,
+            "cross_section_threshold": 1.7,
+            "cross_section_type": "cm²/bit",
+            "special_notes": "Stuck bits observed during solar events, indicating presence of heavy ions"
+        },
+        {
+            "max_fluence": 0.0000028,
+            "energy_levels": "Proton Threshold: 5 MeV, Heavy Ion Threshold: 0.1 MeV/mg.cm²",
+            "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
+            "environmental_conditions": "High Earth Orbit, solar maximum condition",
+            "terrestrial": false,
+            "in_flight": true,
+            "source": "Protons",
+            "see_type": "SEU",
+            "amplitude": 60,
+            "duration": 1,
+            "cross_section_saturation": 0.0000028,
+            "cross_section_threshold": 0.1,
+            "cross_section_type": "cm²/bit",
+            "special_notes": "Multiple-Bit Upsets (MBU) observed outside proton belts in high latitude zones"
+        }
+    ],
+    "TID": [],
+    "DD": []
+}

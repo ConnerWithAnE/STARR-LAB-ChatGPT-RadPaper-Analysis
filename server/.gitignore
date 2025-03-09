@@ -20,7 +20,7 @@ dist/
 build/
 out/
 
-test/
+test/*.pdf
 
 # Environment files
 .env
