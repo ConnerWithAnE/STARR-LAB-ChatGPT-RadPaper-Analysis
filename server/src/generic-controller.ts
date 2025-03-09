@@ -660,6 +660,8 @@ export class GenericController {
     if (data.parts) {
       const parts = (await this.manageEntities("Part", data.parts)) as Part[];
       append ? await paper.addParts(parts) : await paper.setParts(parts);
+      console.log("gotty here");
+      console.log(data.parts);
       await this.handleTestsForParts(parts, paper, data.parts, append);
     }
   }
@@ -674,42 +676,107 @@ export class GenericController {
     append: boolean,
   ) {
     for (const partData of partsData) {
-      const part = parts.find((p) => p.name === partData.name);
+      let part;
+      if (partData.name) {
+        part = parts.find((p) => p.name === partData.name);
+      } else {
+        part = parts.find((p) => p.id === partData.id);
+      }
       if (!part) continue;
 
       console.log(`Processing part: ${partData.name}`);
 
       // Handle tids
       if (Array.isArray(partData.tids)) {
+        console.log("Processing tids for part:", partData.id);
+
         const tids = (await this.manageEntities(
           "Tid",
           partData.tids,
           true,
         )) as Tid[];
-        append ? await part.addTids(tids) : await part.setTids(tids);
-        append ? await paper.addTids(tids) : await paper.setTids(tids);
+
+        if (append) {
+          await part.addTids(tids);
+          await paper.addTids(tids);
+        } else {
+          // Find only the tids that belong to this specific Paper-Part combo
+          const existingTids = await Tid.findAll({
+            where: { partId: part.id, paperId: paper.id }, // Ensure we only target the current Paper-Part
+          });
+
+          //  Remove only these specific tids
+          await part.removeTids(existingTids);
+          await paper.removeTids(existingTids);
+
+          // If new tids are provided, add them back
+          if (tids.length > 0) {
+            await part.addTids(tids);
+            await paper.addTids(tids);
+          }
+        }
       }
 
       // Handle sees
       if (Array.isArray(partData.sees)) {
+        console.log("Processing sees for part:", partData.id);
+
         const sees = (await this.manageEntities(
           "See",
           partData.sees,
           true,
         )) as See[];
-        append ? await part.addSees(sees) : await part.setSees(sees);
-        append ? await paper.addSees(sees) : await paper.setSees(sees);
+
+        if (append) {
+          await part.addSees(sees);
+          await paper.addSees(sees);
+        } else {
+          // Find only the sees that belong to this specific Paper-Part combo
+          const existingSees = await See.findAll({
+            where: { partId: part.id, paperId: paper.id }, // Ensure we only target the current Paper-Part
+          });
+
+          //  Remove only these specific sees
+          await part.removeSees(existingSees);
+          await paper.removeSees(existingSees);
+
+          // If new sees are provided, add them back
+          if (sees.length > 0) {
+            await part.addSees(sees);
+            await paper.addSees(sees);
+          }
+        }
       }
 
       // Handle dds
       if (Array.isArray(partData.dds)) {
+        console.log("Processing dds for part:", partData.id);
+
         const dds = (await this.manageEntities(
           "Dd",
           partData.dds,
           true,
         )) as Dd[];
-        append ? await part.addDds(dds) : await part.setDds(dds);
-        append ? await paper.addDds(dds) : await paper.setDds(dds);
+
+        if (append) {
+          await part.addDds(dds);
+          await paper.addDds(dds);
+        } else {
+          // Find only the dds that belong to this specific Paper-Part combo
+          const existingDds = await Dd.findAll({
+            where: { partId: part.id, paperId: paper.id }, // Ensure we only target the current Paper-Part
+          });
+
+          //  Remove only these specific dds
+          await part.removeDds(existingDds);
+          await paper.removeDds(existingDds);
+
+          // If new dds are provided, add them back
+          if (dds.length > 0) {
+            await part.addDds(dds);
+            await paper.addDds(dds);
+          }
+        }
       }
     }
   }
