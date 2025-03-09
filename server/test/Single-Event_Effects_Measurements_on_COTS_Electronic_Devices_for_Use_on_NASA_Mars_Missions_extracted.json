@@ -1,0 +1,410 @@
+{
+    "paper": {
+        "paper_name": "Single-Event Effects Measurements on COTS Electronic Devices for Use on NASA Mars Missions",
+        "year": 2023,
+        "authors": [
+            {
+                "name": "Farokh Irom"
+            },
+            {
+                "name": "Sergeh Vartanian"
+            },
+            {
+                "name": "Gregory R. Allen"
+            }
+        ],
+        "objective": "The main objective of the paper is to report recent single-event effects measurements results for a variety of microelectronic devices to evaluate these devices for possible use in NASA Mars missions."
+    },
+    "parts": [
+        {
+            "device_name": "SN74LVC2T45",
+            "component_type": "Voltage Level Translator",
+            "manufacturer": "Texas Instruments",
+            "other_details": "Dual-bit dual-supply bus transceiver with configurable voltage translation.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "SN74LVC2T45",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "61.6 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "SN74LVC2T45",
+                            "max_fluence": 10000000,
+                            "energy_levels": "61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "TCA9517",
+            "component_type": "Voltage Level Translator",
+            "manufacturer": "Texas Instruments",
+            "other_details": "Level-shifting I2C bus repeater.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "TCA9517",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "61.6 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "TCA9517",
+                            "max_fluence": 10000000,
+                            "energy_levels": "61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "37 positive SET events were observed with SCLA set to 0 V"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "TC7WZ126FK",
+            "component_type": "Bus Driver/Buffer",
+            "manufacturer": "Toshiba",
+            "other_details": "Dual bus buffer with 3-state output.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "TC7WZ126FK",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "61.6 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "TC7WZ126FK",
+                            "max_fluence": 10000000,
+                            "energy_levels": "61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "None",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "TPS62130",
+            "component_type": "DC-DC Buck Converter",
+            "manufacturer": "Texas Instruments",
+            "other_details": "3 to 17 V, 3A step-down converter.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "TPS62130",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "61.6 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "TPS62130",
+                            "max_fluence": 10000000,
+                            "energy_levels": "61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. Operating input voltage was set to 5 and 7.5V, with output load conditions varied between no load and 500 mA.",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "No SELs or destructive SEE were observed. Minor negative and positive SETs were observed in the loaded condition."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "ADP195",
+            "component_type": "Load Switch",
+            "manufacturer": "Analog Devices",
+            "other_details": "Logic controlled, high-side power switch with reverse current blocking.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "ADP195",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "61.6 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. No load and 200 mA load conditions were used.",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "ADP195",
+                            "max_fluence": 10000000,
+                            "energy_levels": "61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The device was tested in no load and 200 mA load conditions.",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Five recoverable SEFIs were observed with the 200-mA load condition at room temperature."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "TPS25942",
+            "component_type": "eFuse Power Protection MUX",
+            "manufacturer": "Texas Instruments",
+            "other_details": "18 V, 5 A eFuse power mux with multiple protection modes.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "TPS25942",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "61.6 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. Output load varied between no load and 500 mA.",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "TPS25942",
+                            "max_fluence": 10000000,
+                            "energy_levels": "61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The operating input voltage was set to 5 V, with output load varied between no load and 500 mA.",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SEFI, SET",
+                            "amplitude": 0.5,
+                            "duration": 500,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Self-recovering SEFIs and SETs observed; did not impact the 5 V output."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "CC1190",
+            "component_type": "RF Range Extender",
+            "manufacturer": "Texas Instruments",
+            "other_details": "950MHz RF front end.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "CC1190",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "47 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The VDD supply rails were powered by a single 3.3 V supply.",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "CC1190",
+                            "max_fluence": 10000000,
+                            "energy_levels": "47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The VDD supply rails were powered by a single 3.3 V supply.",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 47,
+                            "cross_section_type": "LETth",
+                            "special_notes": "SEFIs resulted in test application hangs but were recoverable with a reset."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "CC1200",
+            "component_type": "Wireless Transceiver",
+            "manufacturer": "Texas Instruments",
+            "other_details": "Low-power, high-performance RF transceiver with analog features.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "CC1200",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "20Ne",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The VDD rails were powered by a single 3.3 V supply.",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "CC1200",
+                            "max_fluence": 10000000,
+                            "energy_levels": "20Ne",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The VDD rails were powered by a single 3.3 V supply.",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SEL",
+                            "amplitude": 220,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 2.7,
+                            "cross_section_type": "LETth",
+                            "special_notes": "SELs were observed at LETs as low as 20Ne. For some runs, VDD supply current clamp was removed, inducing a latch-up resulting in a current increase up to 220 mA."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "CC1310",
+            "component_type": "Wireless MCU",
+            "manufacturer": "Texas Instruments",
+            "other_details": "RF Range Extender.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "CC1310",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "47 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The VDDS rails were powered by a single 3.3 V supply.",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "CC1310",
+                            "max_fluence": 10000000,
+                            "energy_levels": "47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The VDDS rails were powered by a single 3.3 V supply.",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 40,
+                            "cross_section_type": "LETth",
+                            "special_notes": "SEFIs were observed at LETs as low as 40Ar, recoverable with a reset."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        {
+            "device_name": "LT8612",
+            "component_type": "DC-DC Buck Converter",
+            "manufacturer": "Analog Devices",
+            "other_details": "3.4 to 42 V, 6A synchronous step-down regulator.",
+            "preliminary_test_data": [
+                {
+                    "device_name": "LT8612",
+                    "testing_type": "SEE",
+                    "max_fluence": 10000000,
+                    "energy_levels": "61.6 MeV-cm2/mg",
+                    "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                    "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The PVIN rail was powered at 5 V, with no load and 200 mA load conditions.",
+                    "terrestrial": true,
+                    "in_flight": false,
+                    "seeData": [
+                        {
+                            "device_name": "LT8612",
+                            "max_fluence": 10000000,
+                            "energy_levels": "61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and 70°C, in air with normal incident beam. The PVIN rail was powered at 5 V, with no load and 200 mA load conditions.",
+                            "terrestrial": true,
+                            "in_flight": false,
+                            "source": "Heavy ions",
+                            "see_type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Small amount of self-recovery SEFIs in the form of output drop-outs were observed at 61.6 and 47 MeV-cm2/mg."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        }
+    ]
+}

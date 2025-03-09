@@ -1,58 +1,34 @@
-import express, { Request, Response, Router } from "express";
-import { DatabaseController } from "../database-controller";
-import { GetQuery, TableData, Testing } from "../types";
+import express, { Request, Response, Router, NextFunction } from "express";
+//import { DatabaseController } from "../db-controller"; // Keep DatabaseController
+import { FullDataType } from "../types"; // Use the latest types
 import authenticateJWT from "../auth/jwt-auth";
-
+import { GenericController } from "../generic-controller";
 
 const router = express.Router();
 
-export default function cascadeRouter(
-  dbController: DatabaseController,
-): Router {
+export default function cascadeRouter(dbController: GenericController): Router {
   const router = Router();
 
-  // Test!!! TO BE REMOVED THIS SHOULD NOT BE HERE
-  router.get("/", (req: Request, res: Response) => {
-    dbController.insertPaper({
-      paper_name: "Radiation Test Effects On Tested Radiation",
-      year: 2023,
-      author: ["John Jacob", "Lin Lee", "Dr. Joan Gooding"],
-      part_no: "LT3094EMSE#PBF",
-      type: "Low Dropout Voltage Regulator",
-      manufacturer: "Analog Devices",
-      testing_location: "Terrestrial",
-      testing_type: "SEE",
-      data_type: 0,
-    });
-    console.log("Sucess");
-  });
-
-  router.post("/tableRequest", (req: Request, res: Response) => {
+  router.get("/:model/filter", async (req: Request, res: Response) => {
     try {
-      getFilteredRows(requestFromJSON(req.body), dbController).then(
-        (result: TableData[]) => {
-          res.send(responseToJSON(result));
-        },
-      );
+      const modelName = req.params.model;
+      const filters = req.query; // Extract query parameters
+
+      console.log(`Filtering ${modelName} with`, filters);
+
+      const records = await GenericController.filter(modelName, filters);
+
+      if (!Array.isArray(records) && "error" in records) {
+        res.status(records.status || 500).json({ error: records.error });
+        return;
+      }
+
+      res.json(records);
     } catch (error) {
-      console.error(``);
+      console.error(`Error filtering ${req.params.model}:`, error);
+      res.status(500).json({ error: "Internal Server Error" });
     }
   });
 
   return router;
-}
-
-function getFilteredRows(
-  getData: GetQuery,
-  dbcontroller: DatabaseController,
-): Promise<TableData[]> {
-  return dbcontroller.getFilteredData(getData);
-}
-
-function requestFromJSON(body: any) {
-  return body as GetQuery;
-}
-
-function responseToJSON(radDataArray: TableData[]): string {
-  return JSON.stringify(radDataArray, null, 2); // null and 2 prettify the JSON
 }
