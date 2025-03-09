@@ -102,10 +102,6 @@ export type ai_part = {
 
 export type PreliminaryTestData = {
   testing_type: "SEE" | "TID" | "DD" | null;
-  facility_name: string;
-  environmental_conditions: string;
-  terrestrial: boolean;
-  in_flight: boolean;
   tidData: TIDDataType[];
   seeData: SEEDataType[];
   ddData: DDDataType[];
