@@ -92,23 +92,16 @@ export const questions = {
     },
   },
   testingConditions: {
-    prompt: `Describe the conditions under which radiation testing was conducted.:
+    prompt: `Describe the type of radiation testing that was conducted.:
         - Type of testing performed (ONLY ONE OF [ TID, SEE, DD])
-        - Facility name
-        - Environmental conditions
-        - Was the test conducted in a terrestrial setting? (Yes/No)
-        - Was the test conducted in-flight? (Yes/No)
-
+      
         There might be more than one test for the given part, if that is the case return a list of tests pertaining to the part
 
         Return the response as a **valid JSON object** with the following structure:
 
         {
             "testing_type": "TID | SEE | DD",
-            "facility_name": "<string>",
-            "environmental_conditions": "<string>",
-            "terrestrial": <true | false>,
-            "in_flight": <true | false>
+           
         }
             
         Return only valid JSON with no extra text.`,
@@ -116,22 +109,8 @@ export const questions = {
       type: "object",
       properties: {
         testing_type: { type: "string", enum: ["TID", "SEE", "DD"] },
-        max_fluence: { type: "number" },
-        energy_levels: { type: "string" },
-        facility_name: { type: "string" },
-        environmental_conditions: { type: "string" },
-        terrestrial: { type: "boolean" },
-        in_flight: { type: "boolean" },
       },
-      required: [
-        "testing_type",
-        "max_fluence",
-        "energy_levels",
-        "facility_name",
-        "environmental_conditions",
-        "terrestrial",
-        "in_flight",
-      ],
+      required: ["testing_type"],
     },
   },
   tidData: {
