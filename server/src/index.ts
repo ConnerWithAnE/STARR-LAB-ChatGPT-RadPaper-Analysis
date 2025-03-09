@@ -4,6 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { open, Database } from "sqlite";
 import dotenv from "dotenv";
+import fs from 'fs';
 
 import { initializeDatabase } from "./database-init";
 
@@ -100,19 +101,43 @@ async function initializeSystem(): Promise<{
     //app.use("/api/adminRequest", adminRouter(dbController, gptController));
 
     //for testing
-    app.get("/test-gpt", async (req, res) => {
-      try {
-        console.log("Initializing GPTController...");
-        const gptController = new GPTController(GPTModel.GPT4Turbo);
-        const testFiles = [
-          "./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf",
-        ];
 
+    app.get("/test2-gpt", async (req, res) => {
+      try {
+        //const pdfFile = "./test/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf";
+        //const pdfFile = "./test/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"; // Replace with actual file path
+        const pdfFile =
+          "./test/Single-Event_Effects_Measurements_on_COTS_Electronic_Devices_for_Use_on_NASA_Mars_Missions.pdf";
+        //const pdfFile = "./test/Review_of_TID_Effects_Reported_in_ProASIC3_and_ProASIC3L_FPGAs_for_3D_PLUS_Camera_Heads.pdf";
+        const pdfFiles = [
+          "./test/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf",
+          "./test/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf",
+          "./test/Single-Event_Effects_Measurements_on_COTS_Electronic_Devices_for_Use_on_NASA_Mars_Missions.pdf",
+          "./test/Review_of_TID_Effects_Reported_in_ProASIC3_and_ProASIC3L_FPGAs_for_3D_PLUS_Camera_Heads.pdf",
+        ];
+        const gptController = new GPTController(GPTModel.GPT4O);
         console.log("Running GPT Analysis...");
-        const results = await gptController.runGPTAnalysis(testFiles);
+        const results = await gptController.processRadiationPapers(pdfFiles);
+
+        fs.writeFileSync(
+              "./test/4-paper-output.json",
+              JSON.stringify(results, null, 4),
+            );
 
         console.log("GPT Analysis Results:", results);
         res.json(results);
+      } catch (error) {
+        console.error("Error during GPT analysis:", error);
+        res.status(500).json({ error: "GPT analysis failed", details: error });
+      }
+    });
+    app.get("/test-gpt", async (req, res) => {
+      try {
+        console.log("Initializing GPTController...");
+        const gptController = new GPTController(GPTModel.GPT4O);
+
+        console.log("Running GPT Analysis...");
+        
       } catch (error) {
         console.error("Error during GPT analysis:", error);
         res.status(500).json({ error: "GPT analysis failed", details: error });
