@@ -8,6 +8,7 @@ import {
   SEEData,
   DDData,
   AuthorData,
+  SingleConflict,
 } from "../../types/types";
 import {
   Modal,
@@ -93,12 +94,13 @@ export default function EntrySliver({
       dataType: string,
       severity: Severity
     ) => {
+      const newconflict: SingleConflict = { conflictName: dataType, isResolved: false };
       switch (severity) {
         case 1:
-          currentConflicts.yellowSeverity.push(dataType);
+          currentConflicts.yellowSeverity.push(newconflict);
           break;
         case 2:
-          currentConflicts.redSeverity.push(dataType);
+          currentConflicts.redSeverity.push(newconflict);
           break;
       }
     };
@@ -457,7 +459,8 @@ export default function EntrySliver({
     addEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
-      setRedConflict(index, updatedConflicts.redSeverity);
+      const rconflicts: string[] = updatedConflicts.redSeverity.map((conflict) => { return conflict.conflictName; });
+      setRedConflict(index, rconflicts);
     }
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
@@ -498,22 +501,24 @@ export default function EntrySliver({
       redSeverity: [],
     };
     Object.entries(editedEntry).forEach(([key, value]) => {
+      const newconflict: SingleConflict = { conflictName: key, isResolved: false};
       if (typeof value === "string") {
         if (value.toString() === "") {
-          updatedConflicts.redSeverity.push(key);
+          updatedConflicts.redSeverity.push(newconflict);
         }
       } else if (typeof value === "number") {
         if (isNaN(value)) {
-          updatedConflicts.redSeverity.push(key);
+          updatedConflicts.redSeverity.push(newconflict);
         }
       } else {
         if (value.length === 0) {
-          updatedConflicts.redSeverity.push(key);
+          updatedConflicts.redSeverity.push(newconflict);
         }
       }
     });
     console.log("updatedConflicts", updatedConflicts);
-    setRedConflict(index, updatedConflicts.redSeverity);
+    const rconflicts: string[] = updatedConflicts.redSeverity.map((conflict) => { return conflict.conflictName; });
+    setRedConflict(index, rconflicts);
     setUnresolvedConflicts(updatedConflicts);
 
     setOpen(false);

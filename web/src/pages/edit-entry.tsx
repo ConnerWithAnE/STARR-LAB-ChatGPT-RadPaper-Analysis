@@ -361,15 +361,15 @@ export default function EditEntry({
             return (
               <div className="flex flex-row gap-2">
                 <MdWarningAmber color="red" size="1.5em" />
-                <div>{conflict}</div>
+                <div>{conflict.conflictName}</div>
               </div>
             );
           })}
           {unresolvedConflicts.yellowSeverity.map((conflict) => {
             return (
-              <div key={conflict} className="flex flex-row gap-2">
+              <div key={conflict.conflictName} className="flex flex-row gap-2">
                 <MdWarningAmber color="yellow" size="1.5em" />
-                <div>{conflict}</div>
+                <div>{conflict.conflictName}</div>
               </div>
             );
           })}

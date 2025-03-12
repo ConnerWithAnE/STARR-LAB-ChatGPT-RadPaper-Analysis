@@ -20,13 +20,13 @@ export const mockFullDataTypePasses: FullDataType[] = [
       },
       {
         id: 1,
-        name: "Andrew Yu",
+        name: "Andrew Yang",
       },
     ],
     parts: [
       {
         id: 0,
-        name: "A1308KUA-2-T",
+        name: "A1308KUA-2-S",
         type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         testing_location: "Terrestrial",
@@ -194,7 +194,7 @@ export const mockFullDataTypePasses: FullDataType[] = [
     parts: [
       {
         id: 0,
-        name: "A1308KUA-2-T",
+        name: "A1308KUA-2-U",
         type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         testing_location: "Terrestrial",
