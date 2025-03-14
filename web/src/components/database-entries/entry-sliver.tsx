@@ -392,11 +392,38 @@ export default function EntrySliver({
       return updatedParts;
     };
 
-    // const compareAuthors = {
-      
-    // }
-
-    //console.log("passes", passes);
+    const setAuthorConflicts = (
+      pass_1: AuthorData[] | undefined,
+      pass_2: AuthorData[] | undefined,
+      pass_3: AuthorData[] | undefined
+    ): AuthorData[] => {
+      if (Array.isArray(pass_1) && Array.isArray(pass_2) && Array.isArray(pass_3)) {
+        let authorsPresent: AuthorData[] = [];
+        pass_1.forEach((author, i) => {
+          if (pass_2 && pass_3) {
+            const authorName1 = author.name;
+            const authorName2 = (pass_2 as AuthorData[])[i].name;
+            const authorName3 = (pass_3 as AuthorData[])[i].name;
+            if(authorName1 == authorName2 && authorName1 == authorName3 && authorName2 == authorName3) {
+              authorsPresent[i] = (pass_1 as AuthorData[])[i];
+            }
+            else if (authorName1 == authorName2 || authorName1 == authorName3) {
+              authorsPresent[i] = (pass_1 as AuthorData[])[i];
+              addConflict2(updatedConflicts, "authors-" + i, 1);
+            }
+            else if(authorName2 == authorName3) {
+              authorsPresent[i] = (pass_2 as AuthorData[])[i];
+              addConflict2(updatedConflicts, "authors-" + i, 1);
+            }
+            else {
+              addConflict2(updatedConflicts, "authors-" + i, 2);
+            }
+          }
+        });
+        return authorsPresent;
+      }
+      return [];
+    }
 
     Object.entries(passes.pass_1).map(([key]) => {
       type fullDataTypeKey = keyof typeof passes.pass_1;
@@ -409,48 +436,7 @@ export default function EntrySliver({
       if (editedEntry[typesafeKey] !== undefined) {
         return;
       }
-
-      if (typesafeKey === "authors") {
-        if (Array.isArray(pass_1) && Array.isArray(pass_2) && Array.isArray(pass_3)) {
-          pass_1.forEach((author, i) => {
-            if (pass_2 && pass_3) {
-              const authorName1 = author.name;
-              const authorName2 = (pass_2 as AuthorData[])[i].name;
-              const authorName3 = (pass_3 as AuthorData[])[i].name;
-              console.log("pass 1 authors", (pass_1 as AuthorData[]));
-              if(authorName1 == authorName2 && authorName1 == authorName3 && authorName2 == authorName3) {
-                updatedEntry = {
-                  ...updatedEntry,
-                  //[typesafeKey]: passes.pass_1[typesafeKey],
-                  authors: [...authors, (pass_1 as AuthorData[])[i]],
-                };
-              }
-              else if (authorName1 == authorName2 || authorName1 == authorName3) {
-                updatedEntry = {
-                  ...updatedEntry,
-                  //[typesafeKey]: passes.pass_1[typesafeKey],
-                  authors: [...authors, (pass_1 as AuthorData[])[i]],
-                };
-                addConflict2(updatedConflicts, "authors-" + i, 1);
-              }
-              else if(authorName2 == authorName3) {
-                updatedEntry = {
-                  ...updatedEntry,
-                  // [typesafeKey]: passes.pass_2[typesafeKey],
-                  authors: [...authors, (pass_2 as AuthorData[])[i]],
-                };
-                addConflict2(updatedConflicts, "authors-" + i, 1);
-              }
-              else {
-                addConflict2(updatedConflicts, "authors-" + i, 2);
-              }
-            }
-          });
-        }
-        pass_1 = JSON.stringify(pass_1);
-        pass_2 = JSON.stringify(pass_2);
-        pass_3 = JSON.stringify(pass_3);
-      }
+      // Compare the part information in the passes
       if (typesafeKey === "parts") {
         if (
           Array.isArray(pass_1) &&
@@ -466,14 +452,22 @@ export default function EntrySliver({
         }
       }
 
+      // If comparing authors, call function to compare and set conflicts
+      if(typesafeKey === "authors") {
+        let resultAuthors = setAuthorConflicts(pass_1 as AuthorData[], pass_2 as AuthorData[], pass_3 as AuthorData[]);
+        if(resultAuthors.length > 0) {
+          updatedEntry = {
+            ...updatedEntry,
+            [typesafeKey]: resultAuthors,
+          };
+        }
+      }
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
-      if(typesafeKey === "authors") {}
       else if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
         };
-        console.log("updatedEntry", updatedEntry);
       }
       // if only 2 out of 3 entries are equal
       else if (pass_1 === pass_2 || pass_1 === pass_3) {
@@ -492,11 +486,10 @@ export default function EntrySliver({
         addConflict2(updatedConflicts, key, 2);
       }
     });
-
     console.log("updatedEntry", updatedEntry);
 
     setEditedEntry(updatedEntry);
-    setAuthors(() => [...(updatedEntry.authors ?? [])]);
+    setAuthors(updatedEntry.authors ?? []);
     addEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {

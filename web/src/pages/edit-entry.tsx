@@ -81,7 +81,7 @@ export default function EditEntry({
             pass_2: pass_2,
             pass_3: pass_3,
           }}
-          currentEntry={editedEntry?.authors?.find((auth) => auth.id === i)?.name ?? ""}
+          currentEntry = {editedEntry?.authors?.[i]?.name ?? ""}
           handleChange={(name, value) => {
             handleChange(["authors", i.toString(), name], value);
           }}
