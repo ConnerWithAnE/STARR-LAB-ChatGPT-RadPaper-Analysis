@@ -410,14 +410,14 @@ export default function EntrySliver({
             }
             else if (authorName1 == authorName2 || authorName1 == authorName3) {
               authorsPresent[i] = (pass_1 as AuthorData[])[i];
-              addConflict2(updatedConflicts, "authors-" + i, 1);
+              addConflict2(updatedConflicts, `authors-${i}-name`, 1);
             }
             else if(authorName2 == authorName3) {
               authorsPresent[i] = (pass_2 as AuthorData[])[i];
-              addConflict2(updatedConflicts, "authors-" + i, 1);
+              addConflict2(updatedConflicts, `authors-${i}-name`, 1);
             }
             else {
-              addConflict2(updatedConflicts, "authors-" + i, 2);
+              addConflict2(updatedConflicts, `authors-${i}-name`, 2);
             }
           }
         });
@@ -556,11 +556,11 @@ export default function EntrySliver({
     // console.log("updatedConflicts", updatedConflicts);
     const combinedConflicts: Conflict = {
       yellowSeverity: [
-        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !conflict.isResolved)),
+        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict.conflictName))),
         ...updatedConflicts.yellowSeverity,
       ],
       redSeverity: [
-        ...(unresolvedConflicts.redSeverity.filter((conflict) => !conflict.isResolved)),
+        ...(unresolvedConflicts.redSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict.conflictName))),
         ...updatedConflicts.redSeverity,
       ],
     }

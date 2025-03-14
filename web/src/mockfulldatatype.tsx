@@ -117,7 +117,7 @@ export const mockFullDataTypePasses: FullDataType[] = [
         tids: [
           {
             id: 0,
-            source: "Co61",
+            source: "Co60",
             data_type: 0,
             max_fluence: 0,
             energy: 0,
@@ -137,7 +137,7 @@ export const mockFullDataTypePasses: FullDataType[] = [
           },
           {
             id: 0,
-            source: "Electrons",
+            source: "Protons",
             data_type: 567,
             max_fluence: 5.44444444,
             energy: 90,
@@ -158,7 +158,7 @@ export const mockFullDataTypePasses: FullDataType[] = [
         sees: [
           {
             id: 0,
-            source: "Neutron",
+            source: "Protons",
             type: "Single Event Upset",
             max_fluence: 0,
             energy: 0,

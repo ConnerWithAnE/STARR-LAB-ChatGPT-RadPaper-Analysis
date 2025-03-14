@@ -55,25 +55,14 @@ export default function EditEntry({
     // console.log("value", value);
     // console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
 
-    // if(path.length === 1) {
-    //   const item: string = path[0];
-    //   setUnresolvedConflicts((prevConflicts) => {
-    //     if(prevConflicts.redSeverity.length > 0 && prevConflicts.redSeverity.some(conflict => conflict.conflictName === item)) {
-    //       return {
-    //         ...prevConflicts,
-    //         redSeverity: prevConflicts.redSeverity.filter(conflict => conflict.conflictName !== item)
-    //       };
-    //     }
-    //     return prevConflicts;
-    //   });
-    // }
-
+    // POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory
     // setValuesEdited((prev) => {
     //   if (!prev.includes(path.join("-"))) {
     //     return [...prev, path.join("-")];
     //   }
     //   return prev;
     // });
+
     setValuesEdited((prev) => { return [...prev, path.join("-")]; });
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
     // console.log("handlechange", editedEntry);
