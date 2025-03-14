@@ -18,7 +18,7 @@ type PaperProps = {
   editedEntry: FullDataType;
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
   unresolvedConflicts: Conflict;
-  setUnresolvedConflicts: React.Dispatch<React.SetStateAction<Conflict>>;
+  setValuesEdited: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export default function EditEntry({
@@ -26,7 +26,7 @@ export default function EditEntry({
   editedEntry,
   setEditedEntry,
   unresolvedConflicts,
-  setUnresolvedConflicts
+  setValuesEdited
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
@@ -50,22 +50,31 @@ export default function EditEntry({
   };
 
   const handleChange = (path: string[], value: string | number) => {
-    console.log("im here?");
-    console.log("path", path);
-    console.log("value", value);
-    console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
+    // console.log("im here?");
+    // console.log("path", path);
+    // console.log("value", value);
+    // console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
+
     // if(path.length === 1) {
     //   const item: string = path[0];
     //   setUnresolvedConflicts((prevConflicts) => {
-    //     if(prevConflicts.redSeverity.length > 0 && prevConflicts.redSeverity.some(conflict => conflict.conflictName === path[0])) {
+    //     if(prevConflicts.redSeverity.length > 0 && prevConflicts.redSeverity.some(conflict => conflict.conflictName === item)) {
     //       return {
     //         ...prevConflicts,
-    //         redSeverity: prevConflicts.redSeverity.filter(conflict => conflict.conflictName !== path[0])
+    //         redSeverity: prevConflicts.redSeverity.filter(conflict => conflict.conflictName !== item)
     //       };
     //     }
     //     return prevConflicts;
     //   });
     // }
+
+    // setValuesEdited((prev) => {
+    //   if (!prev.includes(path.join("-"))) {
+    //     return [...prev, path.join("-")];
+    //   }
+    //   return prev;
+    // });
+    setValuesEdited((prev) => { return [...prev, path.join("-")]; });
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
     // console.log("handlechange", editedEntry);
   };

@@ -56,6 +56,7 @@ export default function EntrySliver({
       return { id: index } as FullDataType;
     }
   });
+  const [valuesEdited, setValuesEdited] = useState<string[]>([]);
   const [authors, setAuthors] = useState<AuthorData[]>(
     tableEntries[index]?.authors ?? []
   );
@@ -144,7 +145,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-sees-${testIndex}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -154,13 +155,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-sees-${testIndex}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-sees-${testIndex}-${key}`,
               2
             );
           }
@@ -208,7 +209,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-dds-${testIndex}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -218,13 +219,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-dds-${testIndex}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-dds-${testIndex}-${key}`,
               2
             );
           }
@@ -273,7 +274,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-tids-${testIndex}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -283,13 +284,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-tids-${testIndex}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-tids-${testIndex}-${key}`,
               2
             );
           }
@@ -374,18 +375,18 @@ export default function EntrySliver({
               ...updatedParts[partIndex],
               [typesafeKey]: parts_1,
             };
-            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
           } else if (parts_2 === parts_3) {
             updatedParts[partIndex] = {
               ...updatedParts[partIndex],
               [typesafeKey]: parts_2,
             };
-            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
           } else {
             console.log("parts_1", parts_1);
             console.log("parts_2", parts_2);
             console.log("parts_3", parts_3);
-            addConflict2(updatedConflicts, `${partIndex}-${key}`, 2);
+            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 2);
           }
         });
       });
@@ -535,6 +536,8 @@ export default function EntrySliver({
       redSeverity: [],
     };
     Object.entries(editedEntry).forEach(([key, value]) => {
+      // console.log("key", key);
+      // console.log("value", value);
       const newconflict: SingleConflict = { conflictName: key, isResolved: false};
       if (typeof value === "string") {
         if (value.toString() === "") {
@@ -550,10 +553,25 @@ export default function EntrySliver({
         }
       }
     });
-    console.log("updatedConflicts", updatedConflicts);
-    const rconflicts: string[] = updatedConflicts.redSeverity.map((conflict) => { return conflict.conflictName; });
+    // console.log("updatedConflicts", updatedConflicts);
+    const combinedConflicts: Conflict = {
+      yellowSeverity: [
+        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !conflict.isResolved)),
+        ...updatedConflicts.yellowSeverity,
+      ],
+      redSeverity: [
+        ...(unresolvedConflicts.redSeverity.filter((conflict) => !conflict.isResolved)),
+        ...updatedConflicts.redSeverity,
+      ],
+    }
+    console.log('valuesEdited', valuesEdited);
+    console.log('combinedConflicts', combinedConflicts);
+    const rconflicts: string[] = combinedConflicts.redSeverity.map((conflict) => { return conflict.conflictName; });
     setRedConflict(index, rconflicts);
-    setUnresolvedConflicts(updatedConflicts);
+    console.log('unresolve conflicts in handleSave', unresolvedConflicts);
+    setUnresolvedConflicts(combinedConflicts);
+    console.log('unresolve conflicts in handleSave', unresolvedConflicts);
+
 
     setOpen(false);
   };
@@ -660,7 +678,7 @@ export default function EntrySliver({
                     editedEntry={editedEntry}
                     setEditedEntry={setEditedEntry}
                     unresolvedConflicts={unresolvedConflicts}
-                    setUnresolvedConflicts={setUnresolvedConflicts}
+                    setValuesEdited={setValuesEdited}
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>
