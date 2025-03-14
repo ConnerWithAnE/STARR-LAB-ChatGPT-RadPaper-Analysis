@@ -16,7 +16,7 @@ export const mockFullDataTypePasses: FullDataType[] = [
     authors: [
       {
         id: 0,
-        name: "Mickey McKay",
+        name: "Mickey McKafee",
       },
       {
         id: 1,
@@ -100,7 +100,7 @@ export const mockFullDataTypePasses: FullDataType[] = [
     authors: [
       {
         id: 0,
-        name: "Mickey McKay",
+        name: "Mickey McKane",
       },
       {
         id: 1,

@@ -392,6 +392,10 @@ export default function EntrySliver({
       return updatedParts;
     };
 
+    // const compareAuthors = {
+      
+    // }
+
     //console.log("passes", passes);
 
     Object.entries(passes.pass_1).map(([key]) => {
@@ -407,6 +411,42 @@ export default function EntrySliver({
       }
 
       if (typesafeKey === "authors") {
+        if (Array.isArray(pass_1) && Array.isArray(pass_2) && Array.isArray(pass_3)) {
+          pass_1.forEach((author, i) => {
+            if (pass_2 && pass_3) {
+              const authorName1 = author.name;
+              const authorName2 = (pass_2 as AuthorData[])[i].name;
+              const authorName3 = (pass_3 as AuthorData[])[i].name;
+              console.log("pass 1 authors", (pass_1 as AuthorData[]));
+              if(authorName1 == authorName2 && authorName1 == authorName3 && authorName2 == authorName3) {
+                updatedEntry = {
+                  ...updatedEntry,
+                  //[typesafeKey]: passes.pass_1[typesafeKey],
+                  authors: [...authors, (pass_1 as AuthorData[])[i]],
+                };
+              }
+              else if (authorName1 == authorName2 || authorName1 == authorName3) {
+                updatedEntry = {
+                  ...updatedEntry,
+                  //[typesafeKey]: passes.pass_1[typesafeKey],
+                  authors: [...authors, (pass_1 as AuthorData[])[i]],
+                };
+                addConflict2(updatedConflicts, "authors-" + i, 1);
+              }
+              else if(authorName2 == authorName3) {
+                updatedEntry = {
+                  ...updatedEntry,
+                  // [typesafeKey]: passes.pass_2[typesafeKey],
+                  authors: [...authors, (pass_2 as AuthorData[])[i]],
+                };
+                addConflict2(updatedConflicts, "authors-" + i, 1);
+              }
+              else {
+                addConflict2(updatedConflicts, "authors-" + i, 2);
+              }
+            }
+          });
+        }
         pass_1 = JSON.stringify(pass_1);
         pass_2 = JSON.stringify(pass_2);
         pass_3 = JSON.stringify(pass_3);
@@ -427,7 +467,8 @@ export default function EntrySliver({
       }
 
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
-      if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
+      if(typesafeKey === "authors") {}
+      else if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
@@ -626,6 +667,7 @@ export default function EntrySliver({
                     editedEntry={editedEntry}
                     setEditedEntry={setEditedEntry}
                     unresolvedConflicts={unresolvedConflicts}
+                    setUnresolvedConflicts={setUnresolvedConflicts}
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>

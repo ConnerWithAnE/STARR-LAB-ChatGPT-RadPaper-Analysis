@@ -18,6 +18,7 @@ type PaperProps = {
   editedEntry: FullDataType;
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
   unresolvedConflicts: Conflict;
+  setUnresolvedConflicts: React.Dispatch<React.SetStateAction<Conflict>>;
 };
 
 export default function EditEntry({
@@ -25,13 +26,14 @@ export default function EditEntry({
   editedEntry,
   setEditedEntry,
   unresolvedConflicts,
+  setUnresolvedConflicts
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
 
   useEffect(() => {
     console.log("editedEntry", editedEntry);
-  }, []);
+  }, [editedEntry]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
@@ -51,6 +53,19 @@ export default function EditEntry({
     console.log("im here?");
     console.log("path", path);
     console.log("value", value);
+    console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
+    // if(path.length === 1) {
+    //   const item: string = path[0];
+    //   setUnresolvedConflicts((prevConflicts) => {
+    //     if(prevConflicts.redSeverity.length > 0 && prevConflicts.redSeverity.some(conflict => conflict.conflictName === path[0])) {
+    //       return {
+    //         ...prevConflicts,
+    //         redSeverity: prevConflicts.redSeverity.filter(conflict => conflict.conflictName !== path[0])
+    //       };
+    //     }
+    //     return prevConflicts;
+    //   });
+    // }
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
     // console.log("handlechange", editedEntry);
   };
@@ -58,7 +73,7 @@ export default function EditEntry({
   const renderAuthors = (authors: AuthorData[]) => {
     return authors.map((author, i) => {
       const pass_2 = passes.pass_2.authors?.[i]?.name ?? {};
-      const pass_3 = passes.pass_2.authors?.[i]?.name ?? {};
+      const pass_3 = passes.pass_3.authors?.[i]?.name ?? {};
       return (
         <RenderPass
           passes={{
@@ -66,7 +81,7 @@ export default function EditEntry({
             pass_2: pass_2,
             pass_3: pass_3,
           }}
-          currentEntry={editedEntry?.authors?.[i]?.name ?? ""}
+          currentEntry={editedEntry?.authors?.find((auth) => auth.id === i)?.name ?? ""}
           handleChange={(name, value) => {
             handleChange(["authors", i.toString(), name], value);
           }}
