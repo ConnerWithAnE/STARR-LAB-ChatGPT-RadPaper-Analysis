@@ -8,7 +8,6 @@ import {
   SEEData,
   DDData,
   AuthorData,
-  SingleConflict,
 } from "../../types/types";
 import {
   Modal,
@@ -95,13 +94,13 @@ export default function EntrySliver({
       dataType: string,
       severity: Severity
     ) => {
-      const newconflict: SingleConflict = { conflictName: dataType, isResolved: false };
+      //const newconflict: SingleConflict = { conflictName: dataType, isResolved: false };
       switch (severity) {
         case 1:
-          currentConflicts.yellowSeverity.push(newconflict);
+          currentConflicts.yellowSeverity.push(dataType);
           break;
         case 2:
-          currentConflicts.redSeverity.push(newconflict);
+          currentConflicts.redSeverity.push(dataType);
           break;
       }
     };
@@ -494,8 +493,7 @@ export default function EntrySliver({
     addEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
-      const rconflicts: string[] = updatedConflicts.redSeverity.map((conflict) => { return conflict.conflictName; });
-      setRedConflict(index, rconflicts);
+      setRedConflict(index, updatedConflicts.redSeverity);
     }
 
     // this is to handle cases where an entry has not been added to the overall list of edited entries
@@ -525,7 +523,6 @@ export default function EntrySliver({
     updateEntry(index, editedEntry);
     let updatedAuthors: AuthorData[] = [];
     for(let i = 0; i < authors.length; i++) {
-      console.log(i, "author: ", authors[i], editedEntry.authors?.[i]);
       if(editedEntry.authors?.[i]) {
         updatedAuthors.push(editedEntry.authors[i]);
       }
@@ -548,36 +545,34 @@ export default function EntrySliver({
       redSeverity: [],
     };
     Object.entries(editedEntry).forEach(([key, value]) => {
-      const newconflict: SingleConflict = { conflictName: key, isResolved: false};
       if (typeof value === "string") {
         if (value.toString() === "") {
-          updatedConflicts.redSeverity.push(newconflict);
+          updatedConflicts.redSeverity.push(key);
         }
       } else if (typeof value === "number") {
         if (isNaN(value)) {
-          updatedConflicts.redSeverity.push(newconflict);
+          updatedConflicts.redSeverity.push(key);
         }
       } else {
         if (value.length === 0) {
-          updatedConflicts.redSeverity.push(newconflict);
+          updatedConflicts.redSeverity.push(key);
         }
       }
     });
     // console.log("updatedConflicts", updatedConflicts);
     const combinedConflicts: Conflict = {
       yellowSeverity: [
-        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict.conflictName))),
+        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict))),
         ...updatedConflicts.yellowSeverity,
       ],
       redSeverity: [
-        ...(unresolvedConflicts.redSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict.conflictName))),
+        ...(unresolvedConflicts.redSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict))),
         ...updatedConflicts.redSeverity,
       ],
     }
     // console.log('valuesEdited', valuesEdited);
     // console.log('combinedConflicts', combinedConflicts);
-    const rconflicts: string[] = combinedConflicts.redSeverity.map((conflict) => { return conflict.conflictName; });
-    setRedConflict(index, rconflicts);
+    setRedConflict(index, combinedConflicts.redSeverity);
     setUnresolvedConflicts(combinedConflicts);
 
     setValuesEdited([]);      // Clear the values edited.

@@ -180,14 +180,9 @@ function isTesting(data: unknown): data is Testing {
   return data === "SEE" || data === "TID" || data === "DD" || data === "OTHER";
 }
 
-export type SingleConflict = {
-  conflictName: string;
-  isResolved: boolean;
-};
-
 export type Conflict = {
-  yellowSeverity: SingleConflict[];
-  redSeverity: SingleConflict[];
+  yellowSeverity: string[];
+  redSeverity: string[];
 };
 
 export function hasEmptyProperty(obj: FullDataType): boolean {
