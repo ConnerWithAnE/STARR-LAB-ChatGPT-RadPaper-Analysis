@@ -39,7 +39,7 @@ export type PartData = {
 
 export type TIDData = {
   id?: number;
-  source?: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays";
+  source?: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
   data_type?: number;
   max_fluence?: number;
   energy?: number;
@@ -59,7 +59,12 @@ export type TIDData = {
 
 export type SEEData = {
   id?: number;
-  source?: "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron";
+  source?: | "Heavy ions"
+  | "Protons"
+  | "Laser"
+  | "Neutron"
+  | "Electron"
+  | "X-rays";
   type?:
     | "Single Event Upset"
     | "Single Event Transient"

@@ -55,6 +55,7 @@ export default function EntrySliver({
       return { id: index } as FullDataType;
     }
   });
+  const [valuesEdited, setValuesEdited] = useState<string[]>([]);   // To keep track of the values edited in the entry
   const [authors, setAuthors] = useState<AuthorData[]>(
     tableEntries[index]?.authors ?? []
   );
@@ -93,6 +94,7 @@ export default function EntrySliver({
       dataType: string,
       severity: Severity
     ) => {
+      //const newconflict: SingleConflict = { conflictName: dataType, isResolved: false };
       switch (severity) {
         case 1:
           currentConflicts.yellowSeverity.push(dataType);
@@ -142,7 +144,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-sees-${testIndex}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -152,13 +154,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-sees-${testIndex}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-sees-${testIndex}-${key}`,
               2
             );
           }
@@ -206,7 +208,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-dds-${testIndex}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -216,13 +218,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-dds-${testIndex}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-dds-${testIndex}-${key}`,
               2
             );
           }
@@ -271,7 +273,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-tids-${testIndex}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -281,13 +283,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-tids-${testIndex}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `${partIndex}-${testIndex}-${key}`,
+              `parts-${partIndex}-tids-${testIndex}-${key}`,
               2
             );
           }
@@ -372,25 +374,56 @@ export default function EntrySliver({
               ...updatedParts[partIndex],
               [typesafeKey]: parts_1,
             };
-            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
           } else if (parts_2 === parts_3) {
             updatedParts[partIndex] = {
               ...updatedParts[partIndex],
               [typesafeKey]: parts_2,
             };
-            addConflict2(updatedConflicts, `${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
           } else {
             console.log("parts_1", parts_1);
             console.log("parts_2", parts_2);
             console.log("parts_3", parts_3);
-            addConflict2(updatedConflicts, `${partIndex}-${key}`, 2);
+            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 2);
           }
         });
       });
       return updatedParts;
     };
 
-    //console.log("passes", passes);
+    const compareAuthorPasses = (
+      pass_1: AuthorData[] | undefined,
+      pass_2: AuthorData[] | undefined,
+      pass_3: AuthorData[] | undefined
+    ): AuthorData[] => {
+      if (Array.isArray(pass_1) && Array.isArray(pass_2) && Array.isArray(pass_3)) {
+        let authorsPresent: AuthorData[] = [];
+        pass_1.forEach((author, i) => {
+          if (pass_2 && pass_3) {
+            const authorName1 = author.name;
+            const authorName2 = (pass_2 as AuthorData[])[i].name;
+            const authorName3 = (pass_3 as AuthorData[])[i].name;
+            if(authorName1 == authorName2 && authorName1 == authorName3 && authorName2 == authorName3) {
+              authorsPresent[i] = (pass_1 as AuthorData[])[i];
+            }
+            else if (authorName1 == authorName2 || authorName1 == authorName3) {
+              authorsPresent[i] = (pass_1 as AuthorData[])[i];
+              addConflict2(updatedConflicts, `authors-${i}-name`, 1);
+            }
+            else if(authorName2 == authorName3) {
+              authorsPresent[i] = (pass_2 as AuthorData[])[i];
+              addConflict2(updatedConflicts, `authors-${i}-name`, 1);
+            }
+            else {
+              addConflict2(updatedConflicts, `authors-${i}-name`, 2);
+            }
+          }
+        });
+        return authorsPresent;
+      }
+      return [];
+    }
 
     Object.entries(passes.pass_1).map(([key]) => {
       type fullDataTypeKey = keyof typeof passes.pass_1;
@@ -403,12 +436,7 @@ export default function EntrySliver({
       if (editedEntry[typesafeKey] !== undefined) {
         return;
       }
-
-      if (typesafeKey === "authors") {
-        pass_1 = JSON.stringify(pass_1);
-        pass_2 = JSON.stringify(pass_2);
-        pass_3 = JSON.stringify(pass_3);
-      }
+      // Compare the part information in the passes
       if (typesafeKey === "parts") {
         if (
           Array.isArray(pass_1) &&
@@ -424,13 +452,22 @@ export default function EntrySliver({
         }
       }
 
+      // If comparing authors, call function to compare and set conflicts
+      if(typesafeKey === "authors") {
+        let resultAuthors = compareAuthorPasses(pass_1 as AuthorData[], pass_2 as AuthorData[], pass_3 as AuthorData[]);
+        if(resultAuthors.length > 0) {
+          updatedEntry = {
+            ...updatedEntry,
+            [typesafeKey]: resultAuthors,
+          };
+        }
+      }
       // if all 3 entries are equal, enter the first one since it doesn't matter which one is set
-      if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
+      else if (pass_1 === pass_2 && pass_1 === pass_3 && pass_2 === pass_3) {
         updatedEntry = {
           ...updatedEntry,
           [typesafeKey]: passes.pass_1[typesafeKey],
         };
-        console.log("updatedEntry", updatedEntry);
       }
       // if only 2 out of 3 entries are equal
       else if (pass_1 === pass_2 || pass_1 === pass_3) {
@@ -449,11 +486,10 @@ export default function EntrySliver({
         addConflict2(updatedConflicts, key, 2);
       }
     });
-
     console.log("updatedEntry", updatedEntry);
 
     setEditedEntry(updatedEntry);
-    setAuthors(() => [...(updatedEntry.authors ?? [])]);
+    setAuthors(updatedEntry.authors ?? []);
     addEntry(updatedEntry);
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
@@ -485,12 +521,23 @@ export default function EntrySliver({
 
   const handleSave = () => {
     updateEntry(index, editedEntry);
-    setAuthors((prev) =>
-      prev.map((author, i) => ({
-        ...author,
-        name: editedEntry?.authors?.[i]?.name ?? author.name,
-      }))
-    );
+    let updatedAuthors: AuthorData[] = [];
+    for(let i = 0; i < authors.length; i++) {
+      if(editedEntry.authors?.[i]) {
+        updatedAuthors.push(editedEntry.authors[i]);
+      }
+      else {
+        updatedAuthors.push(authors[i]);
+      }
+    }
+    setAuthors(updatedAuthors);
+
+    // setAuthors((prev) =>
+    //   prev.map((author, i) => ({
+    //     ...author,
+    //     name: editedEntry?.authors?.[i]?.name ?? author.name,
+    //   }))
+    // );
 
     console.log("editedEntry in handleSave", editedEntry);
     const updatedConflicts: Conflict = {
@@ -512,9 +559,23 @@ export default function EntrySliver({
         }
       }
     });
-    console.log("updatedConflicts", updatedConflicts);
-    setRedConflict(index, updatedConflicts.redSeverity);
-    setUnresolvedConflicts(updatedConflicts);
+    // console.log("updatedConflicts", updatedConflicts);
+    const combinedConflicts: Conflict = {
+      yellowSeverity: [
+        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !valuesEdited.includes(conflict))),
+        ...updatedConflicts.yellowSeverity,
+      ],
+      redSeverity: [
+        ...(unresolvedConflicts.redSeverity.filter((conflict) => !valuesEdited.includes(conflict))),
+        ...updatedConflicts.redSeverity,
+      ],
+    }
+    // console.log('valuesEdited', valuesEdited);
+    // console.log('combinedConflicts', combinedConflicts);
+    setRedConflict(index, combinedConflicts.redSeverity);
+    setUnresolvedConflicts(combinedConflicts);
+
+    setValuesEdited([]);      // Clear the values edited.
 
     setOpen(false);
   };
@@ -533,7 +594,7 @@ export default function EntrySliver({
           {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {authors?.map((author) => (author.name ? author.name + ", " : ""))}
+          {authors?.map((author) => (author?.name ? author.name + ", " : ""))}
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">
@@ -621,6 +682,7 @@ export default function EntrySliver({
                     editedEntry={editedEntry}
                     setEditedEntry={setEditedEntry}
                     unresolvedConflicts={unresolvedConflicts}
+                    setValuesEdited={setValuesEdited}
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>

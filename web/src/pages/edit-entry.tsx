@@ -18,6 +18,7 @@ type PaperProps = {
   editedEntry: FullDataType;
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
   unresolvedConflicts: Conflict;
+  setValuesEdited: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export default function EditEntry({
@@ -25,13 +26,14 @@ export default function EditEntry({
   editedEntry,
   setEditedEntry,
   unresolvedConflicts,
+  setValuesEdited
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
 
   useEffect(() => {
     console.log("editedEntry", editedEntry);
-  }, []);
+  }, [editedEntry]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
@@ -48,9 +50,20 @@ export default function EditEntry({
   };
 
   const handleChange = (path: string[], value: string | number) => {
-    console.log("im here?");
-    console.log("path", path);
-    console.log("value", value);
+    // console.log("im here?");
+    // console.log("path", path);
+    // console.log("value", value);
+    // console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
+
+    /* POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory */
+    // setValuesEdited((prev) => {
+    //   if (!prev.includes(path.join("-"))) {
+    //     return [...prev, path.join("-")];
+    //   }
+    //   return prev;
+    // });
+
+    setValuesEdited((prev) => { return [...prev, path.join("-")]; });
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
     // console.log("handlechange", editedEntry);
   };
@@ -58,7 +71,7 @@ export default function EditEntry({
   const renderAuthors = (authors: AuthorData[]) => {
     return authors.map((author, i) => {
       const pass_2 = passes.pass_2.authors?.[i]?.name ?? {};
-      const pass_3 = passes.pass_2.authors?.[i]?.name ?? {};
+      const pass_3 = passes.pass_3.authors?.[i]?.name ?? {};
       return (
         <RenderPass
           passes={{
@@ -66,7 +79,7 @@ export default function EditEntry({
             pass_2: pass_2,
             pass_3: pass_3,
           }}
-          currentEntry={editedEntry?.authors?.[i]?.name ?? ""}
+          currentEntry = {editedEntry?.authors?.[i]?.name ?? ""}
           handleChange={(name, value) => {
             handleChange(["authors", i.toString(), name], value);
           }}
