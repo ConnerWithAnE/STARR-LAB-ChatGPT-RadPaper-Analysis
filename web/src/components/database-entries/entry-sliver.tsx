@@ -562,11 +562,11 @@ export default function EntrySliver({
     // console.log("updatedConflicts", updatedConflicts);
     const combinedConflicts: Conflict = {
       yellowSeverity: [
-        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict))),
+        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !valuesEdited.includes(conflict))),
         ...updatedConflicts.yellowSeverity,
       ],
       redSeverity: [
-        ...(unresolvedConflicts.redSeverity.filter((conflict) => !valuesEdited.some((value) => value === conflict))),
+        ...(unresolvedConflicts.redSeverity.filter((conflict) => !valuesEdited.includes(conflict))),
         ...updatedConflicts.redSeverity,
       ],
     }
@@ -594,7 +594,7 @@ export default function EntrySliver({
           {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
-          {authors?.map((author) => (author.name ? author.name + ", " : ""))}
+          {authors?.map((author) => (author?.name ? author.name + ", " : ""))}
         </div>
       </div>
       <div className="col-span-2 flex flex-col gap-2">
