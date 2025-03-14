@@ -55,7 +55,7 @@ export default function EditEntry({
     // console.log("value", value);
     // console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
 
-    // POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory
+    /* POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory */
     // setValuesEdited((prev) => {
     //   if (!prev.includes(path.join("-"))) {
     //     return [...prev, path.join("-")];

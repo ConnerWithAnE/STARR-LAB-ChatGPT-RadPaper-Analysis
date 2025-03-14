@@ -56,7 +56,7 @@ export default function EntrySliver({
       return { id: index } as FullDataType;
     }
   });
-  const [valuesEdited, setValuesEdited] = useState<string[]>([]);
+  const [valuesEdited, setValuesEdited] = useState<string[]>([]);   // To keep track of the values edited in the entry
   const [authors, setAuthors] = useState<AuthorData[]>(
     tableEntries[index]?.authors ?? []
   );
@@ -393,7 +393,7 @@ export default function EntrySliver({
       return updatedParts;
     };
 
-    const setAuthorConflicts = (
+    const compareAuthorPasses = (
       pass_1: AuthorData[] | undefined,
       pass_2: AuthorData[] | undefined,
       pass_3: AuthorData[] | undefined
@@ -455,7 +455,7 @@ export default function EntrySliver({
 
       // If comparing authors, call function to compare and set conflicts
       if(typesafeKey === "authors") {
-        let resultAuthors = setAuthorConflicts(pass_1 as AuthorData[], pass_2 as AuthorData[], pass_3 as AuthorData[]);
+        let resultAuthors = compareAuthorPasses(pass_1 as AuthorData[], pass_2 as AuthorData[], pass_3 as AuthorData[]);
         if(resultAuthors.length > 0) {
           updatedEntry = {
             ...updatedEntry,
@@ -523,12 +523,24 @@ export default function EntrySliver({
 
   const handleSave = () => {
     updateEntry(index, editedEntry);
-    setAuthors((prev) =>
-      prev.map((author, i) => ({
-        ...author,
-        name: editedEntry?.authors?.[i]?.name ?? author.name,
-      }))
-    );
+    let updatedAuthors: AuthorData[] = [];
+    for(let i = 0; i < authors.length; i++) {
+      console.log(i, "author: ", authors[i], editedEntry.authors?.[i]);
+      if(editedEntry.authors?.[i]) {
+        updatedAuthors.push(editedEntry.authors[i]);
+      }
+      else {
+        updatedAuthors.push(authors[i]);
+      }
+    }
+    setAuthors(updatedAuthors);
+
+    // setAuthors((prev) =>
+    //   prev.map((author, i) => ({
+    //     ...author,
+    //     name: editedEntry?.authors?.[i]?.name ?? author.name,
+    //   }))
+    // );
 
     console.log("editedEntry in handleSave", editedEntry);
     const updatedConflicts: Conflict = {
@@ -536,8 +548,6 @@ export default function EntrySliver({
       redSeverity: [],
     };
     Object.entries(editedEntry).forEach(([key, value]) => {
-      // console.log("key", key);
-      // console.log("value", value);
       const newconflict: SingleConflict = { conflictName: key, isResolved: false};
       if (typeof value === "string") {
         if (value.toString() === "") {
@@ -564,14 +574,13 @@ export default function EntrySliver({
         ...updatedConflicts.redSeverity,
       ],
     }
-    console.log('valuesEdited', valuesEdited);
-    console.log('combinedConflicts', combinedConflicts);
+    // console.log('valuesEdited', valuesEdited);
+    // console.log('combinedConflicts', combinedConflicts);
     const rconflicts: string[] = combinedConflicts.redSeverity.map((conflict) => { return conflict.conflictName; });
     setRedConflict(index, rconflicts);
-    console.log('unresolve conflicts in handleSave', unresolvedConflicts);
     setUnresolvedConflicts(combinedConflicts);
-    console.log('unresolve conflicts in handleSave', unresolvedConflicts);
 
+    setValuesEdited([]);      // Clear the values edited.
 
     setOpen(false);
   };
