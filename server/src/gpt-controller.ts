@@ -34,7 +34,7 @@ export class GPTController {
           "Imagine you are a radiation-effects specialist for electronic components. You are well versed in the lingo, and the methodologies for testing devices. Take the paper, parse it, and then return me the data I request in the format I provide. Return in a JSON format and do not include any extra explanations",
         model: "gpt-4o",
         tools: [{ type: "file_search" }],
-        temperature: 0.15,
+        temperature: 0.1,
       });
 
       console.log(`Assistant created! Assistant ID: ${assistant.id}`);
