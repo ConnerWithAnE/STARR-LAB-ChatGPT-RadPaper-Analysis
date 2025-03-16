@@ -34,7 +34,7 @@ export class GPTController {
           "Imagine you are a radiation-effects specialist for electronic components. You are well versed in the lingo, and the methodologies for testing devices. Take the paper, parse it, and then return me the data I request in the format I provide. Return in a JSON format and do not include any extra explanations",
         model: "gpt-4o",
         tools: [{ type: "file_search" }],
-        temperature: 0.15,
+        temperature: 0.1,
       });
 
       console.log(`Assistant created! Assistant ID: ${assistant.id}`);
@@ -190,7 +190,7 @@ export class GPTController {
    *
    * Adds a message to the ChatGPT thread and runs it.
    * This collects all of the paper metadata
-   * 
+   *
    * Parameters are given in a named object form
    *
    * @param assistantId the id of the chatgpt assistant to use
@@ -223,7 +223,7 @@ export class GPTController {
    *
    * Gets the initia part data and returns it as a list of Partial<ai_part> objects.
    * These contain info like the part name, type and manufacturer
-   * 
+   *
    * Parameters are given in a named object form
    *
    * @param assistantId the id of the chatgpt assistant to use
@@ -259,7 +259,7 @@ export class GPTController {
   /**
    *
    * Parameters are given in a named object form
-   * 
+   *
    * @param assistantId the id of the chatgpt assistant to use
    * @param fileId the id of the file to search (file must have been already uploaded)
    * @param threadId the id of the thread to run (must already exist)
@@ -290,14 +290,13 @@ export class GPTController {
         `Getting Prelim data for part ${part.device_name} File ID: ${fileId} (Thread ID: ${threadId})`,
       );
       const partRun = await this.runThread(threadId, assistantId);
+      console.log(partRun)
       partTests.push({
         ...part,
-        preliminary_test_data: partRun.map((data: PreliminaryTestData) => ({
-          ...data,
-          seeData: data.seeData || [],
-          tidData: data.tidData || [],
-          ddData: data.ddData || [],
-        })),
+        preliminary_test_types: partRun.map((data: string) => data),
+        seeData: [],
+        tidData: [],
+        ddData: []
       } as ai_part);
     }
     console.log(
@@ -310,7 +309,7 @@ export class GPTController {
    *
    * Get the test results related to specific tests
    * i.e. SEE, TID, or DD
-   * 
+   *
    *
    * Parameters are given in a named object form
    *
@@ -332,8 +331,8 @@ export class GPTController {
     parts: ai_part[];
   }): Promise<ai_part[]> {
     for (const part of parts) {
-      for (const test of part.preliminary_test_data) {
-        if (test.testing_type === "SEE") {
+      for (const test of part.preliminary_test_types) {
+        if (test === "SEE") {
           await this.addMessage(
             threadId,
             fileId,
@@ -342,23 +341,23 @@ export class GPTController {
           console.log(
             `Getting Specifc Data for Part ${part.device_name} File ID: ${fileId} (Thread ID: ${threadId})`,
           );
-          test.seeData.push(await this.runThread(threadId, assistantId));
-        } else if (test.testing_type === "TID") {
+          part.seeData.push(await this.runThread(threadId, assistantId));
+        } else if (test === "TID") {
           await this.addMessage(
             threadId,
             fileId,
             `You are to only look for data related to this part ${part.device_name}, ${questions.tidData.prompt}`,
           );
-          test.tidData.push(await this.runThread(threadId, assistantId));
-        } else if (test.testing_type === "DD") {
+          part.tidData.push(await this.runThread(threadId, assistantId));
+        } else if (test === "DD") {
           await this.addMessage(
             threadId,
             fileId,
             `You are to only look for data related to this part ${part.device_name}, ${questions.ddData.prompt}`,
           );
-          test.ddData.push(await this.runThread(threadId, assistantId));
+          part.ddData.push(await this.runThread(threadId, assistantId));
         } else {
-          console.log("Passing", test.testing_type);
+          console.log("Passing", test);
         }
       }
     }

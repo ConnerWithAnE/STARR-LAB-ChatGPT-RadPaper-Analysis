@@ -93,16 +93,18 @@ export const questions = {
   },
   testingConditions: {
     prompt: `Describe the type of radiation testing that was conducted.:
-        - Type of testing performed (ONLY ONE OF [ TID, SEE, DD])
+
+        This testing will be either TID SEE(General) OR DD
+        You may ONLY return types TID, SEE or DD for this step
       
-        There might be more than one test for the given part, if that is the case return a list of tests pertaining to the part
+        There might be more than one test for the given part, return a list of different test types, if two tests of the same type are found create two entries, for one each
 
         Return the response as a **valid JSON object** with the following structure:
 
-        {
-            "testing_type": "TID | SEE | DD",
+        [
+            "TID | SEE | DD"
            
-        }
+        ]
             
         Return only valid JSON with no extra text.`,
     schenma: {
