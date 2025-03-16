@@ -97,8 +97,13 @@ export type ai_part = {
   component_type: string;
   manufacturer: string;
   other_details: string;
-  preliminary_test_data: PreliminaryTestData[];
+  preliminary_test_types: PreliminaryTestType[];
+  tidData: TIDDataType[];
+  seeData: SEEDataType[];
+  ddData: DDDataType[];
 };
+
+export type PreliminaryTestType = "SEE" | "TID" | "DD" | string;
 
 export type PreliminaryTestData = {
   testing_type: "SEE" | "TID" | "DD" | null;

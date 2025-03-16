@@ -1,76 +1,121 @@
 {
+    "paper": {
+        "paper_name": "SEE In-Flight Data for Two Static 32KB Memories on High Earth Orbit",
+        "year": 2002,
+        "authors": [
+            {
+                "name": "S. Duzellier"
+            },
+            {
+                "name": "S. Bourdarie"
+            },
+            {
+                "name": "R. Velazco"
+            },
+            {
+                "name": "B. Nicolescu"
+            },
+            {
+                "name": "R. Ecoffet"
+            }
+        ],
+        "objective": "The main objective of the paper is to present the detailed analysis of in-flight data obtained from two 32KB SRAMs in the MPTB orbit, focusing on the performance, reliability, and survivability of these devices in the space radiation environment over a four-year period."
+    },
     "parts": [
         {
             "device_name": "HM62256",
             "component_type": "SRAM",
             "manufacturer": "Hitachi",
-            "other_details": "32KB memory used for SEE detection, entire device operated for SEE detection, tested using Ram Static Test method"
+            "other_details": "Entirely tested using Ram Static Test method. Exhibited stuck bits during solar events.",
+            "preliminary_test_types": [
+                "SEE",
+                "TID"
+            ],
+            "seeData": [
+                {
+                    "max_fluence": 0.0000025,
+                    "energy_levels": "Proton Threshold: 10 MeV, Heavy Ion Threshold: 1.7 MeV/mg.cm²",
+                    "facility_name": "MPTB orbit",
+                    "environmental_conditions": "High latitude and altitude, during solar events",
+                    "terrestrial": false,
+                    "in_flight": true,
+                    "source": "Protons",
+                    "see_type": "SEU",
+                    "amplitude": 60,
+                    "duration": 1,
+                    "cross_section_saturation": 5.4e-13,
+                    "cross_section_threshold": 1.7,
+                    "cross_section_type": "cm²/bit",
+                    "special_notes": "Stuck bits correlated to solar events indicating heavy ions presence"
+                }
+            ],
+            "tidData": [
+                {
+                    "max_fluence": 0.0000025,
+                    "energy_levels": "Proton Threshold: 10 MeV, Heavy Ion Threshold: 1.7 MeV/mg.cm²",
+                    "facility_name": "MPTB orbit",
+                    "environmental_conditions": "High latitude and altitude, during solar events",
+                    "terrestrial": false,
+                    "in_flight": true,
+                    "source": "Protons",
+                    "max_tid": 0.0000048,
+                    "dose_rate": 0.0000016,
+                    "eldrs_observed": false,
+                    "dose_to_failure": 365,
+                    "increased_power_usage": true,
+                    "power_usage_description": "Increased during solar events",
+                    "current_leakage": 0.0001,
+                    "failing_time": "Few hours to almost a month",
+                    "special_notes": "Stuck bits correlated to solar events indicating heavy ions presence"
+                }
+            ],
+            "ddData": []
         },
         {
             "device_name": "HM65756",
             "component_type": "SRAM",
             "manufacturer": "Matra-MHS",
-            "other_details": "32KB memory used for storage of T225 process workspaces and data, partly tested using CRC and RST methods"
+            "other_details": "Partly tested using both Cyclic Redundancy Checksum and Ram Static Test methods. Used for storage of T225 process workspaces and data.",
+            "preliminary_test_types": [
+                "SEE",
+                "SEE"
+            ],
+            "seeData": [
+                {
+                    "max_fluence": 0.0000028,
+                    "energy_levels": "Proton Threshold: 5 MeV, Heavy Ion Threshold: 0.1 MeV/mg.cm²",
+                    "facility_name": "MPTB orbit",
+                    "environmental_conditions": "High latitude and altitude, during solar events",
+                    "terrestrial": false,
+                    "in_flight": true,
+                    "source": "Protons",
+                    "see_type": "SEU",
+                    "amplitude": 60,
+                    "duration": 1,
+                    "cross_section_saturation": 1.2e-12,
+                    "cross_section_threshold": 0.1,
+                    "cross_section_type": "cm²/bit",
+                    "special_notes": "SEU rate increases during solar events, indicating heavy ion presence"
+                },
+                {
+                    "max_fluence": 0.0000028,
+                    "energy_levels": "Proton Threshold: 5 MeV, Heavy Ion Threshold: 0.1 MeV/mg.cm²",
+                    "facility_name": "MPTB orbit",
+                    "environmental_conditions": "High latitude and altitude, during solar events",
+                    "terrestrial": false,
+                    "in_flight": true,
+                    "source": "Protons",
+                    "see_type": "SEU",
+                    "amplitude": 60,
+                    "duration": 1,
+                    "cross_section_saturation": 1.2e-12,
+                    "cross_section_threshold": 0.1,
+                    "cross_section_type": "cm²/bit",
+                    "special_notes": "SEU rate increases during solar events, indicating heavy ion presence"
+                }
+            ],
+            "tidData": [],
+            "ddData": []
         }
-    ],
-    "part_tests": [
-        {
-            "device_name": "HM62256",
-            "testing_type": "SEE",
-            "max_fluence": 10000000,
-            "energy_levels": "Proton: 10 MeV, Heavy Ion: 1.7 MeV/mg.cm²",
-            "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
-            "environmental_conditions": "High Earth Orbit, solar maximum condition",
-            "terrestrial": false,
-            "in_flight": true
-        },
-        {
-            "device_name": "HM65756",
-            "testing_type": "SEE",
-            "max_fluence": 10000000,
-            "energy_levels": "Proton: 5 MeV, Heavy Ion: 0.1 MeV/mg.cm²",
-            "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
-            "environmental_conditions": "High Earth Orbit, solar maximum condition",
-            "terrestrial": false,
-            "in_flight": true
-        }
-    ],
-    "part_specific": {
-        "SEE": [
-            {
-                "max_fluence": 10000000,
-                "energy_levels": "Proton: 10 MeV, Heavy Ion: 1.7 MeV/mg.cm²",
-                "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
-                "environmental_conditions": "High Earth Orbit, solar maximum condition",
-                "terrestrial": false,
-                "in_flight": true,
-                "source": "Protons",
-                "see_type": "SEU",
-                "amplitude": 60,
-                "duration": 1,
-                "cross_section_saturation": 0.0000025,
-                "cross_section_threshold": 1.7,
-                "cross_section_type": "cm²/bit",
-                "special_notes": "Stuck bits observed during solar events, indicating presence of heavy ions"
-            },
-            {
-                "max_fluence": 10000000,
-                "energy_levels": "Proton: 5 MeV, Heavy Ion: 0.1 MeV/mg.cm²",
-                "facility_name": "MPTB (Microelectronics and Photonics Test Bed)",
-                "environmental_conditions": "High Earth Orbit, solar maximum condition",
-                "terrestrial": false,
-                "in_flight": true,
-                "source": "Protons",
-                "see_type": "SEU",
-                "amplitude": 47,
-                "duration": 1,
-                "cross_section_saturation": 0.0000028,
-                "cross_section_threshold": 0.1,
-                "cross_section_type": "cm²/bit",
-                "special_notes": "SEU rate increase observed during solar events, particularly severe during the November 2001 event"
-            }
-        ],
-        "TID": [],
-        "DD": []
-    }
+    ]
 }
