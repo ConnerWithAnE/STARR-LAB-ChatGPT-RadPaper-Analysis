@@ -73,35 +73,35 @@ export default function UploadPage() {
     }
 
     try {
-      // navigate("/upload/edit", {
-      //   state: { resp: mockGPTPasses },
-      // });
-      const response = await fetch(
-        "http://localhost:3000/api/adminRequest/parseRequest",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-        //TODO: populate this with the actual results from the backend
-        navigate("/upload/edit", {
-          state: { resp: result },
-        });
-        setFiles([]);
-      } else {
-        const err_res = await response.json();
-        if (err_res.message) {
-          console.error(`${err_res.message}`);
-        } else {
-          console.error(`Failed to fetch papers: ${response.status}`);
-        }
-      }
+      navigate("/upload/edit", {
+        state: { resp: mockGPTPasses },
+      });
+      // const response = await fetch(
+      //   "http://localhost:3000/api/adminRequest/parseRequest",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //     body: formData,
+      //   }
+      // );
+      // if (response.ok) {
+      //   const result = await response.json();
+      //   console.log(result);
+      //   //TODO: populate this with the actual results from the backend
+      //   navigate("/upload/edit", {
+      //     state: { resp: result },
+      //   });
+      //   setFiles([]);
+      // } else {
+      //   const err_res = await response.json();
+      //   if (err_res.message) {
+      //     console.error(`${err_res.message}`);
+      //   } else {
+      //     console.error(`Failed to fetch papers: ${response.status}`);
+      //   }
+      // }
     } catch (error) {
       console.error(`Error fetching papers: ${error}`);
       throw error;

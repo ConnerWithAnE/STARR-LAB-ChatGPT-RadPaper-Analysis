@@ -1,9 +1,9 @@
 export type FullDataType = {
   id?: number;
-  name?: string;
-  year?: number;
-  authors?: AuthorData[];
-  parts?: PartData[];
+  paper_name: string;
+  year: number;
+  authors: AuthorData[];
+  parts: PartData[];
 };
 
 export type AuthorData = {
@@ -13,14 +13,17 @@ export type AuthorData = {
 
 export type PartData = {
   id?: number;
-  name?: string;
-  type?: string;
-  manufacturer?: string;
-  testing_location?: TestLocation;
+  device_name: string;
+  component_type: string;
+  manufacturer: string;
+  other_details: string;
+  preliminary_test_types: PreliminaryTestType[];
   tids?: TIDData[];
   sees?: SEEData[];
   dds?: DDData[];
 };
+
+export type PreliminaryTestType = "SEE" | "TID" | "DD" | string;
 
 // export type TestData = {
 //   id: number;
@@ -38,64 +41,40 @@ export type PartData = {
 // };
 
 export type TIDData = {
-  id?: number;
-  source?: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
-  data_type?: number;
-  max_fluence?: number;
-  energy?: number;
-  facility?: string;
-  environment?: string;
-  terrestrial?: boolean;
-  flight?: boolean;
-  max_tid?: number;
-  dose_rate?: number;
-  eldrs?: boolean;
-  p_pion?: boolean;
-  dose_to_failure?: number;
-  increased_power_usage?: boolean;
-  power_usage_description?: string;
+  id: number;
+  source: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
+  max_tid: number;
+  dose_rate: number;
+  eldrs: boolean;
+  dose_to_failure: number;
+  increased_power_usage: boolean;
+  power_usage_description: string;
   special_notes?: string;
 };
 
 export type SEEData = {
-  id?: number;
-  source?: | "Heavy ions"
-  | "Protons"
-  | "Laser"
-  | "Neutron"
-  | "Electron"
-  | "X-rays";
-  type?:
-    | "Single Event Upset"
-    | "Single Event Transient"
-    | "Single Event Functional Interrupt"
-    | "Single Event Latch-up"
-    | "Single Event Burnout"
-    | "Single Event Gate Rupture";
-  max_fluence?: number;
-  energy?: number;
-  facility?: string;
-  environment?: string;
-  terrestrial?: boolean;
-  flight?: boolean;
-  amplitude?: number;
-  duration?: number;
-  cross_section?: number;
-  cross_section_type?: string;
+  id: number;
+  source:
+    | "Heavy ions"
+    | "Protons"
+    | "Laser"
+    | "Neutron"
+    | "Electron"
+    | "X-rays";
+  see_type: string;
+  amplitude: number;
+  duration: number;
+  cross_section_saturation: number;
+  cross_section_threshold: number;
+  cross_section_type: string;
   special_notes?: string;
 };
 
 export type DDData = {
-  id?: number;
-  source?: "Protons" | "Neutrons";
-  max_fluence?: number;
-  energy?: number;
-  facility?: string;
-  environment?: string;
-  terrestrial?: boolean;
-  flight?: boolean;
-  damage_level?: number;
-  damage_level_description?: string;
+  id: number;
+  source: "Protons" | "Neutrons";
+  damage_level: number;
+  damage_level_description: string;
   special_notes?: string;
 };
 

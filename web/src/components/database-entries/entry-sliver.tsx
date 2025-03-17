@@ -504,8 +504,8 @@ export default function EntrySliver({
 
   const handleCancel = () => {
     setEditedEntry({
-      paper_name: editedEntry.name,
-      author: editedEntry.authors ?? [],
+      paper_name: editedEntry.paper_name,
+      authors: editedEntry.authors ?? [],
     } as FullDataType);
     setOpen(false);
     setOpenCancelModal(false);
@@ -591,7 +591,7 @@ export default function EntrySliver({
       </div>
       <div className="col-span-3">
         <div className="text-left text-lg text-slate-900">
-          {editedEntry.name}
+          {editedEntry.paper_name}
         </div>
         <div className="text-xs text-left text-slate-900">
           {authors?.map((author) => (author?.name ? author.name + ", " : ""))}
@@ -674,7 +674,7 @@ export default function EntrySliver({
             return (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  {editedEntry?.name ?? ""}
+                  {editedEntry?.paper_name ?? ""}
                 </ModalHeader>
                 <ModalBody>
                   <EditEntry
