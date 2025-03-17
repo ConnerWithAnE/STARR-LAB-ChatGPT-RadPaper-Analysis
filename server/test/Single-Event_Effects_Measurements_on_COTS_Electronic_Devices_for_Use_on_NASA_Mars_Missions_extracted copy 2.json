@@ -1,0 +1,334 @@
+[
+  {
+    "parts": [
+      {
+        "device_name": "SN74LVC2T45",
+        "component_type": "Voltage Level Translator",
+        "manufacturer": "Texas Instruments",
+        "other_details": ""
+      },
+      {
+        "device_name": "TCA9517",
+        "component_type": "Voltage Level Translator",
+        "manufacturer": "Texas Instruments",
+        "other_details": ""
+      },
+      {
+        "device_name": "TC7WZ126FK",
+        "component_type": "Bus Driver/Buffer",
+        "manufacturer": "Toshiba",
+        "other_details": ""
+      },
+      {
+        "device_name": "TPS62130",
+        "component_type": "DC-DC Buck Converter",
+        "manufacturer": "Texas Instruments",
+        "other_details": ""
+      },
+      {
+        "device_name": "ADP195",
+        "component_type": "Load Switch",
+        "manufacturer": "Analog Devices",
+        "other_details": ""
+      },
+      {
+        "device_name": "TPS25942",
+        "component_type": "eFuse Power Protection MUX",
+        "manufacturer": "Texas Instruments",
+        "other_details": ""
+      },
+      {
+        "device_name": "CC1190",
+        "component_type": "950MHz RF Front End",
+        "manufacturer": "Texas Instruments",
+        "other_details": ""
+      },
+      {
+        "device_name": "CC1200",
+        "component_type": "Wireless Transceiver",
+        "manufacturer": "Texas Instruments",
+        "other_details": ""
+      },
+      {
+        "device_name": "CC1310",
+        "component_type": "Wireless MCU",
+        "manufacturer": "Texas Instruments",
+        "other_details": ""
+      },
+      {
+        "device_name": "LT8612",
+        "component_type": "DC-DC Buck Converter",
+        "manufacturer": "Analog Devices",
+        "other_details": ""
+      }
+    ],
+    "partTest": [
+      {
+        "device_name": "SN74LVC2T45",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "TCA9517",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "TC7WZ126FK",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "TPS62130",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "ADP195",
+        "testing_type": "SEE",
+        "max_fluence": 30000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "TPS25942",
+        "testing_type": "SEE",
+        "max_fluence": 14000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C in air with a normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "CC1190",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "47 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "CC1200",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "2.7 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "CC1310",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "47 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      },
+      {
+        "device_name": "LT8612",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+        "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+        "terrestrial": true,
+        "in_flight": false
+      }
+    ],
+    "specific_tests": {
+      "SEE": [
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "61.6 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEL",
+          "amplitude": 0,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 61.6,
+          "cross_section_type": "LET",
+          "special_notes": "No SELs observed; study investigated positive and negative going SETs with no occurrences."
+        },
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "61.6 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEL, SET",
+          "amplitude": 0,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 61.6,
+          "cross_section_type": "LET",
+          "special_notes": "37 positive SET events at LET 61.6 MeV-cm2/mg; test conducted with voltage variants."
+        },
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "61.6 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEL, SET",
+          "amplitude": 0,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 61.6,
+          "cross_section_type": "LET",
+          "special_notes": null
+        },
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "61.6 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEL, SET",
+          "amplitude": 500,
+          "duration": 500,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 61.6,
+          "cross_section_type": "LET",
+          "special_notes": "198 minor negative and 64 small positive SET events observed at full load"
+        },
+        {
+          "max_fluence": 30000000,
+          "energy_levels": "61.6 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEFI, SEL",
+          "amplitude": 0,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 61.6,
+          "cross_section_type": "LET",
+          "special_notes": "Handful of SELs were observed at elevated temperature; five recoverable SEFIs observed with 200mA load at room temperature resulting in voltage drop-outs that were self-recovered."
+        },
+        {
+          "max_fluence": 14000000,
+          "energy_levels": "61.6 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with a normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEFI, SET",
+          "amplitude": 500,
+          "duration": 500,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 61.6,
+          "cross_section_type": "LET",
+          "special_notes": "208 events were tiny negative going transients with an amplitude of less than 500 mV and a pulse width of 500 µs."
+        },
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "47 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEFI",
+          "amplitude": 0,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 47,
+          "cross_section_type": "LET",
+          "special_notes": "SEFIs causing application hangs were recoverable with a reset"
+        },
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "2.7 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEL",
+          "amplitude": 220,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 2.7,
+          "cross_section_type": "LET",
+          "special_notes": "SELs observed that led to latch-up up to 220 mA current increase, no latent damage upon recovery"
+        },
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "47 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEFI",
+          "amplitude": 0,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 47,
+          "cross_section_type": "LET",
+          "special_notes": "SEFIs causing test application hangs were recoverable with a reset"
+        },
+        {
+          "max_fluence": 10000000,
+          "energy_levels": "61.6 MeV-cm2/mg",
+          "facility_name": "Berkeley Accelerator Space Effects Facility (BASE), Lawrence Berkeley National Laboratory",
+          "environmental_conditions": "Room temperature and 70°C, in air with normal incident beam",
+          "terrestrial": true,
+          "in_flight": false,
+          "source": "Heavy ions",
+          "see_type": "SEFI, SET",
+          "amplitude": 0,
+          "duration": 0,
+          "cross_section_saturation": 0,
+          "cross_section_threshold": 61.6,
+          "cross_section_type": "LET",
+          "special_notes": "Self-recovery SEFIs and SETs were observed at LETs of 61.6 MeV-cm2/mg"
+        }
+      ],
+      "TID": [],
+      "DD": []
+    }
+  }
+]

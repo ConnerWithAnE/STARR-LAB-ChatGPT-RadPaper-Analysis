@@ -1,0 +1,328 @@
+[
+    {
+        "device_name": "SN74LVC2T45",
+        "component_type": "Voltage Level Translator",
+        "manufacturer": "Texas Instruments",
+        "other_details": "Dual-bit dual-supply bus transceiver with configurable voltage translation"
+    },
+    {
+        "device_name": "TCA9517",
+        "component_type": "Voltage Level Translator",
+        "manufacturer": "Texas Instruments",
+        "other_details": "Level-shifting I2C bus repeater"
+    },
+    {
+        "device_name": "TC7WZ126FK",
+        "component_type": "Bus Driver/Buffer",
+        "manufacturer": "Toshiba",
+        "other_details": "Dual bus buffer with 3-state output"
+    },
+    {
+        "device_name": "TPS62130",
+        "component_type": "DC-DC Buck Converter",
+        "manufacturer": "Texas Instruments",
+        "other_details": "3 to 17 V, 3A step-down converter"
+    },
+    {
+        "device_name": "ADP195",
+        "component_type": "Load Switch",
+        "manufacturer": "Analog Devices",
+        "other_details": "Logic controlled, high-side power switch with reverse current blocking"
+    },
+    {
+        "device_name": "TPS25942",
+        "component_type": "eFuse Power Protection MUX",
+        "manufacturer": "Texas Instruments",
+        "other_details": "18 V, 5 A eFuse power mux with multiple protection modes"
+    },
+    {
+        "device_name": "CC1190",
+        "component_type": "RF front end",
+        "manufacturer": "Texas Instruments",
+        "other_details": "RF Range Extender in the 950MHz range"
+    },
+    {
+        "device_name": "CC1200",
+        "component_type": "Wireless Transceiver",
+        "manufacturer": "Texas Instruments",
+        "other_details": "Low-power, high-performance RF transceiver with analog features"
+    },
+    {
+        "device_name": "CC1310",
+        "component_type": "Wireless MCU",
+        "manufacturer": "Texas Instruments",
+        "other_details": "RF Range Extender"
+    },
+    {
+        "device_name": "LT8612",
+        "component_type": "DC-DC Buck Converter",
+        "manufacturer": "Analog Devices",
+        "other_details": "3.4 to 42 V, 6A synchronous step-down regulator"
+    }
+][
+    {
+        "device_name": "SN74LVC2T45",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "TCA9517",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "TC7WZ126FK",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "TPS62130",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "ADP195",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "TPS25942",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "CC1190",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "47 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "CC1200",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "2.7 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "CC1310",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "47 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    },
+    {
+        "device_name": "LT8612",
+        "testing_type": "SEE",
+        "max_fluence": 10000000,
+        "energy_levels": "61.6 MeV-cm2/mg",
+        "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+        "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+        "terrestrial": true,
+        "in_flight": false
+    }
+]{
+    "SEE": [
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "61.6 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL/SET",
+            "amplitude": 0,
+            "duration": 0,
+            "cross_section_saturation": 0,
+            "cross_section_threshold": 61.6,
+            "cross_section_type": "LETth",
+            "special_notes": "No SELs observed at an LET of 61.6 MeV-cm2/mg after testing with 124Xe ions/cm2."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "61.6 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL/SET",
+            "amplitude": 0,
+            "duration": 0,
+            "cross_section_saturation": 0,
+            "cross_section_threshold": 61.6,
+            "cross_section_type": "LETth",
+            "special_notes": "37 positive SET events were captured at an LET of 61.6 MeV-cm2/mg with VCCA = 3.3 V and SCLA set to 0 V."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "61.6 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL/SET",
+            "amplitude": 0,
+            "duration": 0,
+            "cross_section_saturation": 0,
+            "cross_section_threshold": 61.6,
+            "cross_section_type": "LETth",
+            "special_notes": "No SELs or SETs were observed at an LET of 61.6 MeV-cm2/mg after a fluence of 1×107 ions/cm2"
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "61.6 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL/DSEE",
+            "amplitude": 0.5,
+            "duration": 500,
+            "cross_section_saturation": 0,
+            "cross_section_threshold": 61.6,
+            "cross_section_type": "LETth",
+            "special_notes": "198 SET events were captured under a 500-mA load at LET of 61.6 MeV-cm2/mg."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "61.6 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL",
+            "amplitude": 0,
+            "duration": 0,
+            "cross_section_saturation": 0,
+            "cross_section_threshold": 61.6,
+            "cross_section_type": "LETth",
+            "special_notes": "Handful of SELs observed at both 61.6 and 47 MeV-cm2/mg at elevated temperature only. Five recoverable SEFIs observed with the 200-mA load condition."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "61.6 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL/DSEE",
+            "amplitude": 0.5,
+            "duration": 500,
+            "cross_section_saturation": 0,
+            "cross_section_threshold": 61.6,
+            "cross_section_type": "LETth",
+            "special_notes": "208 self-recovering SEFIs and SET events were observed at LETs of 61.6 and 20.3 MeV-cm2/mg with the 500-mA load condition; most were tiny negative transients of amplitude < 500 mV and a pulse width of 500 µs."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "47 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEFI",
+            "amplitude": null,
+            "duration": null,
+            "cross_section_saturation": null,
+            "cross_section_threshold": 47.3,
+            "cross_section_type": null,
+            "special_notes": "SEFIs cause application hangs, recoverable with reset. Observed from LET as low as 20Ne."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "2.7 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL",
+            "amplitude": 220,
+            "duration": null,
+            "cross_section_saturation": null,
+            "cross_section_threshold": 2.7,
+            "cross_section_type": "LETth",
+            "special_notes": "SELs observed at LETs as low as 20Ne. Induced a latch-up resulting in a current increase up to 220 mA, components were functional after performing these measurements."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "47 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEFI",
+            "amplitude": null,
+            "duration": null,
+            "cross_section_saturation": null,
+            "cross_section_threshold": 47,
+            "cross_section_type": "LETth",
+            "special_notes": "SEFIs were observed that caused test application hangs but were recoverable with a reset. Observed at LETs as low as 40Ar."
+        },
+        {
+            "max_fluence": 10000000,
+            "energy_levels": "61.6 MeV-cm2/mg",
+            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+            "environmental_conditions": "Room temperature (~25°C) and elevated temperature (~70°C)",
+            "terrestrial": true,
+            "in_flight": false,
+            "source": "Heavy ions",
+            "see_type": "SEL/DSEE",
+            "amplitude": null,
+            "duration": null,
+            "cross_section_saturation": null,
+            "cross_section_threshold": 61.6,
+            "cross_section_type": "LETth",
+            "special_notes": "No SELs or DSEEs were observed. Small amount of self-recovery SEFIs in the form of output drop-outs were observed at 61.6 and 47 MeV-cm2/mg. SEFIs were observed only in the loaded test condition. No SEFIs were observed at 20.3 MeV-cm2/mg."
+        }
+    ],
+    "TID": [],
+    "DD": []
+}

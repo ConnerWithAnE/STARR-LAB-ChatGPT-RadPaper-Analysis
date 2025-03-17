@@ -1,0 +1,10 @@
+description: "Radiation Researcher"
+
+prompts:
+  - file://prompts.txt
+
+providers:
+  - id: openai:gpt-4o-mini
+    config:
+      temperature: 0
+      max_tokens: 128

@@ -20,6 +20,8 @@ dist/
 build/
 out/
 
+test/*.pdf
+
 # Environment files
 .env
 .env.local
@@ -55,4 +57,4 @@ coverage/
 .cache/
 
 # Database Files
-database.db
+*.db
