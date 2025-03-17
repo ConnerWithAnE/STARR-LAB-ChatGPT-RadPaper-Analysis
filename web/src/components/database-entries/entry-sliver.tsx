@@ -314,7 +314,7 @@ export default function EntrySliver({
           const parts_2 = pass_2[i][typesafeKey];
           const parts_3 = pass_3[i][typesafeKey];
 
-          if (key === "id") {
+          if (key === "id" || key === "preliminary_test_types") {
             return;
           }
           if (key === "sees") {

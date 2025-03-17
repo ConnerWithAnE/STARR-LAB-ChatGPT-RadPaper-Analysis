@@ -209,6 +209,11 @@ export const mockGPTPasses: GPTResponse2[] = [
     pass_2: mockFullDataTypePasses[1],
     pass_3: mockFullDataTypePasses[2],
   },
+  {
+    pass_1: mockFullDataTypePasses[0],
+    pass_2: mockFullDataTypePasses[1],
+    pass_3: mockFullDataTypePasses[2],
+  },
 ];
 
 export const mockFullDataType: FullDataType = {
