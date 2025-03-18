@@ -17,8 +17,8 @@ type PaperProps = {
   entryData?: GPTResponse2;
   editedEntry: FullDataType;
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
-  unresolvedConflicts: Conflict;
-  setValuesEdited: React.Dispatch<React.SetStateAction<string[]>>;
+  unresolvedConflicts?: Conflict;
+  setValuesEdited?: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 export default function EditEntry({
@@ -26,7 +26,7 @@ export default function EditEntry({
   editedEntry,
   setEditedEntry,
   unresolvedConflicts,
-  setValuesEdited
+  setValuesEdited,
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
@@ -63,7 +63,12 @@ export default function EditEntry({
     //   return prev;
     // });
 
-    setValuesEdited((prev) => { return [...prev, path.join("-")]; });
+    if (setValuesEdited) {
+      setValuesEdited((prev) => {
+        return [...prev, path.join("-")];
+      });
+    }
+
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
     // console.log("handlechange", editedEntry);
   };
@@ -79,7 +84,7 @@ export default function EditEntry({
             pass_2: pass_2,
             pass_3: pass_3,
           }}
-          currentEntry = {editedEntry?.authors?.[i]?.name ?? ""}
+          currentEntry={editedEntry?.authors?.[i]?.name ?? ""}
           handleChange={(name, value) => {
             handleChange(["authors", i.toString(), name], value);
           }}
@@ -94,7 +99,10 @@ export default function EditEntry({
       return Object.entries(part).map(([key, value]) => {
         type PartDataKey = keyof PartData;
         const typesafeSubKey = key as PartDataKey;
-        if (typesafeSubKey === "id") {
+        if (
+          typesafeSubKey === "id" ||
+          typesafeSubKey === "preliminary_test_types"
+        ) {
           return;
         }
         if (typesafeSubKey === "tids") {
@@ -370,7 +378,7 @@ export default function EditEntry({
         </div>
         <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
-          {unresolvedConflicts.redSeverity.map((conflict) => {
+          {unresolvedConflicts?.redSeverity.map((conflict) => {
             return (
               <div className="flex flex-row gap-2">
                 <MdWarningAmber color="red" size="1.5em" />
@@ -378,7 +386,7 @@ export default function EditEntry({
               </div>
             );
           })}
-          {unresolvedConflicts.yellowSeverity.map((conflict) => {
+          {unresolvedConflicts?.yellowSeverity.map((conflict) => {
             return (
               <div key={conflict} className="flex flex-row gap-2">
                 <MdWarningAmber color="yellow" size="1.5em" />

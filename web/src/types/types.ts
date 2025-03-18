@@ -1,9 +1,9 @@
 export type FullDataType = {
   id?: number;
-  paper_name: string;
-  year: number;
-  authors: AuthorData[];
-  parts: PartData[];
+  name?: string;
+  year?: number;
+  authors?: AuthorData[];
+  parts?: PartData[];
 };
 
 export type AuthorData = {
@@ -13,11 +13,11 @@ export type AuthorData = {
 
 export type PartData = {
   id?: number;
-  device_name: string;
-  component_type: string;
-  manufacturer: string;
-  other_details: string;
-  preliminary_test_types: PreliminaryTestType[];
+  device_name?: string;
+  component_type?: string;
+  manufacturer?: string;
+  other_details?: string;
+  preliminary_test_types?: PreliminaryTestType[];
   tids?: TIDData[];
   sees?: SEEData[];
   dds?: DDData[];
@@ -41,40 +41,40 @@ export type PreliminaryTestType = "SEE" | "TID" | "DD" | string;
 // };
 
 export type TIDData = {
-  id: number;
-  source: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
-  max_tid: number;
-  dose_rate: number;
-  eldrs: boolean;
-  dose_to_failure: number;
-  increased_power_usage: boolean;
-  power_usage_description: string;
+  id?: number;
+  source?: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
+  max_tid?: number;
+  dose_rate?: number;
+  eldrs?: boolean;
+  dose_to_failure?: number;
+  increased_power_usage?: boolean;
+  power_usage_description?: string;
   special_notes?: string;
 };
 
 export type SEEData = {
-  id: number;
-  source:
+  id?: number;
+  source?:
     | "Heavy ions"
     | "Protons"
     | "Laser"
     | "Neutron"
     | "Electron"
     | "X-rays";
-  see_type: string;
-  amplitude: number;
-  duration: number;
-  cross_section_saturation: number;
-  cross_section_threshold: number;
-  cross_section_type: string;
+  see_type?: string;
+  amplitude?: number;
+  duration?: number;
+  cross_section_saturation?: number;
+  cross_section_threshold?: number;
+  cross_section_type?: string;
   special_notes?: string;
 };
 
 export type DDData = {
-  id: number;
-  source: "Protons" | "Neutrons";
-  damage_level: number;
-  damage_level_description: string;
+  id?: number;
+  source?: "Protons" | "Neutrons";
+  damage_level?: number;
+  damage_level_description?: string;
   special_notes?: string;
 };
 

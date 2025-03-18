@@ -55,7 +55,7 @@ export default function EntrySliver({
       return { id: index } as FullDataType;
     }
   });
-  const [valuesEdited, setValuesEdited] = useState<string[]>([]);   // To keep track of the values edited in the entry
+  const [valuesEdited, setValuesEdited] = useState<string[]>([]); // To keep track of the values edited in the entry
   const [authors, setAuthors] = useState<AuthorData[]>(
     tableEntries[index]?.authors ?? []
   );
@@ -397,25 +397,33 @@ export default function EntrySliver({
       pass_2: AuthorData[] | undefined,
       pass_3: AuthorData[] | undefined
     ): AuthorData[] => {
-      if (Array.isArray(pass_1) && Array.isArray(pass_2) && Array.isArray(pass_3)) {
+      if (
+        Array.isArray(pass_1) &&
+        Array.isArray(pass_2) &&
+        Array.isArray(pass_3)
+      ) {
         let authorsPresent: AuthorData[] = [];
         pass_1.forEach((author, i) => {
           if (pass_2 && pass_3) {
             const authorName1 = author.name;
             const authorName2 = (pass_2 as AuthorData[])[i].name;
             const authorName3 = (pass_3 as AuthorData[])[i].name;
-            if(authorName1 == authorName2 && authorName1 == authorName3 && authorName2 == authorName3) {
+            if (
+              authorName1 == authorName2 &&
+              authorName1 == authorName3 &&
+              authorName2 == authorName3
+            ) {
               authorsPresent[i] = (pass_1 as AuthorData[])[i];
-            }
-            else if (authorName1 == authorName2 || authorName1 == authorName3) {
+            } else if (
+              authorName1 == authorName2 ||
+              authorName1 == authorName3
+            ) {
               authorsPresent[i] = (pass_1 as AuthorData[])[i];
               addConflict2(updatedConflicts, `authors-${i}-name`, 1);
-            }
-            else if(authorName2 == authorName3) {
+            } else if (authorName2 == authorName3) {
               authorsPresent[i] = (pass_2 as AuthorData[])[i];
               addConflict2(updatedConflicts, `authors-${i}-name`, 1);
-            }
-            else {
+            } else {
               addConflict2(updatedConflicts, `authors-${i}-name`, 2);
             }
           }
@@ -423,7 +431,7 @@ export default function EntrySliver({
         return authorsPresent;
       }
       return [];
-    }
+    };
 
     Object.entries(passes.pass_1).map(([key]) => {
       type fullDataTypeKey = keyof typeof passes.pass_1;
@@ -453,9 +461,13 @@ export default function EntrySliver({
       }
 
       // If comparing authors, call function to compare and set conflicts
-      if(typesafeKey === "authors") {
-        let resultAuthors = compareAuthorPasses(pass_1 as AuthorData[], pass_2 as AuthorData[], pass_3 as AuthorData[]);
-        if(resultAuthors.length > 0) {
+      if (typesafeKey === "authors") {
+        let resultAuthors = compareAuthorPasses(
+          pass_1 as AuthorData[],
+          pass_2 as AuthorData[],
+          pass_3 as AuthorData[]
+        );
+        if (resultAuthors.length > 0) {
           updatedEntry = {
             ...updatedEntry,
             [typesafeKey]: resultAuthors,
@@ -504,7 +516,7 @@ export default function EntrySliver({
 
   const handleCancel = () => {
     setEditedEntry({
-      paper_name: editedEntry.paper_name,
+      paper_name: editedEntry.name,
       authors: editedEntry.authors ?? [],
     } as FullDataType);
     setOpen(false);
@@ -521,12 +533,11 @@ export default function EntrySliver({
 
   const handleSave = () => {
     updateEntry(index, editedEntry);
-    let updatedAuthors: AuthorData[] = [];
-    for(let i = 0; i < authors.length; i++) {
-      if(editedEntry.authors?.[i]) {
+    const updatedAuthors: AuthorData[] = [];
+    for (let i = 0; i < authors.length; i++) {
+      if (editedEntry.authors?.[i]) {
         updatedAuthors.push(editedEntry.authors[i]);
-      }
-      else {
+      } else {
         updatedAuthors.push(authors[i]);
       }
     }
@@ -562,20 +573,24 @@ export default function EntrySliver({
     // console.log("updatedConflicts", updatedConflicts);
     const combinedConflicts: Conflict = {
       yellowSeverity: [
-        ...(unresolvedConflicts.yellowSeverity.filter((conflict) => !valuesEdited.includes(conflict))),
+        ...unresolvedConflicts.yellowSeverity.filter(
+          (conflict) => !valuesEdited.includes(conflict)
+        ),
         ...updatedConflicts.yellowSeverity,
       ],
       redSeverity: [
-        ...(unresolvedConflicts.redSeverity.filter((conflict) => !valuesEdited.includes(conflict))),
+        ...unresolvedConflicts.redSeverity.filter(
+          (conflict) => !valuesEdited.includes(conflict)
+        ),
         ...updatedConflicts.redSeverity,
       ],
-    }
+    };
     // console.log('valuesEdited', valuesEdited);
     // console.log('combinedConflicts', combinedConflicts);
     setRedConflict(index, combinedConflicts.redSeverity);
     setUnresolvedConflicts(combinedConflicts);
 
-    setValuesEdited([]);      // Clear the values edited.
+    setValuesEdited([]); // Clear the values edited.
 
     setOpen(false);
   };
@@ -591,7 +606,7 @@ export default function EntrySliver({
       </div>
       <div className="col-span-3">
         <div className="text-left text-lg text-slate-900">
-          {editedEntry.paper_name}
+          {editedEntry.name}
         </div>
         <div className="text-xs text-left text-slate-900">
           {authors?.map((author) => (author?.name ? author.name + ", " : ""))}
@@ -674,7 +689,7 @@ export default function EntrySliver({
             return (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  {editedEntry?.paper_name ?? ""}
+                  {editedEntry?.name ?? ""}
                 </ModalHeader>
                 <ModalBody>
                   <EditEntry

@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { FullDataType, GPTResponse2 } from "../types/types";
+import { GPTResponse2 } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
@@ -34,16 +34,16 @@ export default function DatabaseEntryPreviewPage() {
   const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
 
-  const [gptPasses, setGPTPasses] = useState<GPTResponse2[]>(data ?? []);
-  const [editedEntries, setEditedEntries] = useState<FullDataType[]>([]);
+  // const [gptPasses, setGPTPasses] = useState<GPTResponse2[]>(data ?? []);
+  // const [editedEntries, setEditedEntries] = useState<FullDataType[]>([]);
 
-  const handleSave = (index: number, tableData: FullDataType) => {
-    setEditedEntries((prevData) => {
-      const updatedData = [...prevData];
-      updatedData[index] = tableData;
-      return updatedData;
-    });
-  };
+  // const handleSave = (index: number, tableData: FullDataType) => {
+  //   setEditedEntries((prevData) => {
+  //     const updatedData = [...prevData];
+  //     updatedData[index] = tableData;
+  //     return updatedData;
+  //   });
+  // };
 
   useEffect(() => {
     console.log("redConflicts", redConflicts);
@@ -53,7 +53,7 @@ export default function DatabaseEntryPreviewPage() {
         disabled = true;
         return;
       }
-    })
+    });
     if (disabled) {
       setDisabled(true);
     } else {
@@ -80,28 +80,64 @@ export default function DatabaseEntryPreviewPage() {
   };
 
   async function submitToDatabase() {
-    console.log('tableEntries', tableEntries)
     const token = localStorage.getItem("jwtToken");
+
+    // if (!token) {
+    //   console.error("No token found. Please log in.");
+    //   return;
+    // }
+
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/adminRequest/insertPapers",
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(tableEntries),
-        }
+      const responses = await Promise.all(
+        tableEntries.map(async (value) => {
+          try {
+            const response = await fetch(
+              "http://localhost:3000/api/adminRequest/papers/full",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify(value),
+              }
+            );
+
+            if (response.ok) {
+              console.log(`Successfully added entry: ${JSON.stringify(value)}`);
+              return { success: true };
+            } else {
+              console.error(
+                `Failed to insert entry: ${JSON.stringify(value)}, Status: ${
+                  response.status
+                }`
+              );
+              return { success: false, status: response.status };
+            }
+          } catch (error) {
+            console.error(
+              `Error inserting entry: ${JSON.stringify(value)}`,
+              error
+            );
+            return { success: false, error };
+          }
+        })
       );
-      if (response.ok) {
-        alert("Papers successfully added to database.");
-      }
-      else {
-        console.error(`Failed to insert papers: ${response.status}`);
+
+      // Check results of all requests
+      const failedRequests = responses.filter((res) => !res.success);
+      if (failedRequests.length > 0) {
+        alert(
+          `Some entries failed to be added. Check the console for more details.`
+        );
+      } else {
+        alert("All entries successfully added to the database.");
       }
     } catch (error) {
-      console.error(`Error inserting papers: ${error}`);
-      throw error;
+      console.error("Error during submission:", error);
+      alert("An error occurred while submitting entries.");
+    } finally {
+      console.log("Submission process completed.");
     }
   }
 

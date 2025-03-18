@@ -3,7 +3,6 @@ import "../App.css";
 import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
-//import { GPTResponse } from "../types/types";
 import { mockGPTPasses } from "../mockfulldatatype";
 
 export default function UploadPage() {
@@ -65,7 +64,7 @@ export default function UploadPage() {
   };
 
   async function submitPapers() {
-    const token = localStorage.getItem("jwtToken");
+    //const token = localStorage.getItem("jwtToken");
 
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -156,7 +155,7 @@ export default function UploadPage() {
                   className="bg-[#ff5353] text-white rounded-md w-full"
                   type="button"
                   onClick={() => {
-                    navigate('/')
+                    navigate("/");
                   }}
                 >
                   Cancel
