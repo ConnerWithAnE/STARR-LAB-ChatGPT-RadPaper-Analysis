@@ -1,0 +1,280 @@
+[
+    {
+        "pass_1": {
+            "paper_name": "Review of TID Effects Reported in ProASIC3 and ProASIC3L FPGAs for 3D PLUS Camera Heads",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "A. L. Bosser"
+                },
+                {
+                    "name": "P. Kohler"
+                },
+                {
+                    "name": "J. Salles"
+                },
+                {
+                    "name": "M. Foucher"
+                },
+                {
+                    "name": "J. Bezine"
+                },
+                {
+                    "name": "N. Perrot"
+                },
+                {
+                    "name": "P.-X. Wang"
+                }
+            ],
+            "objective": "The main objective of the paper is to compare original TID data from ProASIC3L FPGAs with existing literature, discuss the impact of different test flows on the TID response, and correlate the data with TID tests of 3D PLUS camera heads.",
+            "parts": [
+                {
+                    "name": "A3PE3000L",
+                    "type": "FPGA",
+                    "manufacturer": "Microchip (formerly Actel)",
+                    "other_details": "Largest system gate count, evaluated over an industrial operating temperature range (-40°C to +100°C)【8:4†source】.",
+                    "preliminary_test_types": [
+                        "TID",
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": 0,
+                            "energy": "Not specified",
+                            "facility": "Not specified",
+                            "environment": "Static, no clock or I/O operations",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 50,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "Not specified",
+                            "special_notes": "Functional recovery observed after annealing at 100°C"
+                        },
+                        {
+                            "max_fluence": 0,
+                            "energy": "Not specified",
+                            "facility": "Not specified",
+                            "environment": "Static, no clock or I/O operations",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 50,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "Not specified",
+                            "special_notes": "Functional recovery observed after annealing at 100°C"
+                        }
+                    ],
+                    "ddData": []
+                },
+                {
+                    "name": "3DCM734-1",
+                    "type": "Camera Head",
+                    "manufacturer": "3D PLUS",
+                    "other_details": "4 Mpx color space camera head, embeds an A3PE3000L FPGA, space-grade version rated for operation up to 30 krad【8:0†source】.",
+                    "preliminary_test_types": [
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": 0,
+                            "energy": "Not specified",
+                            "facility": "Not specified",
+                            "environment": "Static, no clock or I/O operations",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 50,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "Not specified",
+                            "special_notes": "Functional recovery observed after annealing at 100°C"
+                        }
+                    ],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_2": {
+            "paper_name": "Review of TID Effects Reported in ProASIC3 and ProASIC3L FPGAs for 3D PLUS Camera Heads",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "A. L. Bosser"
+                },
+                {
+                    "name": "P. Kohler"
+                },
+                {
+                    "name": "J. Salles"
+                },
+                {
+                    "name": "M. Foucher"
+                },
+                {
+                    "name": "J. Bezine"
+                },
+                {
+                    "name": "N. Perrot"
+                },
+                {
+                    "name": "P.-X. Wang"
+                }
+            ],
+            "objective": "The main objective of the paper is to compare original TID data from ProASIC3L FPGAs with existing literature, discuss the impact of different test flows on the TID response, and correlate the data with TID tests of 3D PLUS camera heads.",
+            "parts": [
+                {
+                    "name": "A3PE3000L",
+                    "type": "FPGA",
+                    "manufacturer": "Microchip (formerly Actel)",
+                    "other_details": "Part of the ProASIC3L family, used in 3D PLUS space camera head module, tested for TID effects.",
+                    "preliminary_test_types": [
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": null,
+                            "energy": "N/A",
+                            "facility": "N/A",
+                            "environment": "Static, no clock applied, no I/O operations performed",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 60,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "After 60 krad, the DUT completely lost functionality",
+                            "special_notes": "Functional recovery observed after annealing at 100°C for 168 hours"
+                        }
+                    ],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_3": {
+            "paper_name": "Review of TID Effects Reported in ProASIC3 and ProASIC3L FPGAs for 3D PLUS Camera Heads",
+            "year": 2025,
+            "authors": [
+                {
+                    "name": "A. L. Bosser"
+                },
+                {
+                    "name": "P. Kohler"
+                },
+                {
+                    "name": "J. Salles"
+                },
+                {
+                    "name": "M. Foucher"
+                },
+                {
+                    "name": "J. Bezine"
+                },
+                {
+                    "name": "N. Perrot"
+                },
+                {
+                    "name": "P.-X. Wang"
+                }
+            ],
+            "objective": "This paper compares original TID data from ProASIC3L FPGAs with existing literature, discusses the impact of different test flows on the TID response, and correlates the data with TID tests of 3D PLUS camera heads.",
+            "parts": [
+                {
+                    "name": "A3PE3000L",
+                    "type": "FPGA",
+                    "manufacturer": "Microchip",
+                    "other_details": "Part of the ProASIC3L family, used in 3D PLUS space camera head module, tested under various bias conditions and irradiation levels.",
+                    "preliminary_test_types": [
+                        "TID",
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": 0,
+                            "energy": "Not specified",
+                            "facility": "Not specified",
+                            "environment": "Static, no clock or I/O operations",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 60,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "After 60 krad",
+                            "special_notes": "Functional recovery observed after annealing at 100°C for 168 hours"
+                        },
+                        {
+                            "max_fluence": 0,
+                            "energy": "Not specified",
+                            "facility": "Not specified",
+                            "environment": "Static, no clock or I/O operations",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 60,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "After 60 krad",
+                            "special_notes": "Functional recovery observed after annealing at 100°C for 168 hours"
+                        }
+                    ],
+                    "ddData": []
+                },
+                {
+                    "name": "3DCM734-1",
+                    "type": "Camera Head",
+                    "manufacturer": "3D PLUS",
+                    "other_details": "4 Mpx color space camera head, embeds an A3PE3000L FPGA, tested for TID effects up to 60 krad.",
+                    "preliminary_test_types": [
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": 0,
+                            "energy": "Not specified",
+                            "facility": "Not specified",
+                            "environment": "Static, no clock or I/O operations",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 60,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "After 60 krad",
+                            "special_notes": "Functional recovery observed after annealing at 100°C for 168 hours"
+                        }
+                    ],
+                    "ddData": []
+                }
+            ]
+        }
+    }
+]

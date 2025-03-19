@@ -29,45 +29,52 @@
     },
     "parts": [
         {
-            "device_name": "A3PE3000L",
-            "component_type": "FPGA",
+            "name": "A3PE3000L",
+            "type": "FPGA",
             "manufacturer": "Microchip (formerly Actel)",
-            "other_details": "Flash-based FPGA used in 3D PLUS space camera head module, sensitive to TID effects, tested under various bias conditions and dose rates.",
-            "preliminary_test_data": [
+            "other_details": "Largest system gate count, used in 3D PLUS space camera head module, tested under various bias conditions and dose rates.",
+            "preliminary_test_types": [
+                "TID",
+                "TID"
+            ],
+            "seeData": [],
+            "tidData": [
                 {
-                    "device_name": "A3PE3000L",
-                    "testing_type": "TID",
-                    "max_fluence": 60000,
-                    "energy_levels": "60Co gamma rays",
-                    "facility_name": "Not specified",
-                    "environmental_conditions": "Static, no clock applied, nominal bias of 3.3V, 2.5V, and 1.5V on power rails",
+                    "max_fluence": null,
+                    "energy": "N/A",
+                    "facility": "N/A",
+                    "environment": "Static, no clock applied, no I/O operations performed",
                     "terrestrial": true,
-                    "in_flight": false,
-                    "seeData": [],
-                    "tidData": [
-                        {
-                            "device_name": "A3PE3000L",
-                            "max_fluence": 60000,
-                            "energy_levels": "60Co gamma rays",
-                            "facility_name": "Not specified",
-                            "environmental_conditions": "Static, no clock applied, nominal bias of 3.3V, 2.5V, and 1.5V on power rails",
-                            "terrestrial": true,
-                            "in_flight": false,
-                            "source": "Co60",
-                            "max_tid": 60,
-                            "dose_rate": 300,
-                            "eldrs_observed": false,
-                            "dose_to_failure": 60,
-                            "increased_power_usage": false,
-                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
-                            "current_leakage": 0,
-                            "failing_time": "After 60 krad",
-                            "special_notes": "Functional recovery observed after annealing at 100°C"
-                        }
-                    ],
-                    "ddData": []
+                    "flight": false,
+                    "source": "Co60",
+                    "max_tid": 60,
+                    "dose_rate": 300,
+                    "eldrs": false,
+                    "dose_to_failure": 50,
+                    "increased_power_usage": false,
+                    "power_usage_description": "Standby power consumption decreased by over 85% after 60 krad",
+                    "failing_time": "N/A",
+                    "special_notes": "Functional recovery observed after annealing at 100°C for 168 hours"
+                },
+                {
+                    "max_fluence": null,
+                    "energy": "N/A",
+                    "facility": "N/A",
+                    "environment": "Static, no clock applied, no I/O operations performed",
+                    "terrestrial": true,
+                    "flight": false,
+                    "source": "Co60",
+                    "max_tid": 60,
+                    "dose_rate": 300,
+                    "eldrs": false,
+                    "dose_to_failure": 50,
+                    "increased_power_usage": false,
+                    "power_usage_description": "Standby power consumption decreased by over 85% after 60 krad",
+                    "failing_time": "N/A",
+                    "special_notes": "Functional recovery observed after annealing at 100°C for 168 hours"
                 }
-            ]
+            ],
+            "ddData": []
         }
     ]
 }
