@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import EditEntry from "../pages/edit-entry";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // TempPaperData is for testing only
 type PaperSliverProp = {
@@ -20,6 +21,7 @@ type PaperSliverProp = {
 export default function PaperSliver({ paper, index }: PaperSliverProp) {
   const [open, setIsOpen] = useState<boolean>(false);
   const [paperData, setPaperData] = useState<FullDataType>(paper);
+  const navigate = useNavigate();
 
   const handleSave = async () => {
     const token = localStorage.getItem("jwtToken");
@@ -45,6 +47,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
       if (response.ok) {
         console.log(`Successfully added entry: ${JSON.stringify(paperData)}`);
         setIsOpen(false);
+        navigate("/modify");
       } else {
         console.error(
           `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
