@@ -402,7 +402,7 @@ export default function EntrySliver({
         Array.isArray(pass_2) &&
         Array.isArray(pass_3)
       ) {
-        let authorsPresent: AuthorData[] = [];
+        const authorsPresent: AuthorData[] = [];
         pass_1.forEach((author, i) => {
           if (pass_2 && pass_3) {
             const authorName1 = author.name;
@@ -436,9 +436,9 @@ export default function EntrySliver({
     Object.entries(passes.pass_1).map(([key]) => {
       type fullDataTypeKey = keyof typeof passes.pass_1;
       const typesafeKey = key as fullDataTypeKey;
-      let pass_1 = passes.pass_1[typesafeKey];
-      let pass_2 = passes.pass_2[typesafeKey];
-      let pass_3 = passes.pass_3[typesafeKey];
+      const pass_1 = passes.pass_1[typesafeKey];
+      const pass_2 = passes.pass_2[typesafeKey];
+      const pass_3 = passes.pass_3[typesafeKey];
 
       // if the entry has already been edited, it should bypass this process completely
       if (editedEntry[typesafeKey] !== undefined) {
@@ -462,7 +462,7 @@ export default function EntrySliver({
 
       // If comparing authors, call function to compare and set conflicts
       if (typesafeKey === "authors") {
-        let resultAuthors = compareAuthorPasses(
+        const resultAuthors = compareAuthorPasses(
           pass_1 as AuthorData[],
           pass_2 as AuthorData[],
           pass_3 as AuthorData[]

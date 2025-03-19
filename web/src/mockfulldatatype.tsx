@@ -187,59 +187,64 @@ export const mockGPTPasses: GPTResponse2[] = [
   },
 ];
 
-export const mockFullDataType: FullDataType = {
-  name: "This is a test name",
-  year: 2024,
-  authors: [
-    {
-      name: "Mickey McKay",
-    },
-    {
-      name: "Andrew Yu",
-    },
-  ],
-  parts: [
-    {
-      device_name: "A1308KUA-2-S",
-      component_type: "Hall Effect Sensor",
-      manufacturer: "Allegro Microsystems",
-      other_details: "other",
-      preliminary_test_types: ["TID", "DD"],
-      tids: [
-        {
-          source: "Co60",
-          max_tid: 0,
-          dose_rate: 1.6934,
-          eldrs: true,
-          dose_to_failure: 55.4,
-          increased_power_usage: false,
-          power_usage_description: "string",
-          special_notes: "This is a test to make sure that the rendering works",
-        },
-        {
-          source: "Co60",
-          max_tid: 0,
-          dose_rate: 1.6934,
-          eldrs: true,
-          dose_to_failure: 55.4,
-          increased_power_usage: false,
-          power_usage_description: "string",
-          special_notes: "This is a test to make sure that the rendering works",
-        },
-      ],
-      sees: [
-        {
-          source: "Protons",
-          amplitude: 490,
-          duration: 0,
-          cross_section_saturation: 0,
-          cross_section_type: "string",
-          special_notes: "This is to test a different type of test showing up",
-        },
-      ],
-    } as PartData,
-  ],
-};
+export const mockPaperDataType: FullDataType[] = [
+  {
+    name: "This is a test name",
+    year: 2024,
+    authors: [
+      {
+        name: "Mickey McKay",
+      },
+      {
+        name: "Andrew Yu",
+      },
+    ],
+    parts: [
+      {
+        device_name: "A1308KUA-2-S",
+        component_type: "Hall Effect Sensor",
+        manufacturer: "Allegro Microsystems",
+        other_details: "other",
+        preliminary_test_types: ["TID", "DD"],
+        tids: [
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+        ],
+        sees: [
+          {
+            source: "Protons",
+            amplitude: 490,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+            special_notes:
+              "This is to test a different type of test showing up",
+          },
+        ],
+      } as PartData,
+    ],
+  },
+];
 
 // id?: number;
 //   source?: "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron";

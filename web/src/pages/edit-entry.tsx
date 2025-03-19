@@ -75,14 +75,14 @@ export default function EditEntry({
 
   const renderAuthors = (authors: AuthorData[]) => {
     return authors.map((author, i) => {
-      const pass_2 = passes.pass_2.authors?.[i]?.name ?? {};
-      const pass_3 = passes.pass_3.authors?.[i]?.name ?? {};
+      const pass_2 = passes?.pass_2?.authors?.[i]?.name ?? {};
+      const pass_3 = passes?.pass_3?.authors?.[i]?.name ?? {};
       return (
         <RenderPass
           passes={{
             pass_1: author?.name ?? {},
-            pass_2: pass_2,
-            pass_3: pass_3,
+            pass_2: pass_2 ?? {},
+            pass_3: pass_3 ?? {},
           }}
           currentEntry={editedEntry?.authors?.[i]?.name ?? ""}
           handleChange={(name, value) => {
@@ -315,8 +315,14 @@ export default function EditEntry({
   };
 
   const renderPartAccordionItems = (): JSX.Element[] => {
+    const parts = passes?.pass_1?.parts ?? editedEntry.parts;
+
+    if (!parts) {
+      return [];
+    }
+
     return (
-      passes.pass_1.parts?.map((part, i) => (
+      parts.map((part, i) => (
         <AccordionItem title={`Part ${i + 1}`} key={`part-${i}`}>
           {renderParts([part])}
         </AccordionItem>
@@ -332,45 +338,53 @@ export default function EditEntry({
     <div className="flex flex-col gap-2 p-4">
       <div className="flex flex-row justify-between gap-3">
         <div className="grow basis-1/3">
-          {Object.entries(passes.pass_1).map(([key]): JSX.Element => {
-            type fullDataTypeKey = keyof FullDataType;
-            const typesafeKey = key as fullDataTypeKey;
+          {Object.entries(passes?.pass_1 ?? editedEntry).map(
+            ([key]): JSX.Element => {
+              type fullDataTypeKey = keyof FullDataType;
+              const typesafeKey = key as fullDataTypeKey;
 
-            if (typesafeKey === "id") {
-              return <></>;
-            }
+              if (typesafeKey === "id") {
+                return <></>;
+              }
 
-            if (typesafeKey !== "parts") {
-              if (typesafeKey === "authors") {
+              if (typesafeKey !== "parts") {
+                if (typesafeKey === "authors") {
+                  const authors =
+                    passes?.pass_1?.authors ?? editedEntry.authors;
+                  return (
+                    <Accordion
+                      variant="light"
+                      isCompact
+                      selectionMode="multiple"
+                    >
+                      <AccordionItem title={key} key={key}>
+                        {renderAuthors(authors ?? [])}
+                      </AccordionItem>
+                    </Accordion>
+                  );
+                }
                 return (
                   <Accordion variant="light" isCompact selectionMode="multiple">
                     <AccordionItem title={key} key={key}>
-                      {renderAuthors(passes.pass_1.authors ?? [])}
+                      <RenderPass
+                        passes={{
+                          pass_1: passes?.pass_1?.[typesafeKey] ?? "",
+                          pass_2: passes?.pass_2?.[typesafeKey] ?? "",
+                          pass_3: passes?.pass_3?.[typesafeKey] ?? "",
+                        }}
+                        currentEntry={editedEntry[typesafeKey] ?? ""}
+                        handleChange={(name, value) => {
+                          handleChange([typesafeKey], value);
+                        }}
+                        id={key}
+                      ></RenderPass>
                     </AccordionItem>
                   </Accordion>
                 );
               }
-              return (
-                <Accordion variant="light" isCompact selectionMode="multiple">
-                  <AccordionItem title={key} key={key}>
-                    <RenderPass
-                      passes={{
-                        pass_1: passes.pass_1[typesafeKey],
-                        pass_2: passes.pass_2[typesafeKey],
-                        pass_3: passes.pass_3[typesafeKey],
-                      }}
-                      currentEntry={editedEntry[typesafeKey] ?? ""}
-                      handleChange={(name, value) => {
-                        handleChange([typesafeKey], value);
-                      }}
-                      id={key}
-                    ></RenderPass>
-                  </AccordionItem>
-                </Accordion>
-              );
+              return <></>;
             }
-            return <></>;
-          })}
+          )}
           <br></br>
           <Accordion variant="light" isCompact selectionMode="multiple">
             {renderPartAccordionItems()}
