@@ -69,8 +69,8 @@ export const questions = {
         
         {
           
-        "device_name": { "type": "string" },
-        "component_type": { "type": "string" },
+        "name": { "type": "string" },
+        "type": { "type": "string" },
         "manufacturer": { "type": "string" },
         "other_details": { "type": "string" }
     
@@ -94,8 +94,8 @@ export const questions = {
   testingConditions: {
     prompt: `Describe the type of radiation testing that was conducted.:
 
-        This testing will be either TID SEE(General) OR DD
-        You may ONLY return types TID, SEE or DD for this step
+        - This testing will be either TID SEE(General) OR DD You may ONLY return types TID, SEE or DD for this step
+        - Facility name
       
         There might be more than one test for the given part, return a list of different test types, if two tests of the same type are found create two entries, for one each
 
@@ -119,7 +119,7 @@ export const questions = {
     prompt: `Describe the conditions under which radiation testing was conducted. Extract Total Ionizing Dose (TID) data:
         - Maximum fluence in exponential notation
         - Energy levels
-        - Facility name
+        - The name of the Facility where the testing took place
         - Environmental conditions
         - Was the test conducted in a terrestrial setting? (Yes/No)
         - Was the test conducted in-flight? (Yes/No)
@@ -130,7 +130,6 @@ export const questions = {
         - Dose to failure
         - Was increased power usage observed? (Yes/No)
         - Description of power usage increase
-        - If power current leakage is present, at what rate
         - How long was it failing for
         - Any special notes
 
@@ -142,15 +141,14 @@ export const questions = {
             "facility_name": "<string>",
             "environmental_conditions": "<string>",
             "terrestrial": <true | false>,
-            "in_flight": <true | false>,
+            "flight": <true | false>,
             "source": "Co60 | Protons | Electrons | Heavy ions | X-rays | Pions",
             "max_tid": <number>,
             "dose_rate": <number>,
-            "eldrs_observed": <true | false>,
+            "eldrs": <true | false>,
             "dose_to_failure": <number>,
             "increased_power_usage": <true | false>,
             "power_usage_description": "<string>",
-            "current_leakage": <number>,
             "failing_time": "<string>",
             "special_notes": "<string>"
         }
@@ -206,7 +204,7 @@ export const questions = {
     prompt: `Describe the conditions under which radiation testing was conducted. Extract Single Event Effects (SEE) data:
         - Maximum fluence in exponential notation
         - Energy levels
-        - Facility name
+        - The name of the Facility where the testing took place
         - Environmental conditions
         - Was the test conducted in a terrestrial setting? (Yes/No)
         - Was the test conducted in-flight? (Yes/No)
@@ -227,9 +225,9 @@ export const questions = {
         "facility_name": string,
         "environmental_conditions": string,
         "terrestrial": boolean,
-        "in_flight": boolean,
+        "flight": boolean,
         "source": "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron" | "X-rays",
-        "see_type": string,
+        "type": string,
         "amplitude": number,
         "duration": number,
         "cross_section_saturation": number,
@@ -288,7 +286,7 @@ export const questions = {
     prompt: `Describe the conditions under which radiation testing was conducted. Extract Displacement Damage (DD) data:
         - Maximum fluence in exponential notation
         - Energy levels
-        - Facility name
+        - The name of the Facility where the testing took place
         - Environmental conditions
         - Was the test conducted in a terrestrial setting? (Yes/No)
         - Was the test conducted in-flight? (Yes/No)
@@ -305,7 +303,7 @@ export const questions = {
             "facility_name": "<string>",
             "environmental_conditions": "<string>",
             "terrestrial": <true | false>,
-            "in_flight": <true | false>,
+            "flight": <true | false>,
             "source": "Protons | Neutrons",
             "damage_level": <number>,
             "damage_description": "<string>",

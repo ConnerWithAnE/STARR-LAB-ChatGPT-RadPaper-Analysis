@@ -45,6 +45,7 @@ class Paper extends Model<
   declare id: CreationOptional<number>;
   declare name: string;
   declare year: number;
+  declare objective: string;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;
 
@@ -76,6 +77,7 @@ Paper.init(
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: DataTypes.TEXT, allowNull: false },
     year: { type: DataTypes.INTEGER },
+    objective: { type: DataTypes.TEXT },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
   },
@@ -94,6 +96,7 @@ class Part extends Model<InferAttributes<Part>, InferCreationAttributes<Part>> {
   declare name: string;
   declare type: string;
   declare manufacturer: string;
+  declare other_details: string;
 
   // Mixins for associations
   declare addPaper: BelongsToManyAddAssociationMixin<Paper, number>;
@@ -120,6 +123,7 @@ Part.init(
     name: { type: DataTypes.TEXT, allowNull: false },
     type: { type: DataTypes.TEXT },
     manufacturer: { type: DataTypes.TEXT },
+    other_details: { type: DataTypes.TEXT },
   },
   { sequelize, modelName: "part" },
 );
@@ -135,9 +139,9 @@ Part.belongsToMany(Paper, { through: PaperPart });
 //   declare id: CreationOptional<number>;
 //   declare testing_type: "TID" | "SEE" | "DD";
 //   declare max_fluence: number;
-//   declare energy: number;
-//   declare facility: string;
-//   declare environment: string;
+//   declare energy_levels: number;
+//   declare facility_name: string;
+//   declare environmental_conditions: string;
 //   declare terrestrial: boolean;
 //   declare flight: boolean;
 
@@ -156,9 +160,9 @@ Part.belongsToMany(Paper, { through: PaperPart });
 //     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
 //     testing_type: { type: DataTypes.ENUM("TID", "SEE", "DD") },
 //     max_fluence: { type: DataTypes.FLOAT },
-//     energy: { type: DataTypes.FLOAT },
-//     facility: { type: DataTypes.TEXT },
-//     environment: { type: DataTypes.TEXT },
+//     energy_levels: { type: DataTypes.FLOAT },
+//     facility_name: { type: DataTypes.TEXT },
+//     environmental_conditions: { type: DataTypes.TEXT },
 //     terrestrial: { type: DataTypes.BOOLEAN },
 //     flight: { type: DataTypes.BOOLEAN },
 //   },
@@ -183,9 +187,9 @@ Part.belongsToMany(Paper, { through: PaperPart });
 class Tid extends Model<InferAttributes<Tid>, InferCreationAttributes<Tid>> {
   declare id: CreationOptional<number>;
   declare max_fluence: number;
-  declare energy: number;
-  declare facility: string;
-  declare environment: string;
+  declare energy_levels: number;
+  declare facility_name: string;
+  declare environmental_conditions: string;
   declare terrestrial: boolean;
   declare flight: boolean;
   declare source:
@@ -201,6 +205,7 @@ class Tid extends Model<InferAttributes<Tid>, InferCreationAttributes<Tid>> {
   declare dose_to_failure: number;
   declare increased_power_usage: boolean;
   declare power_usage_description: string;
+  declare failing_time: string;
   declare special_notes?: string;
 
   // // Foreign Key
@@ -218,9 +223,9 @@ Tid.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     max_fluence: { type: DataTypes.FLOAT },
-    energy: { type: DataTypes.FLOAT },
-    facility: { type: DataTypes.TEXT },
-    environment: { type: DataTypes.TEXT },
+    energy_levels: { type: DataTypes.FLOAT },
+    facility_name: { type: DataTypes.TEXT },
+    environmental_conditions: { type: DataTypes.TEXT },
     terrestrial: { type: DataTypes.BOOLEAN },
     flight: { type: DataTypes.BOOLEAN },
     source: {
@@ -230,6 +235,7 @@ Tid.init(
         "Electrons",
         "Heavy ions",
         "X-rays",
+        "Pions",
       ),
     },
     max_tid: { type: DataTypes.FLOAT },
@@ -238,6 +244,7 @@ Tid.init(
     dose_to_failure: { type: DataTypes.FLOAT },
     increased_power_usage: { type: DataTypes.BOOLEAN },
     power_usage_description: { type: DataTypes.TEXT },
+    failing_time: { type: DataTypes.TEXT },
     special_notes: { type: DataTypes.TEXT },
   },
   { sequelize, modelName: "tid" },
@@ -262,12 +269,14 @@ Tid.belongsTo(Part, {
 class See extends Model<InferAttributes<See>, InferCreationAttributes<See>> {
   declare id: CreationOptional<number>;
   declare max_fluence: number;
-  declare energy: number;
-  declare facility: string;
-  declare environment: string;
+  declare energy_levels: number;
+  declare facility_name: string;
+  declare environmental_conditions: string;
   declare terrestrial: boolean;
   declare flight: boolean;
-  declare source: "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron";
+  declare source: "Heavy ions" | "Protons" | "Laser" | "Neutron" | "Electron" | "X-rays";
+  declare type: string;
+  /*
   declare type:
     | "Single Event Upset"
     | "Single Event Transient"
@@ -275,9 +284,11 @@ class See extends Model<InferAttributes<See>, InferCreationAttributes<See>> {
     | "Single Event Latch-up"
     | "Single Event Burnout"
     | "Single Event Gate Rupture";
+    */
   declare amplitude: number;
   declare duration: number;
-  declare cross_section: number;
+  declare cross_section_saturation: number;
+  declare cross_section_threshold: number;
   declare cross_section_type: string;
   declare special_notes?: string;
 
@@ -295,9 +306,9 @@ See.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     max_fluence: { type: DataTypes.FLOAT },
-    energy: { type: DataTypes.FLOAT },
-    facility: { type: DataTypes.TEXT },
-    environment: { type: DataTypes.TEXT },
+    energy_levels: { type: DataTypes.FLOAT },
+    facility_name: { type: DataTypes.TEXT },
+    environmental_conditions: { type: DataTypes.TEXT },
     terrestrial: { type: DataTypes.BOOLEAN },
     flight: { type: DataTypes.BOOLEAN },
     source: {
@@ -309,6 +320,8 @@ See.init(
         "Electron",
       ),
     },
+    type: { type: DataTypes.TEXT },
+    /*
     type: {
       type: DataTypes.ENUM(
         "Single Event Upset",
@@ -319,9 +332,11 @@ See.init(
         "Single Event Gate Rupture",
       ),
     },
+    */
     amplitude: { type: DataTypes.FLOAT },
     duration: { type: DataTypes.FLOAT },
-    cross_section: { type: DataTypes.FLOAT },
+    cross_section_saturation: { type: DataTypes.FLOAT },
+    cross_section_threshold: { type: DataTypes.FLOAT },
     cross_section_type: { type: DataTypes.TEXT },
     special_notes: { type: DataTypes.TEXT },
   },
@@ -348,14 +363,14 @@ See.belongsTo(Part, {
 class Dd extends Model<InferAttributes<Dd>, InferCreationAttributes<Dd>> {
   declare id: CreationOptional<number>;
   declare max_fluence: number;
-  declare energy: number;
-  declare facility: string;
-  declare environment: string;
+  declare energy_levels: number;
+  declare facility_name: string;
+  declare environmental_conditions: string;
   declare terrestrial: boolean;
   declare flight: boolean;
   declare source: "Protons" | "Neutrons";
   declare damage_level: number;
-  declare damage_level_description: string;
+  declare damage_description: string;
   declare special_notes?: string;
 
   // // Foreign key reference
@@ -373,14 +388,14 @@ Dd.init(
   {
     id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     max_fluence: { type: DataTypes.FLOAT },
-    energy: { type: DataTypes.FLOAT },
-    facility: { type: DataTypes.TEXT },
-    environment: { type: DataTypes.TEXT },
+    energy_levels: { type: DataTypes.FLOAT },
+    facility_name: { type: DataTypes.TEXT },
+    environmental_conditions: { type: DataTypes.TEXT },
     terrestrial: { type: DataTypes.BOOLEAN },
     flight: { type: DataTypes.BOOLEAN },
     source: { type: DataTypes.ENUM("Protons", "Neutrons") },
     damage_level: { type: DataTypes.FLOAT },
-    damage_level_description: { type: DataTypes.TEXT },
+    damage_description: { type: DataTypes.TEXT },
     special_notes: { type: DataTypes.TEXT },
   },
   { sequelize, modelName: "dd" },

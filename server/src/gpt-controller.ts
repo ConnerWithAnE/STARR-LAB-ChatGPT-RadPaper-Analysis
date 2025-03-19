@@ -10,6 +10,7 @@ import {
   PreliminaryTestData,
 } from "./types";
 import { GPTModel } from "./enums";
+import config from "./config";
 
 export class GPTController {
   private static client: OpenAI;
@@ -282,21 +283,21 @@ export class GPTController {
       await this.addMessage(
         threadId,
         fileId,
-        `You are to only look for data related to this part ${
-          part!.device_name
-        }, ${questions.testingConditions.prompt}`,
+        `You are to only look for data related to this part ${part!.name}, ${
+          questions.testingConditions.prompt
+        }`,
       );
       console.log(
-        `Getting Prelim data for part ${part.device_name} File ID: ${fileId} (Thread ID: ${threadId})`,
+        `Getting Prelim data for part ${part.name} File ID: ${fileId} (Thread ID: ${threadId})`,
       );
       const partRun = await this.runThread(threadId, assistantId);
-      console.log(partRun)
+      console.log(partRun);
       partTests.push({
         ...part,
         preliminary_test_types: partRun.map((data: string) => data),
         seeData: [],
         tidData: [],
-        ddData: []
+        ddData: [],
       } as ai_part);
     }
     console.log(
@@ -336,24 +337,24 @@ export class GPTController {
           await this.addMessage(
             threadId,
             fileId,
-            `You are to only look for data related to this part ${part.device_name}, ${questions.seeData.prompt}`,
+            `You are to only look for data related to this part ${part.name}, ${questions.seeData.prompt}`,
           );
           console.log(
-            `Getting Specifc Data for Part ${part.device_name} File ID: ${fileId} (Thread ID: ${threadId})`,
+            `Getting Specifc Data for Part ${part.name} File ID: ${fileId} (Thread ID: ${threadId})`,
           );
           part.seeData.push(await this.runThread(threadId, assistantId));
         } else if (test === "TID") {
           await this.addMessage(
             threadId,
             fileId,
-            `You are to only look for data related to this part ${part.device_name}, ${questions.tidData.prompt}`,
+            `You are to only look for data related to this part ${part.name}, ${questions.tidData.prompt}`,
           );
           part.tidData.push(await this.runThread(threadId, assistantId));
         } else if (test === "DD") {
           await this.addMessage(
             threadId,
             fileId,
-            `You are to only look for data related to this part ${part.device_name}, ${questions.ddData.prompt}`,
+            `You are to only look for data related to this part ${part.name}, ${questions.ddData.prompt}`,
           );
           part.ddData.push(await this.runThread(threadId, assistantId));
         } else {
@@ -421,6 +422,9 @@ export class GPTController {
     if (!threadId) return;
     const ids = { assistantId, fileId, threadId };
     const papersData = await this.getPaperData({ ...ids });
+    if (config.RunTables) {
+      const tbfgs = await this.getTablesAndFigures({ ...ids });
+    }
     const partData = await this.getSpecificTest({
       ...ids,
       parts: await this.getPartTests({

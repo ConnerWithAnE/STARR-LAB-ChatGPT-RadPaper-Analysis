@@ -78,23 +78,25 @@ export type ai_GPTResponse = {
 
 export type ai_FullDataType = {
   id?: number;
-  paper_name: string;
+  name: string;
   year: number;
   authors: ai_author[];
+  objective: string;
   parts: ai_part[];
 }
 
 export type ai_paper = {
   id?: number;
-  paper_name: string;
+  name: string;
   year: number;
   authors: ai_author[];
+  objective: string;
 };
 
 export type ai_part = {
   id?: number;
-  device_name: string;
-  component_type: string;
+  name: string; // device name
+  type: string; // component type
   manufacturer: string;
   other_details: string;
   preliminary_test_types: PreliminaryTestType[];
@@ -114,18 +116,31 @@ export type PreliminaryTestData = {
 
 export type TIDDataType = {
   id: number;
+  max_fluence?: number;
   source: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
   max_tid: number;
+  energy_levels: number;
+  facility_name: string;
+  environmental_conditions: string;
+  terrestrial: boolean;
+  flight: boolean;
   dose_rate: number;
   eldrs: boolean;
   dose_to_failure: number;
   increased_power_usage: boolean;
   power_usage_description: string;
+  failing_time: string;
   special_notes?: string;
 };
 
 export type SEEDataType = {
   id: number;
+  max_fluence?: number;
+  energy_levels: number;
+  facility_name: string;
+  environmental_conditions: string;
+  terrestrial: boolean;
+  flight: boolean;
   source:
     | "Heavy ions"
     | "Protons"
@@ -133,7 +148,7 @@ export type SEEDataType = {
     | "Neutron"
     | "Electron"
     | "X-rays";
-  see_type: string;
+  type: string;
   amplitude: number;
   duration: number;
   cross_section_saturation: number;
@@ -144,6 +159,11 @@ export type SEEDataType = {
 
 export type DDDataType = {
   id: number;
+  max_fluence?: number;
+  energy_levels: number;
+  facility_name: string;
+  environmental_conditions: string;
+  flight: boolean;
   source: "Protons" | "Neutrons";
   damage_level: number;
   damage_level_description: string;
