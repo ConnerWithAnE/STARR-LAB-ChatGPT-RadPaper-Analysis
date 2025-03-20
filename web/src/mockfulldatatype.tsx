@@ -22,8 +22,8 @@ export const mockFullDataTypePasses: FullDataType[] = [
     ],
     parts: [
       {
-        device_name: "A1308KUA-2-S",
-        component_type: "Hall Effect Sensor",
+        name: "A1308KUA-2-S",
+        type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         other_details: "other",
         preliminary_test_types: ["TID", "DD"],
@@ -78,8 +78,8 @@ export const mockFullDataTypePasses: FullDataType[] = [
     ],
     parts: [
       {
-        device_name: "A1308KUA-2-S",
-        component_type: "Hall Effect Sensor",
+        name: "A1308KUA-2-S",
+        type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         other_details: "other",
         preliminary_test_types: ["TID", "DD"],
@@ -134,8 +134,8 @@ export const mockFullDataTypePasses: FullDataType[] = [
     ],
     parts: [
       {
-        device_name: "A1308KUA-2-S",
-        component_type: "Hall Effect Sensor",
+        name: "A1308KUA-2-S",
+        type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         other_details: "other",
         preliminary_test_types: ["TID", "DD"],
@@ -201,8 +201,8 @@ export const mockPaperDataType: FullDataType[] = [
     ],
     parts: [
       {
-        device_name: "A1308KUA-2-S",
-        component_type: "Hall Effect Sensor",
+        name: "A1308KUA-2-S",
+        type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         other_details: "other",
         preliminary_test_types: ["TID", "DD"],

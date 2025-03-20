@@ -3,6 +3,7 @@ export type FullDataType = {
   name?: string;
   year?: number;
   authors?: AuthorData[];
+  objective?: string;
   parts?: PartData[];
 };
 
@@ -13,8 +14,8 @@ export type AuthorData = {
 
 export type PartData = {
   id?: number;
-  device_name?: string;
-  component_type?: string;
+  name?: string;
+  type?: string;
   manufacturer?: string;
   other_details?: string;
   preliminary_test_types?: PreliminaryTestType[];
@@ -42,18 +43,31 @@ export type PreliminaryTestType = "SEE" | "TID" | "DD" | string;
 
 export type TIDData = {
   id?: number;
+  max_fluence?: number;
   source?: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
   max_tid?: number;
+  energy_levels?: number;
+  facility_name?: string;
+  environmental_conditions?: string;
+  terrestrial?: boolean;
+  flight?: boolean;
   dose_rate?: number;
   eldrs?: boolean;
   dose_to_failure?: number;
   increased_power_usage?: boolean;
   power_usage_description?: string;
+  failing_time?: string;
   special_notes?: string;
 };
 
 export type SEEData = {
   id?: number;
+  max_fluence?: number;
+  energy_levels?: number;
+  facility_name?: string;
+  environmental_conditions?: string;
+  terrestrial?: boolean;
+  flight?: boolean;
   source?:
     | "Heavy ions"
     | "Protons"
@@ -61,7 +75,7 @@ export type SEEData = {
     | "Neutron"
     | "Electron"
     | "X-rays";
-  see_type?: string;
+  type?: string;
   amplitude?: number;
   duration?: number;
   cross_section_saturation?: number;
@@ -72,6 +86,11 @@ export type SEEData = {
 
 export type DDData = {
   id?: number;
+  max_fluence?: number;
+  energy_levels?: number;
+  facility_name?: string;
+  environmental_conditions?: string;
+  flight?: boolean;
   source?: "Protons" | "Neutrons";
   damage_level?: number;
   damage_level_description?: string;

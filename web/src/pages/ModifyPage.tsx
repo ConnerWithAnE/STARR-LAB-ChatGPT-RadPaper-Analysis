@@ -13,31 +13,32 @@ export default function ModifyPage() {
   //const [paperAreaHeight, setPaperAreaHeight] = useState<number>();
 
   const fetchPapers = async (search: string) => {
-    //const token = localStorage.getItem("jwtToken");
+    const token = localStorage.getItem("jwtToken");
     setPapers(mockPaperDataType);
 
-    // try {
-    //   const response = await fetch(
-    //     "http://localhost:3000/api/adminRequest/papers/full",
-    //     {
-    //       method: "GET",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //       body: JSON.stringify({ search }),
-    //     }
-    //   );
-    //   if (response.ok) {
-    //     const result = await response.json();
-    //     setPapers(result as FullDataType[]);
-    //   } else {
-    //     console.error(`Failed to fetch papers: ${response.status}`);
-    //   }
-    // } catch (error) {
-    //   console.error(`Error fetching papers: ${error}`);
-    //   throw error;
-    // }
+    const apiReq = search ? "http://localhost:3000/api/adminRequest/papers/full" : `http://localhost:3000/api/adminRequest/papers/full?=${search}`
+
+    try {
+      const response = await fetch(
+        apiReq,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.ok) {
+        const result = await response.json();
+        setPapers(result as FullDataType[]);
+      } else {
+        console.error(`Failed to fetch papers: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`Error fetching papers: ${error}`);
+      throw error;
+    }
   };
 
   // Fetch papers when the page first loads (with an empty search)

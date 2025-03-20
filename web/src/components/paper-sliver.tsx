@@ -45,7 +45,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
       );
 
       if (response.ok) {
-        console.log(`Successfully added entry: ${JSON.stringify(paperData)}`);
+        console.log(`Successfully modified entry: ${JSON.stringify(paperData)}`);
         setIsOpen(false);
         navigate("/modify");
       } else {
