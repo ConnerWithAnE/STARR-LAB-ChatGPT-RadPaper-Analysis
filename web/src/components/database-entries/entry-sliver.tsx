@@ -384,9 +384,6 @@ export default function EntrySliver({
             };
             addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
           } else {
-            console.log("parts_1", parts_1);
-            console.log("parts_2", parts_2);
-            console.log("parts_3", parts_3);
             addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 2);
           }
         });
@@ -396,7 +393,6 @@ export default function EntrySliver({
           updatedParts[i] = updatedPart;
         }
       });
-      console.log("updatedParts in compareparts", updatedParts);
       return updatedParts;
     };
 
@@ -460,7 +456,6 @@ export default function EntrySliver({
           Array.isArray(pass_3)
         ) {
           const updatedParts = comparePartPasses(index, pass_1, pass_2, pass_3);
-          console.log("updatedParts", updatedParts);
           updatedEntry = {
             ...updatedEntry,
             parts: updatedParts,
@@ -558,8 +553,6 @@ export default function EntrySliver({
     //     name: editedEntry?.authors?.[i]?.name ?? author.name,
     //   }))
     // );
-
-    console.log("editedEntry in handleSave", editedEntry);
     const updatedConflicts: Conflict = {
       yellowSeverity: [],
       redSeverity: [],

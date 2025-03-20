@@ -31,10 +31,6 @@ export default function EditEntry({
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
 
-  useEffect(() => {
-    console.log("editedEntry", editedEntry);
-  }, [editedEntry]);
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
     if (path.length === 1) {

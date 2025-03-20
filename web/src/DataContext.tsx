@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 import { GPTResponse2, FullDataType } from "./types/types";
 
 // Define the shape of the data
@@ -55,14 +49,6 @@ export const TableDataFormProvider = ({
   const [tableEntries, setTableEntries] = useState<FullDataType[]>([]);
   const [redConflicts, setRedConflicts] = useState<RedConflicts[]>([]);
 
-  useEffect(() => {
-    console.log("Updated contacts:", tableEntries);
-  }, [tableEntries]);
-
-  useEffect(() => {
-    console.log("Updated GPTPasses:", initialGPTPasses);
-  }, [initialGPTPasses]);
-
   function updateEntry(id: number, value: FullDataType) {
     setTableEntries((prev) => {
       const updatedEntries = [...prev];
@@ -72,7 +58,6 @@ export const TableDataFormProvider = ({
   }
 
   function addEntry(entry: FullDataType) {
-    console.log("entry", entry);
     setTableEntries((prev) => {
       const newEntry: FullDataType = {
         ...entry,

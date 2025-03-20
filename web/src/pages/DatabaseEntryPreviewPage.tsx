@@ -46,7 +46,6 @@ export default function DatabaseEntryPreviewPage() {
   // };
 
   useEffect(() => {
-    console.log("redConflicts", redConflicts);
     let disabled = false;
     redConflicts.map((value) => {
       if (value.fields.length > 0) {
