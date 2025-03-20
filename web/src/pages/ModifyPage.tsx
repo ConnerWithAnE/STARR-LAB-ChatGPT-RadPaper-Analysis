@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { FullDataType } from "../types/types";
 //import PaperSliver from "../components/paper-sliver";
 import PaperGallery from "../components/paper-gallery";
-import { mockPaperDataType } from "../mockfulldatatype";
+import { mockPaperDataType2 } from "../mockfulldatatype";
 
 export default function ModifyPage() {
   const [papers, setPapers] = useState<FullDataType[]>([]);
@@ -14,7 +14,7 @@ export default function ModifyPage() {
 
   const fetchPapers = async (search: string) => {
     const token = localStorage.getItem("jwtToken");
-    setPapers(mockPaperDataType);
+    setPapers(mockPaperDataType2);
 
     // const apiReq = search ? "http://localhost:3000/api/adminRequest/papers/full" : `http://localhost:3000/api/adminRequest/papers/full?=${search}`
 
@@ -54,7 +54,7 @@ export default function ModifyPage() {
   };
 
   return (
-    <div className="flex flex-col items-center bg h-screen pt-[65px]">
+    <div className="flex flex-col items-center bg">
       <div className="bg-[#F4F4F4] w-[70%]">
         <div>
           <div className="py-[4%] text-[#343434] text-4xl">

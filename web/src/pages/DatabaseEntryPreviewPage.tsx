@@ -137,7 +137,7 @@ export default function DatabaseEntryPreviewPage() {
   }
 
   const [paperAreaHeight, setPaperAreaHeight] = useState<number>(
-    window.innerHeight - 200 - 65
+    window.innerHeight - 200 - 30
   ); //Default? random number choice
 
   const updateDimensions = () => {
@@ -167,8 +167,8 @@ export default function DatabaseEntryPreviewPage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center h-screen pt-[65px]">
-      <div className="bg-[#F4F4F4] w-[70%] h-full">
+    <div className="flex flex-col items-center bg">
+      <div className="bg-[#F4F4F4] w-[70%]">
         <div>
           <div className="py-[4%] text-4xl text-slate-900">
             Modify Paper Data
@@ -176,26 +176,24 @@ export default function DatabaseEntryPreviewPage() {
           <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
         </div>
         <div className="">
-          <div className="overflow-y-scroll max-h-full">
-            <div
-              className="overflow-y-scroll"
-              style={{
-                height: paperAreaHeight - 30,
-              }}
-            >
-              {initialGPTPasses.map((entry: GPTResponse2, index: number) => (
-                <EntrySliver
-                  gptPass={entry}
-                  index={index}
-                  onHandleDeleteChange={onHandleDeleteEntry}
-                />
-              ))}
-            </div>
+          <div
+            className="overflow-y-scroll h-[90%] max-h-full grow"
+            style={{
+              height: paperAreaHeight,
+            }}
+          >
+            {initialGPTPasses.map((entry: GPTResponse2, index: number) => (
+              <EntrySliver
+                gptPass={entry}
+                index={index}
+                onHandleDeleteChange={onHandleDeleteEntry}
+              />
+            ))}
           </div>
         </div>
       </div>
       {/* footer */}
-      <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
+      <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full  gap-2 p-3">
         <Button
           className="bg-usask-green text-white rounded-md"
           isDisabled={disabled}

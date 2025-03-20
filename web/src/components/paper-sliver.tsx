@@ -37,10 +37,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
 
     try {
       // Simulate a delay (e.g., for testing purposes)
-      await new Promise((resolve) => setTimeout(resolve, 2000)).finally(() => {
-        setLoading(false);
-        setIsOpen(false);
-      });
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       // const response = await fetch(
       //   "http://localhost:3000/api/adminRequest/papers/full",
@@ -75,6 +72,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
       return { success: false, error };
     } finally {
       setLoading(false);
+      setIsOpen(false);
     }
   };
 
@@ -126,17 +124,17 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
                 </ModalBody>
                 <ModalFooter>
                   <Button
-                    className="bg-[#ff5353] text-white rounded-md"
-                    onPress={() => {
+                    className="bg-[#ff5353] text-white"
+                    disabled={loading}
+                    onClick={() => {
                       setIsOpen(false);
                     }}
-                    disabled={loading}
                   >
                     Cancel
                   </Button>
                   <Button
                     className="bg-usask-green text-[#DADADA]"
-                    onPress={handleSave}
+                    onClick={handleSave}
                     disabled={loading}
                   >
                     {loading ? <Spinner color="white"></Spinner> : "Save"}
