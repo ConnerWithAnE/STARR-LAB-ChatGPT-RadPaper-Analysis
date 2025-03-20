@@ -83,7 +83,12 @@ export default function EntrySliver({
   useEffect(() => {
     if (hasRun.current) return; // Prevent duplicate execution
     hasRun.current = true;
+
     let updatedEntry = { ...editedEntry };
+    if (!updatedEntry) {
+      return;
+    }
+
     const updatedConflicts = {
       yellowSeverity: [...unresolvedConflicts.yellowSeverity],
       redSeverity: [...unresolvedConflicts.redSeverity],
@@ -94,7 +99,6 @@ export default function EntrySliver({
       dataType: string,
       severity: Severity
     ) => {
-      //const newconflict: SingleConflict = { conflictName: dataType, isResolved: false };
       switch (severity) {
         case 1:
           currentConflicts.yellowSeverity.push(dataType);
@@ -112,8 +116,9 @@ export default function EntrySliver({
       pass_2: SEEData[],
       pass_3: SEEData[]
     ): SEEData[] => {
-      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.sees ?? [])];
+      const updatedTests: SEEData[] = [];
       pass_1.forEach((test, i) => {
+        let updatedTest = {} as SEEData;
         Object.entries(test).map(([key]) => {
           if (key === "id") {
             return;
@@ -124,22 +129,18 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
-          if (!updatedTests[i]) {
-            updatedTests.push({});
-          }
-
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
             tests_2 === tests_3
           ) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_1,
             };
           } else if (tests_1 === tests_2 || tests_1 === tests_3) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_1,
             };
             addConflict2(
@@ -148,8 +149,8 @@ export default function EntrySliver({
               1
             );
           } else if (tests_2 === tests_3) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_2,
             };
             addConflict2(
@@ -165,6 +166,7 @@ export default function EntrySliver({
             );
           }
         });
+        updatedTests.push(updatedTest);
       });
       return updatedTests;
     };
@@ -176,8 +178,9 @@ export default function EntrySliver({
       pass_2: DDData[],
       pass_3: DDData[]
     ): DDData[] => {
-      const updatedTests = [...(editedEntry?.parts?.[partIndex]?.dds ?? [])];
+      const updatedTests: DDData[] = [];
       pass_1.forEach((test, i) => {
+        let updatedTest = {} as DDData;
         Object.entries(test).map(([key]) => {
           if (key === "id") {
             return;
@@ -188,22 +191,18 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
-          if (!updatedTests[i]) {
-            updatedTests.push({});
-          }
-
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
             tests_2 === tests_3
           ) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_1,
             };
           } else if (tests_1 === tests_2 || tests_1 === tests_3) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_1,
             };
             addConflict2(
@@ -212,8 +211,8 @@ export default function EntrySliver({
               1
             );
           } else if (tests_2 === tests_3) {
-            updatedTests[testIndex] = {
-              ...updatedTests[testIndex],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_2,
             };
             addConflict2(
@@ -229,6 +228,7 @@ export default function EntrySliver({
             );
           }
         });
+        updatedTests.push(updatedTest);
       });
       return updatedTests;
     };
@@ -240,9 +240,9 @@ export default function EntrySliver({
       pass_2: TIDData[],
       pass_3: TIDData[]
     ): TIDData[] => {
-      const updatedTests: TIDData[] =
-        editedEntry?.parts?.[partIndex]?.tids ?? [];
+      const updatedTests: TIDData[] = [];
       pass_1.forEach((test, i) => {
+        let updatedTest = {} as TIDData;
         Object.entries(test).map(([key]) => {
           if (key === "id") {
             return;
@@ -253,22 +253,18 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
-          if (!updatedTests[i]) {
-            updatedTests.push({});
-          }
-
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
             tests_2 === tests_3
           ) {
-            updatedTests[i] = {
-              ...updatedTests[i],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_1,
             };
           } else if (tests_1 === tests_2 || tests_1 === tests_3) {
-            updatedTests[i] = {
-              ...updatedTests[i],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_1,
             };
             addConflict2(
@@ -277,8 +273,8 @@ export default function EntrySliver({
               1
             );
           } else if (tests_2 === tests_3) {
-            updatedTests[i] = {
-              ...updatedTests[i],
+            updatedTest = {
+              ...updatedTest,
               [typesafeKey]: tests_2,
             };
             addConflict2(
@@ -294,6 +290,7 @@ export default function EntrySliver({
             );
           }
         });
+        updatedTests.push(updatedTest);
       });
       // console.log("updatedTests", updatedTests);
       return updatedTests;
@@ -305,7 +302,7 @@ export default function EntrySliver({
       pass_2: PartData[],
       pass_3: PartData[]
     ): PartData[] => {
-      const updatedParts = [...(editedEntry.parts ?? [])];
+      const updatedParts = [] as PartData[];
       pass_1.forEach((part, i) => {
         let updatedPart = {} as PartData;
         Object.entries(part).map(([key]) => {
