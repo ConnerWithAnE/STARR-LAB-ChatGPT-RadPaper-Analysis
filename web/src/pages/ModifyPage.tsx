@@ -16,29 +16,29 @@ export default function ModifyPage() {
     const token = localStorage.getItem("jwtToken");
     setPapers(mockPaperDataType);
 
-    const apiReq = search ? "http://localhost:3000/api/adminRequest/papers/full" : `http://localhost:3000/api/adminRequest/papers/full?=${search}`
+    // const apiReq = search ? "http://localhost:3000/api/adminRequest/papers/full" : `http://localhost:3000/api/adminRequest/papers/full?=${search}`
 
-    try {
-      const response = await fetch(
-        apiReq,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      if (response.ok) {
-        const result = await response.json();
-        setPapers(result as FullDataType[]);
-      } else {
-        console.error(`Failed to fetch papers: ${response.status}`);
-      }
-    } catch (error) {
-      console.error(`Error fetching papers: ${error}`);
-      throw error;
-    }
+    // try {
+    //   const response = await fetch(
+    //     apiReq,
+    //     {
+    //       method: "GET",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   );
+    //   if (response.ok) {
+    //     const result = await response.json();
+    //     setPapers(result as FullDataType[]);
+    //   } else {
+    //     console.error(`Failed to fetch papers: ${response.status}`);
+    //   }
+    // } catch (error) {
+    //   console.error(`Error fetching papers: ${error}`);
+    //   throw error;
+    // }
   };
 
   // Fetch papers when the page first loads (with an empty search)

@@ -280,65 +280,8 @@ export const mockFullDataTypePasses2: FullDataType[] = [
           },
         ],
       } as PartData,
-    ],
-  },
-  {
-    name: "a second test name",
-    year: 2024,
-    objective: "test",
-    authors: [
       {
-        name: "whee",
-      },
-      {
-        name: "Andrew Yu",
-      },
-    ],
-    parts: [
-      {
-        name: "A1308KUA-2-1",
-        type: "Hall Effect Sensor",
-        manufacturer: "Allegro Microsystems",
-        other_details: "other",
-        preliminary_test_types: ["TID", "DD"],
-        tids: [
-          {
-            source: "Co60",
-            max_tid: 0,
-            dose_rate: 1.6934,
-            eldrs: true,
-            dose_to_failure: 55.4,
-            increased_power_usage: false,
-            power_usage_description: "string",
-            special_notes:
-              "This is a test to make sure that the rendering works",
-          },
-          {
-            source: "Co60",
-            max_tid: 0,
-            dose_rate: 1.6934,
-            eldrs: true,
-            dose_to_failure: 55.4,
-            increased_power_usage: false,
-            power_usage_description: "string",
-            special_notes:
-              "This is a test to make sure that the rendering works",
-          },
-        ],
-        sees: [
-          {
-            source: "Protons",
-            amplitude: 490,
-            duration: 0,
-            cross_section_saturation: 0,
-            cross_section_type: "string",
-            special_notes:
-              "This is to test a different type of test showing up",
-          },
-        ],
-      } as PartData,
-      {
-        name: "SLDFJKLSD-332",
+        name: "AADKDJKLE-22",
         type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         other_details: "other",
@@ -438,6 +381,189 @@ export const mockFullDataTypePasses2: FullDataType[] = [
       } as PartData,
       {
         name: "SLDFJKLSD-332",
+        type: "Hall Effect Sensor",
+        manufacturer: "Allegro Microsystems",
+        other_details: "other",
+        preliminary_test_types: ["TID", "DD"],
+        tids: [
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+        ],
+        sees: [
+          {
+            source: "Protons",
+            amplitude: 490,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+            special_notes:
+              "This is to test a different type of test showing up",
+          },
+        ],
+      } as PartData,
+      {
+        name: "AADKDJKLE-22",
+        type: "Hall Effect Sensor",
+        manufacturer: "Allegro Microsystems",
+        other_details: "other",
+        preliminary_test_types: ["TID", "DD"],
+        tids: [
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+        ],
+        sees: [
+          {
+            source: "Protons",
+            amplitude: 490,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+            special_notes:
+              "This is to test a different type of test showing up",
+          },
+        ],
+      } as PartData,
+    ],
+  },
+  {
+    name: "a second test name",
+    year: 2024,
+    objective: "test",
+    authors: [
+      {
+        name: "whee",
+      },
+      {
+        name: "Andrew Yu",
+      },
+    ],
+    parts: [
+      {
+        name: "A1308KUA-2-1",
+        type: "Hall Effect Sensor",
+        manufacturer: "Allegro Microsystems",
+        other_details: "other",
+        preliminary_test_types: ["TID", "DD"],
+        tids: [
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+        ],
+        sees: [
+          {
+            source: "Protons",
+            amplitude: 490,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+            special_notes:
+              "This is to test a different type of test showing up",
+          },
+        ],
+      } as PartData,
+      {
+        name: "SLDFJKLSD-332",
+        type: "Hall Effect Sensor",
+        manufacturer: "Allegro Microsystems",
+        other_details: "other",
+        preliminary_test_types: ["TID", "DD"],
+        tids: [
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+          {
+            source: "Co60",
+            max_tid: 0,
+            dose_rate: 1.6934,
+            eldrs: true,
+            dose_to_failure: 55.4,
+            increased_power_usage: false,
+            power_usage_description: "string",
+            special_notes:
+              "This is a test to make sure that the rendering works",
+          },
+        ],
+        sees: [
+          {
+            source: "Protons",
+            amplitude: 490,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+            special_notes:
+              "This is to test a different type of test showing up",
+          },
+        ],
+      } as PartData,
+      {
+        name: "AADKDJKLE-22",
         type: "Hall Effect Sensor",
         manufacturer: "Allegro Microsystems",
         other_details: "other",

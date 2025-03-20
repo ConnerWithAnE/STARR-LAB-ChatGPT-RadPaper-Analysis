@@ -34,17 +34,6 @@ export default function DatabaseEntryPreviewPage() {
   const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
 
-  // const [gptPasses, setGPTPasses] = useState<GPTResponse2[]>(data ?? []);
-  // const [editedEntries, setEditedEntries] = useState<FullDataType[]>([]);
-
-  // const handleSave = (index: number, tableData: FullDataType) => {
-  //   setEditedEntries((prevData) => {
-  //     const updatedData = [...prevData];
-  //     updatedData[index] = tableData;
-  //     return updatedData;
-  //   });
-  // };
-
   useEffect(() => {
     let disabled = false;
     redConflicts.map((value) => {

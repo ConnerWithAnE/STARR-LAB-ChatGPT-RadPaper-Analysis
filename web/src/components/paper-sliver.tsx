@@ -7,6 +7,7 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader,
+  Spinner,
 } from "@nextui-org/react";
 import EditEntry from "../pages/edit-entry";
 import { useState } from "react";
@@ -20,6 +21,7 @@ type PaperSliverProp = {
 
 export default function PaperSliver({ paper, index }: PaperSliverProp) {
   const [open, setIsOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [paperData, setPaperData] = useState<FullDataType>(paper);
   const navigate = useNavigate();
 
@@ -31,36 +33,48 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
     //   return;
     // }
 
-    try {
-      const response = await fetch(
-        "http://localhost:3000/api/adminRequest/papers/full",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(paperData),
-        }
-      );
+    setLoading(true);
 
-      if (response.ok) {
-        console.log(`Successfully modified entry: ${JSON.stringify(paperData)}`);
+    try {
+      // Simulate a delay (e.g., for testing purposes)
+      await new Promise((resolve) => setTimeout(resolve, 2000)).finally(() => {
+        setLoading(false);
         setIsOpen(false);
-        navigate("/modify");
-      } else {
-        console.error(
-          `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
-            response.status
-          }`
-        );
-      }
+      });
+
+      // const response = await fetch(
+      //   "http://localhost:3000/api/adminRequest/papers/full",
+      //   {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //     body: JSON.stringify(paperData),
+      //   }
+      // );
+
+      // if (response.ok) {
+      //   console.log(
+      //     `Successfully modified entry: ${JSON.stringify(paperData)}`
+      //   );
+      //   setIsOpen(false);
+      //   navigate("/modify");
+      // } else {
+      //   console.error(
+      //     `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
+      //       response.status
+      //     }`
+      //   );
+      // }
     } catch (error) {
       console.error(
         `Error inserting entry: ${JSON.stringify(paperData)}`,
         error
       );
       return { success: false, error };
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -70,9 +84,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
         index % 2 ? "bg-[#DADADA]" : "bg-[#EEEEEE]"
       } grid grid-cols-6 justify-between p-[3%]`}
     >
-      <div className="col-span-1">
-        <div className="text-md">{index}.</div>
-      </div>
+      <div className="col-span-1"></div>
       <div className="col-span-3">
         <div className="text-left text-lg">{paper.name}</div>
         <div className="text-xs text-left">
@@ -118,14 +130,16 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
                     onPress={() => {
                       setIsOpen(false);
                     }}
+                    disabled={loading}
                   >
                     Cancel
                   </Button>
                   <Button
                     className="bg-usask-green text-[#DADADA]"
                     onPress={handleSave}
+                    disabled={loading}
                   >
-                    Save
+                    {loading ? <Spinner color="white"></Spinner> : "Save"}
                   </Button>
                 </ModalFooter>
               </>
