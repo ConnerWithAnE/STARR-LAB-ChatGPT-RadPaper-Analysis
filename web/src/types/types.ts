@@ -2,8 +2,8 @@ export type FullDataType = {
   id?: number;
   name?: string;
   year?: number;
-  authors?: AuthorData[];
   objective?: string;
+  authors?: AuthorData[];
   parts?: PartData[];
 };
 

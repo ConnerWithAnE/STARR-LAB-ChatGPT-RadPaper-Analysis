@@ -52,7 +52,7 @@ export default function EntrySliver({
     if (savedEntry) {
       return savedEntry;
     } else {
-      return { id: index } as FullDataType;
+      return {} as FullDataType;
     }
   });
   const [valuesEdited, setValuesEdited] = useState<string[]>([]); // To keep track of the values edited in the entry
@@ -66,7 +66,7 @@ export default function EntrySliver({
     if (newentry) {
       return setEditedEntry(newentry);
     } else {
-      setEditedEntry({ id: index } as FullDataType);
+      setEditedEntry({} as FullDataType);
     }
   }, [tableEntries]);
 
@@ -307,6 +307,7 @@ export default function EntrySliver({
     ): PartData[] => {
       const updatedParts = [...(editedEntry.parts ?? [])];
       pass_1.forEach((part, i) => {
+        let updatedPart = {} as PartData;
         Object.entries(part).map(([key]) => {
           type PartDataKey = keyof PartData;
           const typesafeKey = key as PartDataKey;
@@ -325,8 +326,8 @@ export default function EntrySliver({
               parts_2 as SEEData[],
               parts_3 as SEEData[]
             );
-            updatedParts[i] = {
-              ...updatedParts[i],
+            updatedPart = {
+              ...updatedPart,
               [typesafeKey]: updatedSEETests,
             };
             return;
@@ -339,8 +340,9 @@ export default function EntrySliver({
               parts_2 as TIDData[],
               parts_3 as TIDData[]
             );
-            updatedParts[i] = {
-              ...updatedParts[i],
+
+            updatedPart = {
+              ...updatedPart,
               [typesafeKey]: updatedTIDTests,
             };
             return;
@@ -353,8 +355,8 @@ export default function EntrySliver({
               parts_2 as DDData[],
               parts_3 as DDData[]
             );
-            updatedParts[i] = {
-              ...updatedParts[i],
+            updatedPart = {
+              ...updatedPart,
               [typesafeKey]: updatedDDTests,
             };
             return;
@@ -365,19 +367,19 @@ export default function EntrySliver({
             parts_1 === parts_3 &&
             parts_2 === parts_3
           ) {
-            updatedParts[partIndex] = {
-              ...updatedParts[partIndex],
+            updatedPart = {
+              ...updatedPart,
               [typesafeKey]: parts_1,
             };
           } else if (parts_1 === parts_2 || parts_1 === parts_3) {
-            updatedParts[partIndex] = {
-              ...updatedParts[partIndex],
+            updatedPart = {
+              ...updatedPart,
               [typesafeKey]: parts_1,
             };
             addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
           } else if (parts_2 === parts_3) {
-            updatedParts[partIndex] = {
-              ...updatedParts[partIndex],
+            updatedPart = {
+              ...updatedPart,
               [typesafeKey]: parts_2,
             };
             addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
@@ -388,7 +390,13 @@ export default function EntrySliver({
             addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 2);
           }
         });
+        if (!updatedParts[i]) {
+          updatedParts.push(updatedPart);
+        } else {
+          updatedParts[i] = updatedPart;
+        }
       });
+      console.log("updatedParts in compareparts", updatedParts);
       return updatedParts;
     };
 
@@ -452,6 +460,7 @@ export default function EntrySliver({
           Array.isArray(pass_3)
         ) {
           const updatedParts = comparePartPasses(index, pass_1, pass_2, pass_3);
+          console.log("updatedParts", updatedParts);
           updatedEntry = {
             ...updatedEntry,
             parts: updatedParts,

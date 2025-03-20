@@ -38,14 +38,41 @@ export default function EditEntry({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
     if (path.length === 1) {
+      // If the current level is an array, ensure the structure is maintained
+      if (Array.isArray(obj)) {
+        const index = parseInt(path[0], 10);
+        const updatedArray = [...obj];
+        updatedArray[index] = value;
+        return updatedArray;
+      }
       return {
         ...obj,
         [path[0]]: value,
       };
     }
+
+    const currentKey = path[0];
+    const nextKey = path[1];
+
+    // If the current level is an array, ensure the structure is maintained
+    if (Array.isArray(obj)) {
+      const index = parseInt(currentKey, 10);
+      const updatedArray = [...obj];
+      updatedArray[index] = updateNestedProperty(
+        obj[index] || (isNaN(parseInt(nextKey, 10)) ? {} : []),
+        path.slice(1),
+        value
+      );
+      return updatedArray;
+    }
+
     return {
       ...obj,
-      [path[0]]: updateNestedProperty(obj[path[0]], path.slice(1), value),
+      [currentKey]: updateNestedProperty(
+        obj[currentKey] || (isNaN(parseInt(nextKey, 10)) ? {} : []),
+        path.slice(1),
+        value
+      ),
     };
   };
 

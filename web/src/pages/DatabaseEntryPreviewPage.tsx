@@ -87,58 +87,65 @@ export default function DatabaseEntryPreviewPage() {
     //   return;
     // }
 
-    try {
-      const responses = await Promise.all(
-        tableEntries.map(async (value) => {
-          try {
-            const response = await fetch(
-              "http://localhost:3000/api/adminRequest/papers/full",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(value),
-              }
-            );
+    console.log("tableEntries", tableEntries);
 
-            if (response.ok) {
-              console.log(`Successfully added entry: ${JSON.stringify(value)}`);
-              return { success: true };
-            } else {
-              console.error(
-                `Failed to insert entry: ${JSON.stringify(value)}, Status: ${
-                  response.status
-                }`
-              );
-              return { success: false, status: response.status };
-            }
-          } catch (error) {
-            console.error(
-              `Error inserting entry: ${JSON.stringify(value)}`,
-              error
-            );
-            return { success: false, error };
-          }
-        })
-      );
+    const test = JSON.stringify(tableEntries);
+    console.log("stringified tableEntries", test);
 
-      // Check results of all requests
-      const failedRequests = responses.filter((res) => !res.success);
-      if (failedRequests.length > 0) {
-        alert(
-          `Some entries failed to be added. Check the console for more details.`
-        );
-      } else {
-        alert("All entries successfully added to the database.");
-      }
-    } catch (error) {
-      console.error("Error during submission:", error);
-      alert("An error occurred while submitting entries.");
-    } finally {
-      console.log("Submission process completed.");
-    }
+    // try {
+    //   const promises = Promise.all(
+    //     tableEntries.map(async (value) => {
+    //       try {
+    //         const response = await fetch(
+    //           "http://localhost:3000/api/adminRequest/papers/full",
+    //           {
+    //             method: "POST",
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //             body: JSON.stringify(value),
+    //           }
+    //         );
+
+    //         if (response.ok) {
+    //           console.log(`Successfully added entry: ${JSON.stringify(value)}`);
+    //           return { success: true };
+    //         } else {
+    //           console.error(
+    //             `Failed to insert entry: ${JSON.stringify(value)}, Status: ${
+    //               response.status
+    //             }`
+    //           );
+    //           return { success: false, status: response.status };
+    //         }
+    //       } catch (error) {
+    //         console.error(
+    //           `Error inserting entry: ${JSON.stringify(value)}`,
+    //           error
+    //         );
+    //         return { success: false, error };
+    //       }
+    //     })
+    //   );
+
+    //   const responses = await promises;
+
+    //   // Check results of all requests
+    //   const failedRequests = responses.filter((res) => !res.success);
+    //   if (failedRequests.length > 0) {
+    //     alert(
+    //       `Some entries failed to be added. Check the console for more details.`
+    //     );
+    //   } else {
+    //     alert("All entries successfully added to the database.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error during submission:", error);
+    //   alert("An error occurred while submitting entries.");
+    // } finally {
+    //   console.log("Submission process completed.");
+    // }
   }
 
   const [paperAreaHeight, setPaperAreaHeight] = useState<number>(
