@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode } from "react";
-import { GPTResponse2, FullDataType } from "./types/types";
+import { GPTResponse, FullDataType } from "./types/types";
 
 // Define the shape of the data
 
@@ -10,12 +10,12 @@ type RedConflicts = {
 
 //updateContact<K extends keyof Contact>(id: number, field: K, value: Contact[K])
 interface TableDataContextType {
-  initialGPTPasses: GPTResponse2[];
-  setInitialGPTPasses: (data: GPTResponse2[]) => void; // Function to update the data
+  initialGPTPasses: GPTResponse[];
+  setInitialGPTPasses: (data: GPTResponse[]) => void; // Function to update the data
   tableEntries: FullDataType[];
   updateEntry: (id: number, value: FullDataType) => void;
   addEntry: (entry: FullDataType) => void;
-  removePass: (id: number) => GPTResponse2[];
+  removePass: (id: number) => GPTResponse[];
   removeEntry: (id: number) => void;
   redConflicts: RedConflicts[];
   setRedConflict: (id: number, fields: string[]) => void;
@@ -45,7 +45,7 @@ export const TableDataFormProvider = ({
 }: {
   children: ReactNode;
 }) => {
-  const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse2[]>([]);
+  const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse[]>([]);
   const [tableEntries, setTableEntries] = useState<FullDataType[]>([]);
   const [redConflicts, setRedConflicts] = useState<RedConflicts[]>([]);
 
@@ -69,7 +69,7 @@ export const TableDataFormProvider = ({
   }
 
   function removePass(id: number) {
-    const updatedPasses: GPTResponse2[] = [];
+    const updatedPasses: GPTResponse[] = [];
     for (let i = 0; i < initialGPTPasses.length; i++) {
       if (i !== id) {
         updatedPasses.push(initialGPTPasses[i]);

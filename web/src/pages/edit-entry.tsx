@@ -5,7 +5,7 @@ import {
   Conflict,
   DDData,
   FullDataType,
-  GPTResponse2,
+  GPTResponse,
   PartData,
   SEEData,
   TIDData,
@@ -14,7 +14,7 @@ import { MdWarningAmber } from "react-icons/md";
 import RenderPass from "../components/render-pass";
 
 type PaperProps = {
-  entryData?: GPTResponse2;
+  entryData?: GPTResponse;
   editedEntry: FullDataType;
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
   unresolvedConflicts?: Conflict;
@@ -29,7 +29,7 @@ export default function EditEntry({
   setValuesEdited,
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
-  const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
+  const [passes] = useState<GPTResponse>(entryData ?? ({} as GPTResponse));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {

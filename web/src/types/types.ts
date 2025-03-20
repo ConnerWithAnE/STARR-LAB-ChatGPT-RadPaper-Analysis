@@ -26,21 +26,6 @@ export type PartData = {
 
 export type PreliminaryTestType = "SEE" | "TID" | "DD" | string;
 
-// export type TestData = {
-//   id: number;
-//   testing_type: Testing;
-//   data_type: number;
-//   max_fluence: number;
-//   energy: number;
-//   facility: string;
-//   environment: string;
-//   terrestrial: boolean;
-//   flight: boolean;
-//   tidData?: TIDData[];
-//   seeData?: SEEData[];
-//   ddData?: DDData[];
-// };
-
 export type TIDData = {
   id?: number;
   max_fluence?: number;
@@ -97,55 +82,11 @@ export type DDData = {
   special_notes?: string;
 };
 
-export type UpdateData = {
-  ROWID: number;
-  paper_name?: string;
-  year?: number;
-  author?: string[];
-  part_no?: string;
-  type?: string;
-  manufacturer?: string;
-  testing_location?: TestLocation;
-  testing_type?: Testing;
-  data_type?: number;
-};
-
-export type GPTData = {
-  paper_name: string;
-  year: number;
-  author: string[];
-  part_no: string;
-  type: string;
-  manufacturer: string;
-  testing_location: TestLocation;
-  testing_type: Testing;
-  data_type: number;
-};
-
-export type GPTResponse = {
-  pass_1: GPTData;
-  pass_2: GPTData;
-  pass_3: GPTData;
-};
-
 //TODO: replace with the real thing lol
-export type GPTResponse2 = {
+export type GPTResponse = {
   pass_1: FullDataType;
   pass_2: FullDataType;
   pass_3: FullDataType;
-};
-
-export type TableData = {
-  id?: number;
-  paper_name: string;
-  year: number;
-  author: string[];
-  part_no: string;
-  type: string;
-  manufacturer: string;
-  testing_location: TestLocation;
-  testing_type: Testing;
-  data_type: number;
 };
 
 export type Severity = 1 | 2;
@@ -195,18 +136,3 @@ export function hasEmptyProperty(obj: FullDataType): boolean {
         Object.keys(value).length === 0)
   );
 }
-
-export type PaperData = {
-  ROWID: number;
-  paper_name: string;
-  author: string[];
-  /*
-  year: number;
-  part_no: string;
-  type: string;
-  manufacturer: string;
-  testing_location: TestLocation;
-  testing_type: Testing;
-  data_type: number;
-  */
-};

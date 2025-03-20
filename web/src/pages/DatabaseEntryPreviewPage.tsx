@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GPTResponse2 } from "../types/types";
+import { GPTResponse } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
@@ -182,7 +182,7 @@ export default function DatabaseEntryPreviewPage() {
               height: paperAreaHeight,
             }}
           >
-            {initialGPTPasses.map((entry: GPTResponse2, index: number) => (
+            {initialGPTPasses.map((entry: GPTResponse, index: number) => (
               <EntrySliver
                 gptPass={entry}
                 index={index}

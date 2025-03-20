@@ -1,7 +1,7 @@
 import {
   Severity,
   Conflict,
-  GPTResponse2,
+  GPTResponse,
   FullDataType,
   PartData,
   TIDData,
@@ -26,7 +26,7 @@ import { HiExclamationTriangle } from "react-icons/hi2";
 import { HiExclamationCircle } from "react-icons/hi2";
 
 type EntrySliverProp = {
-  gptPass: GPTResponse2;
+  gptPass: GPTResponse;
   index: number;
   onHandleDeleteChange: (index: number) => void;
 };
@@ -74,7 +74,7 @@ export default function EntrySliver({
   const hasRun = useRef(false);
 
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
-  const [passes] = useState<GPTResponse2>(gptPass ?? ({} as GPTResponse2));
+  const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
   const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>({
     yellowSeverity: [],
     redSeverity: [],

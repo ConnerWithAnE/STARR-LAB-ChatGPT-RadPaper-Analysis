@@ -1,4 +1,4 @@
-import { FullDataType, GPTResponse2, PartData } from "./types/types";
+import { FullDataType, GPTResponse, PartData } from "./types/types";
 
 // export type FullDataType = {
 //   id: number;
@@ -608,7 +608,7 @@ export const mockFullDataTypePasses2: FullDataType[] = [
   },
 ];
 
-export const mockGPTPasses: GPTResponse2[] = [
+export const mockGPTPasses: GPTResponse[] = [
   {
     pass_1: mockFullDataTypePasses[0],
     pass_2: mockFullDataTypePasses[1],
