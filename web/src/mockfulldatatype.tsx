@@ -608,6 +608,186 @@ export const mockFullDataTypePasses2: FullDataType[] = [
   },
 ];
 
+export const mockFullDataTypePasses3: FullDataType[] = [
+  {
+    name: "oh yippee",
+    year: 1998,
+    authors: [{ name: "big gamer" }, { name: "small gamer" }],
+    parts: [
+      {
+        name: "DKJFKLSD-23",
+        type: "transistor",
+        manufacturer: "Texas Instruments",
+        preliminary_test_types: ["SEE", "DD"],
+        sees: [
+          {
+            source: "Heavy ions",
+            amplitude: 100,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+          },
+        ],
+        dds: [
+          {
+            source: "Protons",
+            environmental_conditions: "pretty good actually",
+            max_fluence: 94,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "oh yippee",
+    year: 1998,
+    authors: [{ name: "big gamer" }, { name: "small gamer" }],
+    parts: [
+      {
+        name: "DKJFKLSD-23",
+        type: "microchip",
+        manufacturer: "Texas Instruments",
+        preliminary_test_types: ["SEE", "DD"],
+        sees: [
+          {
+            source: "Heavy ions",
+            amplitude: 100,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+          },
+        ],
+        dds: [
+          {
+            source: "Protons",
+            environmental_conditions: "pretty good actually",
+            max_fluence: 94,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "oh yippee",
+    year: 1998,
+    authors: [{ name: "big gamer" }, { name: "small gamer" }],
+    parts: [
+      {
+        name: "DKJFKLSD-23",
+        type: "transistor",
+        manufacturer: "Texas Instruments",
+        preliminary_test_types: ["SEE", "DD"],
+        sees: [
+          {
+            source: "Heavy ions",
+            amplitude: 100,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+          },
+        ],
+        dds: [
+          {
+            source: "Protons",
+            environmental_conditions: "pretty good actually",
+            max_fluence: 94,
+          },
+        ],
+      },
+    ],
+  },
+];
+
+export const mockFullDataTypePasses4: FullDataType[] = [
+  {
+    name: "testing 123",
+    year: 2000,
+    authors: [{ name: "big gamer" }, { name: "small gamer" }],
+    parts: [
+      {
+        name: "SDKJKLFL-23",
+        type: "microchip",
+        manufacturer: "Texas Instruments",
+        preliminary_test_types: ["SEE", "DD"],
+        sees: [
+          {
+            source: "Heavy ions",
+            amplitude: 100,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+          },
+        ],
+        dds: [
+          {
+            source: "Protons",
+            environmental_conditions: "pretty good actually",
+            max_fluence: 94,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "testing 123",
+    year: 2000,
+    authors: [{ name: "big gamer" }, { name: "small gamer" }],
+    parts: [
+      {
+        name: "SDKJKLFL-23",
+        type: "microchip",
+        manufacturer: "Texas Instruments",
+        preliminary_test_types: ["SEE", "DD"],
+        sees: [
+          {
+            source: "Heavy ions",
+            amplitude: 100,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+          },
+        ],
+        dds: [
+          {
+            source: "Protons",
+            environmental_conditions: "pretty good actually",
+            max_fluence: 94,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "testing 123",
+    year: 2000,
+    authors: [{ name: "big gamer" }, { name: "small gamer" }],
+    parts: [
+      {
+        name: "SDKJKLFL-23",
+        type: "microchip",
+        manufacturer: "Texas Instruments",
+        preliminary_test_types: ["SEE", "DD"],
+        sees: [
+          {
+            source: "Heavy ions",
+            amplitude: 100,
+            duration: 0,
+            cross_section_saturation: 0,
+            cross_section_type: "string",
+          },
+        ],
+        dds: [
+          {
+            source: "Protons",
+            environmental_conditions: "not that great",
+            max_fluence: 94,
+          },
+        ],
+      },
+    ],
+  },
+];
+
 export const mockGPTPasses: GPTResponse[] = [
   {
     pass_1: mockFullDataTypePasses[0],
@@ -618,6 +798,19 @@ export const mockGPTPasses: GPTResponse[] = [
     pass_1: mockFullDataTypePasses2[0],
     pass_2: mockFullDataTypePasses2[1],
     pass_3: mockFullDataTypePasses2[2],
+  },
+];
+
+export const mockGPTPasses2: GPTResponse[] = [
+  {
+    pass_1: mockFullDataTypePasses3[0],
+    pass_2: mockFullDataTypePasses3[1],
+    pass_3: mockFullDataTypePasses3[2],
+  },
+  {
+    pass_1: mockFullDataTypePasses4[0],
+    pass_2: mockFullDataTypePasses4[1],
+    pass_3: mockFullDataTypePasses4[2],
   },
 ];
 

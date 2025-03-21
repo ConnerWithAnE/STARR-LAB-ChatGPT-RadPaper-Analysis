@@ -3,7 +3,7 @@ import "../App.css";
 import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
-import { mockGPTPasses } from "../mockfulldatatype";
+import { mockGPTPasses2 } from "../mockfulldatatype";
 
 export default function UploadPage() {
   const [files, setFiles] = useState<File[]>([]);
@@ -73,7 +73,7 @@ export default function UploadPage() {
 
     try {
       navigate("/upload/edit", {
-        state: { resp: mockGPTPasses },
+        state: { resp: mockGPTPasses2 },
       });
       // const response = await fetch(
       //   "http://localhost:3000/api/adminRequest/parseRequest",
