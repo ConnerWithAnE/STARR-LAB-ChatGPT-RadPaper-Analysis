@@ -5,7 +5,7 @@ import {
   Conflict,
   DDData,
   FullDataType,
-  GPTResponse2,
+  GPTResponse,
   PartData,
   SEEData,
   TIDData,
@@ -14,7 +14,7 @@ import { MdWarningAmber } from "react-icons/md";
 import RenderPass from "../components/render-pass";
 
 type PaperProps = {
-  entryData?: GPTResponse2;
+  entryData?: GPTResponse;
   editedEntry: FullDataType;
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
   unresolvedConflicts?: Conflict;
@@ -29,23 +29,46 @@ export default function EditEntry({
   setValuesEdited,
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
-  const [passes] = useState<GPTResponse2>(entryData ?? ({} as GPTResponse2));
-
-  useEffect(() => {
-    console.log("editedEntry", editedEntry);
-  }, [editedEntry]);
+  const [passes] = useState<GPTResponse>(entryData ?? ({} as GPTResponse));
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
     if (path.length === 1) {
+      // If the current level is an array, ensure the structure is maintained
+      if (Array.isArray(obj)) {
+        const index = parseInt(path[0], 10);
+        const updatedArray = [...obj];
+        updatedArray[index] = value;
+        return updatedArray;
+      }
       return {
         ...obj,
         [path[0]]: value,
       };
     }
+
+    const currentKey = path[0];
+    const nextKey = path[1];
+
+    // If the current level is an array, ensure the structure is maintained
+    if (Array.isArray(obj)) {
+      const index = parseInt(currentKey, 10);
+      const updatedArray = [...obj];
+      updatedArray[index] = updateNestedProperty(
+        obj[index] || (isNaN(parseInt(nextKey, 10)) ? {} : []),
+        path.slice(1),
+        value
+      );
+      return updatedArray;
+    }
+
     return {
       ...obj,
-      [path[0]]: updateNestedProperty(obj[path[0]], path.slice(1), value),
+      [currentKey]: updateNestedProperty(
+        obj[currentKey] || (isNaN(parseInt(nextKey, 10)) ? {} : []),
+        path.slice(1),
+        value
+      ),
     };
   };
 

@@ -7,7 +7,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { GPTResponse2 } from "../types/types";
+import { GPTResponse } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
@@ -34,19 +34,7 @@ export default function DatabaseEntryPreviewPage() {
   const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
 
-  // const [gptPasses, setGPTPasses] = useState<GPTResponse2[]>(data ?? []);
-  // const [editedEntries, setEditedEntries] = useState<FullDataType[]>([]);
-
-  // const handleSave = (index: number, tableData: FullDataType) => {
-  //   setEditedEntries((prevData) => {
-  //     const updatedData = [...prevData];
-  //     updatedData[index] = tableData;
-  //     return updatedData;
-  //   });
-  // };
-
   useEffect(() => {
-    console.log("redConflicts", redConflicts);
     let disabled = false;
     redConflicts.map((value) => {
       if (value.fields.length > 0) {
@@ -87,62 +75,69 @@ export default function DatabaseEntryPreviewPage() {
     //   return;
     // }
 
-    try {
-      const responses = await Promise.all(
-        tableEntries.map(async (value) => {
-          try {
-            const response = await fetch(
-              "http://localhost:3000/api/adminRequest/papers/full",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(value),
-              }
-            );
+    console.log("tableEntries", tableEntries);
 
-            if (response.ok) {
-              console.log(`Successfully added entry: ${JSON.stringify(value)}`);
-              return { success: true };
-            } else {
-              console.error(
-                `Failed to insert entry: ${JSON.stringify(value)}, Status: ${
-                  response.status
-                }`
-              );
-              return { success: false, status: response.status };
-            }
-          } catch (error) {
-            console.error(
-              `Error inserting entry: ${JSON.stringify(value)}`,
-              error
-            );
-            return { success: false, error };
-          }
-        })
-      );
+    const test = JSON.stringify(tableEntries);
+    console.log("stringified tableEntries", test);
 
-      // Check results of all requests
-      const failedRequests = responses.filter((res) => !res.success);
-      if (failedRequests.length > 0) {
-        alert(
-          `Some entries failed to be added. Check the console for more details.`
-        );
-      } else {
-        alert("All entries successfully added to the database.");
-      }
-    } catch (error) {
-      console.error("Error during submission:", error);
-      alert("An error occurred while submitting entries.");
-    } finally {
-      console.log("Submission process completed.");
-    }
+    // try {
+    //   const promises = Promise.all(
+    //     tableEntries.map(async (value) => {
+    //       try {
+    //         const response = await fetch(
+    //           "http://localhost:3000/api/adminRequest/papers/full",
+    //           {
+    //             method: "POST",
+    //             headers: {
+    //               "Content-Type": "application/json",
+    //               Authorization: `Bearer ${token}`,
+    //             },
+    //             body: JSON.stringify(value),
+    //           }
+    //         );
+
+    //         if (response.ok) {
+    //           console.log(`Successfully added entry: ${JSON.stringify(value)}`);
+    //           return { success: true };
+    //         } else {
+    //           console.error(
+    //             `Failed to insert entry: ${JSON.stringify(value)}, Status: ${
+    //               response.status
+    //             }`
+    //           );
+    //           return { success: false, status: response.status };
+    //         }
+    //       } catch (error) {
+    //         console.error(
+    //           `Error inserting entry: ${JSON.stringify(value)}`,
+    //           error
+    //         );
+    //         return { success: false, error };
+    //       }
+    //     })
+    //   );
+
+    //   const responses = await promises;
+
+    //   // Check results of all requests
+    //   const failedRequests = responses.filter((res) => !res.success);
+    //   if (failedRequests.length > 0) {
+    //     alert(
+    //       `Some entries failed to be added. Check the console for more details.`
+    //     );
+    //   } else {
+    //     alert("All entries successfully added to the database.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error during submission:", error);
+    //   alert("An error occurred while submitting entries.");
+    // } finally {
+    //   console.log("Submission process completed.");
+    // }
   }
 
   const [paperAreaHeight, setPaperAreaHeight] = useState<number>(
-    window.innerHeight - 200 - 65
+    window.innerHeight - 200 - 30
   ); //Default? random number choice
 
   const updateDimensions = () => {
@@ -172,8 +167,8 @@ export default function DatabaseEntryPreviewPage() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center h-screen pt-[65px]">
-      <div className="bg-[#F4F4F4] w-[70%] h-full">
+    <div className="flex flex-col items-center bg">
+      <div className="bg-[#F4F4F4] w-[70%]">
         <div>
           <div className="py-[4%] text-4xl text-slate-900">
             Modify Paper Data
@@ -181,26 +176,24 @@ export default function DatabaseEntryPreviewPage() {
           <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
         </div>
         <div className="">
-          <div className="overflow-y-scroll max-h-full">
-            <div
-              className="overflow-y-scroll"
-              style={{
-                height: paperAreaHeight - 30,
-              }}
-            >
-              {initialGPTPasses.map((entry: GPTResponse2, index: number) => (
-                <EntrySliver
-                  gptPass={entry}
-                  index={index}
-                  onHandleDeleteChange={onHandleDeleteEntry}
-                />
-              ))}
-            </div>
+          <div
+            className="overflow-y-scroll h-[90%] max-h-full grow"
+            style={{
+              height: paperAreaHeight,
+            }}
+          >
+            {initialGPTPasses.map((entry: GPTResponse, index: number) => (
+              <EntrySliver
+                gptPass={entry}
+                index={index}
+                onHandleDeleteChange={onHandleDeleteEntry}
+              />
+            ))}
           </div>
         </div>
       </div>
       {/* footer */}
-      <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full h-auto gap-2 p-3">
+      <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full  gap-2 p-3">
         <Button
           className="bg-usask-green text-white rounded-md"
           isDisabled={disabled}
