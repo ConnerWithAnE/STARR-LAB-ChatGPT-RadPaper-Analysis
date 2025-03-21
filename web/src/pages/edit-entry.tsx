@@ -9,6 +9,7 @@ import {
   PartData,
   SEEData,
   TIDData,
+  blacklistedFields,
 } from "../types/types";
 import { MdWarningAmber } from "react-icons/md";
 import RenderPass from "../components/render-pass";
@@ -122,10 +123,7 @@ export default function EditEntry({
       return Object.entries(part).map(([key, value]) => {
         type PartDataKey = keyof PartData;
         const typesafeSubKey = key as PartDataKey;
-        if (
-          typesafeSubKey === "id" ||
-          typesafeSubKey === "preliminary_test_types"
-        ) {
+        if (blacklistedFields.includes(typesafeSubKey)) {
           return;
         }
         if (typesafeSubKey === "tids") {
@@ -180,7 +178,7 @@ export default function EditEntry({
             {Object.entries(tid).map(([key, value]) => {
               type TIDDataKey = keyof TIDData;
               const typesafeKey = key as TIDDataKey;
-              if (typesafeKey === "id") {
+              if (blacklistedFields.includes(typesafeKey)) {
                 return;
               }
               return (
@@ -236,7 +234,7 @@ export default function EditEntry({
             {Object.entries(see).map(([key, value]) => {
               type SEEDataKey = keyof SEEData;
               const typesafeKey = key as SEEDataKey;
-              if (typesafeKey === "id") {
+              if (blacklistedFields.includes(typesafeKey)) {
                 return;
               }
               return (
@@ -291,7 +289,7 @@ export default function EditEntry({
             {Object.entries(dd).map(([key, value]) => {
               type DDDataKey = keyof DDData;
               const typesafeKey = key as DDDataKey;
-              if (typesafeKey === "id") {
+              if (blacklistedFields.includes(typesafeKey)) {
                 return;
               }
               return (
@@ -340,7 +338,7 @@ export default function EditEntry({
   const renderPartAccordionItems = (): JSX.Element[] => {
     const parts = passes?.pass_1?.parts ?? editedEntry.parts;
 
-    if (!parts) {
+    if (!parts || parts.length === 0) {
       return [];
     }
 
@@ -354,8 +352,8 @@ export default function EditEntry({
   };
 
   useEffect(() => {
-    console.log("passes", passes);
-  });
+    console.log("paper", editedEntry);
+  }, []);
 
   return (
     <div className="flex flex-col gap-2 p-4">
@@ -366,7 +364,7 @@ export default function EditEntry({
               type fullDataTypeKey = keyof FullDataType;
               const typesafeKey = key as fullDataTypeKey;
 
-              if (typesafeKey === "id") {
+              if (blacklistedFields.includes(typesafeKey)) {
                 return <></>;
               }
 

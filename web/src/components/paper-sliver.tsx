@@ -10,7 +10,7 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import EditEntry from "../pages/edit-entry";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 // TempPaperData is for testing only
@@ -25,6 +25,10 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
   const [paperData, setPaperData] = useState<FullDataType>(paper);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    console.log("paperData", paperData);
+  }, []);
+
   const handleSave = async () => {
     const token = localStorage.getItem("jwtToken");
 
@@ -33,37 +37,36 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
     //   return;
     // }
 
+    console.log("id", paperData.id);
+    console.log("paperData", paperData);
+
     setLoading(true);
 
     try {
-      // Simulate a delay (e.g., for testing purposes)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = await fetch(
+        `http://localhost:3000/api/adminRequest/papers/${paperData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(paperData),
+        }
+      );
 
-      // const response = await fetch(
-      //   "http://localhost:3000/api/adminRequest/papers/full",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //     body: JSON.stringify(paperData),
-      //   }
-      // );
-
-      // if (response.ok) {
-      //   console.log(
-      //     `Successfully modified entry: ${JSON.stringify(paperData)}`
-      //   );
-      //   setIsOpen(false);
-      //   navigate("/modify");
-      // } else {
-      //   console.error(
-      //     `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
-      //       response.status
-      //     }`
-      //   );
-      // }
+      if (response.ok) {
+        console.log(
+          `Successfully modified entry: ${JSON.stringify(paperData)}`
+        );
+        navigate("/modify");
+      } else {
+        console.error(
+          `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
+            response.status
+          }`
+        );
+      }
     } catch (error) {
       console.error(
         `Error inserting entry: ${JSON.stringify(paperData)}`,

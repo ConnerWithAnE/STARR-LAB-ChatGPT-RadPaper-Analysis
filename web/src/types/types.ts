@@ -89,6 +89,13 @@ export type GPTResponse = {
   pass_3: FullDataType;
 };
 
+export const blacklistedFields = [
+  "id",
+  "preliminary_test_types",
+  "createdAt",
+  "updatedAt",
+];
+
 export type Severity = 1 | 2;
 
 export type TestLocation = "Terrestrial" | "Flight";

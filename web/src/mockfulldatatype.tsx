@@ -619,41 +619,6 @@ export const mockGPTPasses: GPTResponse[] = [
     pass_2: mockFullDataTypePasses2[1],
     pass_3: mockFullDataTypePasses2[2],
   },
-  {
-    pass_1: mockFullDataTypePasses2[0],
-    pass_2: mockFullDataTypePasses2[1],
-    pass_3: mockFullDataTypePasses2[2],
-  },
-  {
-    pass_1: mockFullDataTypePasses2[0],
-    pass_2: mockFullDataTypePasses2[1],
-    pass_3: mockFullDataTypePasses2[2],
-  },
-  {
-    pass_1: mockFullDataTypePasses2[0],
-    pass_2: mockFullDataTypePasses2[1],
-    pass_3: mockFullDataTypePasses2[2],
-  },
-  {
-    pass_1: mockFullDataTypePasses2[0],
-    pass_2: mockFullDataTypePasses2[1],
-    pass_3: mockFullDataTypePasses2[2],
-  },
-  {
-    pass_1: mockFullDataTypePasses2[0],
-    pass_2: mockFullDataTypePasses2[1],
-    pass_3: mockFullDataTypePasses2[2],
-  },
-  {
-    pass_1: mockFullDataTypePasses2[0],
-    pass_2: mockFullDataTypePasses2[1],
-    pass_3: mockFullDataTypePasses2[2],
-  },
-  {
-    pass_1: mockFullDataTypePasses2[0],
-    pass_2: mockFullDataTypePasses2[1],
-    pass_3: mockFullDataTypePasses2[2],
-  },
 ];
 
 export const mockPaperDataType: FullDataType[] = [
