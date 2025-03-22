@@ -22,6 +22,10 @@ type PaperSliverProp = {
 export default function PaperSliver({ paper, index }: PaperSliverProp) {
   const [open, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [editedFields, setEditedFields] = useState<string[]>(
+    []);
+  const [editedPaperData, setEditedPaperData] = useState<FullDataType>(
+    paper);
   const [paperData, setPaperData] = useState<FullDataType>(paper);
   const navigate = useNavigate();
 
@@ -37,46 +41,68 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
     //   return;
     // }
 
+    //
+    const editedData = editedFields.reduce((acc, path) => {
+      const keys = path.split("-");
+      let value = editedPaperData;
+      for (const key of keys) {
+        value = value[key];
+      }
+
+      let current = acc;
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+        if (!current[key]) {
+          current[key] = {};
+        }
+        current = current[key];
+      }
+      current[keys[keys.length - 1]] = value;
+
+      return acc;
+    }, {});
+
+    console.log("editedData", editedData);
     console.log("id", paperData.id);
     console.log("paperData", paperData);
 
-    setLoading(true);
+    // setLoading(true);
 
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/adminRequest/papers/${paperData.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(paperData),
-        }
-      );
+    // try {
+    //   const response = await fetch(
+    //     `http://localhost:3000/api/adminRequest/papers/${paperData.id}`,
+    //     {
+    //       method: "PUT",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //       body: JSON.stringify(paperData),
+    //     }
+    //   );
 
-      if (response.ok) {
-        console.log(
-          `Successfully modified entry: ${JSON.stringify(paperData)}`
-        );
-        navigate("/modify");
-      } else {
-        console.error(
-          `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
-            response.status
-          }`
-        );
-      }
-    } catch (error) {
-      console.error(
-        `Error inserting entry: ${JSON.stringify(paperData)}`,
-        error
-      );
-      return { success: false, error };
-    } finally {
-      setLoading(false);
-      setIsOpen(false);
-    }
+    //   if (response.ok) {
+    //     console.log(
+    //       `Successfully modified entry: ${JSON.stringify(paperData)}`
+    //     );
+    //     navigate("/modify");
+    //   } else {
+    //     console.error(
+    //       `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
+    //         response.status
+    //       }`
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.error(
+    //     `Error inserting entry: ${JSON.stringify(paperData)}`,
+    //     error
+    //   );
+    //   return { success: false, error };
+    // } finally {
+    //   setLoading(false);
+    //   setIsOpen(false);
+    // }
   };
 
   return (
@@ -123,6 +149,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
                   <EditEntry
                     editedEntry={paper}
                     setEditedEntry={setPaperData}
+                    setValuesEdited={setEditedFields}
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>
