@@ -22,16 +22,111 @@ type PaperSliverProp = {
 export default function PaperSliver({ paper, index }: PaperSliverProp) {
   const [open, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [editedFields, setEditedFields] = useState<string[]>(
-    []);
-  const [editedPaperData, setEditedPaperData] = useState<FullDataType>(
-    paper);
+  const [editedFields, setEditedFields] = useState<FullDataType>({});
   const [paperData, setPaperData] = useState<FullDataType>(paper);
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log("paperData", paperData);
   }, []);
+
+  useEffect(() => {
+    const edited = getEditedFields(paper, paperData);
+    setEditedFields(edited);
+  }, [paperData, paper]);
+
+  const getEditedFields = (
+    original: FullDataType,
+    updated: FullDataType
+  ): FullDataType => {
+    const edited: FullDataType = { id: original.id };
+
+    Object.entries(updated).forEach(([key, value]) => {
+      const originalValue = original[key as keyof FullDataType];
+
+      if (key === "authors" || key === "parts") {
+        if (Array.isArray(value) && Array.isArray(originalValue)) {
+          const editedArray = value
+            .map((item, index) => {
+              const originalItem = originalValue[index];
+
+              // Compare individual fields in the object
+              const editedItem: Partial<typeof item> = {};
+              Object.entries(item).forEach(([fieldKey, fieldValue]) => {
+                if (
+                  JSON.stringify(fieldValue) !==
+                  JSON.stringify(originalItem?.[fieldKey as keyof typeof item])
+                ) {
+                  // Handle nested arrays in parts (e.g., sees, dds, tids)
+                  if (
+                    fieldKey === "sees" ||
+                    fieldKey === "dds" ||
+                    fieldKey === "tids"
+                  ) {
+                    if (
+                      Array.isArray(fieldValue) &&
+                      Array.isArray(originalItem?.[fieldKey])
+                    ) {
+                      const nestedEditedArray = fieldValue
+                        .map((nestedItem, nestedIndex) => {
+                          const originalNestedItem =
+                            originalItem[fieldKey][nestedIndex];
+
+                          // Compare individual fields in the nested array
+                          const nestedEditedItem: Partial<typeof nestedItem> =
+                            {};
+                          Object.entries(nestedItem).forEach(
+                            ([nestedKey, nestedValue]) => {
+                              if (
+                                JSON.stringify(nestedValue) !==
+                                JSON.stringify(
+                                  originalNestedItem?.[
+                                    nestedKey as keyof typeof nestedItem
+                                  ]
+                                )
+                              ) {
+                                nestedEditedItem[
+                                  nestedKey as keyof typeof nestedItem
+                                ] = nestedValue;
+                              }
+                            }
+                          );
+
+                          // Only include the nested item if it has changes
+                          return Object.keys(nestedEditedItem).length > 0
+                            ? { id: nestedItem.id, ...nestedEditedItem }
+                            : null;
+                        })
+                        .filter((nestedItem) => nestedItem !== null); // Remove null values
+
+                      if (nestedEditedArray.length > 0) {
+                        editedItem[fieldKey as keyof typeof item] =
+                          nestedEditedArray;
+                      }
+                    }
+                  } else {
+                    // Handle non-nested fields
+                    editedItem[fieldKey as keyof typeof item] = fieldValue;
+                  }
+                }
+              });
+
+              // Only include the item if it has changes
+              return Object.keys(editedItem).length > 0
+                ? { id: item.id, ...editedItem }
+                : null;
+            })
+            .filter((item) => item !== null); // Remove null values
+
+          if (editedArray.length > 0) {
+            edited[key as keyof FullDataType] = editedArray;
+          }
+        }
+      }
+    });
+
+    return edited;
+  };
 
   const handleSave = async () => {
     const token = localStorage.getItem("jwtToken");
@@ -41,68 +136,47 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
     //   return;
     // }
 
-    //
-    const editedData = editedFields.reduce((acc, path) => {
-      const keys = path.split("-");
-      let value = editedPaperData;
-      for (const key of keys) {
-        value = value[key];
-      }
-
-      let current = acc;
-      for (let i = 0; i < keys.length - 1; i++) {
-        const key = keys[i];
-        if (!current[key]) {
-          current[key] = {};
-        }
-        current = current[key];
-      }
-      current[keys[keys.length - 1]] = value;
-
-      return acc;
-    }, {});
-
-    console.log("editedData", editedData);
+    console.log("editedFields", editedFields);
     console.log("id", paperData.id);
     console.log("paperData", paperData);
 
-    // setLoading(true);
+    setLoading(true);
 
-    // try {
-    //   const response = await fetch(
-    //     `http://localhost:3000/api/adminRequest/papers/${paperData.id}`,
-    //     {
-    //       method: "PUT",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //       body: JSON.stringify(paperData),
-    //     }
-    //   );
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/adminRequest/papers/${paperData.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(editedFields),
+        }
+      );
 
-    //   if (response.ok) {
-    //     console.log(
-    //       `Successfully modified entry: ${JSON.stringify(paperData)}`
-    //     );
-    //     navigate("/modify");
-    //   } else {
-    //     console.error(
-    //       `Failed to insert entry: ${JSON.stringify(paperData)}, Status: ${
-    //         response.status
-    //       }`
-    //     );
-    //   }
-    // } catch (error) {
-    //   console.error(
-    //     `Error inserting entry: ${JSON.stringify(paperData)}`,
-    //     error
-    //   );
-    //   return { success: false, error };
-    // } finally {
-    //   setLoading(false);
-    //   setIsOpen(false);
-    // }
+      if (response.ok) {
+        console.log(
+          `Successfully modified entry: ${JSON.stringify(editedFields)}`
+        );
+        navigate("/modify");
+      } else {
+        console.error(
+          `Failed to insert entry: ${JSON.stringify(editedFields)}, Status: ${
+            response.status
+          }`
+        );
+      }
+    } catch (error) {
+      console.error(
+        `Error inserting entry: ${JSON.stringify(editedFields)}`,
+        error
+      );
+      return { success: false, error };
+    } finally {
+      setLoading(false);
+      setIsOpen(false);
+    }
   };
 
   return (
@@ -149,7 +223,6 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
                   <EditEntry
                     editedEntry={paper}
                     setEditedEntry={setPaperData}
-                    setValuesEdited={setEditedFields}
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>
