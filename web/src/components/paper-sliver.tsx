@@ -28,9 +28,11 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
 
   useEffect(() => {
     console.log("paperData", paperData);
+    console.log("editedFields", editedFields);
   }, []);
 
   useEffect(() => {
+    console.log("Recomputing editedFields...");
     const edited = getEditedFields(paper, paperData);
     setEditedFields(edited);
   }, [paperData, paper]);
@@ -44,6 +46,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
     Object.entries(updated).forEach(([key, value]) => {
       const originalValue = original[key as keyof FullDataType];
 
+      // Handle nested arrays (e.g., authors, parts)
       if (key === "authors" || key === "parts") {
         if (Array.isArray(value) && Array.isArray(originalValue)) {
           const editedArray = value
@@ -123,6 +126,10 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
           }
         }
       }
+      // Handle primitive values or objects
+      else if (JSON.stringify(value) !== JSON.stringify(originalValue)) {
+        edited[key as keyof FullDataType] = value;
+      }
     });
 
     return edited;
@@ -159,7 +166,10 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
         console.log(
           `Successfully modified entry: ${JSON.stringify(editedFields)}`
         );
-        navigate("/modify");
+        alert("Successfully modified entry");
+
+        setIsOpen(false);
+        window.location.reload();
       } else {
         console.error(
           `Failed to insert entry: ${JSON.stringify(editedFields)}, Status: ${
@@ -174,8 +184,8 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
       );
       return { success: false, error };
     } finally {
+      setEditedFields(() => ({}));
       setLoading(false);
-      setIsOpen(false);
     }
   };
 
