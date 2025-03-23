@@ -94,6 +94,8 @@ export const blacklistedFields = [
   "preliminary_test_types",
   "createdAt",
   "updatedAt",
+  "paperId",
+  "partId",
 ];
 
 export type Severity = 1 | 2;

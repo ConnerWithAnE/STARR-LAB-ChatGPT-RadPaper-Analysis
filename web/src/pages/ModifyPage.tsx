@@ -1,20 +1,19 @@
 import "../App.css";
-//import { Card } from "@nextui-org/react";
 import SearchBar from "../components/search-bar";
 import { useEffect, useState } from "react";
 import { FullDataType } from "../types/types";
-//import PaperSliver from "../components/paper-sliver";
 import PaperGallery from "../components/paper-gallery";
-import { mockPaperDataType2 } from "../mockfulldatatype";
+import { Button } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 
 export default function ModifyPage() {
   const [papers, setPapers] = useState<FullDataType[]>([]);
+  const navigate = useNavigate();
 
   //const [paperAreaHeight, setPaperAreaHeight] = useState<number>();
 
   const fetchPapers = async (search: string) => {
     const token = localStorage.getItem("jwtToken");
-    // setPapers(mockPaperDataType2);
 
     const apiReq = search
       ? "http://localhost:3000/api/adminRequest/papers/full"
@@ -43,7 +42,6 @@ export default function ModifyPage() {
   // Fetch papers when the page first loads (with an empty search)
   useEffect(() => {
     fetchPapers("");
-    console.log("papers", papers);
   }, []);
 
   // This is setup to only fetch papers when the search button is clicked,
@@ -69,6 +67,13 @@ export default function ModifyPage() {
           </div>
         </div>
       </div>
+      <Button
+        className="bg-usask-green text-white rounded-md absolute bottom-10 right-10"
+        size="lg"
+        onClick={() => navigate("/upload")}
+      >
+        Upload Papers
+      </Button>
     </div>
   );
 }
