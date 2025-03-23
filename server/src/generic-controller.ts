@@ -376,7 +376,7 @@ export class GenericController {
     );
 
     // Handle authors, parts, and related tests
-    await this.handleAuthorsAndParts(paper, data, true);
+    await this.handleAuthorsAndParts(paper, data, true, true);
 
     console.log("Paper and all related entities processed successfully.");
     return await this.getFullPaperById(paper.id);
@@ -402,7 +402,7 @@ export class GenericController {
     await paper.update(paperData);
 
     // Handle authors, parts, and related tests
-    await this.handleAuthorsAndParts(paper, data, append);
+    await this.handleAuthorsAndParts(paper, data, append, false);
 
     console.log("Paper successfully updated.");
     return await this.getFullPaperById(id);
@@ -640,7 +640,12 @@ export class GenericController {
   /**
    * Helper function to handle Authors and Parts in both Create and Update operations
    */
-  static async handleAuthorsAndParts(paper: Paper, data: any, append: boolean) {
+  static async handleAuthorsAndParts(
+    paper: Paper,
+    data: any,
+    append: boolean,
+    isCreate: boolean,
+  ) {
     // Handle authors
     if (data.authors) {
       const authors = (await this.manageEntities(
@@ -658,7 +663,13 @@ export class GenericController {
       append ? await paper.addParts(parts) : await paper.setParts(parts);
       console.log("gotty here");
       console.log(data.parts);
-      await this.handleTestsForParts(parts, paper, data.parts, append);
+      await this.handleTestsForParts(
+        parts,
+        paper,
+        data.parts,
+        append,
+        isCreate,
+      );
     }
   }
 
@@ -670,6 +681,7 @@ export class GenericController {
     paper: Paper,
     partsData: any[],
     append: boolean,
+    isCreate: boolean,
   ) {
     for (const partData of partsData) {
       let part;
@@ -689,7 +701,7 @@ export class GenericController {
         const tids = (await this.manageEntities(
           "Tid",
           partData.tids,
-          true,
+          isCreate,
         )) as Tid[];
 
         if (append) {
