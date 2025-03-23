@@ -349,14 +349,10 @@ export class GenericController {
 
     console.log("Found records:", records.length);
 
-    if (modelName == "papers") {
-      console.log("AAAAAAAA");
-      return Promise.all(
-        records.map((r) => this.getFullPaperById(r.getDataValue("id"))),
-      );
-    }
-
-    return records.map((r) => r.get({ plain: true }));
+    // Return fully populated records for all models
+    return Promise.all(
+      records.map((r) => this.getById(modelName, r.getDataValue("id"))),
+    );
   }
 
   /** Create full paper along with related entities */
