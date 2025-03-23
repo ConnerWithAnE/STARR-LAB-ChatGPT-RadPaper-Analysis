@@ -84,11 +84,6 @@ export default function EditEntry({
   };
 
   const handleChange = (path: string[], value: string | number) => {
-    // console.log("im here?");
-    // console.log("path", path);
-    // console.log("value", value);
-    // console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
-
     /* POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory */
     // setValuesEdited((prev) => {
     //   if (!prev.includes(path.join("-"))) {
@@ -104,7 +99,6 @@ export default function EditEntry({
     }
 
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
-    // console.log("handlechange", editedEntry);
   };
 
   const renderAuthors = (authors: AuthorData[]) => {
@@ -129,7 +123,7 @@ export default function EditEntry({
     });
   };
 
-  const renderParts = (part: PartData, i: number) => {
+  const renderPart = (part: PartData, i: number) => {
     return Object.entries(part).map(([key, value]) => {
       type PartDataKey = keyof PartData;
       const typesafeSubKey = key as PartDataKey;
@@ -358,7 +352,7 @@ export default function EditEntry({
     return (
       parts.map((part, i) => (
         <AccordionItem title={`Part ${i + 1}`} key={`part-${i}`}>
-          {renderParts(part, i)}
+          {renderPart(part, i)}
         </AccordionItem>
       )) ?? []
     );
