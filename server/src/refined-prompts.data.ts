@@ -20,7 +20,7 @@ export const questions = {
         {  
         "type": "object",
         "properties": {
-            "paper_name": { "type": "string" },
+            "name": { "type": "string" },
             "year": { "type": "integer" },
             "authors": { 
                 "type": "array", 
@@ -34,7 +34,7 @@ export const questions = {
             },
             "objective": { "type": "string" }
         },
-          "required": ["paper_name", "year", "authors", "objective"]
+          "required": ["name", "year", "authors", "objective"]
         }
 
         Return only valid JSON with no extra text.`,
