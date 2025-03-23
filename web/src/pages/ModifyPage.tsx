@@ -17,7 +17,7 @@ export default function ModifyPage() {
 
     const apiReq = search
       ? "http://localhost:3000/api/adminRequest/papers/full"
-      : `http://localhost:3000/api/adminRequest/papers/full?=${search}`;
+      : `http://localhost:3000/api/adminRequest/papers/filter?${search}`;
 
     try {
       const response = await fetch(apiReq, {

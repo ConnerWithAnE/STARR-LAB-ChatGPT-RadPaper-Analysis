@@ -3,10 +3,12 @@ import "../App.css";
 import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
-import { mockGPTPasses2 } from "../mockfulldatatype";
+import { mockGPTPasses } from "../mockfulldatatype";
+import { Spinner } from "@nextui-org/react";
 
 export default function UploadPage() {
   const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleFileChange = (
@@ -64,7 +66,12 @@ export default function UploadPage() {
   };
 
   async function submitPapers() {
-    //const token = localStorage.getItem("jwtToken");
+    // for testing
+    // navigate("/upload/edit", {
+    //   state: { resp: mockGPTPasses },
+    // });
+
+    const token = localStorage.getItem("jwtToken");
 
     const formData = new FormData();
     for (let i = 0; i < files.length; i++) {
@@ -72,38 +79,37 @@ export default function UploadPage() {
     }
 
     try {
-      navigate("/upload/edit", {
-        state: { resp: mockGPTPasses2 },
-      });
-      // const response = await fetch(
-      //   "http://localhost:3000/api/adminRequest/parseRequest",
-      //   {
-      //     method: "POST",
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //     body: formData,
-      //   }
-      // );
-      // if (response.ok) {
-      //   const result = await response.json();
-      //   console.log(result);
-      //   //TODO: populate this with the actual results from the backend
-      //   navigate("/upload/edit", {
-      //     state: { resp: result },
-      //   });
-      //   setFiles([]);
-      // } else {
-      //   const err_res = await response.json();
-      //   if (err_res.message) {
-      //     console.error(`${err_res.message}`);
-      //   } else {
-      //     console.error(`Failed to fetch papers: ${response.status}`);
-      //   }
-      // }
+      setLoading(true);
+      const response = await fetch(
+        "http://localhost:3000/api/adminRequest/parseRequest",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        }
+      );
+      if (response.ok) {
+        const result = await response.json();
+        console.log(result);
+        navigate("/upload/edit", {
+          state: { resp: result },
+        });
+        setFiles([]);
+      } else {
+        const err_res = await response.json();
+        if (err_res.message) {
+          console.error(`${err_res.message}`);
+        } else {
+          console.error(`Failed to fetch papers: ${response.status}`);
+        }
+      }
     } catch (error) {
       console.error(`Error fetching papers: ${error}`);
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -153,6 +159,7 @@ export default function UploadPage() {
               <Button
                 className="bg-[#ff5353] text-white rounded-md w-full"
                 type="button"
+                disabled={loading}
                 onClick={() => {
                   navigate("/");
                 }}
@@ -162,6 +169,7 @@ export default function UploadPage() {
               <Button
                 className="bg-usask-green text-white rounded-md w-full"
                 type="submit"
+                disabled={loading}
                 onClick={submitPapers}
               >
                 Upload

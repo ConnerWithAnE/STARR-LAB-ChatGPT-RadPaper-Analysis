@@ -97,7 +97,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
 
                           // Only include the nested item if it has changes
                           return Object.keys(nestedEditedItem).length > 0
-                            ? { ...nestedEditedItem }
+                            ? { id: nestedItem.id, ...nestedEditedItem }
                             : null;
                         })
                         .filter((nestedItem) => nestedItem !== null); // Remove null values
@@ -105,7 +105,6 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
                       if (nestedEditedArray.length > 0) {
                         editedItem[fieldKey as keyof typeof item] =
                           nestedEditedArray;
-                        sections.add(fieldKey);
                       }
                     }
                   } else {
@@ -124,7 +123,6 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
 
           if (editedArray.length > 0) {
             edited[key as keyof FullDataType] = editedArray;
-            sections.add(key);
           }
         }
       }
@@ -132,7 +130,6 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
       else if (JSON.stringify(value) !== JSON.stringify(originalValue)) {
         edited[key as keyof FullDataType] = value;
       }
-      sections.add("papers");
     });
 
     return edited;
