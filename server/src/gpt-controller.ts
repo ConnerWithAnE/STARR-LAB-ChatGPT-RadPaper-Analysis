@@ -295,9 +295,9 @@ export class GPTController {
       partTests.push({
         ...part,
         preliminary_test_types: partRun.map((data: string) => data),
-        seeData: [],
-        tidData: [],
-        ddData: [],
+        sees: [],
+        tids: [],
+        dds: [],
       } as ai_part);
     }
     console.log(
