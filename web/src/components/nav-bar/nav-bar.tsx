@@ -20,7 +20,7 @@ export default function Nav() {
     <Navbar position="static" isBordered className="bg-[#D4D4D4]">
       <NavbarBrand>
         <p
-          className="font-bold text-inherit text-slate-900"
+          className="font-bold text-inherit text-slate-900 hover:text-blue-600"
           style={{ cursor: "pointer" }}
           onClick={() => navigate("/modify")}
         >
