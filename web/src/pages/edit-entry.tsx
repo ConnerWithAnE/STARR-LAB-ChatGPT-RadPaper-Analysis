@@ -1,5 +1,5 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   AuthorData,
   Conflict,
@@ -20,6 +20,7 @@ type PaperProps = {
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
   unresolvedConflicts?: Conflict;
   setValuesEdited?: React.Dispatch<React.SetStateAction<string[]>>;
+  showPasses?: boolean;
 };
 
 export default function EditEntry({
@@ -28,9 +29,18 @@ export default function EditEntry({
   setEditedEntry,
   unresolvedConflicts,
   setValuesEdited,
+  showPasses = true,
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse>(entryData ?? ({} as GPTResponse));
+  const [showGPTPasses] = useState<boolean>(showPasses);
+  // React's strict mode makes every callback run twice. This is to prevent that
+  const hasRun = useRef(false);
+
+  useEffect(() => {
+    if (hasRun.current) return; // Prevent duplicate execution
+    hasRun.current = true;
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
@@ -113,59 +123,59 @@ export default function EditEntry({
             handleChange(["authors", i.toString(), name], value);
           }}
           id={`name`}
+          showPasses={showGPTPasses}
         ></RenderPass>
       );
     });
   };
 
-  const renderParts = (parts: PartData[]) => {
-    return parts.map((part, i) => {
-      return Object.entries(part).map(([key, value]) => {
-        type PartDataKey = keyof PartData;
-        const typesafeSubKey = key as PartDataKey;
-        if (blacklistedFields.includes(typesafeSubKey)) {
-          return;
-        }
-        if (typesafeSubKey === "tids") {
-          return (
-            <div className="bg-slate-200 p-4 flex flex-col gap-2">
-              <span className="text-lg">Total Ionizing Dose Effects</span>
-              {renderTids(part.tids ?? [], i)}
-            </div>
-          );
-        } else if (typesafeSubKey === "sees") {
-          return (
-            <div className="bg-slate-200 p-4 flex flex-col gap-2">
-              <span className="text-lg">Single Event Effects</span>
-              {renderSees(part.sees ?? [], i)}
-            </div>
-          );
-        } else if (typesafeSubKey === "dds") {
-          return (
-            <div className="bg-slate-200 p-4 flex flex-col gap-2">
-              <span className="text-lg">Damage Displacement</span>
-              {renderDDs(part.dds ?? [], i)}
-            </div>
-          );
-        }
+  const renderParts = (part: PartData, i: number) => {
+    return Object.entries(part).map(([key, value]) => {
+      type PartDataKey = keyof PartData;
+      const typesafeSubKey = key as PartDataKey;
+      if (blacklistedFields.includes(typesafeSubKey)) {
+        return;
+      }
+      if (typesafeSubKey === "tids") {
         return (
-          <div>
-            <span className="text-lg">{key}</span>
-            <RenderPass
-              passes={{
-                pass_1: value ?? {},
-                pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
-                pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
-              }}
-              currentEntry={editedEntry?.parts?.[i]?.[typesafeSubKey] ?? ""}
-              handleChange={(name, value) =>
-                handleChange(["parts", i.toString(), name], value)
-              }
-              id={`${key}`}
-            ></RenderPass>
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Total Ionizing Dose Effects</span>
+            {renderTids(part.tids ?? [], i)}
           </div>
         );
-      });
+      } else if (typesafeSubKey === "sees") {
+        return (
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Single Event Effects</span>
+            {renderSees(part.sees ?? [], i)}
+          </div>
+        );
+      } else if (typesafeSubKey === "dds") {
+        return (
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Damage Displacement</span>
+            {renderDDs(part.dds ?? [], i)}
+          </div>
+        );
+      }
+      return (
+        <div>
+          <span className="text-lg">{key}</span>
+          <RenderPass
+            passes={{
+              pass_1: value ?? {},
+              pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
+              pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
+            }}
+            currentEntry={editedEntry.parts?.[i]?.[typesafeSubKey] ?? ""}
+            handleChange={(name, value) =>
+              handleChange(["parts", i.toString(), name], value)
+            }
+            id={`${key}`}
+            showPasses={showGPTPasses}
+          ></RenderPass>
+        </div>
+      );
     });
   };
 
@@ -214,6 +224,7 @@ export default function EditEntry({
                       )
                     }
                     id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
                   ></RenderPass>
                 </div>
               );
@@ -270,6 +281,7 @@ export default function EditEntry({
                       )
                     }
                     id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
                   ></RenderPass>
                 </div>
               );
@@ -325,6 +337,7 @@ export default function EditEntry({
                       )
                     }
                     id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
                   ></RenderPass>
                 </div>
               );
@@ -345,7 +358,7 @@ export default function EditEntry({
     return (
       parts.map((part, i) => (
         <AccordionItem title={`Part ${i + 1}`} key={`part-${i}`}>
-          {renderParts([part])}
+          {renderParts(part, i)}
         </AccordionItem>
       )) ?? []
     );
@@ -398,6 +411,7 @@ export default function EditEntry({
                           handleChange([typesafeKey], value);
                         }}
                         id={key}
+                        showPasses={showGPTPasses}
                       ></RenderPass>
                     </AccordionItem>
                   </Accordion>
