@@ -342,21 +342,21 @@ export class GPTController {
           console.log(
             `Getting Specifc Data for Part ${part.name} File ID: ${fileId} (Thread ID: ${threadId})`,
           );
-          part.seeData.push(await this.runThread(threadId, assistantId));
+          part.sees.push(await this.runThread(threadId, assistantId));
         } else if (test === "TID") {
           await this.addMessage(
             threadId,
             fileId,
             `You are to only look for data related to this part ${part.name}, ${questions.tidData.prompt}`,
           );
-          part.tidData.push(await this.runThread(threadId, assistantId));
+          part.tids.push(await this.runThread(threadId, assistantId));
         } else if (test === "DD") {
           await this.addMessage(
             threadId,
             fileId,
             `You are to only look for data related to this part ${part.name}, ${questions.ddData.prompt}`,
           );
-          part.ddData.push(await this.runThread(threadId, assistantId));
+          part.dds.push(await this.runThread(threadId, assistantId));
         } else {
           console.log("Passing", test);
         }
