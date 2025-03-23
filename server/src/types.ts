@@ -100,9 +100,9 @@ export type ai_part = {
   manufacturer: string;
   other_details: string;
   preliminary_test_types: PreliminaryTestType[];
-  tidData: TIDDataType[];
-  seeData: SEEDataType[];
-  ddData: DDDataType[];
+  tids: TIDDataType[];
+  sees: SEEDataType[];
+  dds: DDDataType[];
 };
 
 export type PreliminaryTestType = "SEE" | "TID" | "DD" | string;
