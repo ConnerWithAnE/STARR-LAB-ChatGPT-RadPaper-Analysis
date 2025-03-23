@@ -10,7 +10,7 @@ import {
   Spinner,
 } from "@nextui-org/react";
 import EditEntry from "../pages/edit-entry";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 // TempPaperData is for testing only
@@ -26,9 +26,14 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
   const [paperData, setPaperData] = useState<FullDataType>(paper);
   const navigate = useNavigate();
 
+  // React's strict mode makes every callback run twice. This is to prevent that
+  const hasRun = useRef(false);
+
   useEffect(() => {
     console.log("paperData", paperData);
     console.log("editedFields", editedFields);
+    if (hasRun.current) return; // Prevent duplicate execution
+    hasRun.current = true;
   }, []);
 
   useEffect(() => {
@@ -233,6 +238,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
                   <EditEntry
                     editedEntry={paper}
                     setEditedEntry={setPaperData}
+                    showPasses={false}
                   ></EditEntry>
                 </ModalBody>
                 <ModalFooter>
