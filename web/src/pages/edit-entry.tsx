@@ -85,18 +85,22 @@ export default function EditEntry({
 
   const handleChange = (path: string[], value: string | number) => {
     /* POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory */
-    // setValuesEdited((prev) => {
-    //   if (!prev.includes(path.join("-"))) {
-    //     return [...prev, path.join("-")];
-    //   }
-    //   return prev;
-    // });
-
     if (setValuesEdited) {
       setValuesEdited((prev) => {
-        return [...prev, path.join("-")];
+        if (!prev.includes(path.join("-"))) {
+          console.log("path", path.join("-"));
+          return [...prev, path.join("-")];
+        }
+        return prev;
       });
     }
+
+    // if (setValuesEdited) {
+    //   setValuesEdited((prev) => {
+    //     console.log("path", path.join("-"));
+    //     return [...prev, path.join("-")];
+    //   });
+    // }
 
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
   };
