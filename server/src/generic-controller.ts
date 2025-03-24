@@ -350,6 +350,13 @@ export class GenericController {
     console.log("Found records:", records.length);
 
     // Return fully populated records for all models
+    return Promise.all(
+      records.map((r) => this.getById(modelName, r.getDataValue("id"))),
+    );
+    /*
+
+    We need it to return like this
+
     return records.map((paper) => {
       const paperData = paper.get({ plain: true });
 
@@ -366,6 +373,7 @@ export class GenericController {
           : [],
       };
     });
+    */
   }
 
   /** Create full paper along with related entities */
