@@ -125,6 +125,10 @@ export default function EntrySliver({
           }
           type SEEDataKey = keyof SEEData;
           const typesafeKey = key as SEEDataKey;
+          if(pass_1[i] === undefined || pass_2[i] === undefined || pass_3[i] === undefined) {
+            // console.log("SEE passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const tests_1 = pass_1[i][typesafeKey];
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
@@ -145,7 +149,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-sees-${testIndex}-${key}`,
+              `parts-${testIndex}-sees-${i}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -155,13 +159,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-sees-${testIndex}-${key}`,
+              `parts-${testIndex}-sees-${i}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-sees-${testIndex}-${key}`,
+              `parts-${testIndex}-sees-${i}-${key}`,
               2
             );
           }
@@ -187,6 +191,10 @@ export default function EntrySliver({
           }
           type DDDataKey = keyof DDData;
           const typesafeKey = key as DDDataKey;
+          if(pass_1[i] === undefined || pass_2[i] === undefined || pass_3[i] === undefined) {
+            // console.log("DD passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const tests_1 = pass_1[i][typesafeKey];
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
@@ -207,7 +215,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-dds-${testIndex}-${key}`,
+              `parts-${testIndex}-dds-${i}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -217,13 +225,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-dds-${testIndex}-${key}`,
+              `parts-${testIndex}-dds-${i}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-dds-${testIndex}-${key}`,
+              `parts-${testIndex}-dds-${i}-${key}`,
               2
             );
           }
@@ -249,6 +257,10 @@ export default function EntrySliver({
           }
           type TIDDataKey = keyof TIDData;
           const typesafeKey = key as TIDDataKey;
+          if(pass_1[i] === undefined || pass_2[i] === undefined || pass_3[i] === undefined) {
+            // console.log("TID passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const tests_1 = pass_1[i][typesafeKey];
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
@@ -269,7 +281,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-tids-${testIndex}-${key}`,
+              `parts-${testIndex}-tids-${i}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -279,13 +291,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-tids-${testIndex}-${key}`,
+              `parts-${testIndex}-tids-${i}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-tids-${testIndex}-${key}`,
+              `parts-${testIndex}-tids-${i}-${key}`,
               2
             );
           }
@@ -303,11 +315,18 @@ export default function EntrySliver({
       pass_3: PartData[]
     ): PartData[] => {
       const updatedParts = [] as PartData[];
+      let undefinedParts: number[] = [];
       pass_1.forEach((part, i) => {
         let updatedPart = {} as PartData;
         Object.entries(part).map(([key]) => {
           type PartDataKey = keyof PartData;
           const typesafeKey = key as PartDataKey;
+          // TODO: This is a temporary fix to handle undefined parts in the passes
+          if(pass_1[i] === undefined || pass_2[i] === undefined || pass_3[i] === undefined) {
+            if(!undefinedParts.includes(i)) { undefinedParts.push(i); }
+            // console.log(i, "Part passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const parts_1 = pass_1[i][typesafeKey];
           const parts_2 = pass_2[i][typesafeKey];
           const parts_3 = pass_3[i][typesafeKey];
@@ -373,15 +392,15 @@ export default function EntrySliver({
               ...updatedPart,
               [typesafeKey]: parts_1,
             };
-            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${i}-${key}`, 1);
           } else if (parts_2 === parts_3) {
             updatedPart = {
               ...updatedPart,
               [typesafeKey]: parts_2,
             };
-            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${i}-${key}`, 1);
           } else {
-            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 2);
+            addConflict2(updatedConflicts, `parts-${i}-${key}`, 2);
           }
         });
         if (!updatedParts[i]) {
@@ -390,6 +409,7 @@ export default function EntrySliver({
           updatedParts[i] = updatedPart;
         }
       });
+      console.log(partIndex, "undefinedParts", undefinedParts);
       return updatedParts;
     };
 

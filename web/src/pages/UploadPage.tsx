@@ -3,7 +3,7 @@ import "../App.css";
 import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
-import { mockGPTPasses } from "../mockfulldatatype";
+import { mockfrompaper3 } from "../mockfulldatatype";
 import { Spinner } from "@nextui-org/react";
 
 export default function UploadPage() {
@@ -68,7 +68,7 @@ export default function UploadPage() {
   async function submitPapers() {
     // for testing
     // navigate("/upload/edit", {
-    //   state: { resp: mockGPTPasses },
+    //   state: { resp: mockfrompaper3 },
     // });
 
     const token = localStorage.getItem("jwtToken");
