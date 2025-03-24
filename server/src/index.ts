@@ -98,7 +98,7 @@ async function initializeSystem(): Promise<{
   initializeSystem().then(({ dbController, gptController }) => {
     app.use("/", exampleRouter);
     app.use("/api/dataRequest", cascadeRouter(dbController));
-    //app.use("/api/adminRequest", adminRouter(dbController, gptController));
+    app.use("/api/adminRequest", adminRouter(dbController, gptController));
 
     //for testing
 

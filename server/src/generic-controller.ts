@@ -350,9 +350,22 @@ export class GenericController {
     console.log("Found records:", records.length);
 
     // Return fully populated records for all models
-    return Promise.all(
-      records.map((r) => this.getById(modelName, r.getDataValue("id"))),
-    );
+    return records.map((paper) => {
+      const paperData = paper.get({ plain: true });
+
+      return {
+        ...paperData,
+        authors: Array.isArray(paperData.authors) ? paperData.authors : [],
+        parts: Array.isArray(paperData.parts)
+          ? paperData.parts.map((part: any) => ({
+              ...part,
+              tids: Array.isArray(part.tids) ? part.tids : [],
+              sees: Array.isArray(part.sees) ? part.sees : [],
+              dds: Array.isArray(part.dds) ? part.dds : [],
+            }))
+          : [],
+      };
+    });
   }
 
   /** Create full paper along with related entities */

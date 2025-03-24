@@ -1,0 +1,2721 @@
+[
+    {
+        "pass_1": {
+            "paper_name": "Radiation Effects Predicted, Observed, and Compared for Spacecraft Systems",
+            "year": 2002,
+            "authors": [
+                {
+                    "name": "Bruce E. Pritchard"
+                },
+                {
+                    "name": "Gary M. Swift"
+                },
+                {
+                    "name": "Allan H. Johnston"
+                }
+            ],
+            "objective": "The main objective of the paper is to document radiation effects observed in selected spacecraft at the system and subsystem levels, relate them to predicted radiation effects in parts, and provide guidance in designs of future spacecraft electronics to have improved tolerance to various radiation effects.",
+            "parts": [
+                {
+                    "name": "AM2901 bit-slice",
+                    "type": "Microprocessor",
+                    "manufacturer": "Sandia",
+                    "other_details": "Radiation-hardened CMOS version known as SA2901, used in Galileo mission",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment, Jupiter mission",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "SEU",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Radiation-hardened CMOS versions were used, no destructive latchups observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CGS74LCT2524",
+                    "type": "Clock driver",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "No latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No latchup sensitivity observed during testing"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LMC6081",
+                    "type": "Operational amplifier",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "No latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No latchup sensitivity observed during testing"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LTC1153",
+                    "type": "Circuit breaker",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "No latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No latchup sensitivity observed during testing"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MAX962",
+                    "type": "Comparator",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "No latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No latchup sensitivity observed during testing"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MC74LCX08",
+                    "type": "AND gate",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "No latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No latchup sensitivity observed during testing"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MC74HC4538",
+                    "type": "Multivibrator",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "No latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No latchup sensitivity observed during testing"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "SN74LVT16244",
+                    "type": "Buffer/driver",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "No latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No latchup sensitivity observed during testing"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "AM29LV800",
+                    "type": "Flash memory",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "Some latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Rated as moderate risk due to low predicted event rates and/or non-destructive nature of observed latchups"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "DS1670",
+                    "type": "System controller",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "Some latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Rated as moderate risk due to low predicted event rates and/or non-destructive nature of observed latchups"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "DS1803",
+                    "type": "Digital potentiometer",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "Some latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Rated as moderate risk due to low predicted event rates and/or non-destructive nature of observed latchups"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MT48LCIN16",
+                    "type": "SDRAM",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "Some latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Rated as moderate risk due to low predicted event rates and/or non-destructive nature of observed latchups"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "OR2T15A25240",
+                    "type": "FPGA",
+                    "manufacturer": "Unknown",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Space environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "Some latchup sensitivity observed",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Rated as moderate risk due to low predicted event rates and/or non-destructive nature of observed latchups"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_2": {
+            "paper_name": "Radiation Effects Predicted, Observed, and Compared for Spacecraft Systems",
+            "year": 2002,
+            "authors": [
+                {
+                    "name": "Bruce E. Pritchard"
+                },
+                {
+                    "name": "Gary M. Swift"
+                },
+                {
+                    "name": "Allan H. Johnston"
+                }
+            ],
+            "objective": "The main objective of the paper is to document radiation effects observed in selected spacecraft at the system and subsystem levels, relate them to predicted radiation effects in parts, and provide guidance in designs of future spacecraft electronics to have improved tolerance to various radiation effects.",
+            "parts": [
+                {
+                    "name": "BlackJack GPS Receiver",
+                    "type": "GPS Receiver",
+                    "manufacturer": "Not specified",
+                    "other_details": "Contains many SEE-sensitive parts; no destructive latchup observed after more than four cumulative years on orbit.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "On orbit",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Heavy ions",
+                            "type": "SEU",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchup observed after more than four cumulative years on orbit."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CGS74LCT2524",
+                    "type": "Clock Driver",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed no latchup sensitivity during testing."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LMC6081",
+                    "type": "Operational Amplifier",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed no latchup sensitivity during testing."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LTC1153",
+                    "type": "Circuit Breaker",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed no latchup sensitivity during testing."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MAX962",
+                    "type": "Comparator",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed no latchup sensitivity during testing."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MC74LCX08",
+                    "type": "AND Gate",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed no latchup sensitivity during testing."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MC74HC4538",
+                    "type": "Multivibrator",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed no latchup sensitivity during testing."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "SN74LVT16244",
+                    "type": "Buffer/Driver",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed no latchup sensitivity during testing."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "AM29LV800",
+                    "type": "Flash Memory",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed some latchup sensitivity in testing, rated as moderate risk."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "DS1670",
+                    "type": "System Controller",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed some latchup sensitivity in testing, rated as moderate risk."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "DS1803",
+                    "type": "Digital Potentiometer",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed some latchup sensitivity in testing, rated as moderate risk."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MT48LCIN16",
+                    "type": "SDRAM",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed some latchup sensitivity in testing, rated as moderate risk."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "OR2T15A25240",
+                    "type": "FPGA",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Not specified",
+                            "environmental_conditions": "Not specified",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 0,
+                            "cross_section_type": "Not specified",
+                            "special_notes": "Showed some latchup sensitivity in testing, rated as moderate risk."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_3": {
+            "paper_name": "Radiation Effects Predicted, Observed, and Compared for Spacecraft Systems",
+            "year": 2024,
+            "authors": [
+                {
+                    "name": "Bruce E. Pritchard"
+                },
+                {
+                    "name": "Gary M. Swift"
+                },
+                {
+                    "name": "Allan H. Johnston"
+                }
+            ],
+            "objective": "The main objective of the paper is to document radiation effects observed in selected spacecraft at the system and subsystem levels, relate them to predicted radiation effects in parts, and provide guidance in designs of future spacecraft electronics to improve tolerance to various radiation effects.",
+            "parts": [
+                {
+                    "name": "AM2901 bit-slice",
+                    "type": "CMOS",
+                    "manufacturer": "Sandia",
+                    "other_details": "Radiation-hardened version known as SA2901, used in Galileo spacecraft",
+                    "preliminary_test_types": [
+                        "TID",
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "max_tid": 600000,
+                            "dose_rate": "Not specified",
+                            "eldrs": false,
+                            "dose_to_failure": "Not specified",
+                            "increased_power_usage": false,
+                            "power_usage_description": "Not applicable",
+                            "failing_time": "Not applicable",
+                            "special_notes": "The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "ddData": []
+                },
+                {
+                    "name": "BlackJack GPS receiver",
+                    "type": "GPS Receiver",
+                    "manufacturer": "Not specified",
+                    "other_details": "Contains many SEE-sensitive parts, used in CHAMP, SAC-C, and Jason spacecraft",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CGS74LCT2524",
+                    "type": "Clock driver",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LMC6081",
+                    "type": "Op amp",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LTC1153",
+                    "type": "Circuit breaker",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MAX962",
+                    "type": "Comparator",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MC74LCX08",
+                    "type": "AND gate",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MC74HC4538",
+                    "type": "Multivibrator",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "SN74LVT16244",
+                    "type": "Buffer/driver",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed no latchup sensitivity during testing",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "AM29LV800",
+                    "type": "Flash memory",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "DS1670",
+                    "type": "System controller",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "DS1803",
+                    "type": "Digital potentiometer",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "MT48LCIN16",
+                    "type": "SDRAM",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "OR2T15A25240",
+                    "type": "FPGA",
+                    "manufacturer": "Not specified",
+                    "other_details": "Showed some latchup sensitivity in testing, rated as moderate risk",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 57800000000,
+                            "energy_levels": "Not specified",
+                            "facility_name": "Jet Propulsion Laboratory",
+                            "environmental_conditions": "Spacecraft environment",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": "Not specified",
+                            "duration": "Not specified",
+                            "cross_section_saturation": "Not specified",
+                            "cross_section_threshold": "Not specified",
+                            "cross_section_type": "Not specified",
+                            "special_notes": "No destructive latchups have been observed. The mission absorbed approximately four times more radiation than it was designed to (~600 krads vs. 150 krads) and continues to operate properly."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "SEE In-Flight Data for two Static 32KB Memories on High Earth Orbit",
+            "year": 2002,
+            "authors": [
+                {
+                    "name": "S. Duzellier"
+                },
+                {
+                    "name": "S. Bourdarie"
+                },
+                {
+                    "name": "R. Velazco"
+                },
+                {
+                    "name": "B. Nicolescu"
+                },
+                {
+                    "name": "R. Ecoffet"
+                }
+            ],
+            "objective": "The main objective of the paper is to present the detailed analysis of in-flight data obtained for two 32KB SRAMs over a four-year period in the MPTB orbit, focusing on the performance, reliability, and survivability of these devices in the space radiation environment.",
+            "parts": [
+                {
+                    "name": "HM62256",
+                    "type": "SRAM",
+                    "manufacturer": "Hitachi",
+                    "other_details": "Entirely tested using Ram Static Test (RST) method. Observed for Single Event Upset (SEU) and stuck bits during solar events.",
+                    "preliminary_test_types": [
+                        "SEE",
+                        "TID"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0.0000024,
+                            "energy_levels": "Proton: 10 MeV, Heavy Ion: 1.7 MeV/mg.cm²",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High latitude and altitude, solar events",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": 60,
+                            "duration": 1,
+                            "cross_section_saturation": 0.0000025,
+                            "cross_section_threshold": 1.7,
+                            "cross_section_type": "cm²/bit",
+                            "special_notes": "Stuck bits correlated to solar events, heavy ions presence assumed"
+                        }
+                    ],
+                    "tidData": [
+                        {
+                            "max_fluence": 0.0000048,
+                            "energy_levels": "Proton: 10 MeV, Heavy Ion: 1.7 MeV/mg.cm²",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High latitude and altitude, solar events",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "max_tid": 100,
+                            "dose_rate": 0.1,
+                            "eldrs": true,
+                            "dose_to_failure": 50,
+                            "increased_power_usage": true,
+                            "power_usage_description": "Increased power usage observed during solar events",
+                            "failing_time": "Several hours to a month",
+                            "special_notes": "Stuck bits correlated to solar events, heavy ions presence assumed"
+                        }
+                    ],
+                    "ddData": []
+                },
+                {
+                    "name": "HM65756",
+                    "type": "SRAM",
+                    "manufacturer": "Matra-MHS",
+                    "other_details": "Partly tested using Cyclic Redundancy Checksum (CRC) and Ram Static Test (RST) methods. Used for storage of T225 process workspaces and data.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0.000013,
+                            "energy_levels": "Proton: 5 MeV, Heavy Ion: 0.1 MeV/mg.cm²",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High latitude and altitude, solar events",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": 47,
+                            "duration": 2,
+                            "cross_section_saturation": 0.0000028,
+                            "cross_section_threshold": 0.1,
+                            "cross_section_type": "cm²/bit",
+                            "special_notes": "Observed during solar events, heavy ions presence assumed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_2": {
+            "paper_name": "SEE in-flight data for two static 32KB memories on high earth orbit",
+            "year": 1999,
+            "authors": [
+                {
+                    "name": "Ph. Cheynet"
+                },
+                {
+                    "name": "R. Velazco"
+                },
+                {
+                    "name": "R. Ecoffet"
+                },
+                {
+                    "name": "S. Duzellier"
+                },
+                {
+                    "name": "JP. David"
+                },
+                {
+                    "name": "JG. Loquet"
+                }
+            ],
+            "objective": "The main objective of the paper is to analyze in-flight data concerning two 32KB SRAM types and to understand the contribution of proton radiation belts and solar events to the Single Event Upset (SEU) rates observed in these devices.",
+            "parts": [
+                {
+                    "name": "HM62256",
+                    "type": "SRAM",
+                    "manufacturer": "Hitachi",
+                    "other_details": "Entirely tested using Ram Static Test (RST) method. Observed for Single Event Upset (SEU) detection and stuck bits during solar events.",
+                    "preliminary_test_types": [
+                        "SEE",
+                        "TID"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0.0000024,
+                            "energy_levels": "Protons > 84 MeV",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High latitude and altitude, solar events",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": 60,
+                            "duration": 1,
+                            "cross_section_saturation": 0.0000025,
+                            "cross_section_threshold": 1.7,
+                            "cross_section_type": "cm²/bit",
+                            "special_notes": "Stuck bits observed during solar events, indicating presence of heavy ions."
+                        }
+                    ],
+                    "tidData": [
+                        {
+                            "max_fluence": 0.0000024,
+                            "energy_levels": "Protons > 84 MeV",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High latitude and altitude, solar events",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "max_tid": 0.0000048,
+                            "dose_rate": 0.0000016,
+                            "eldrs": false,
+                            "dose_to_failure": 365,
+                            "increased_power_usage": true,
+                            "power_usage_description": "Increased during solar events, indicating presence of heavy ions.",
+                            "failing_time": "Few hours to almost a month",
+                            "special_notes": "Stuck bits observed during solar events, indicating presence of heavy ions."
+                        }
+                    ],
+                    "ddData": []
+                },
+                {
+                    "name": "HM65756",
+                    "type": "SRAM",
+                    "manufacturer": "Matra-MHS",
+                    "other_details": "Partly tested using both Cyclic Redundancy Checksum (CRC) and Ram Static Test (RST) methods. Used for storage of T225 process workspaces and data.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0.000013,
+                            "energy_levels": "Protons > 84 MeV",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High latitude and altitude, solar events",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": 62,
+                            "duration": 1,
+                            "cross_section_saturation": 0.0000028,
+                            "cross_section_threshold": 0.1,
+                            "cross_section_type": "cm²/bit",
+                            "special_notes": "The SEU rate is correlated to high energy proton flux but the amplitude is not conserved."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_3": {
+            "paper_name": "SEE In-Flight Data for two Static 32KB Memories on High Earth Orbit",
+            "year": 2002,
+            "authors": [
+                {
+                    "name": "S. Duzellier"
+                },
+                {
+                    "name": "S. Bourdarie"
+                },
+                {
+                    "name": "R. Velazco"
+                },
+                {
+                    "name": "B. Nicolescu"
+                },
+                {
+                    "name": "R. Ecoffet"
+                }
+            ],
+            "objective": "The main objective of the paper is to present the detailed analysis of in-flight data obtained for two 32KB SRAMs in the MPTB orbit, focusing on the performance, reliability, and survivability of these devices in the space radiation environment over a 4-year period.",
+            "parts": [
+                {
+                    "name": "HM62256",
+                    "type": "SRAM",
+                    "manufacturer": "Hitachi",
+                    "other_details": "The entire HM62256 device is operated for SEE detection. A dedicated circuit is used for Latchup detection and protection of the devices.",
+                    "preliminary_test_types": [
+                        "SEE",
+                        "TID"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0.0000024,
+                            "energy_levels": "Protons: 10 MeV, Heavy Ions: 1.7 MeV/mg.cm²",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High energy protons and heavy ions from Galactic Cosmic Rays and Solar Event Protons",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": 60,
+                            "duration": 1,
+                            "cross_section_saturation": 0.0000025,
+                            "cross_section_threshold": 1.7,
+                            "cross_section_type": "cm²/bit",
+                            "special_notes": "The major contribution to the SEU rates comes from the proton radiation belts. The behavior of tested devices during different solar events showed increases with factors up to 60 for the induced error rate."
+                        }
+                    ],
+                    "tidData": [
+                        {
+                            "max_fluence": 0.0000048,
+                            "energy_levels": "Protons: 10 MeV, Heavy Ions: 1.7 MeV/mg.cm²",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High energy protons and heavy ions from Galactic Cosmic Rays and Solar Event Protons",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "max_tid": 100,
+                            "dose_rate": 0.1,
+                            "eldrs": false,
+                            "dose_to_failure": 150,
+                            "increased_power_usage": true,
+                            "power_usage_description": "Increased power usage observed during solar events, correlating with stuck bits occurrence.",
+                            "failing_time": "Several hours to almost a month",
+                            "special_notes": "The TID effect makes the devices more sensitive to stuck bits, and additional dose during solar events may be sufficient to affect the most degraded memory cells."
+                        }
+                    ],
+                    "ddData": []
+                },
+                {
+                    "name": "HM65756",
+                    "type": "SRAM",
+                    "manufacturer": "Matra-MHS",
+                    "other_details": "The HM65756 device is used for the storage of the T225 process workspaces and data, and 2Kbytes are reserved for telemetry and telecommand purposes. Only 70% of its memory plan is observed for upset detection.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 0.000013,
+                            "energy_levels": "Protons: 5 MeV, Heavy Ions: 0.1 MeV/mg.cm²",
+                            "facility_name": "MPTB orbit",
+                            "environmental_conditions": "High energy protons and heavy ions from Galactic Cosmic Rays and Solar Event Protons",
+                            "terrestrial": false,
+                            "flight": true,
+                            "source": "Protons",
+                            "type": "SEU",
+                            "amplitude": 47,
+                            "duration": 1,
+                            "cross_section_saturation": 0.0000028,
+                            "cross_section_threshold": 0.1,
+                            "cross_section_type": "cm²/bit",
+                            "special_notes": "The SEU rate is significantly influenced by solar events, with a notable increase during such periods."
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "Single-Event Effects Measurements on COTS Electronic Devices for Use on NASA Mars Missions",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "Farokh Irom"
+                },
+                {
+                    "name": "Sergeh Vartanian"
+                },
+                {
+                    "name": "Gregory R. Allen"
+                }
+            ],
+            "objective": "The main objective of the paper is to report recent single-event effects measurements results for a variety of microelectronic devices to evaluate these devices for possible use in NASA Mars missions.",
+            "parts": [
+                {
+                    "name": "SN74LVC2T45",
+                    "type": "Voltage Level Translator",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Dual-bit dual-supply bus transceiver with configurable voltage translation",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TCA9517",
+                    "type": "Voltage Level Translator",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Level-shifting I2C bus repeater",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "37 positive SET events were captured"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TC7WZ126FK",
+                    "type": "Bus Driver/Buffer",
+                    "manufacturer": "Toshiba",
+                    "other_details": "Dual bus buffer with 3-state output",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TPS62130",
+                    "type": "DC-DC Buck Converter",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "3 to 17 V, 3A step-down converter",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "Minor negative and positive SETs were observed in the loaded condition"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "ADP195",
+                    "type": "Load Switch",
+                    "manufacturer": "Analog Devices",
+                    "other_details": "Logic controlled, high-side power switch with reverse current blocking",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "Handful of SELs were observed at elevated temperature only"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TPS25942",
+                    "type": "eFuse Power Protection MUX",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "18 V, 5 A eFuse power mux with multiple protection modes",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI/SET",
+                            "amplitude": 500,
+                            "duration": 500,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "208 events observed; majority were tiny negative going transients"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1190",
+                    "type": "RF Range Extender",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "950MHz RF front end",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 47,
+                            "cross_section_type": "LET",
+                            "special_notes": "SEFIs resulted in test application hangs but were recoverable with a reset"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1200",
+                    "type": "Wireless Transceiver",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Low-power, high-performance RF transceiver with analog features",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 2.7 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 220,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 2.7,
+                            "cross_section_type": "LET",
+                            "special_notes": "SELs were observed at LETs as low as 20Ne"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1310",
+                    "type": "Wireless MCU",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "RF Range Extender",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 47,
+                            "cross_section_type": "LET",
+                            "special_notes": "SEFIs were observed at LETs as low as 40Ar and were recoverable with a reset"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LT8612",
+                    "type": "DC-DC Buck Converter",
+                    "manufacturer": "Analog Devices",
+                    "other_details": "3.4 to 42 V, 6A synchronous step-down regulator",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "SEFIs were observed at LETs as low as 40Ar and were recoverable with a reset"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_2": {
+            "paper_name": "Single-Event Effects Measurements on COTS Electronic Devices for Use on NASA Mars Missions",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "Farokh Irom"
+                },
+                {
+                    "name": "Sergeh Vartanian"
+                },
+                {
+                    "name": "Gregory R. Allen"
+                }
+            ],
+            "objective": "The main objective of the paper is to report recent single-event effects measurements results for a variety of microelectronic devices to evaluate these devices for possible use in NASA Mars missions.",
+            "parts": [
+                {
+                    "name": "SN74LVC2T45",
+                    "type": "Voltage Level Translator",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Dual-bit dual-supply bus transceiver with configurable voltage translation.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TCA9517",
+                    "type": "Voltage Level Translator",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Level-shifting I2C bus repeater.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "37 positive SET events were observed with SCLA set to 0 V"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TC7WZ126FK",
+                    "type": "Bus Driver/Buffer",
+                    "manufacturer": "Toshiba",
+                    "other_details": "Dual bus buffer with 3-state output.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TPS62130",
+                    "type": "DC-DC Buck Converter",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "3 to 17 V, 3A step-down converter.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "Minor negative and positive SETs were observed in the loaded condition"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "ADP195",
+                    "type": "Load Switch",
+                    "manufacturer": "Analog Devices",
+                    "other_details": "Logic controlled, high-side power switch with reverse current blocking.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "Handful of SELs were observed at elevated temperature only; five recoverable SEFIs were observed with the 200-mA load condition"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TPS25942",
+                    "type": "eFuse Power Protection MUX",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "18 V, 5 A eFuse power mux with multiple protection modes.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI/SET",
+                            "amplitude": 500,
+                            "duration": 500,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "208 events observed; majority were tiny negative going transients with an amplitude of less than 500 mV and a pulse width of 500 µs"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1190",
+                    "type": "RF Range Extender",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "950MHz RF front end.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 47,
+                            "cross_section_type": "LET",
+                            "special_notes": "SEFIs resulted in test application hangs but were recoverable with a reset"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1200",
+                    "type": "Wireless Transceiver",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Low-power, high-performance RF transceiver with analog features.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 20Ne",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 220,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 2.7,
+                            "cross_section_type": "LET",
+                            "special_notes": "SELs were observed at LETs as low as 20Ne; components were still functional with nominal supply current after performing these measurements"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1310",
+                    "type": "Wireless MCU",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "RF Range Extender.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 47,
+                            "cross_section_type": "LET",
+                            "special_notes": "SEFIs were observed at LETs as low as 40Ar and were recoverable with a reset"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LT8612",
+                    "type": "DC-DC Buck Converter",
+                    "manufacturer": "Analog Devices",
+                    "other_details": "3.4 to 42 V, 6A synchronous step-down regulator.",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C, in air with normal incident beam",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LET",
+                            "special_notes": "Small amount of self-recovery SEFIs in the form of output drop-outs were observed at 61.6 and 47 MeV-cm2/mg"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_3": {
+            "paper_name": "Single-Event Effects Measurements on COTS Electronic Devices for Use on NASA Mars Missions",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "Farokh Irom"
+                },
+                {
+                    "name": "Sergeh Vartanian"
+                },
+                {
+                    "name": "Gregory R. Allen"
+                }
+            ],
+            "objective": "The main objective of the paper is to report recent single-event effects measurements results for a variety of microelectronic devices to evaluate these devices for possible use in NASA Mars missions.",
+            "parts": [
+                {
+                    "name": "SN74LVC2T45",
+                    "type": "Voltage Level Translator",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Dual-bit dual-supply bus transceiver with configurable voltage translation",
+                    "preliminary_test_types": [
+                        "SEE",
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "No SELs or SETs were observed"
+                        },
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TCA9517",
+                    "type": "Voltage Level Translator",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Level-shifting I2C bus repeater",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Small amount of SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TC7WZ126FK",
+                    "type": "Bus Driver/Buffer",
+                    "manufacturer": "Toshiba",
+                    "other_details": "Dual bus buffer with 3-state output",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SET",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "No SELs or SETs were observed"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TPS62130",
+                    "type": "DC-DC Buck Converter",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "3 to 17 V, 3A step-down converter",
+                    "preliminary_test_types": [
+                        "SEE",
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/DSEE",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Minor negative and positive SETs were observed in the loaded condition"
+                        },
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/DSEE",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Minor negative and positive SETs were observed in the loaded condition"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "ADP195",
+                    "type": "Load Switch",
+                    "manufacturer": "Analog Devices",
+                    "other_details": "Logic controlled, high-side power switch with reverse current blocking",
+                    "preliminary_test_types": [
+                        "SEE",
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Handful of SELs were observed at elevated temperature only"
+                        },
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Handful of SELs were observed at elevated temperature only"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "TPS25942",
+                    "type": "eFuse Power Protection MUX",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "18 V, 5 A eFuse power mux with multiple protection modes",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/DSEE",
+                            "amplitude": 500,
+                            "duration": 500,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Self-recovering SEFIs and SETs were observed; majority were tiny negative going transients"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1190",
+                    "type": "RF Range Extender",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "950MHz RF front end",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 47,
+                            "cross_section_type": "LETth",
+                            "special_notes": "SEFIs were observed that resulted in test application hangs but were recoverable with a reset"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1200",
+                    "type": "Wireless Transceiver",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "Low-power, high-performance RF transceiver with analog features",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 2.7 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room temperature and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL",
+                            "amplitude": 220,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 2.7,
+                            "cross_section_type": "LETth",
+                            "special_notes": "SELs were observed at LETs as low as 20Ne"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "CC1310",
+                    "type": "Wireless MCU",
+                    "manufacturer": "Texas Instruments",
+                    "other_details": "RF Range Extender",
+                    "preliminary_test_types": [
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 47 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEFI",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 47,
+                            "cross_section_type": "LETth",
+                            "special_notes": "SEFIs were observed that resulted in test application hangs but were recoverable with a reset"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                },
+                {
+                    "name": "LT8612",
+                    "type": "DC-DC Buck Converter",
+                    "manufacturer": "Analog Devices",
+                    "other_details": "3.4 to 42 V, 6A synchronous step-down regulator",
+                    "preliminary_test_types": [
+                        "SEE",
+                        "SEE"
+                    ],
+                    "seeData": [
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/DSEE",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Small amount of self-recovery SEFIs in the form of output drop-outs were observed at 61.6 and 47 MeV-cm2/mg"
+                        },
+                        {
+                            "max_fluence": 10000000,
+                            "energy_levels": "LET of 61.6 MeV-cm2/mg",
+                            "facility_name": "Berkeley Accelerator Space Effects Facility (BASE)",
+                            "environmental_conditions": "Tested at room and at 70°C",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Heavy ions",
+                            "type": "SEL/DSEE",
+                            "amplitude": 0,
+                            "duration": 0,
+                            "cross_section_saturation": 0,
+                            "cross_section_threshold": 61.6,
+                            "cross_section_type": "LETth",
+                            "special_notes": "Small amount of self-recovery SEFIs in the form of output drop-outs were observed at 61.6 and 47 MeV-cm2/mg"
+                        }
+                    ],
+                    "tidData": [],
+                    "ddData": []
+                }
+            ]
+        }
+    },
+    {
+        "pass_1": {
+            "paper_name": "Review of TID Effects Reported in ProASIC3 and ProASIC3L FPGAs for 3D PLUS Camera Heads",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "A. L. Bosser"
+                },
+                {
+                    "name": "P. Kohler"
+                },
+                {
+                    "name": "J. Salles"
+                },
+                {
+                    "name": "M. Foucher"
+                },
+                {
+                    "name": "J. Bezine"
+                },
+                {
+                    "name": "N. Perrot"
+                },
+                {
+                    "name": "P.-X. Wang"
+                }
+            ],
+            "objective": "The main objective of the paper is to compare original TID data from ProASIC3L FPGAs with existing literature, discuss the impact of different test flows on the TID response, and correlate the data with TID tests of 3D PLUS camera heads.",
+            "parts": [
+                {
+                    "name": "A3PE3000L",
+                    "type": "FPGA",
+                    "manufacturer": "Microchip",
+                    "other_details": "Flash-based FPGA used in 3D PLUS space camera head module, tested for TID effects with a focus on signal propagation delay.",
+                    "preliminary_test_types": [
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": null,
+                            "energy_levels": "Not specified",
+                            "facility_name": "3D PLUS",
+                            "environmental_conditions": "Static, no clock applied, no I/O operations performed",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 60,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "After 60 krad",
+                            "special_notes": "Functional recovery observed after annealing at 100°C"
+                        }
+                    ],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_2": {
+            "paper_name": "Review of TID Effects Reported in ProASIC3 and ProASIC3L FPGAs for 3D PLUS Camera Heads",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "A. L. Bosser"
+                },
+                {
+                    "name": "P. Kohler"
+                },
+                {
+                    "name": "J. Salles"
+                },
+                {
+                    "name": "M. Foucher"
+                },
+                {
+                    "name": "J. Bezine"
+                },
+                {
+                    "name": "N. Perrot"
+                },
+                {
+                    "name": "P.-X. Wang"
+                }
+            ],
+            "objective": "The main objective of the paper is to compare original TID data from ProASIC3L FPGAs with existing literature, discuss the impact of different test flows on the TID response, and correlate the data with TID tests of 3D PLUS camera heads.",
+            "parts": [
+                {
+                    "name": "A3PE3000L",
+                    "type": "FPGA",
+                    "manufacturer": "Microchip",
+                    "other_details": "Part of the ProASIC3L family, used in 3D PLUS space camera head module, tested for TID effects.",
+                    "preliminary_test_types": [
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "N/A",
+                            "facility_name": "3D PLUS",
+                            "environmental_conditions": "Static, no clock applied, no I/O operations performed",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 60,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "After 60 krad, DUT completely lost functionality",
+                            "special_notes": "Functional recovery observed after A2 annealing step"
+                        }
+                    ],
+                    "ddData": []
+                }
+            ]
+        },
+        "pass_3": {
+            "paper_name": "Review of TID Effects Reported in ProASIC3 and ProASIC3L FPGAs for 3D PLUS Camera Heads",
+            "year": 2023,
+            "authors": [
+                {
+                    "name": "A. L. Bosser"
+                },
+                {
+                    "name": "P. Kohler"
+                },
+                {
+                    "name": "J. Salles"
+                },
+                {
+                    "name": "M. Foucher"
+                },
+                {
+                    "name": "J. Bezine"
+                },
+                {
+                    "name": "N. Perrot"
+                },
+                {
+                    "name": "P.-X. Wang"
+                }
+            ],
+            "objective": "This paper compares original TID data from ProASIC3L FPGAs with existing literature, discusses the impact of different test flows on the TID response, and correlates the data with TID tests of 3D PLUS camera heads.",
+            "parts": [
+                {
+                    "name": "A3PE3000L",
+                    "type": "FPGA",
+                    "manufacturer": "Microchip (formerly Actel)",
+                    "other_details": "Flash-based FPGA used in 3D PLUS space camera head module, tested for TID effects with a focus on signal propagation delay and annealing effects.",
+                    "preliminary_test_types": [
+                        "TID"
+                    ],
+                    "seeData": [],
+                    "tidData": [
+                        {
+                            "max_fluence": 0,
+                            "energy_levels": "Not specified",
+                            "facility_name": "3D PLUS",
+                            "environmental_conditions": "Static, no clock applied, no I/O operations performed",
+                            "terrestrial": true,
+                            "flight": false,
+                            "source": "Co60",
+                            "max_tid": 60,
+                            "dose_rate": 300,
+                            "eldrs": false,
+                            "dose_to_failure": 50,
+                            "increased_power_usage": false,
+                            "power_usage_description": "Standby power consumption decreased by over 85% at 60 krad",
+                            "failing_time": "After 60 krad",
+                            "special_notes": "Functional recovery observed after annealing at 100°C for 168 hours"
+                        }
+                    ],
+                    "ddData": []
+                }
+            ]
+        }
+    }
+]
