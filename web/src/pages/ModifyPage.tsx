@@ -20,18 +20,16 @@ export default function ModifyPage() {
       : `http://localhost:3000/api/adminRequest/papers/filter?${search}`;
 
     try {
-      const response = await fetch(
-        "http://localhost:3000/api/adminRequest/papers/full",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await fetch(apiReq, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       if (response.ok) {
         const result = await response.json();
+        console.log("Fetched Papers:", result);
         setPapers(result as FullDataType[]);
       } else {
         console.error(`Failed to fetch papers: ${response.status}`);

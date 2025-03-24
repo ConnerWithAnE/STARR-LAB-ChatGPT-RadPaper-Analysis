@@ -172,7 +172,7 @@ export default function UploadPage() {
                 disabled={loading}
                 onClick={submitPapers}
               >
-                Upload
+                {loading ? <Spinner color="white" /> : "Upload"}
               </Button>
             </div>
           </div>

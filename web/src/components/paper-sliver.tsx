@@ -24,7 +24,6 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
   const [loading, setLoading] = useState<boolean>(false);
   const [editedFields, setEditedFields] = useState<FullDataType>({});
   const [paperData, setPaperData] = useState<FullDataType>(paper);
-  const navigate = useNavigate();
 
   // React's strict mode makes every callback run twice. This is to prevent that
   const hasRun = useRef(false);
@@ -140,6 +139,37 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
     return edited;
   };
 
+  const fetchPaperData = async () => {
+    const token = localStorage.getItem("jwtToken");
+
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `http://localhost:3000/api/adminRequest/papers/full/${paperData.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const data: FullDataType = await response.json();
+        console.log("Fetched Data:", data);
+        setPaperData(data); // Store the fetched data
+        setIsOpen(true); // Open the modal
+      } else {
+        console.error(`Failed to fetch paper data: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Error fetching paper data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSave = async () => {
     const token = localStorage.getItem("jwtToken");
 
@@ -212,9 +242,7 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
       <div className="col-span-2 flex items-center justify-center">
         <button
           className="bg-usask-green text-[#DADADA]"
-          onClick={() => {
-            setIsOpen(true);
-          }}
+          onClick={fetchPaperData}
         >
           Modify Entry
         </button>
