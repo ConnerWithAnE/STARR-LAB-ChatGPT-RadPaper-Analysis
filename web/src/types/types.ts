@@ -31,7 +31,7 @@ export type TIDData = {
   max_fluence?: number;
   source?: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
   max_tid?: number;
-  energy_levels?: number;
+  energy_levels?: number | string;
   facility_name?: string;
   environmental_conditions?: string;
   terrestrial?: boolean;
@@ -48,7 +48,7 @@ export type TIDData = {
 export type SEEData = {
   id?: number;
   max_fluence?: number;
-  energy_levels?: number;
+  energy_levels?: number | string;
   facility_name?: string;
   environmental_conditions?: string;
   terrestrial?: boolean;
@@ -72,7 +72,7 @@ export type SEEData = {
 export type DDData = {
   id?: number;
   max_fluence?: number;
-  energy_levels?: number;
+  energy_levels?: number | string;
   facility_name?: string;
   environmental_conditions?: string;
   flight?: boolean;
@@ -89,6 +89,7 @@ export type GPTResponse = {
   pass_3: FullDataType;
 };
 
+// these fields should not show up in the edit-entry component because they are irrelevant to the user
 export const blacklistedFields = [
   "id",
   "preliminary_test_types",
