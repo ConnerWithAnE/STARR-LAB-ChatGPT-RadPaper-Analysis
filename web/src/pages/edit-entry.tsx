@@ -1,5 +1,5 @@
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   AuthorData,
   Conflict,
@@ -9,6 +9,7 @@ import {
   PartData,
   SEEData,
   TIDData,
+  blacklistedFields,
 } from "../types/types";
 import { MdWarningAmber } from "react-icons/md";
 import RenderPass from "../components/render-pass";
@@ -19,6 +20,7 @@ type PaperProps = {
   setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
   unresolvedConflicts?: Conflict;
   setValuesEdited?: React.Dispatch<React.SetStateAction<string[]>>;
+  showPasses?: boolean;
 };
 
 export default function EditEntry({
@@ -27,9 +29,18 @@ export default function EditEntry({
   setEditedEntry,
   unresolvedConflicts,
   setValuesEdited,
+  showPasses = true,
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse>(entryData ?? ({} as GPTResponse));
+  const [showGPTPasses] = useState<boolean>(showPasses);
+  // React's strict mode makes every callback run twice. This is to prevent that
+  const hasRun = useRef(false);
+
+  useEffect(() => {
+    if (hasRun.current) return; // Prevent duplicate execution
+    hasRun.current = true;
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateNestedProperty = (obj: any, path: string[], value: any): any => {
@@ -73,27 +84,25 @@ export default function EditEntry({
   };
 
   const handleChange = (path: string[], value: string | number) => {
-    // console.log("im here?");
-    // console.log("path", path);
-    // console.log("value", value);
-    // console.log('handleChange() unresolvedConflicts', unresolvedConflicts);
-
     /* POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory */
-    // setValuesEdited((prev) => {
-    //   if (!prev.includes(path.join("-"))) {
-    //     return [...prev, path.join("-")];
-    //   }
-    //   return prev;
-    // });
-
     if (setValuesEdited) {
       setValuesEdited((prev) => {
-        return [...prev, path.join("-")];
+        if (!prev.includes(path.join("-"))) {
+          console.log("path", path.join("-"));
+          return [...prev, path.join("-")];
+        }
+        return prev;
       });
     }
 
+    // if (setValuesEdited) {
+    //   setValuesEdited((prev) => {
+    //     console.log("path", path.join("-"));
+    //     return [...prev, path.join("-")];
+    //   });
+    // }
+
     setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
-    // console.log("handlechange", editedEntry);
   };
 
   const renderAuthors = (authors: AuthorData[]) => {
@@ -112,62 +121,59 @@ export default function EditEntry({
             handleChange(["authors", i.toString(), name], value);
           }}
           id={`name`}
+          showPasses={showGPTPasses}
         ></RenderPass>
       );
     });
   };
 
-  const renderParts = (parts: PartData[]) => {
-    return parts.map((part, i) => {
-      return Object.entries(part).map(([key, value]) => {
-        type PartDataKey = keyof PartData;
-        const typesafeSubKey = key as PartDataKey;
-        if (
-          typesafeSubKey === "id" ||
-          typesafeSubKey === "preliminary_test_types"
-        ) {
-          return;
-        }
-        if (typesafeSubKey === "tids") {
-          return (
-            <div className="bg-slate-200 p-4 flex flex-col gap-2">
-              <span className="text-lg">Total Ionizing Dose Effects</span>
-              {renderTids(part.tids ?? [], i)}
-            </div>
-          );
-        } else if (typesafeSubKey === "sees") {
-          return (
-            <div className="bg-slate-200 p-4 flex flex-col gap-2">
-              <span className="text-lg">Single Event Effects</span>
-              {renderSees(part.sees ?? [], i)}
-            </div>
-          );
-        } else if (typesafeSubKey === "dds") {
-          return (
-            <div className="bg-slate-200 p-4 flex flex-col gap-2">
-              <span className="text-lg">Damage Displacement</span>
-              {renderDDs(part.dds ?? [], i)}
-            </div>
-          );
-        }
+  const renderPart = (part: PartData, i: number) => {
+    return Object.entries(part).map(([key, value]) => {
+      type PartDataKey = keyof PartData;
+      const typesafeSubKey = key as PartDataKey;
+      if (blacklistedFields.includes(typesafeSubKey)) {
+        return;
+      }
+      if (typesafeSubKey === "tids") {
         return (
-          <div>
-            <span className="text-lg">{key}</span>
-            <RenderPass
-              passes={{
-                pass_1: value ?? {},
-                pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
-                pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
-              }}
-              currentEntry={editedEntry?.parts?.[i]?.[typesafeSubKey] ?? ""}
-              handleChange={(name, value) =>
-                handleChange(["parts", i.toString(), name], value)
-              }
-              id={`${key}`}
-            ></RenderPass>
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Total Ionizing Dose Effects</span>
+            {renderTids(part.tids ?? [], i)}
           </div>
         );
-      });
+      } else if (typesafeSubKey === "sees") {
+        return (
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Single Event Effects</span>
+            {renderSees(part.sees ?? [], i)}
+          </div>
+        );
+      } else if (typesafeSubKey === "dds") {
+        return (
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Damage Displacement</span>
+            {renderDDs(part.dds ?? [], i)}
+          </div>
+        );
+      }
+      return (
+        <div>
+          <span className="text-lg">{key}</span>
+          <RenderPass
+            passes={{
+              pass_1: value ?? {},
+              pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
+              pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
+            }}
+            currentEntry={editedEntry.parts?.[i]?.[typesafeSubKey] ?? ""}
+            handleChange={(name, value) =>
+              handleChange(["parts", i.toString(), name], value)
+            }
+            id={`${key}`}
+            showPasses={showGPTPasses}
+          ></RenderPass>
+        </div>
+      );
     });
   };
 
@@ -180,8 +186,13 @@ export default function EditEntry({
             {Object.entries(tid).map(([key, value]) => {
               type TIDDataKey = keyof TIDData;
               const typesafeKey = key as TIDDataKey;
-              if (typesafeKey === "id") {
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.tids?.[i]?.[typesafeKey] ?? "";
+              if (blacklistedFields.includes(typesafeKey)) {
                 return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
               }
               return (
                 <div>
@@ -198,11 +209,7 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    currentEntry={
-                      editedEntry?.parts?.[partIndex]?.tids?.[i]?.[
-                        typesafeKey
-                      ] ?? ""
-                    }
+                    currentEntry={defaultValue}
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -216,6 +223,7 @@ export default function EditEntry({
                       )
                     }
                     id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
                   ></RenderPass>
                 </div>
               );
@@ -236,8 +244,13 @@ export default function EditEntry({
             {Object.entries(see).map(([key, value]) => {
               type SEEDataKey = keyof SEEData;
               const typesafeKey = key as SEEDataKey;
-              if (typesafeKey === "id") {
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.sees?.[i]?.[typesafeKey] ?? "";
+              if (blacklistedFields.includes(typesafeKey)) {
                 return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
               }
               return (
                 <div>
@@ -254,11 +267,7 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    currentEntry={
-                      editedEntry?.parts?.[partIndex]?.sees?.[i]?.[
-                        typesafeKey
-                      ] ?? ""
-                    }
+                    currentEntry={defaultValue}
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -272,6 +281,7 @@ export default function EditEntry({
                       )
                     }
                     id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
                   ></RenderPass>
                 </div>
               );
@@ -291,8 +301,13 @@ export default function EditEntry({
             {Object.entries(dd).map(([key, value]) => {
               type DDDataKey = keyof DDData;
               const typesafeKey = key as DDDataKey;
-              if (typesafeKey === "id") {
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.dds?.[i]?.[typesafeKey] ?? "";
+              if (blacklistedFields.includes(typesafeKey)) {
                 return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
               }
               return (
                 <div>
@@ -309,11 +324,7 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    currentEntry={
-                      editedEntry?.parts?.[partIndex]?.dds?.[i]?.[
-                        typesafeKey
-                      ] ?? ""
-                    }
+                    currentEntry={defaultValue}
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -327,6 +338,7 @@ export default function EditEntry({
                       )
                     }
                     id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
                   ></RenderPass>
                 </div>
               );
@@ -340,22 +352,22 @@ export default function EditEntry({
   const renderPartAccordionItems = (): JSX.Element[] => {
     const parts = passes?.pass_1?.parts ?? editedEntry.parts;
 
-    if (!parts) {
+    if (!parts || parts.length === 0) {
       return [];
     }
 
     return (
       parts.map((part, i) => (
         <AccordionItem title={`Part ${i + 1}`} key={`part-${i}`}>
-          {renderParts([part])}
+          {renderPart(part, i)}
         </AccordionItem>
       )) ?? []
     );
   };
 
   useEffect(() => {
-    console.log("passes", passes);
-  });
+    console.log("paper", editedEntry);
+  }, []);
 
   return (
     <div className="flex flex-col gap-2 p-4">
@@ -366,7 +378,7 @@ export default function EditEntry({
               type fullDataTypeKey = keyof FullDataType;
               const typesafeKey = key as fullDataTypeKey;
 
-              if (typesafeKey === "id") {
+              if (blacklistedFields.includes(typesafeKey)) {
                 return <></>;
               }
 
@@ -400,6 +412,7 @@ export default function EditEntry({
                           handleChange([typesafeKey], value);
                         }}
                         id={key}
+                        showPasses={showGPTPasses}
                       ></RenderPass>
                     </AccordionItem>
                   </Accordion>
@@ -416,18 +429,38 @@ export default function EditEntry({
         <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
           {unresolvedConflicts?.redSeverity.map((conflict) => {
+            const readableConflict = conflict.split("-");
             return (
               <div className="flex flex-row gap-2">
                 <MdWarningAmber color="red" size="1.5em" />
-                <div>{conflict}</div>
+                <div>
+                  {readableConflict.map(
+                    (val) =>
+                      `${
+                        isNaN(Number(val))
+                          ? val + " "
+                          : String(Number(val) + 1) + ", "
+                      }`
+                  )}
+                </div>
               </div>
             );
           })}
           {unresolvedConflicts?.yellowSeverity.map((conflict) => {
+            const readableConflict = conflict.split("-");
             return (
-              <div key={conflict} className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2">
                 <MdWarningAmber color="yellow" size="1.5em" />
-                <div>{conflict}</div>
+                <div>
+                  {readableConflict.map(
+                    (val) =>
+                      `${
+                        isNaN(Number(val))
+                          ? val + " "
+                          : String(Number(val) + 1) + ", "
+                      }`
+                  )}
+                </div>
               </div>
             );
           })}

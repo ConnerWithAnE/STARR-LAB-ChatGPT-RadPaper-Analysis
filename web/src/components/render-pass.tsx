@@ -11,6 +11,7 @@ type RenderPassProps = {
   currentEntry: string | number | boolean;
   handleChange: (name: string, value: string | number) => void;
   id: string;
+  showPasses?: boolean;
 };
 
 export default function RenderPass({
@@ -18,6 +19,7 @@ export default function RenderPass({
   currentEntry,
   handleChange,
   id,
+  showPasses = true,
 }: RenderPassProps) {
   const [final_result, setFinalResult] = useState<string | number | boolean>(
     currentEntry ?? ""
@@ -46,18 +48,28 @@ export default function RenderPass({
 
   return (
     <div className="flex flex-row justify-evenly">
-      <div className="flex flex-col items-center basis-1/4 p-1">
-        <span className="text-slate-800">First Pass</span>
-        <span className="text-slate-800">{validationFunc(passes.pass_1)}</span>
-      </div>
-      <div className="flex flex-col items-center basis-1/4 p-1">
-        <span className="text-slate-800">Second Pass</span>
-        <span className="text-slate-800">{validationFunc(passes.pass_2)}</span>
-      </div>
-      <div className="flex flex-col items-center basis-1/4 p-1">
-        <span className="text-slate-800">Third Pass</span>
-        <span className="text-slate-800">{validationFunc(passes.pass_3)}</span>
-      </div>
+      {showPasses && (
+        <>
+          <div className="flex flex-col items-center basis-1/4 p-1 overflow-x-auto max-w-2xs">
+            <span className="text-slate-800">First Pass</span>
+            <span className="text-slate-800">
+              {validationFunc(passes.pass_1)}
+            </span>
+          </div>
+          <div className="flex flex-col items-center basis-1/4 p-1 overflow-x-auto max-w-2xs">
+            <span className="text-slate-800">Second Pass</span>
+            <span className="text-slate-800">
+              {validationFunc(passes.pass_2)}
+            </span>
+          </div>
+          <div className="flex flex-col items-center basis-1/4 p-1 overflow-x-auto max-w-2xs">
+            <span className="text-slate-800">Third Pass</span>
+            <span className="text-slate-800">
+              {validationFunc(passes.pass_3)}
+            </span>
+          </div>
+        </>
+      )}
       <div className="flex flex-col grow basis-1/3 items-center p-1">
         <span className="text-slate-800">Final Result</span>
         {(() => {

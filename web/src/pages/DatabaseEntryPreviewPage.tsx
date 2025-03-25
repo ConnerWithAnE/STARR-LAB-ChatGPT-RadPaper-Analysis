@@ -11,6 +11,7 @@ import { GPTResponse } from "../types/types";
 import { useEffect, useState } from "react";
 import EntrySliver from "../components/database-entries/entry-sliver";
 import { useForm } from "../DataContext";
+import { Spinner } from "@nextui-org/react";
 
 export default function DatabaseEntryPreviewPage() {
   const navigate = useNavigate();
@@ -31,6 +32,8 @@ export default function DatabaseEntryPreviewPage() {
   // for the exit modal
   const [isOpen, setIsOpen] = useState(false);
   const [confirmExit, setConfirmExit] = useState(false);
+
+  const [loading, setLoading] = useState(false);
   const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
 
@@ -75,65 +78,39 @@ export default function DatabaseEntryPreviewPage() {
     //   return;
     // }
 
-    console.log("tableEntries", tableEntries);
+    // console.log("tableEntries", tableEntries);
 
-    const test = JSON.stringify(tableEntries);
-    console.log("stringified tableEntries", test);
+    // const test = JSON.stringify(tableEntries);
+    // console.log("stringified tableEntries", test);
+    setLoading(true);
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/adminRequest/papers/full",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(tableEntries),
+        }
+      );
 
-    // try {
-    //   const promises = Promise.all(
-    //     tableEntries.map(async (value) => {
-    //       try {
-    //         const response = await fetch(
-    //           "http://localhost:3000/api/adminRequest/papers/full",
-    //           {
-    //             method: "POST",
-    //             headers: {
-    //               "Content-Type": "application/json",
-    //               Authorization: `Bearer ${token}`,
-    //             },
-    //             body: JSON.stringify(value),
-    //           }
-    //         );
-
-    //         if (response.ok) {
-    //           console.log(`Successfully added entry: ${JSON.stringify(value)}`);
-    //           return { success: true };
-    //         } else {
-    //           console.error(
-    //             `Failed to insert entry: ${JSON.stringify(value)}, Status: ${
-    //               response.status
-    //             }`
-    //           );
-    //           return { success: false, status: response.status };
-    //         }
-    //       } catch (error) {
-    //         console.error(
-    //           `Error inserting entry: ${JSON.stringify(value)}`,
-    //           error
-    //         );
-    //         return { success: false, error };
-    //       }
-    //     })
-    //   );
-
-    //   const responses = await promises;
-
-    //   // Check results of all requests
-    //   const failedRequests = responses.filter((res) => !res.success);
-    //   if (failedRequests.length > 0) {
-    //     alert(
-    //       `Some entries failed to be added. Check the console for more details.`
-    //     );
-    //   } else {
-    //     alert("All entries successfully added to the database.");
-    //   }
-    // } catch (error) {
-    //   console.error("Error during submission:", error);
-    //   alert("An error occurred while submitting entries.");
-    // } finally {
-    //   console.log("Submission process completed.");
-    // }
+      if (response.ok) {
+        console.log(`Successfully added entries`);
+        alert("Successfully added entries");
+        navigate("/upload");
+        return;
+      } else {
+        console.error(`Failed to insert entries: ${response.body}`);
+        return;
+      }
+    } catch (error) {
+      console.error(`Error inserting entries, `, error);
+      return;
+    } finally {
+      setLoading(false);
+    }
   }
 
   const [paperAreaHeight, setPaperAreaHeight] = useState<number>(
@@ -196,14 +173,15 @@ export default function DatabaseEntryPreviewPage() {
       <div className="fixed bottom-0 end-0 bg-[#F4F4F4] flex flex-row-reverse z-40 w-full  gap-2 p-3">
         <Button
           className="bg-usask-green text-white rounded-md"
-          isDisabled={disabled}
+          isDisabled={disabled || loading}
           onClick={submitToDatabase}
         >
-          Submit
+          {loading ? <Spinner color="white" /> : "Submit"}
         </Button>
         <Button
           className="bg-[#ff5353] text-white rounded-md"
           type="submit"
+          isDisabled={loading}
           onClick={handleExit}
         >
           Cancel

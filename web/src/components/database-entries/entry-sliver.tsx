@@ -73,7 +73,6 @@ export default function EntrySliver({
   // React's strict mode makes every callback run twice. This is to prevent that
   const hasRun = useRef(false);
 
-  //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
   const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>({
     yellowSeverity: [],
@@ -125,9 +124,27 @@ export default function EntrySliver({
           }
           type SEEDataKey = keyof SEEData;
           const typesafeKey = key as SEEDataKey;
+          if (
+            pass_1[i] === undefined ||
+            pass_2[i] === undefined ||
+            pass_3[i] === undefined
+          ) {
+            // console.log("SEE passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const tests_1 = pass_1[i][typesafeKey];
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
+
+          // if the key is special_notes, just fill in one value and return
+          // this is a compromise, as special_notes is often one long string and hard to compare
+          if (typesafeKey === "special_notes") {
+            updatedTest = {
+              ...updatedTest,
+              [typesafeKey]: tests_1,
+            };
+            return;
+          }
 
           if (
             tests_1 === tests_2 &&
@@ -145,7 +162,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-sees-${testIndex}-${key}`,
+              `parts-${testIndex}-sees-${i}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -155,13 +172,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-sees-${testIndex}-${key}`,
+              `parts-${testIndex}-sees-${i}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-sees-${testIndex}-${key}`,
+              `parts-${testIndex}-sees-${i}-${key}`,
               2
             );
           }
@@ -187,9 +204,27 @@ export default function EntrySliver({
           }
           type DDDataKey = keyof DDData;
           const typesafeKey = key as DDDataKey;
+          if (
+            pass_1[i] === undefined ||
+            pass_2[i] === undefined ||
+            pass_3[i] === undefined
+          ) {
+            // console.log("DD passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const tests_1 = pass_1[i][typesafeKey];
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
+
+          // if the key is special_notes, just fill in one value and return
+          // this is a compromise, as special_notes is often one long string and hard to compare
+          if (typesafeKey === "special_notes") {
+            updatedTest = {
+              ...updatedTest,
+              [typesafeKey]: tests_1,
+            };
+            return;
+          }
 
           if (
             tests_1 === tests_2 &&
@@ -207,7 +242,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-dds-${testIndex}-${key}`,
+              `parts-${testIndex}-dds-${i}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -217,13 +252,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-dds-${testIndex}-${key}`,
+              `parts-${testIndex}-dds-${i}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-dds-${testIndex}-${key}`,
+              `parts-${testIndex}-dds-${i}-${key}`,
               2
             );
           }
@@ -244,14 +279,32 @@ export default function EntrySliver({
       pass_1.forEach((test, i) => {
         let updatedTest = {} as TIDData;
         Object.entries(test).map(([key]) => {
-          if (key === "id") {
+          if (key === "id" || key === "special_notes") {
             return;
           }
           type TIDDataKey = keyof TIDData;
           const typesafeKey = key as TIDDataKey;
+          if (
+            pass_1[i] === undefined ||
+            pass_2[i] === undefined ||
+            pass_3[i] === undefined
+          ) {
+            // console.log("TID passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const tests_1 = pass_1[i][typesafeKey];
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
+
+          // if the key is special_notes, just fill in one value and return
+          // this is a compromise, as special_notes is often one long string and hard to compare
+          if (typesafeKey === "special_notes") {
+            updatedTest = {
+              ...updatedTest,
+              [typesafeKey]: tests_1,
+            };
+            return;
+          }
 
           if (
             tests_1 === tests_2 &&
@@ -269,7 +322,7 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-tids-${testIndex}-${key}`,
+              `parts-${testIndex}-tids-${i}-${key}`,
               1
             );
           } else if (tests_2 === tests_3) {
@@ -279,13 +332,13 @@ export default function EntrySliver({
             };
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-tids-${testIndex}-${key}`,
+              `parts-${testIndex}-tids-${i}-${key}`,
               1
             );
           } else {
             addConflict2(
               updatedConflicts,
-              `parts-${partIndex}-tids-${testIndex}-${key}`,
+              `parts-${testIndex}-tids-${i}-${key}`,
               2
             );
           }
@@ -303,11 +356,24 @@ export default function EntrySliver({
       pass_3: PartData[]
     ): PartData[] => {
       const updatedParts = [] as PartData[];
+      const undefinedParts: number[] = [];
       pass_1.forEach((part, i) => {
         let updatedPart = {} as PartData;
         Object.entries(part).map(([key]) => {
           type PartDataKey = keyof PartData;
           const typesafeKey = key as PartDataKey;
+          // TODO: This is a temporary fix to handle undefined parts in the passes
+          if (
+            pass_1[i] === undefined ||
+            pass_2[i] === undefined ||
+            pass_3[i] === undefined
+          ) {
+            if (!undefinedParts.includes(i)) {
+              undefinedParts.push(i);
+            }
+            // console.log(i, "Part passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
+            return;
+          }
           const parts_1 = pass_1[i][typesafeKey];
           const parts_2 = pass_2[i][typesafeKey];
           const parts_3 = pass_3[i][typesafeKey];
@@ -315,6 +381,7 @@ export default function EntrySliver({
           if (key === "id" || key === "preliminary_test_types") {
             return;
           }
+
           if (key === "sees") {
             const updatedSEETests = compareSEETestPasses(
               partIndex,
@@ -358,6 +425,15 @@ export default function EntrySliver({
             };
             return;
           }
+          // if the key is other_details, just fill in one value and return
+          // this is a compromise, as other_details is often one long string and hard to compare
+          if (typesafeKey === "other_details") {
+            updatedPart = {
+              ...updatedPart,
+              [typesafeKey]: parts_1,
+            };
+            return;
+          }
 
           if (
             parts_1 === parts_2 &&
@@ -373,15 +449,15 @@ export default function EntrySliver({
               ...updatedPart,
               [typesafeKey]: parts_1,
             };
-            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${i}-${key}`, 1);
           } else if (parts_2 === parts_3) {
             updatedPart = {
               ...updatedPart,
               [typesafeKey]: parts_2,
             };
-            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 1);
+            addConflict2(updatedConflicts, `parts-${i}-${key}`, 1);
           } else {
-            addConflict2(updatedConflicts, `parts-${partIndex}-${key}`, 2);
+            addConflict2(updatedConflicts, `parts-${i}-${key}`, 2);
           }
         });
         if (!updatedParts[i]) {
@@ -390,6 +466,7 @@ export default function EntrySliver({
           updatedParts[i] = updatedPart;
         }
       });
+      console.log(partIndex, "undefinedParts", undefinedParts);
       return updatedParts;
     };
 
@@ -443,6 +520,14 @@ export default function EntrySliver({
 
       // if the entry has already been edited, it should bypass this process completely
       if (editedEntry[typesafeKey] !== undefined) {
+        return;
+      }
+      // the 'objective' field is a long string and thus cannot be compared via string comparison
+      if (typesafeKey === "objective") {
+        updatedEntry = {
+          ...updatedEntry,
+          objective: pass_1,
+        };
         return;
       }
       // Compare the part information in the passes
@@ -501,18 +586,16 @@ export default function EntrySliver({
     });
     console.log("updatedEntry", updatedEntry);
 
+    // update editedEntry
     setEditedEntry(updatedEntry);
     setAuthors(updatedEntry.authors ?? []);
     addEntry(updatedEntry);
+
+    // set unresolvedConflicts for the entry
     setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
       setRedConflict(index, updatedConflicts.redSeverity);
     }
-
-    // this is to handle cases where an entry has not been added to the overall list of edited entries
-    // if (!hasEmptyProperty(editedEntry)) {
-    //   addEntry(updatedEntry);
-    // }
   }, []);
 
   const handleCancel = () => {
@@ -544,12 +627,6 @@ export default function EntrySliver({
     }
     setAuthors(updatedAuthors);
 
-    // setAuthors((prev) =>
-    //   prev.map((author, i) => ({
-    //     ...author,
-    //     name: editedEntry?.authors?.[i]?.name ?? author.name,
-    //   }))
-    // );
     const updatedConflicts: Conflict = {
       yellowSeverity: [],
       redSeverity: [],
@@ -659,14 +736,14 @@ export default function EntrySliver({
         </div>
         <div className="flex flex-row justify-end gap-2">
           <Button
-            className="bg-[#ff5353] text-white rounded-md"
+            className="bg-[#ff5353] text-white"
             size="md"
             onClick={() => onHandleDeleteChange(index)}
           >
             Delete
           </Button>
           <Button
-            className="bg-usask-green text-[#DADADA] rounded-md"
+            className="bg-usask-green text-[#DADADA]"
             size="md"
             onClick={handleOpen}
           >
@@ -701,7 +778,7 @@ export default function EntrySliver({
                 </ModalBody>
                 <ModalFooter>
                   <Button
-                    className="bg-[#ff5353] text-white rounded-md"
+                    className="bg-[#ff5353] text-white"
                     onPress={handleOpenCancelModal}
                   >
                     Cancel
