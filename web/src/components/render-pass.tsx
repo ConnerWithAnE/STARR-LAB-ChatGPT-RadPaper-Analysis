@@ -50,19 +50,19 @@ export default function RenderPass({
     <div className="flex flex-row justify-evenly">
       {showPasses && (
         <>
-          <div className="flex flex-col items-center basis-1/4 p-1">
+          <div className="flex flex-col items-center basis-1/4 p-1 overflow-x-auto max-w-2xs">
             <span className="text-slate-800">First Pass</span>
             <span className="text-slate-800">
               {validationFunc(passes.pass_1)}
             </span>
           </div>
-          <div className="flex flex-col items-center basis-1/4 p-1">
+          <div className="flex flex-col items-center basis-1/4 p-1 overflow-x-auto max-w-2xs">
             <span className="text-slate-800">Second Pass</span>
             <span className="text-slate-800">
               {validationFunc(passes.pass_2)}
             </span>
           </div>
-          <div className="flex flex-col items-center basis-1/4 p-1">
+          <div className="flex flex-col items-center basis-1/4 p-1 overflow-x-auto max-w-2xs">
             <span className="text-slate-800">Third Pass</span>
             <span className="text-slate-800">
               {validationFunc(passes.pass_3)}
