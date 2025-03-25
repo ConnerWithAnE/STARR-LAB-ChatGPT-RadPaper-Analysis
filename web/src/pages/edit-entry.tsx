@@ -186,8 +186,13 @@ export default function EditEntry({
             {Object.entries(tid).map(([key, value]) => {
               type TIDDataKey = keyof TIDData;
               const typesafeKey = key as TIDDataKey;
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.tids?.[i]?.[typesafeKey] ?? "";
               if (blacklistedFields.includes(typesafeKey)) {
                 return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
               }
               return (
                 <div>
@@ -204,11 +209,7 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    currentEntry={
-                      editedEntry?.parts?.[partIndex]?.tids?.[i]?.[
-                        typesafeKey
-                      ] ?? ""
-                    }
+                    currentEntry={defaultValue}
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -243,8 +244,13 @@ export default function EditEntry({
             {Object.entries(see).map(([key, value]) => {
               type SEEDataKey = keyof SEEData;
               const typesafeKey = key as SEEDataKey;
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.sees?.[i]?.[typesafeKey] ?? "";
               if (blacklistedFields.includes(typesafeKey)) {
                 return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
               }
               return (
                 <div>
@@ -261,11 +267,7 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    currentEntry={
-                      editedEntry?.parts?.[partIndex]?.sees?.[i]?.[
-                        typesafeKey
-                      ] ?? ""
-                    }
+                    currentEntry={defaultValue}
                     handleChange={(name, value) =>
                       handleChange(
                         [
@@ -299,8 +301,13 @@ export default function EditEntry({
             {Object.entries(dd).map(([key, value]) => {
               type DDDataKey = keyof DDData;
               const typesafeKey = key as DDDataKey;
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.dds?.[i]?.[typesafeKey] ?? "";
               if (blacklistedFields.includes(typesafeKey)) {
                 return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
               }
               return (
                 <div>
@@ -317,11 +324,7 @@ export default function EditEntry({
                           typesafeKey
                         ] ?? "",
                     }}
-                    currentEntry={
-                      editedEntry?.parts?.[partIndex]?.dds?.[i]?.[
-                        typesafeKey
-                      ] ?? ""
-                    }
+                    currentEntry={defaultValue}
                     handleChange={(name, value) =>
                       handleChange(
                         [
