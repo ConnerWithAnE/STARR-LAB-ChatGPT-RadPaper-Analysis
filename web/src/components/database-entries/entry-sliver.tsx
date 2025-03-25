@@ -73,7 +73,6 @@ export default function EntrySliver({
   // React's strict mode makes every callback run twice. This is to prevent that
   const hasRun = useRef(false);
 
-  //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
   const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>({
     yellowSeverity: [],
@@ -357,7 +356,7 @@ export default function EntrySliver({
       pass_3: PartData[]
     ): PartData[] => {
       const updatedParts = [] as PartData[];
-      let undefinedParts: number[] = [];
+      const undefinedParts: number[] = [];
       pass_1.forEach((part, i) => {
         let updatedPart = {} as PartData;
         Object.entries(part).map(([key]) => {
