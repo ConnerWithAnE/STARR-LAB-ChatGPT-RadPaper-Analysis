@@ -426,18 +426,38 @@ export default function EditEntry({
         <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
           {unresolvedConflicts?.redSeverity.map((conflict) => {
+            const readableConflict = conflict.split("-");
             return (
               <div className="flex flex-row gap-2">
                 <MdWarningAmber color="red" size="1.5em" />
-                <div>{conflict}</div>
+                <div>
+                  {readableConflict.map(
+                    (val) =>
+                      `${
+                        isNaN(Number(val))
+                          ? val + " "
+                          : String(Number(val) + 1) + ", "
+                      }`
+                  )}
+                </div>
               </div>
             );
           })}
           {unresolvedConflicts?.yellowSeverity.map((conflict) => {
+            const readableConflict = conflict.split("-");
             return (
-              <div key={conflict} className="flex flex-row gap-2">
+              <div className="flex flex-row gap-2">
                 <MdWarningAmber color="yellow" size="1.5em" />
-                <div>{conflict}</div>
+                <div>
+                  {readableConflict.map(
+                    (val) =>
+                      `${
+                        isNaN(Number(val))
+                          ? val + " "
+                          : String(Number(val) + 1) + ", "
+                      }`
+                  )}
+                </div>
               </div>
             );
           })}
