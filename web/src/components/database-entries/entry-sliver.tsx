@@ -736,14 +736,14 @@ export default function EntrySliver({
         </div>
         <div className="flex flex-row justify-end gap-2">
           <Button
-            className="bg-[#ff5353] text-white rounded-md"
+            className="bg-[#ff5353] text-white"
             size="md"
             onClick={() => onHandleDeleteChange(index)}
           >
             Delete
           </Button>
           <Button
-            className="bg-usask-green text-[#DADADA] rounded-md"
+            className="bg-usask-green text-[#DADADA]"
             size="md"
             onClick={handleOpen}
           >
@@ -778,7 +778,7 @@ export default function EntrySliver({
                 </ModalBody>
                 <ModalFooter>
                   <Button
-                    className="bg-[#ff5353] text-white rounded-md"
+                    className="bg-[#ff5353] text-white"
                     onPress={handleOpenCancelModal}
                   >
                     Cancel
