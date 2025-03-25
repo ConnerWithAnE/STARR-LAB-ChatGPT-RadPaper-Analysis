@@ -2,15 +2,37 @@ import "../App.css";
 import SearchBar from "../components/search-bar";
 import { useEffect, useState } from "react";
 import { FullDataType } from "../types/types";
-import PaperGallery from "../components/paper-gallery";
 import { Button } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
+import PaperSliver from "../components/paper-sliver";
 
 export default function ModifyPage() {
   const [papers, setPapers] = useState<FullDataType[]>([]);
   const navigate = useNavigate();
 
-  //const [paperAreaHeight, setPaperAreaHeight] = useState<number>();
+  const [paperAreaHeight, setPaperAreaHeight] = useState<number>(
+    window.innerHeight - 200 - 65
+  ); //Default? random number choice
+
+  const updateDimensions = () => {
+    setPaperAreaHeight(window.innerHeight - 200 - 65); // 200 for header, 65 for navbar
+  };
+
+  // Fetch papers when the page first loads (with an empty search)
+  useEffect(() => {
+    fetchPapers("");
+  }, []);
+
+  useEffect(() => {
+    // Set initial height and listen for resize events
+    updateDimensions();
+    window.addEventListener("resize", updateDimensions);
+
+    return () => {
+      // Cleanup event listener on unmount
+      window.removeEventListener("resize", updateDimensions);
+    };
+  }, []);
 
   const fetchPapers = async (search: string) => {
     const token = localStorage.getItem("jwtToken");
@@ -40,16 +62,15 @@ export default function ModifyPage() {
     }
   };
 
-  // Fetch papers when the page first loads (with an empty search)
-  useEffect(() => {
-    fetchPapers("");
-  }, []);
-
   // This is setup to only fetch papers when the search button is clicked,
   // we could make it auto update easily instead tho
   const handleSearch = (value: string) => {
     //console.log(`Search value: ${value}`);
     fetchPapers(value);
+  };
+
+  const refreshPapers = () => {
+    fetchPapers("");
   };
 
   return (
@@ -62,7 +83,21 @@ export default function ModifyPage() {
         </div>
         <div className="">
           <div className="max-h-screen">
-            <PaperGallery papers={papers} />
+            <div
+              className="overflow-y-scroll "
+              style={{
+                height: paperAreaHeight - 30,
+              }}
+            >
+              {papers.map((paper: FullDataType, index: number) => (
+                <PaperSliver
+                  paper={paper}
+                  index={index}
+                  key={index}
+                  refreshPapers={refreshPapers}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>

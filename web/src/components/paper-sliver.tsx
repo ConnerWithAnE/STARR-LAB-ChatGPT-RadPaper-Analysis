@@ -17,9 +17,14 @@ import { useNavigate } from "react-router-dom";
 type PaperSliverProp = {
   paper: FullDataType;
   index: number;
+  refreshPapers: () => void;
 };
 
-export default function PaperSliver({ paper, index }: PaperSliverProp) {
+export default function PaperSliver({
+  paper,
+  index,
+  refreshPapers,
+}: PaperSliverProp) {
   const [open, setIsOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [editedFields, setEditedFields] = useState<FullDataType>({});
@@ -204,7 +209,53 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
         alert("Successfully modified entry");
 
         setIsOpen(false);
-        window.location.reload();
+        refreshPapers();
+      } else {
+        console.error(
+          `Failed to insert entry: ${JSON.stringify(editedFields)}, Status: ${
+            response.status
+          }`
+        );
+      }
+    } catch (error) {
+      console.error(
+        `Error inserting entry: ${JSON.stringify(editedFields)}`,
+        error
+      );
+      return { success: false, error };
+    } finally {
+      setEditedFields(() => ({}));
+      setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    const token = localStorage.getItem("jwtToken");
+
+    // if (!token) {
+    //   console.error("No token found. Please log in.");
+    //   return;
+    // }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/adminRequest/papers/${paperData.id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        console.log(`Successfully deleted entry with ID: ${paperData.id}`);
+        alert("Successfully deleted entry with ID: " + paperData.id);
+        setIsOpen(false);
+        refreshPapers();
       } else {
         console.error(
           `Failed to insert entry: ${JSON.stringify(editedFields)}, Status: ${
@@ -239,13 +290,21 @@ export default function PaperSliver({ paper, index }: PaperSliverProp) {
           )}
         </div>
       </div>
-      <div className="col-span-2 flex items-center justify-center">
-        <button
-          className="bg-usask-green text-[#DADADA]"
+      <div className="col-span-2 flex items-center justify-center gap-2">
+        <Button
+          className="bg-[#ff5353] text-white"
+          size="lg"
+          onClick={handleDelete}
+        >
+          Delete Entry
+        </Button>
+        <Button
+          className="bg-usask-green text-white"
+          size="lg"
           onClick={fetchPaperData}
         >
           Modify Entry
-        </button>
+        </Button>
       </div>
 
       {/* edit-entry modal */}
