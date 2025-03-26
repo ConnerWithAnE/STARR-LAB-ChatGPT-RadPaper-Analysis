@@ -55,6 +55,14 @@ export default function EntrySliver({
       return {} as FullDataType;
     }
   });
+  const [originalEntry, setOriginalEntry] = useState<FullDataType>(() => {
+    const savedEntry = tableEntries[index];
+    if (savedEntry) {
+      return savedEntry;
+    } else {
+      return {} as FullDataType;
+    }
+  });
   const [valuesEdited, setValuesEdited] = useState<string[]>([]); // To keep track of the values edited in the entry
   const [authors, setAuthors] = useState<AuthorData[]>(
     tableEntries[index]?.authors ?? []
@@ -588,6 +596,7 @@ export default function EntrySliver({
 
     // update editedEntry
     setEditedEntry(updatedEntry);
+    setOriginalEntry(updatedEntry);
     setAuthors(updatedEntry.authors ?? []);
     addEntry(updatedEntry);
 
@@ -599,10 +608,7 @@ export default function EntrySliver({
   }, []);
 
   const handleCancel = () => {
-    setEditedEntry({
-      paper_name: editedEntry.name,
-      authors: editedEntry.authors ?? [],
-    } as FullDataType);
+    setEditedEntry(originalEntry);
     setOpen(false);
     setOpenCancelModal(false);
   };
