@@ -353,27 +353,157 @@ export class GenericController {
     return Promise.all(
       records.map((r) => this.getById(modelName, r.getDataValue("id"))),
     );
-    /*
+  }
 
-    We need it to return like this
+  /**  Filter records dynamically based on provided query parameters */
+  static async cascade_filter<T extends ModelKey>(modelName: T, filters: any) {
+    console.log(`Filtering ${modelName} with filters:`, filters);
 
-    return records.map((paper) => {
-      const paperData = paper.get({ plain: true });
+    const formattedName = this.formatModelName(modelName);
+    const model = models[formattedName];
 
+    if (!model) {
+      return { error: `Invalid model name: ${modelName}`, status: 400 };
+    }
+
+    // Prepare conditions for each model
+    const whereConditions: Record<string, any> = {};
+    const includeRelations: any[] = [];
+
+    // Extract filters for different models
+    const modelFilters: Record<string, any> = {
+      paper: {},
+      parts: {},
+      tids: {},
+      sees: {},
+      dds: {},
+    };
+
+    for (const key in filters) {
+      if (!filters[key]) continue;
+
+      if (key.includes(".")) {
+        const [relation, field] = key.split(".");
+        if (modelFilters[relation] !== undefined) {
+          modelFilters[relation][field] = filters[key];
+        } else {
+          console.warn(`Invalid related model in filter: ${relation}`);
+          return { error: `Invalid relation '${relation}'`, status: 400 };
+        }
+      } else {
+        modelFilters.paper[key] = filters[key]; // Direct paper filters
+      }
+    }
+
+    console.log("Parsed Filters:", modelFilters);
+
+    // Build Include Array Dynamically
+    const buildInclude = (modelKey: string, modelRef: any, alias: string) => {
+      if (Object.keys(modelFilters[modelKey]).length > 0) {
+        return {
+          model: modelRef,
+          as: alias,
+          required: true, // Enforce filtering at SQL level
+          where: modelFilters[modelKey],
+          attributes: {
+            exclude: ["createdAt", "updatedAt", "paperId", "partId"],
+          }, // Exclude unwanted fields
+        };
+      }
       return {
-        ...paperData,
-        authors: Array.isArray(paperData.authors) ? paperData.authors : [],
-        parts: Array.isArray(paperData.parts)
-          ? paperData.parts.map((part: any) => ({
-              ...part,
-              tids: Array.isArray(part.tids) ? part.tids : [],
-              sees: Array.isArray(part.sees) ? part.sees : [],
-              dds: Array.isArray(part.dds) ? part.dds : [],
-            }))
-          : [],
+        model: modelRef,
+        as: alias,
+        attributes: {
+          exclude: ["createdAt", "updatedAt", "paperId", "partId"],
+        }, // Exclude unwanted fields
       };
+    };
+
+    // Fetch filtered records
+    const records = await models.Paper.findAll({
+      where: modelFilters.paper,
+      include: [
+        {
+          model: models.Author,
+          as: "authors",
+          attributes: { exclude: ["createdAt", "updatedAt", "paper_author"] },
+          through: {
+            attributes: [], // This will exclude the 'paper_author' relationship table fields
+          },
+        }, // Exclude fields for authors
+        buildInclude("parts", models.Part, "parts"),
+        {
+          model: models.Part,
+          as: "parts",
+          required: Object.keys(modelFilters.parts).length > 0,
+          where: modelFilters.parts,
+          include: [
+            buildInclude("tids", models.Tid, "tids"),
+            buildInclude("sees", models.See, "sees"),
+            buildInclude("dds", models.Dd, "dds"),
+          ],
+          attributes: { exclude: ["createdAt", "updatedAt", "paper_part"] }, // Exclude fields for parts
+          through: {
+            attributes: [], // This will exclude the 'paper_author' relationship table fields
+          },
+        },
+      ],
+      attributes: { exclude: ["createdAt", "updatedAt"] }, // Exclude fields for parts
     });
-    */
+
+    console.log("Found records:", records.length);
+
+    // Flatten Results & Remove Unfiltered Tests
+    return records.flatMap((paper) => {
+      const paperData = paper.get({ plain: true });
+      const { parts, ...paperWithoutParts } = paperData;
+
+      return parts.flatMap((part: any) => {
+        const { tids, sees, dds, ...partWithoutTests } = part;
+
+        return [
+          ...tids
+            .filter(
+              (t: { [x: string]: any }) =>
+                Object.keys(modelFilters.tids).length === 0 ||
+                modelFilters.tids.some(
+                  (f: string | number) => t[f] === filters[`tids.${f}`],
+                ),
+            )
+            .map((tid: any) => ({
+              paper: paperWithoutParts,
+              part: partWithoutTests,
+              tid,
+            })),
+          ...sees
+            .filter(
+              (s: { [x: string]: any }) =>
+                Object.keys(modelFilters.sees).length === 0 ||
+                modelFilters.sees.some(
+                  (f: string | number) => s[f] === filters[`sees.${f}`],
+                ),
+            )
+            .map((see: any) => ({
+              paper: paperWithoutParts,
+              part: partWithoutTests,
+              see,
+            })),
+          ...dds
+            .filter(
+              (d: { [x: string]: any }) =>
+                Object.keys(modelFilters.dds).length === 0 ||
+                modelFilters.dds.some(
+                  (f: string | number) => d[f] === filters[`dds.${f}`],
+                ),
+            )
+            .map((dd: any) => ({
+              paper: paperWithoutParts,
+              part: partWithoutTests,
+              dd,
+            })),
+        ];
+      });
+    });
   }
 
   /** Create full paper along with related entities */
