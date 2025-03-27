@@ -111,24 +111,6 @@ export default function adminRouter(
   );
   /*
 
-  router.post(
-    "/getFullPapers",
-    getAuthMiddleware(),
-    (req: Request, res: Response) => {
-      try {
-        // More intricate searches can be employed later similar to the table filter
-        getFullPaperRows(req.body.search, dbController).then(
-          (result: TableData[]) => {
-            res.send(JSON.stringify(result, null, 2));
-          },
-        );
-      } catch (error) {
-        console.error(`${error}`);
-      }
-    },
-  );
-  */
-
   /** Create a new record for any model */
   router.post(
     "/:model",
@@ -508,16 +490,6 @@ export default function adminRouter(
   return router;
 }
 
-/*
-async function insertRows(
-  insertData: InsertData[],
-  dbcontroller: DatabaseController,
-): Promise<void> {
-  for (const paper in insertData) {
-    await dbcontroller.insertPaper(insertData[paper]);
-  }
-}
-  */
 
 async function parsePapers(
   files: any,
@@ -531,14 +503,6 @@ async function parsePapers(
   return gptResults;
 }
 
-/*
-async function getFullPaperRows(
-  search: string,
-  dbController: DatabaseController,
-): Promise<TableData[]> {
-  return await dbController.getFullData(search);
-}
-  */
 
 function insertDataRequestFromJSON(body: any): ai_FullDataType[] {
   // Ensure body is an array of objects matching the InsertData structure
