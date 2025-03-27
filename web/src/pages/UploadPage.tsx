@@ -3,10 +3,12 @@ import "../App.css";
 import { Button } from "@nextui-org/react";
 import UploadPageSliver from "../components/upload-page-sliver";
 import { useNavigate } from "react-router-dom";
-//import { GPTResponse } from "../types/types";
+import { mockGPTPasses, mockfrompaper3 } from "../mockfulldatatype";
+import { Spinner } from "@nextui-org/react";
 
 export default function UploadPage() {
   const [files, setFiles] = useState<File[]>([]);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleFileChange = (
@@ -64,6 +66,11 @@ export default function UploadPage() {
   };
 
   async function submitPapers() {
+    // for testing
+    // navigate("/upload/edit", {
+    //   state: { resp: mockfrompaper3.concat(mockGPTPasses) },
+    // });
+
     const token = localStorage.getItem("jwtToken");
 
     const formData = new FormData();
@@ -72,6 +79,7 @@ export default function UploadPage() {
     }
 
     try {
+      setLoading(true);
       const response = await fetch(
         "http://localhost:3000/api/adminRequest/parseRequest",
         {
@@ -90,73 +98,82 @@ export default function UploadPage() {
         });
         setFiles([]);
       } else {
-        console.error(`Failed to fetch papers: ${response.status}`);
+        const err_res = await response.json();
+        if (err_res.message) {
+          console.error(`${err_res.message}`);
+        } else {
+          console.error(`Failed to fetch papers: ${response.status}`);
+        }
       }
     } catch (error) {
       console.error(`Error fetching papers: ${error}`);
       throw error;
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div className="h-screen pt-[65px]">
-      <div className="flex flex-col items-center h-full bg-gray-50">
-        <div className="w-[70%] h-full flex flex-col">
-          <div className="bg-[#F4F4F4]">
-            <div className="py-[6%] text-4xl">Upload New Papers</div>
+    <div className="flex flex-col items-center h-full bg-gray-50">
+      <div className="w-[70%] h-full flex flex-col">
+        <div className="bg-[#F4F4F4]">
+          <div className="py-[6%] text-4xl">Upload New Papers</div>
 
-            <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
+          <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
+        </div>
+        <div className="bg-white flex-grow flex justify-between items-start py-4 pb-10 overflow-hidden">
+          <div className="bg-[#F4F4F4] border border-gray-300 rounded-md flex-grow mx-4 h-full overflow-y-scroll">
+            {files.map((file: File, index: number) => (
+              <UploadPageSliver
+                file={file}
+                index={index}
+                key={index}
+                cancel={() => handleRemoveFile(file)}
+              />
+            ))}
           </div>
-          <div className="bg-white flex-grow flex justify-between items-start py-4 pb-10 overflow-hidden">
-            <div className="bg-[#F4F4F4] border border-gray-300 rounded-md flex-grow mx-4 h-full overflow-y-scroll">
-              {files.map((file: File, index: number) => (
-                <UploadPageSliver
-                  file={file}
-                  index={index}
-                  key={index}
-                  cancel={() => handleRemoveFile(file)}
-                />
-              ))}
-            </div>
-            <div className="flex flex-col w-[30%] h-full mr-4">
-              <div
-                onDragOver={handleDragOver}
-                onDrop={handleDrop}
-                onClick={handleDivClick}
-                className="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
-              >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  <div className="bg-usask-green text-lg text-gray-100 p-2 rounded-lg">
-                    Choose A File
-                  </div>
-                  <p className="mt-2 text-md text-gray-500 dark:text-gray-400">
-                    or drag and drop
-                  </p>
+          <div className="flex flex-col w-[30%] h-full mr-4">
+            <div
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              onClick={handleDivClick}
+              className="flex flex-col items-center justify-center w-full h-full border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+            >
+              <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                <div className="bg-usask-green text-lg text-gray-100 p-2 rounded-lg">
+                  Choose A File
                 </div>
-                <input
-                  id="dropzone-file"
-                  type="file"
-                  multiple
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
+                <p className="mt-2 text-md text-gray-500 dark:text-gray-400">
+                  or drag and drop
+                </p>
               </div>
-              <div className="flex justify-center space-x-4 mt-4">
-                <Button
-                  className="bg-[#ff5353] text-white rounded-md w-full"
-                  type="submit"
-                  onClick={submitPapers}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  className="bg-usask-green text-white rounded-md w-full"
-                  type="submit"
-                  onClick={submitPapers}
-                >
-                  Upload
-                </Button>
-              </div>
+              <input
+                id="dropzone-file"
+                type="file"
+                multiple
+                onChange={handleFileChange}
+                className="hidden"
+              />
+            </div>
+            <div className="flex justify-center space-x-4 mt-4">
+              <Button
+                className="bg-[#ff5353] text-white rounded-md w-full"
+                type="button"
+                disabled={loading}
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                className="bg-usask-green text-white rounded-md w-full"
+                type="submit"
+                disabled={loading}
+                onClick={submitPapers}
+              >
+                {loading ? <Spinner color="white" /> : "Upload"}
+              </Button>
             </div>
           </div>
         </div>

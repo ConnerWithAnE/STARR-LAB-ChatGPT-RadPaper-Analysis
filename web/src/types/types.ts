@@ -1,61 +1,103 @@
-export type PaperData = {
-  ROWID: number;
-  paper_name: string;
-  author: string[];
-  /*
-  year: number;
-  part_no: string;
-  type: string;
-  manufacturer: string;
-  testing_location: TestLocation;
-  testing_type: Testing;
-  data_type: number;
-  */
+export type FullDataType = {
+  id?: number;
+  name?: string;
+  year?: number;
+  objective?: string;
+  authors?: AuthorData[];
+  parts?: PartData[];
 };
 
-export type UpdateData = {
-  ROWID: number;
-  paper_name?: string;
-  year?: number;
-  author?: string[];
-  part_no?: string;
+export type AuthorData = {
+  id?: number;
+  name: string;
+};
+
+export type PartData = {
+  id?: number;
+  name?: string;
   type?: string;
   manufacturer?: string;
-  testing_location?: TestLocation;
-  testing_type?: string;
-  data_type?: number;
+  other_details?: string;
+  preliminary_test_types?: PreliminaryTestType[];
+  tids?: TIDData[];
+  sees?: SEEData[];
+  dds?: DDData[];
 };
 
-export type GPTData = {
-  paper_name: string;
-  year: number;
-  author: string[];
-  part_no: string;
-  type: string;
-  manufacturer: string;
-  testing_location: TestLocation;
-  testing_type: Testing;
-  data_type: number;
-};
+export type PreliminaryTestType = "SEE" | "TID" | "DD" | string;
 
-export type GPTResponse = {
-  pass_1: GPTData;
-  pass_2: GPTData;
-  pass_3: GPTData;
-};
-
-export type TableData = {
+export type TIDData = {
   id?: number;
-  paper_name: string;
-  year: number;
-  author: string[];
-  part_no: string;
-  type: string;
-  manufacturer: string;
-  testing_location: TestLocation;
-  testing_type: Testing;
-  data_type: number;
+  max_fluence?: number;
+  source?: "Co60" | "Protons" | "Electrons" | "Heavy ions" | "X-rays" | "Pions";
+  max_tid?: number;
+  energy_levels?: number | string;
+  facility_name?: string;
+  environmental_conditions?: string;
+  terrestrial?: boolean;
+  flight?: boolean;
+  dose_rate?: number;
+  eldrs?: boolean;
+  dose_to_failure?: number;
+  increased_power_usage?: boolean;
+  power_usage_description?: string;
+  failing_time?: string;
+  special_notes?: string;
 };
+
+export type SEEData = {
+  id?: number;
+  max_fluence?: number;
+  energy_levels?: number | string;
+  facility_name?: string;
+  environmental_conditions?: string;
+  terrestrial?: boolean;
+  flight?: boolean;
+  source?:
+    | "Heavy ions"
+    | "Protons"
+    | "Laser"
+    | "Neutron"
+    | "Electron"
+    | "X-rays";
+  type?: string;
+  amplitude?: number;
+  duration?: number;
+  cross_section_saturation?: number;
+  cross_section_threshold?: number;
+  cross_section_type?: string;
+  special_notes?: string;
+};
+
+export type DDData = {
+  id?: number;
+  max_fluence?: number;
+  energy_levels?: number | string;
+  facility_name?: string;
+  environmental_conditions?: string;
+  flight?: boolean;
+  source?: "Protons" | "Neutrons";
+  damage_level?: number;
+  damage_level_description?: string;
+  special_notes?: string;
+};
+
+//TODO: replace with the real thing lol
+export type GPTResponse = {
+  pass_1: FullDataType;
+  pass_2: FullDataType;
+  pass_3: FullDataType;
+};
+
+// these fields should not show up in the edit-entry component because they are irrelevant to the user
+export const blacklistedFields = [
+  "id",
+  "preliminary_test_types",
+  "createdAt",
+  "updatedAt",
+  "paperId",
+  "partId",
+];
 
 export type Severity = 1 | 2;
 
@@ -69,6 +111,8 @@ export function validationFunc(data: unknown): string {
     return data;
   } else if (typeof data === "number") {
     return data.toString();
+  } else if (typeof data === "boolean") {
+    return String(data);
   } else if (isTestLocation(data) || isTesting(data)) {
     return data as string;
   } else if (Array.isArray(data)) {
@@ -85,7 +129,12 @@ function isTesting(data: unknown): data is Testing {
   return data === "SEE" || data === "TID" || data === "DD" || data === "OTHER";
 }
 
-export function hasEmptyProperty(obj: UpdateData): boolean {
+export type Conflict = {
+  yellowSeverity: string[];
+  redSeverity: string[];
+};
+
+export function hasEmptyProperty(obj: FullDataType): boolean {
   return Object.values(obj).some(
     (value) =>
       value === null ||

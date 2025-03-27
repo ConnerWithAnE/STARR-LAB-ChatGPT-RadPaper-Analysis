@@ -1,21 +1,26 @@
-import { Accordion, AccordionItem, Input, Textarea } from "@nextui-org/react";
-import { useState } from "react";
-import { PaperData, UpdateData, validationFunc } from "../types/types";
-import { GPTResponse } from "../types/types";
+import { Accordion, AccordionItem } from "@nextui-org/react";
+import { useEffect, useState, useRef } from "react";
+import {
+  AuthorData,
+  Conflict,
+  DDData,
+  FullDataType,
+  GPTResponse,
+  PartData,
+  SEEData,
+  TIDData,
+  blacklistedFields,
+} from "../types/types";
 import { MdWarningAmber } from "react-icons/md";
-import { Severity } from "../types/types";
+import RenderPass from "../components/render-pass";
 
 type PaperProps = {
-  paperData?: PaperData;
   entryData?: GPTResponse;
-  editedEntry: UpdateData;
-  setEditedEntry: React.Dispatch<React.SetStateAction<UpdateData>>;
-  unresolvedConflicts: Conflict[];
-};
-
-export type Conflict = {
-  severity: Severity;
-  dataType: string;
+  editedEntry: FullDataType;
+  setEditedEntry: React.Dispatch<React.SetStateAction<FullDataType>>;
+  unresolvedConflicts?: Conflict;
+  setValuesEdited?: React.Dispatch<React.SetStateAction<string[]>>;
+  showPasses?: boolean;
 };
 
 export default function EditEntry({
@@ -23,137 +28,439 @@ export default function EditEntry({
   editedEntry,
   setEditedEntry,
   unresolvedConflicts,
+  setValuesEdited,
+  showPasses = true,
 }: PaperProps) {
   //   const [papers] = useState<PaperData[]>(paperData ?? []); will be expanded upon when we get to editing existing database entries
   const [passes] = useState<GPTResponse>(entryData ?? ({} as GPTResponse));
+  const [showGPTPasses] = useState<boolean>(showPasses);
+  // React's strict mode makes every callback run twice. This is to prevent that
+  const hasRun = useRef(false);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    let newValue: number | string = value;
-    if (name === "year" || name === "data_type") {
-      newValue = parseInt(value);
+  useEffect(() => {
+    if (hasRun.current) return; // Prevent duplicate execution
+    hasRun.current = true;
+  }, []);
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const updateNestedProperty = (obj: any, path: string[], value: any): any => {
+    if (path.length === 1) {
+      // If the current level is an array, ensure the structure is maintained
+      if (Array.isArray(obj)) {
+        const index = parseInt(path[0], 10);
+        const updatedArray = [...obj];
+        updatedArray[index] = value;
+        return updatedArray;
+      }
+      return {
+        ...obj,
+        [path[0]]: value,
+      };
     }
 
-    setEditedEntry((prevState) => ({
-      ...prevState,
-      [name]: newValue,
-    }));
-    console.log("handlechange", editedEntry);
+    const currentKey = path[0];
+    const nextKey = path[1];
+
+    // If the current level is an array, ensure the structure is maintained
+    if (Array.isArray(obj)) {
+      const index = parseInt(currentKey, 10);
+      const updatedArray = [...obj];
+      updatedArray[index] = updateNestedProperty(
+        obj[index] || (isNaN(parseInt(nextKey, 10)) ? {} : []),
+        path.slice(1),
+        value
+      );
+      return updatedArray;
+    }
+
+    return {
+      ...obj,
+      [currentKey]: updateNestedProperty(
+        obj[currentKey] || (isNaN(parseInt(nextKey, 10)) ? {} : []),
+        path.slice(1),
+        value
+      ),
+    };
   };
+
+  const handleChange = (path: string[], value: string | number) => {
+    /* POSSIBLE OPTIMIZATION: This has a higher time complexity but take up less memory */
+    if (setValuesEdited) {
+      setValuesEdited((prev) => {
+        if (!prev.includes(path.join("-"))) {
+          console.log("path", path.join("-"));
+          return [...prev, path.join("-")];
+        }
+        return prev;
+      });
+    }
+
+    // if (setValuesEdited) {
+    //   setValuesEdited((prev) => {
+    //     console.log("path", path.join("-"));
+    //     return [...prev, path.join("-")];
+    //   });
+    // }
+
+    setEditedEntry((prevState) => updateNestedProperty(prevState, path, value));
+  };
+
+  const renderAuthors = (authors: AuthorData[]) => {
+    return authors.map((author, i) => {
+      const pass_2 = passes?.pass_2?.authors?.[i]?.name ?? {};
+      const pass_3 = passes?.pass_3?.authors?.[i]?.name ?? {};
+      return (
+        <RenderPass
+          passes={{
+            pass_1: author?.name ?? {},
+            pass_2: pass_2 ?? {},
+            pass_3: pass_3 ?? {},
+          }}
+          currentEntry={editedEntry?.authors?.[i]?.name ?? ""}
+          handleChange={(name, value) => {
+            handleChange(["authors", i.toString(), name], value);
+          }}
+          id={`name`}
+          showPasses={showGPTPasses}
+        ></RenderPass>
+      );
+    });
+  };
+
+  const renderPart = (part: PartData, i: number) => {
+    return Object.entries(part).map(([key, value]) => {
+      type PartDataKey = keyof PartData;
+      const typesafeSubKey = key as PartDataKey;
+      if (blacklistedFields.includes(typesafeSubKey)) {
+        return;
+      }
+      if (typesafeSubKey === "tids") {
+        return (
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Total Ionizing Dose Effects</span>
+            {renderTids(part.tids ?? [], i)}
+          </div>
+        );
+      } else if (typesafeSubKey === "sees") {
+        return (
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Single Event Effects</span>
+            {renderSees(part.sees ?? [], i)}
+          </div>
+        );
+      } else if (typesafeSubKey === "dds") {
+        return (
+          <div className="bg-slate-200 p-4 flex flex-col gap-2">
+            <span className="text-lg">Damage Displacement</span>
+            {renderDDs(part.dds ?? [], i)}
+          </div>
+        );
+      }
+      return (
+        <div>
+          <span className="text-lg">{key}</span>
+          <RenderPass
+            passes={{
+              pass_1: value ?? {},
+              pass_2: passes.pass_2?.parts?.[i]?.[typesafeSubKey] ?? {},
+              pass_3: passes.pass_3?.parts?.[i]?.[typesafeSubKey] ?? {},
+            }}
+            currentEntry={editedEntry.parts?.[i]?.[typesafeSubKey] ?? ""}
+            handleChange={(name, value) =>
+              handleChange(["parts", i.toString(), name], value)
+            }
+            id={`${key}`}
+            showPasses={showGPTPasses}
+          ></RenderPass>
+        </div>
+      );
+    });
+  };
+
+  const renderTids = (tids: TIDData[], partIndex: number) => {
+    return tids.map((tid, i) => {
+      return (
+        <div>
+          <span>Test {i + 1}</span>
+          <div className="bg-slate-300 p-4">
+            {Object.entries(tid).map(([key, value]) => {
+              type TIDDataKey = keyof TIDData;
+              const typesafeKey = key as TIDDataKey;
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.tids?.[i]?.[typesafeKey] ?? "";
+              if (blacklistedFields.includes(typesafeKey)) {
+                return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
+              }
+              return (
+                <div>
+                  <span>{key}</span>
+                  <RenderPass
+                    passes={{
+                      pass_1: value ?? "",
+                      pass_2:
+                        passes.pass_2?.parts?.[partIndex]?.tids?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                      pass_3:
+                        passes.pass_3?.parts?.[partIndex]?.tids?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                    }}
+                    currentEntry={defaultValue}
+                    handleChange={(name, value) =>
+                      handleChange(
+                        [
+                          "parts",
+                          partIndex.toString(),
+                          "tids",
+                          i.toString(),
+                          name,
+                        ],
+                        value
+                      )
+                    }
+                    id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
+                  ></RenderPass>
+                </div>
+              );
+            })}
+          </div>
+          <br></br>
+        </div>
+      );
+    });
+  };
+
+  const renderSees = (sees: SEEData[], partIndex: number) => {
+    return sees.map((see, i) => {
+      return (
+        <div>
+          <span>Test {i + 1}</span>
+          <div className="bg-slate-300 p-4">
+            {Object.entries(see).map(([key, value]) => {
+              type SEEDataKey = keyof SEEData;
+              const typesafeKey = key as SEEDataKey;
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.sees?.[i]?.[typesafeKey] ?? "";
+              if (blacklistedFields.includes(typesafeKey)) {
+                return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
+              }
+              return (
+                <div>
+                  <span>{key}</span>
+                  <RenderPass
+                    passes={{
+                      pass_1: value ?? "",
+                      pass_2:
+                        passes.pass_2?.parts?.[partIndex]?.sees?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                      pass_3:
+                        passes.pass_3?.parts?.[partIndex]?.sees?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                    }}
+                    currentEntry={defaultValue}
+                    handleChange={(name, value) =>
+                      handleChange(
+                        [
+                          "parts",
+                          partIndex.toString(),
+                          "sees",
+                          i.toString(),
+                          name,
+                        ],
+                        value
+                      )
+                    }
+                    id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
+                  ></RenderPass>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    });
+  };
+
+  const renderDDs = (dds: DDData[], partIndex: number) => {
+    return dds.map((dd, i) => {
+      return (
+        <div>
+          <span>Test {i + 1}</span>
+          <div className="bg-slate-300 p-4">
+            {Object.entries(dd).map(([key, value]) => {
+              type DDDataKey = keyof DDData;
+              const typesafeKey = key as DDDataKey;
+              let defaultValue =
+                editedEntry?.parts?.[partIndex]?.dds?.[i]?.[typesafeKey] ?? "";
+              if (blacklistedFields.includes(typesafeKey)) {
+                return;
+              }
+              if (typesafeKey === "special_notes") {
+                defaultValue = value ?? "";
+              }
+              return (
+                <div>
+                  <span>{key}</span>
+                  <RenderPass
+                    passes={{
+                      pass_1: value ?? "",
+                      pass_2:
+                        passes.pass_2?.parts?.[partIndex]?.dds?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                      pass_3:
+                        passes.pass_3?.parts?.[partIndex]?.dds?.[i]?.[
+                          typesafeKey
+                        ] ?? "",
+                    }}
+                    currentEntry={defaultValue}
+                    handleChange={(name, value) =>
+                      handleChange(
+                        [
+                          "parts",
+                          partIndex.toString(),
+                          "dds",
+                          i.toString(),
+                          name,
+                        ],
+                        value
+                      )
+                    }
+                    id={`${typesafeKey}`}
+                    showPasses={showGPTPasses}
+                  ></RenderPass>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    });
+  };
+
+  const renderPartAccordionItems = (): JSX.Element[] => {
+    const parts = passes?.pass_1?.parts ?? editedEntry.parts;
+
+    if (!parts || parts.length === 0) {
+      return [];
+    }
+
+    return (
+      parts.map((part, i) => (
+        <AccordionItem title={`Part ${i + 1}`} key={`part-${i}`}>
+          {renderPart(part, i)}
+        </AccordionItem>
+      )) ?? []
+    );
+  };
+
+  useEffect(() => {
+    console.log("paper", editedEntry);
+  }, []);
 
   return (
     <div className="flex flex-col gap-2 p-4">
       <div className="flex flex-row justify-between gap-3">
         <div className="grow basis-1/3">
-          <Accordion variant="light" isCompact selectionMode="multiple">
-            {Object.entries(passes.pass_1).map(([key]) => {
-              if (key === "id") {
-                return <span></span>;
+          {Object.entries(passes?.pass_1 ?? editedEntry).map(
+            ([key]): JSX.Element => {
+              type fullDataTypeKey = keyof FullDataType;
+              const typesafeKey = key as fullDataTypeKey;
+
+              if (blacklistedFields.includes(typesafeKey)) {
+                return <></>;
               }
-              type GPTDataKey = keyof typeof passes.pass_1;
-              type updateDataKey = keyof typeof editedEntry;
-              const typesafeKey = key as GPTDataKey;
-              const typesafeUpdateKey = key as updateDataKey;
-              return (
-                <AccordionItem title={key} key={key}>
-                  <div className="flex flex-row justify-evenly">
-                    <div className="flex flex-col items-center basis-1/4 p-1">
-                      <span className="text-slate-800">First Pass</span>
-                      <span className="text-slate-800">
-                        {validationFunc(passes.pass_1[typesafeKey])}
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-center basis-1/4 p-1">
-                      <span className="text-slate-800">Second Pass</span>
-                      <span className="text-slate-800">
-                        {validationFunc(passes.pass_2[typesafeKey])}
-                      </span>
-                    </div>
-                    <div className="flex flex-col items-center basis-1/4 p-1">
-                      <span className="text-slate-800">Third Pass</span>
-                      <span className="text-slate-800">
-                        {validationFunc(passes.pass_3[typesafeKey])}
-                      </span>
-                    </div>
-                    <div className="flex flex-col grow basis-1/3 items-center p-1">
-                      <span className="text-slate-800">Final Result</span>
-                      {(() => {
-                        switch (key) {
-                          case "author":
-                            return (
-                              <Textarea
-                                name={key}
-                                className="max-w-xs"
-                                placeholder="Enter your description"
-                                value={editedEntry[
-                                  typesafeUpdateKey
-                                ]?.toString()}
-                                onChange={handleChange}
-                                description="Please enter each author's name separated by quotes."
-                                validate={(value) => {
-                                  if (value === "") {
-                                    return "Please enter a value";
-                                  }
-                                }}
-                              />
-                            );
-                          case "year":
-                          case "data_type":
-                            return (
-                              <Input
-                                name={key}
-                                type="number"
-                                className="max-w-xs"
-                                placeholder="Enter your description"
-                                value={editedEntry[
-                                  typesafeUpdateKey
-                                ]?.toString()}
-                                onChange={handleChange}
-                                validate={(value) => {
-                                  if (value === "") {
-                                    return "Please enter a value";
-                                  }
-                                }}
-                              />
-                            );
-                          default:
-                            return (
-                              <Textarea
-                                name={key}
-                                className="max-w-xs"
-                                placeholder="Enter your description"
-                                value={editedEntry[
-                                  typesafeUpdateKey
-                                ]?.toString()}
-                                onChange={handleChange}
-                                validate={(value) => {
-                                  if (value === "") {
-                                    return "Please enter a value";
-                                  }
-                                }}
-                              />
-                            );
-                        }
-                      })()}
-                    </div>
-                  </div>
-                </AccordionItem>
-              );
-            })}
+
+              if (typesafeKey !== "parts") {
+                if (typesafeKey === "authors") {
+                  const authors =
+                    passes?.pass_1?.authors ?? editedEntry.authors;
+                  return (
+                    <Accordion
+                      variant="light"
+                      isCompact
+                      selectionMode="multiple"
+                    >
+                      <AccordionItem title={key} key={key}>
+                        {renderAuthors(authors ?? [])}
+                      </AccordionItem>
+                    </Accordion>
+                  );
+                }
+                return (
+                  <Accordion variant="light" isCompact selectionMode="multiple">
+                    <AccordionItem title={key} key={key}>
+                      <RenderPass
+                        passes={{
+                          pass_1: passes?.pass_1?.[typesafeKey] ?? "",
+                          pass_2: passes?.pass_2?.[typesafeKey] ?? "",
+                          pass_3: passes?.pass_3?.[typesafeKey] ?? "",
+                        }}
+                        currentEntry={editedEntry[typesafeKey] ?? ""}
+                        handleChange={(name, value) => {
+                          handleChange([typesafeKey], value);
+                        }}
+                        id={key}
+                        showPasses={showGPTPasses}
+                      ></RenderPass>
+                    </AccordionItem>
+                  </Accordion>
+                );
+              }
+              return <></>;
+            }
+          )}
+          <br></br>
+          <Accordion variant="light" isCompact selectionMode="multiple">
+            {renderPartAccordionItems()}
           </Accordion>
         </div>
         <div className="border-solid border-2 border-slate-900 rounded grow flex flex-col p-4 align-center">
           <div className="text-center">Unresolved Conflicts</div>
-          {unresolvedConflicts.map((conflict) => {
+          {unresolvedConflicts?.redSeverity.map((conflict) => {
+            const readableConflict = conflict.split("-");
             return (
-              <div className="flex flex-row gap-2 align-center justify-center">
-                <br></br>
-                {conflict.severity === 1 ? (
-                  <MdWarningAmber color="yellow" size="1.5em" />
-                ) : (
-                  <MdWarningAmber color="red" size="1.5em" />
-                )}
-                {conflict.dataType}
+              <div className="flex flex-row gap-2">
+                <MdWarningAmber color="red" size="1.5em" />
+                <div>
+                  {readableConflict.map(
+                    (val) =>
+                      `${
+                        isNaN(Number(val))
+                          ? val + " "
+                          : String(Number(val) + 1) + ", "
+                      }`
+                  )}
+                </div>
+              </div>
+            );
+          })}
+          {unresolvedConflicts?.yellowSeverity.map((conflict) => {
+            const readableConflict = conflict.split("-");
+            return (
+              <div className="flex flex-row gap-2">
+                <MdWarningAmber color="yellow" size="1.5em" />
+                <div>
+                  {readableConflict.map(
+                    (val) =>
+                      `${
+                        isNaN(Number(val))
+                          ? val + " "
+                          : String(Number(val) + 1) + ", "
+                      }`
+                  )}
+                </div>
               </div>
             );
           })}

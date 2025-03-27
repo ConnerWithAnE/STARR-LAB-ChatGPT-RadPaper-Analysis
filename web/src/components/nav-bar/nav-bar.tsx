@@ -6,9 +6,11 @@ import {
 } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Nav() {
   const [nsid, setNSID] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setNSID(localStorage.getItem("nsid") ?? "");
@@ -17,7 +19,11 @@ export default function Nav() {
   return (
     <Navbar position="static" isBordered className="bg-[#D4D4D4]">
       <NavbarBrand>
-        <p className="font-bold text-inherit text-slate-900">
+        <p
+          className="font-bold text-inherit text-slate-900 hover:text-blue-600"
+          style={{ cursor: "pointer" }}
+          onClick={() => navigate("/modify")}
+        >
           STARR Lab Rad-Effects Database
         </p>
       </NavbarBrand>

@@ -4,7 +4,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import { open, Database } from "sqlite";
 import dotenv from "dotenv";
-import fs from 'fs';
+import fs from "fs";
 
 import { initializeDatabase } from "./database-init";
 

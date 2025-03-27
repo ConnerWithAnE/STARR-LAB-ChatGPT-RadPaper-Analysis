@@ -90,8 +90,15 @@ export default function adminRouter(
     upload.array("pdfs"),
     async (req: Request, res: Response) => {
       try {
-        // TODO
-        if (config.MockData) {
+        if (
+          !config.MockData &&
+          (req.files === undefined || req.files.length === 0)
+        ) {
+          res.status(400).send({
+            message: "No files uploaded.",
+          });
+          return;
+        } else if (config.MockData) {
           import("../../test/testfiles/parse_response.json").then((module) => {
             console.log("Sending mock data...");
             res.send(module.default);
@@ -100,7 +107,7 @@ export default function adminRouter(
           await parsePapers(req.files, gptController).then(
             (result: ai_GPTResponse[]) => {
               console.log(responseToJSON(result));
-              res.send(responseToJSON(result));
+              res.json(result);
             },
           );
         }

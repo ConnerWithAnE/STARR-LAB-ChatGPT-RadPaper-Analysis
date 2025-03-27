@@ -16,15 +16,17 @@
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
     "@types/react-icons": "^3.0.0",
+    "fastest-levenshtein": "^1.0.16",
     "framer-motion": "^11.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.1",
-    "reacticons": "^0.0.1",
-    "react-icons": "^5.4.0"
+    "reacticons": "^0.0.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.15.0",
+    "@types/node": "^22.13.13",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
