@@ -150,7 +150,7 @@ export default function PaperSliver({
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3000/api/adminRequest/papers/full/${paperData.id}`,
+        `/api/adminRequest/papers/full/${paperData.id}`,
         {
           method: "GET",
           headers: {
@@ -191,7 +191,7 @@ export default function PaperSliver({
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/adminRequest/papers/full/${paperData.id}`,
+        `/api/adminRequest/papers/full/${paperData.id}`,
         {
           method: "PUT",
           headers: {
@@ -241,7 +241,7 @@ export default function PaperSliver({
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/adminRequest/papers/${paperData.id}`,
+        `/api/adminRequest/papers/${paperData.id}`,
         {
           method: "DELETE",
           headers: {
