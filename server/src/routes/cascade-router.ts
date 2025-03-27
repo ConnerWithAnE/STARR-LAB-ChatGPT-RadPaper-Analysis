@@ -9,14 +9,14 @@ const router = express.Router();
 export default function cascadeRouter(dbController: GenericController): Router {
   const router = Router();
 
-  router.get("/:model/filter", async (req: Request, res: Response) => {
+  router.get("/papers/filter", async (req: Request, res: Response) => {
     try {
       const modelName = req.params.model;
       const filters = req.query; // Extract query parameters
 
       console.log(`Filtering ${modelName} with`, filters);
 
-      const records = await GenericController.filter(modelName, filters);
+      const records = await GenericController.cascade_filter(filters);
 
       if (!Array.isArray(records) && "error" in records) {
         res.status(records.status || 500).json({ error: records.error });

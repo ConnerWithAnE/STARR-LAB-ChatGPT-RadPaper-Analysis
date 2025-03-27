@@ -53,39 +53,6 @@ async function initializeSystem(): Promise<{
     gptController: new GPTController(GPTModel.GPT4Turbo),
   };
 }
-// initializeSystem().then(({ dbController, gptController }) => {
-//   app.use("/", exampleRouter);
-//   //app.use("/getTable", tableRouter)
-//   app.use("/api/dataRequest", cascadeRouter(dbController));
-//   //app.use("/api/adminRequest", adminRouter(dbController, gptController));
-//   //FOR QUICKLY TESTING A PAPER: Uncomment paper to test it. Run "localhost:3000/parse" in a browser to parse the paper and see results in console
-//   // app.use("/parse", () => {
-//   //     gptController.runGPTAnalysis(["./test/testfiles/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"]);
-//   //     // gptController.runGPTAnalysis(["./test/testfiles/A_radiation_tolerant_video_camera_for_high_total_dose_environments.pdf"]);
-//   //     // gptController.runGPTAnalysis(["./test/testfiles/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf"]);
-//   //     // gptController.runGPTAnalysis(["./test/testfiles/Solar_flare_proton_environment_for_estimating_downtime_of_spacecraft_CCDs.pdf"]);
-//   //     // gptController.runGPTAnalysis(["./test/testfiles/slvk121.pdf"]);
-//   // });
-
-//   (async () => {
-//     try {
-//       await initializeDatabase(); // Call it once
-//       console.log("Database initialized successfully.");
-//     } catch (error) {
-//       console.error("Failed to initialize the database:", error);
-//     }
-//   })();
-
-//   app.listen(PORT, () => {
-//     console.log(`Server is running on ${PORT}`);
-
-//     // Close the database when the app is shutting down
-//     process.on("exit", () => {
-//       dbController.closeDB();
-//       console.log("Database connection closed.");
-//     });
-//   });
-// });
 
 (async () => {
   try {
@@ -102,14 +69,10 @@ async function initializeSystem(): Promise<{
 
     //for testing
 
+    /*
     app.get("/test2-gpt", async (req, res) => {
       try {
-        //const pdfFile = "./test/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf";
-        //const pdfFile = "./test/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf"; // Replace with actual file path
-        //const pdfFile =  "./test/Single-Event_Effects_Measurements_on_COTS_Electronic_Devices_for_Use_on_NASA_Mars_Missions.pdf";
-        const pdfFile = [
-          "./test/Review_of_TID_Effects_Reported_in_ProASIC3_and_ProASIC3L_FPGAs_for_3D_PLUS_Camera_Heads.pdf",
-        ];
+        const pdfFile = ["./test/Review_of_TID_Effects_Reported_in_ProASIC3_and_ProASIC3L_FPGAs_for_3D_PLUS_Camera_Heads.pdf"];
         const pdfFiles = [
           "./test/Radiation_effects_predicted_observed_and_compared_for_spacecraft_systems.pdf",
           "./test/SEE_in-flight_data_for_two_static_32KB_memories_on_high_earth_orbit.pdf",
@@ -121,9 +84,9 @@ async function initializeSystem(): Promise<{
         const results = await gptController.processRadiationPapers(pdfFile);
 
         fs.writeFileSync(
-          "./test/1-paper-output.json",
-          JSON.stringify(results, null, 4),
-        );
+              "./test/1-paper-output-hope.json",
+              JSON.stringify(results, null, 4),
+            );
 
         console.log("GPT Analysis Results:", results);
         res.json(results);
@@ -132,17 +95,7 @@ async function initializeSystem(): Promise<{
         res.status(500).json({ error: "GPT analysis failed", details: error });
       }
     });
-    app.get("/test-gpt", async (req, res) => {
-      try {
-        console.log("Initializing GPTController...");
-        const gptController = new GPTController(GPTModel.GPT4O);
-
-        console.log("Running GPT Analysis...");
-      } catch (error) {
-        console.error("Error during GPT analysis:", error);
-        res.status(500).json({ error: "GPT analysis failed", details: error });
-      }
-    });
+    */
 
     app.listen(PORT, () => {
       console.log(`Server is running on ${PORT}`);
