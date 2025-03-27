@@ -535,7 +535,77 @@ export class GPTController {
         }
       }),
     );
-
-    return paperObjects;
+    const result = alignPassParts(paperObjects.filter((obj): obj is ai_GPTResponse => obj !== undefined));
+    return result;
   }
+}
+
+/**
+ * Sorts the parts component such that common parts across pass 1, 2 and 3 have the same index in the parts array
+ * @param passes an array of ai_GPTResponse objects
+ * @returns a new array of ai_GPTResponse objects with the parts aligned across pass 1, 2 and 3
+ */
+function alignPassParts(passes: ai_GPTResponse[]): ai_GPTResponse[] {
+  return passes.map((entry) => {
+    const prelim_result = sortParts(
+      entry.pass_1.parts,
+      entry.pass_2.parts,
+      entry.pass_3.parts
+    );
+    return {
+      ...entry,
+      pass_1: {
+        ...entry.pass_1,
+        parts: prelim_result[0]
+      },
+      pass_2: {
+        ...entry.pass_2,
+        parts: prelim_result[1]
+      },
+      pass_3: {
+        ...entry.pass_3,
+        parts: prelim_result[2]
+      }
+    };
+  });
+}
+
+function sortParts(
+  pass_1_parts: ai_part[], 
+  pass_2_parts: ai_part[], 
+  pass_3_parts: ai_part[]
+): [ai_part[], ai_part[], ai_part[]] {
+  // Create sets of part names for each pass
+  const pass_1_names = new Set(pass_1_parts.map(part => part.name));
+  const pass_2_names = new Set(pass_2_parts.map(part => part.name));
+  const pass_3_names = new Set(pass_3_parts.map(part => part.name));
+  
+  // Find common part names across all passes
+  const commonNames = new Set(
+      [...pass_1_names].filter(
+          name => pass_2_names.has(name) && pass_3_names.has(name)
+      )
+  );
+  
+  // Create maps to quickly lookup parts by name
+  const pass_1_map = new Map(pass_1_parts.map(part => [part.name, part]));
+  const pass_2_map = new Map(pass_2_parts.map(part => [part.name, part]));
+  const pass_3_map = new Map(pass_3_parts.map(part => [part.name, part]));
+  
+  // Sort common parts based on the order in pass_1
+  const commonParts_1 = Array.from(commonNames).map(name => pass_1_map.get(name)!);
+  const commonParts_2 = commonParts_1.map(part => pass_2_map.get(part.name)!);
+  const commonParts_3 = commonParts_1.map(part => pass_3_map.get(part.name)!);
+  
+  // Collect uncommon parts for each pass
+  const uncommonParts_1 = pass_1_parts.filter(part => !commonNames.has(part.name));
+  const uncommonParts_2 = pass_2_parts.filter(part => !commonNames.has(part.name));
+  const uncommonParts_3 = pass_3_parts.filter(part => !commonNames.has(part.name));
+  
+  // Combine common and uncommon parts
+  const sorted_pass_1 = [...commonParts_1, ...uncommonParts_1];
+  const sorted_pass_2 = [...commonParts_2, ...uncommonParts_2];
+  const sorted_pass_3 = [...commonParts_3, ...uncommonParts_3];
+  
+  return [sorted_pass_1, sorted_pass_2, sorted_pass_3];
 }
