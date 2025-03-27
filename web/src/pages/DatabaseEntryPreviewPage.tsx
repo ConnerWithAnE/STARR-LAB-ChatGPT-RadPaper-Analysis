@@ -36,6 +36,13 @@ export default function DatabaseEntryPreviewPage() {
   const [loading, setLoading] = useState(false);
   const [passData, setPassData] = useState(data); // need this hook so that GPTpasses persist between renders
   setInitialGPTPasses(passData);
+  initialGPTPasses.forEach((entry) => {
+    const lengths = [entry.pass_1.parts?.length, entry.pass_2.parts?.length, entry.pass_3.parts?.length];
+    const minLength = Math.min(...lengths.filter(length => length !== undefined && length !== null));
+    entry.pass_1.parts = entry.pass_1.parts?.slice(0, minLength);
+    entry.pass_2.parts = entry.pass_2.parts?.slice(0, minLength);
+    entry.pass_3.parts = entry.pass_3.parts?.slice(0, minLength);
+  });
 
   useEffect(() => {
     let disabled = false;
