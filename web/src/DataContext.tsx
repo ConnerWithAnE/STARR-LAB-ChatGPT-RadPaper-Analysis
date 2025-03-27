@@ -1,5 +1,11 @@
-import { createContext, useContext, useState, ReactNode } from "react";
-import { GPTResponse, FullDataType } from "./types/types";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { GPTResponse, FullDataType, Conflict } from "./types/types";
 
 // Define the shape of the data
 
@@ -19,7 +25,11 @@ interface TableDataContextType {
   removeEntry: (id: number) => void;
   redConflicts: RedConflicts[];
   setRedConflict: (id: number, fields: string[]) => void;
-  removeRedConflict: (id: number, field: string) => void;
+  removeRedConflict: (id: number) => void;
+  allConflicts: Conflict[];
+  addConflict: (conflicts: Conflict) => void;
+  removeConflict: (id: number) => void;
+  updateConflict: (id: number, fields: Conflict) => void;
 }
 
 // Define the default value of the context
@@ -34,6 +44,10 @@ const defaultValue: TableDataContextType = {
   redConflicts: [],
   setRedConflict: () => {},
   removeRedConflict: () => {},
+  allConflicts: [],
+  addConflict: () => {},
+  removeConflict: () => {},
+  updateConflict: () => {},
 };
 
 // Create the context
@@ -48,6 +62,38 @@ export const TableDataFormProvider = ({
   const [initialGPTPasses, setInitialGPTPasses] = useState<GPTResponse[]>([]);
   const [tableEntries, setTableEntries] = useState<FullDataType[]>([]);
   const [redConflicts, setRedConflicts] = useState<RedConflicts[]>([]);
+  const [allConflicts, setAllConflicts] = useState<Conflict[]>(
+    [] as Conflict[]
+  );
+
+  useEffect(() => {
+    console.log("addconflicts", allConflicts);
+  }, [allConflicts]);
+
+  function addConflict(conflicts: Conflict) {
+    setAllConflicts((prev) => {
+      const newConflicts = [...prev];
+      newConflicts.push(conflicts);
+      return newConflicts;
+    });
+  }
+
+  function removeConflict(id: number) {
+    console.log("id", id);
+    setAllConflicts((prev) => {
+      const newConflicts = [...prev];
+      newConflicts.splice(id, 1);
+      return newConflicts;
+    });
+  }
+
+  function updateConflict(id: number, fields: Conflict) {
+    setAllConflicts((prev) => {
+      const updatedConflicts = [...prev];
+      updatedConflicts[id] = fields;
+      return updatedConflicts;
+    });
+  }
 
   function updateEntry(id: number, value: FullDataType) {
     setTableEntries((prev) => {
@@ -110,18 +156,11 @@ export const TableDataFormProvider = ({
     }
   }
 
-  function removeRedConflict(id: number, field: string) {
+  function removeRedConflict(id: number) {
     setRedConflicts((prev) => {
-      const newConflicts = prev.map((conflict) => {
-        if (conflict.id === id) {
-          return {
-            id: id,
-            fields: conflict.fields.filter((f) => f !== field),
-          };
-        }
-        return conflict;
-      });
-      return newConflicts.filter((conflict) => conflict.fields.length > 0);
+      const newConflicts = prev.filter((conflict) => conflict.id !== id);
+      console.log("newConflicts", newConflicts);
+      return newConflicts;
     });
   }
 
@@ -138,6 +177,10 @@ export const TableDataFormProvider = ({
         setRedConflict,
         removeRedConflict,
         removeEntry,
+        allConflicts,
+        addConflict,
+        removeConflict,
+        updateConflict,
       }}
     >
       {children}

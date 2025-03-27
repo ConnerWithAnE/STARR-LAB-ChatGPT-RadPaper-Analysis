@@ -44,7 +44,15 @@ export default function EntrySliver({
   const [openCancelModal, setOpenCancelModal] = useState(false);
 
   // for modifying entries
-  const { addEntry, updateEntry, tableEntries, setRedConflict } = useForm();
+  const {
+    addEntry,
+    updateEntry,
+    tableEntries,
+    setRedConflict,
+    allConflicts,
+    addConflict,
+    updateConflict,
+  } = useForm();
 
   // this state prop is to handle modifying the individual entry before updating the overall form
   const [editedEntry, setEditedEntry] = useState<FullDataType>(() => {
@@ -55,14 +63,9 @@ export default function EntrySliver({
       return {} as FullDataType;
     }
   });
-  const [originalEntry, setOriginalEntry] = useState<FullDataType>(() => {
-    const savedEntry = tableEntries[index];
-    if (savedEntry) {
-      return savedEntry;
-    } else {
-      return {} as FullDataType;
-    }
-  });
+  const [originalEntry, setOriginalEntry] = useState<FullDataType>(
+    {} as FullDataType
+  );
   const [valuesEdited, setValuesEdited] = useState<string[]>([]); // To keep track of the values edited in the entry
   const [authors, setAuthors] = useState<AuthorData[]>(
     tableEntries[index]?.authors ?? []
@@ -78,14 +81,25 @@ export default function EntrySliver({
     }
   }, [tableEntries]);
 
+  // to keep track of the original state of the entry as it changes when the user hits save
+  useEffect(() => {
+    setOriginalEntry(JSON.parse(JSON.stringify(tableEntries[index] ?? {})));
+  }, [tableEntries[index]]);
+
   // React's strict mode makes every callback run twice. This is to prevent that
   const hasRun = useRef(false);
 
   const [passes] = useState<GPTResponse>(gptPass ?? ({} as GPTResponse));
-  const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>({
-    yellowSeverity: [],
-    redSeverity: [],
-  });
+  const [unresolvedConflicts, setUnresolvedConflicts] = useState<Conflict>(
+    allConflicts[index] ?? { yellowSeverity: [], redSeverity: [] }
+  );
+
+  // to reset the unresolved conflicts when an entry is deleted
+  useEffect(() => {
+    setUnresolvedConflicts(
+      allConflicts[index] ?? { yellowSeverity: [], redSeverity: [] }
+    );
+  }, [tableEntries]);
 
   useEffect(() => {
     if (hasRun.current) return; // Prevent duplicate execution
@@ -601,14 +615,15 @@ export default function EntrySliver({
     addEntry(updatedEntry);
 
     // set unresolvedConflicts for the entry
-    setUnresolvedConflicts(updatedConflicts);
+    // setUnresolvedConflicts(updatedConflicts);
     if (updatedConflicts.redSeverity.length > 0) {
       setRedConflict(index, updatedConflicts.redSeverity);
     }
+    addConflict(updatedConflicts);
   }, []);
 
   const handleCancel = () => {
-    setEditedEntry(originalEntry);
+    setEditedEntry(JSON.parse(JSON.stringify(originalEntry)));
     setOpen(false);
     setOpenCancelModal(false);
   };
@@ -670,7 +685,8 @@ export default function EntrySliver({
     // console.log('valuesEdited', valuesEdited);
     // console.log('combinedConflicts', combinedConflicts);
     setRedConflict(index, combinedConflicts.redSeverity);
-    setUnresolvedConflicts(combinedConflicts);
+    // setUnresolvedConflicts(combinedConflicts);
+    updateConflict(index, combinedConflicts);
 
     setValuesEdited([]); // Clear the values edited.
 

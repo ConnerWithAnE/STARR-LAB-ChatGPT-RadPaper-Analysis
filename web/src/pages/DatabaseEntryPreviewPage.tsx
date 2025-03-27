@@ -25,6 +25,8 @@ export default function DatabaseEntryPreviewPage() {
     removePass,
     removeEntry,
     redConflicts,
+    removeRedConflict,
+    removeConflict,
   } = useForm();
 
   const { onOpenChange } = useDisclosure();
@@ -128,6 +130,8 @@ export default function DatabaseEntryPreviewPage() {
     setPassData(updatePasses);
     setInitialGPTPasses(passData);
     removeEntry(index);
+    removeRedConflict(index);
+    removeConflict(index);
 
     console.log("Delete Done!");
   };
