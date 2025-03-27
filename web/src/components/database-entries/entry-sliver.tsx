@@ -24,6 +24,7 @@ import { useForm } from "../../DataContext";
 import { HiCheckCircle } from "react-icons/hi2";
 import { HiExclamationTriangle } from "react-icons/hi2";
 import { HiExclamationCircle } from "react-icons/hi2";
+import { compareStringPasses } from "../../types/levenshtein-distance";
 
 type EntrySliverProp = {
   gptPass: GPTResponse;
@@ -158,13 +159,23 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
-          // if the key is special_notes, just fill in one value and return
-          // this is a compromise, as special_notes is often one long string and hard to compare
+          // the 'special_notes' field is a long string and thus should probably be compared using a different method
           if (typesafeKey === "special_notes") {
-            updatedTest = {
-              ...updatedTest,
-              [typesafeKey]: tests_1,
-            };
+            const result = compareStringPasses(tests_1, tests_2, tests_3);
+            if (result.pass) {
+              updatedTest = {
+                ...updatedTest,
+                [typesafeKey]: result.pass,
+              };
+            }
+            if (result.severity) {
+              addConflict2(
+                updatedConflicts,
+                `parts-${testIndex}-sees-${i}-${key}`,
+                result.severity
+              );
+            }
+
             return;
           }
 
@@ -238,13 +249,22 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
-          // if the key is special_notes, just fill in one value and return
-          // this is a compromise, as special_notes is often one long string and hard to compare
+          // the 'special_notes' field is a long string and thus should probably be compared using a different method
           if (typesafeKey === "special_notes") {
-            updatedTest = {
-              ...updatedTest,
-              [typesafeKey]: tests_1,
-            };
+            const result = compareStringPasses(tests_1, tests_2, tests_3);
+            if (result.pass) {
+              updatedTest = {
+                ...updatedTest,
+                [typesafeKey]: result.pass,
+              };
+            }
+            if (result.severity) {
+              addConflict2(
+                updatedConflicts,
+                `parts-${testIndex}-sees-${i}-${key}`,
+                result.severity
+              );
+            }
             return;
           }
 
@@ -318,16 +338,25 @@ export default function EntrySliver({
           const tests_2 = pass_2[i][typesafeKey];
           const tests_3 = pass_3[i][typesafeKey];
 
-          // if the key is special_notes, just fill in one value and return
-          // this is a compromise, as special_notes is often one long string and hard to compare
+          // the 'special_notes' field is a long string and thus should probably be compared using a different method
           if (typesafeKey === "special_notes") {
-            updatedTest = {
-              ...updatedTest,
-              [typesafeKey]: tests_1,
-            };
+            const result = compareStringPasses(tests_1, tests_2, tests_3);
+            if (result.pass) {
+              updatedTest = {
+                ...updatedTest,
+                [typesafeKey]: result.pass,
+              };
+            }
+            if (result.severity) {
+              addConflict2(
+                updatedConflicts,
+                `parts-${testIndex}-sees-${i}-${key}`,
+                result.severity
+              );
+            }
+
             return;
           }
-
           if (
             tests_1 === tests_2 &&
             tests_1 === tests_3 &&
@@ -447,13 +476,24 @@ export default function EntrySliver({
             };
             return;
           }
-          // if the key is other_details, just fill in one value and return
-          // this is a compromise, as other_details is often one long string and hard to compare
+
+          // the 'other_details' field is a long string and thus should probably be compared using a different method
           if (typesafeKey === "other_details") {
-            updatedPart = {
-              ...updatedPart,
-              [typesafeKey]: parts_1,
-            };
+            const result = compareStringPasses(parts_1, parts_2, parts_3);
+            if (result.pass) {
+              updatedPart = {
+                ...updatedPart,
+                [typesafeKey]: result.pass,
+              };
+            }
+            if (result.severity) {
+              addConflict2(
+                updatedConflicts,
+                `parts-${i}-${key}`,
+                result.severity
+              );
+            }
+
             return;
           }
 
@@ -544,12 +584,20 @@ export default function EntrySliver({
       if (editedEntry[typesafeKey] !== undefined) {
         return;
       }
-      // the 'objective' field is a long string and thus cannot be compared via string comparison
+      // the 'objective' field is a long string and thus should probably be compared using a different method
       if (typesafeKey === "objective") {
-        updatedEntry = {
-          ...updatedEntry,
-          objective: pass_1,
-        };
+        const result = compareStringPasses(pass_1, pass_2, pass_3);
+
+        if (result.pass) {
+          updatedEntry = {
+            ...updatedEntry,
+            objective: result.pass,
+          };
+        }
+        if (result.severity) {
+          addConflict2(updatedConflicts, key, result.severity);
+        }
+
         return;
       }
       // Compare the part information in the passes

@@ -818,7 +818,7 @@ export const mockFullDataTypePasses5: FullDataType[] = [
             increased_power_usage: false,
             power_usage_description: "string",
             special_notes:
-              "This is a test to make sure that the rendering works",
+              "Testing included latchup protection circuitry to prevent destructive latchup.",
           },
           {
             source: "Co60",
@@ -829,7 +829,7 @@ export const mockFullDataTypePasses5: FullDataType[] = [
             increased_power_usage: false,
             power_usage_description: "string",
             special_notes:
-              "This is a test to make sure that the rendering works",
+              "Rated as moderate risk due to low predicted event rates and/or non-destructive nature of observed latchups",
           },
         ],
         sees: [
@@ -959,7 +959,7 @@ export const mockFullDataTypePasses5: FullDataType[] = [
             increased_power_usage: false,
             power_usage_description: "string",
             special_notes:
-              "This is a test to make sure that the rendering works",
+              "Testing included latchup protection circuitry to prevent destructive latchup.",
           },
           {
             source: "Co60",
@@ -970,7 +970,7 @@ export const mockFullDataTypePasses5: FullDataType[] = [
             increased_power_usage: false,
             power_usage_description: "string",
             special_notes:
-              "This is a test to make sure that the rendering works",
+              "Rated as moderate risk due to non-destructive nature of observed latchups and/or low predicted event rates",
           },
         ],
         sees: [
@@ -1100,7 +1100,7 @@ export const mockFullDataTypePasses5: FullDataType[] = [
             increased_power_usage: false,
             power_usage_description: "string",
             special_notes:
-              "This is a test to make sure that the rendering works",
+              "Testing included latchup protection circuitry to prevent destructive latchup.",
           },
           {
             source: "Co60",
@@ -1111,7 +1111,7 @@ export const mockFullDataTypePasses5: FullDataType[] = [
             increased_power_usage: false,
             power_usage_description: "string",
             special_notes:
-              "This is a test to make sure that the rendering works",
+              "Determined to have moderate risk because of non-destructive nature of observed latchups and/or low predicted event rates",
           },
         ],
         sees: [
