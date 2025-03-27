@@ -356,24 +356,13 @@ export class GenericController {
   }
 
   /**  Filter records dynamically based on provided query parameters */
-  static async cascade_filter<T extends ModelKey>(modelName: T, filters: any) {
-    console.log(`Filtering ${modelName} with filters:`, filters);
-
-    const formattedName = this.formatModelName(modelName);
-    const model = models[formattedName];
-
-    if (!model) {
-      return { error: `Invalid model name: ${modelName}`, status: 400 };
-    }
-
-    // Prepare conditions for each model
-    const whereConditions: Record<string, any> = {};
-    const includeRelations: any[] = [];
-
+  static async cascade_filter<T extends ModelKey>(filters: any) {
+    console.log(`Filtering papers with filters:`, filters);
     // Extract filters for different models
     const modelFilters: Record<string, any> = {
       paper: {},
       parts: {},
+      authors: {},
       tids: {},
       sees: {},
       dds: {},
@@ -385,34 +374,34 @@ export class GenericController {
       if (key.includes(".")) {
         const [relation, field] = key.split(".");
         if (modelFilters[relation] !== undefined) {
-          modelFilters[relation][field] = filters[key];
+          modelFilters[relation][field] =
+            relation === "authors"
+              ? { [Op.like]: `%${filters[key]}%` }
+              : { [Op.like]: `${filters[key]}%` };
         } else {
           console.warn(`Invalid related model in filter: ${relation}`);
           return { error: `Invalid relation '${relation}'`, status: 400 };
         }
       } else {
-        modelFilters.paper[key] = filters[key]; // Direct paper filters
+        modelFilters.paper[key] = { [Op.like]: `%${filters[key]}%` };
       }
     }
 
     console.log("Parsed Filters:", modelFilters);
 
+    const noTestFilters = () =>
+      Object.keys(modelFilters.tids).length === 0 &&
+      Object.keys(modelFilters.sees).length === 0 &&
+      Object.keys(modelFilters.dds).length === 0;
+
     // Build Include Array Dynamically
     const buildInclude = (modelKey: string, modelRef: any, alias: string) => {
-      if (Object.keys(modelFilters[modelKey]).length > 0) {
-        return {
-          model: modelRef,
-          as: alias,
-          required: true, // Enforce filtering at SQL level
-          where: modelFilters[modelKey],
-          attributes: {
-            exclude: ["createdAt", "updatedAt", "paperId", "partId"],
-          }, // Exclude unwanted fields
-        };
-      }
+      const filter = modelFilters[modelKey];
       return {
         model: modelRef,
         as: alias,
+        required: Object.keys(filter).length > 0, // Only INNER JOIN if we have filters
+        where: filter,
         attributes: {
           exclude: ["createdAt", "updatedAt", "paperId", "partId"],
         }, // Exclude unwanted fields
@@ -430,6 +419,7 @@ export class GenericController {
           through: {
             attributes: [], // This will exclude the 'paper_author' relationship table fields
           },
+          where: modelFilters.authors, // Apply author filters here
         }, // Exclude fields for authors
         buildInclude("parts", models.Part, "parts"),
         {
@@ -438,8 +428,8 @@ export class GenericController {
           required: Object.keys(modelFilters.parts).length > 0,
           where: modelFilters.parts,
           include: [
-            buildInclude("tids", models.Tid, "tids"),
             buildInclude("sees", models.See, "sees"),
+            buildInclude("tids", models.Tid, "tids"),
             buildInclude("dds", models.Dd, "dds"),
           ],
           attributes: { exclude: ["createdAt", "updatedAt", "paper_part"] }, // Exclude fields for parts
@@ -454,56 +444,49 @@ export class GenericController {
     console.log("Found records:", records.length);
 
     // Flatten Results & Remove Unfiltered Tests
-    return records.flatMap((paper) => {
-      const paperData = paper.get({ plain: true });
-      const { parts, ...paperWithoutParts } = paperData;
+    return Promise.all(
+      records.flatMap((paper) => {
+        const paperData = paper.get({ plain: true });
+        const { parts, ...paperWithoutParts } = paperData;
 
-      return parts.flatMap((part: any) => {
-        const { tids, sees, dds, ...partWithoutTests } = part;
+        return parts.flatMap((part: any) => {
+          const { tids, sees, dds, ...partWithoutTests } = part;
+          const results = [];
 
-        return [
-          ...tids
-            .filter(
-              (t: { [x: string]: any }) =>
-                Object.keys(modelFilters.tids).length === 0 ||
-                modelFilters.tids.some(
-                  (f: string | number) => t[f] === filters[`tids.${f}`],
-                ),
-            )
-            .map((tid: any) => ({
-              paper: paperWithoutParts,
-              part: partWithoutTests,
-              tid,
-            })),
-          ...sees
-            .filter(
-              (s: { [x: string]: any }) =>
-                Object.keys(modelFilters.sees).length === 0 ||
-                modelFilters.sees.some(
-                  (f: string | number) => s[f] === filters[`sees.${f}`],
-                ),
-            )
-            .map((see: any) => ({
-              paper: paperWithoutParts,
-              part: partWithoutTests,
-              see,
-            })),
-          ...dds
-            .filter(
-              (d: { [x: string]: any }) =>
-                Object.keys(modelFilters.dds).length === 0 ||
-                modelFilters.dds.some(
-                  (f: string | number) => d[f] === filters[`dds.${f}`],
-                ),
-            )
-            .map((dd: any) => ({
-              paper: paperWithoutParts,
-              part: partWithoutTests,
-              dd,
-            })),
-        ];
-      });
-    });
+          if (Object.keys(modelFilters.tids).length > 0 || noTestFilters()) {
+            results.push(
+              ...tids.map((tid: any) => ({
+                paper: paperWithoutParts,
+                part: partWithoutTests,
+                tid,
+              })),
+            );
+          }
+
+          if (Object.keys(modelFilters.sees).length > 0 || noTestFilters()) {
+            results.push(
+              ...sees.map((see: any) => ({
+                paper: paperWithoutParts,
+                part: partWithoutTests,
+                see,
+              })),
+            );
+          }
+
+          if (Object.keys(modelFilters.dds).length > 0 || noTestFilters()) {
+            results.push(
+              ...dds.map((dd: any) => ({
+                paper: paperWithoutParts,
+                part: partWithoutTests,
+                dd,
+              })),
+            );
+          }
+
+          return results;
+        });
+      }),
+    );
   }
 
   /** Create full paper along with related entities */

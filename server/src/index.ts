@@ -119,7 +119,7 @@ async function initializeSystem(): Promise<{
         const results = await gptController.processRadiationPapers(pdfFile);
 
         fs.writeFileSync(
-              "./test/1-paper-output.json",
+              "./test/1-paper-output-hope.json",
               JSON.stringify(results, null, 4),
             );
 

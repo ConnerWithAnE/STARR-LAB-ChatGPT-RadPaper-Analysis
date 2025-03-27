@@ -16,7 +16,7 @@ export default function cascadeRouter(dbController: GenericController): Router {
 
       console.log(`Filtering ${modelName} with`, filters);
 
-      const records = await GenericController.cascade_filter("papers", filters);
+      const records = await GenericController.cascade_filter(filters);
 
       if (!Array.isArray(records) && "error" in records) {
         res.status(records.status || 500).json({ error: records.error });

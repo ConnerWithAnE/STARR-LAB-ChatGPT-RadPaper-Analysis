@@ -95,7 +95,7 @@ export const questions = {
     prompt: `Describe the type of radiation testing that was conducted.:
 
         - This testing will be either TID SEE(General) OR DD You may ONLY return types TID, SEE or DD for this step
-        - Facility name
+        - Find the facility name and remember it for future questions
       
         There might be more than one test for the given part, return a list of different test types, if two tests of the same type are found create two entries, for one each
 
