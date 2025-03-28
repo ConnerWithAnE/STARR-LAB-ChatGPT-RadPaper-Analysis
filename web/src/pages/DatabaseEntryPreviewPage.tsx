@@ -94,7 +94,7 @@ export default function DatabaseEntryPreviewPage() {
     setLoading(true);
     try {
       const response = await fetch(
-        "http://localhost:3000/api/adminRequest/papers/full",
+        "/api/adminRequest/papers/full",
         {
           method: "POST",
           headers: {

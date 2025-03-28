@@ -150,7 +150,7 @@ export default function PaperSliver({
     try {
       setLoading(true);
       const response = await fetch(
-        `http://localhost:3000/api/adminRequest/papers/full/${paperData.id}`,
+        `/api/adminRequest/papers/full/${paperData.id}`,
         {
           method: "GET",
           headers: {

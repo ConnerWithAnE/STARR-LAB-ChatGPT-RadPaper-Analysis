@@ -81,7 +81,7 @@ export default function UploadPage() {
     try {
       setLoading(true);
       const response = await fetch(
-        "http://localhost:3000/api/adminRequest/parseRequest",
+        "/api/adminRequest/parseRequest",
         {
           method: "POST",
           headers: {
