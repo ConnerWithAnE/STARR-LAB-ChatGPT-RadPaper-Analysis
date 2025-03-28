@@ -38,8 +38,8 @@ export default function ModifyPage() {
     const token = localStorage.getItem("jwtToken");
 
     const apiReq = search
-      ? "/api/adminRequest/papers/full"
-      : `/api/adminRequest/papers/filter?${search}`;
+      ? "http://localhost:3000/api/adminRequest/papers/full"
+      : `http://localhost:3000/api/adminRequest/papers/filter?${search}`;
 
     try {
       const response = await fetch(apiReq, {

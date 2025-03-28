@@ -81,7 +81,7 @@ export default function UploadPage() {
     try {
       setLoading(true);
       const response = await fetch(
-        "/api/adminRequest/parseRequest",
+        "http://localhost:3000/api/adminRequest/parseRequest",
         {
           method: "POST",
           headers: {
@@ -117,7 +117,7 @@ export default function UploadPage() {
     <div className="flex flex-col items-center h-full bg-gray-50">
       <div className="w-[70%] h-full flex flex-col">
         <div className="bg-[#F4F4F4]">
-          <div className="py-[6%] text-4xl">Upload New Papers</div>
+          <div className="py-[6%] text-4xl text-black">Upload New Papers</div>
 
           <div className="w-full h-8 bg-[#D4D4D4] drop-shadow-md"></div>
         </div>

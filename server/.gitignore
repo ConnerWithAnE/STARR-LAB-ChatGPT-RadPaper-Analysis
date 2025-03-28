@@ -57,4 +57,4 @@ coverage/
 .cache/
 
 # Database Files
-*.db
+# *.db We want this db file rn

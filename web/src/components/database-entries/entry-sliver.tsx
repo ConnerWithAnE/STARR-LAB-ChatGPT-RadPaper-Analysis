@@ -155,9 +155,9 @@ export default function EntrySliver({
             // console.log("SEE passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
             return;
           }
-          const tests_1 = pass_1[i][typesafeKey];
-          const tests_2 = pass_2[i][typesafeKey];
-          const tests_3 = pass_3[i][typesafeKey];
+          const tests_1 = pass_1[i][typesafeKey] ?? "";
+          const tests_2 = pass_2[i][typesafeKey] ?? "";
+          const tests_3 = pass_3[i][typesafeKey] ?? "";
 
           // the 'special_notes' field is a long string and thus should probably be compared using a different method
           if (typesafeKey === "special_notes") {
@@ -245,9 +245,9 @@ export default function EntrySliver({
             // console.log("DD passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
             return;
           }
-          const tests_1 = pass_1[i][typesafeKey];
-          const tests_2 = pass_2[i][typesafeKey];
-          const tests_3 = pass_3[i][typesafeKey];
+          const tests_1 = pass_1[i][typesafeKey] ?? "";
+          const tests_2 = pass_2[i][typesafeKey] ?? "";
+          const tests_3 = pass_3[i][typesafeKey] ?? "";
 
           // the 'special_notes' field is a long string and thus should probably be compared using a different method
           if (typesafeKey === "special_notes") {
@@ -334,9 +334,9 @@ export default function EntrySliver({
             // console.log("TID passes: \nPass1: ", pass_1[i], "\nPass2:", pass_2[i], "\nPass3:", pass_3[i]);
             return;
           }
-          const tests_1 = pass_1[i][typesafeKey];
-          const tests_2 = pass_2[i][typesafeKey];
-          const tests_3 = pass_3[i][typesafeKey];
+          const tests_1 = pass_1[i][typesafeKey] ?? "";
+          const tests_2 = pass_2[i][typesafeKey] ?? "";
+          const tests_3 = pass_3[i][typesafeKey] ?? "";
 
           // the 'special_notes' field is a long string and thus should probably be compared using a different method
           if (typesafeKey === "special_notes") {

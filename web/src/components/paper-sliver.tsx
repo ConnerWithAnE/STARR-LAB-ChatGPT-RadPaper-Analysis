@@ -150,7 +150,7 @@ export default function PaperSliver({
     try {
       setLoading(true);
       const response = await fetch(
-        `/api/adminRequest/papers/full/${paperData.id}`,
+        `http://localhost:3000/api/adminRequest/papers/full/${paperData.id}`,
         {
           method: "GET",
           headers: {
@@ -323,7 +323,7 @@ export default function PaperSliver({
                 </ModalHeader>
                 <ModalBody>
                   <EditEntry
-                    editedEntry={paper}
+                    editedEntry={paperData}
                     setEditedEntry={setPaperData}
                     showPasses={false}
                   ></EditEntry>

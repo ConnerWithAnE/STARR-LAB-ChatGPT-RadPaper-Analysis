@@ -24,7 +24,8 @@ export default function FrontPage() {
   }, [token, navigate]);
 
   const loginClicked = () => {
-    redirectToCAS();
+    //redirectToCAS();
+    navigate('/modify')
   };
 
   return token ? (
